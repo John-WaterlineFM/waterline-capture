@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0D1F2D">
+<title>Waterline Capture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;800&family=Outfit:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Waterline Capture, the phone page (Work 015 D2a). Built from the sketch on the desk tokens
+   (DEC-0269), held to the Design rules that already cover touch: every control is 44px or more
+   (Design 9.12, 12.8); every state carries a word as well as a colour (Design 5.9). Type per
+   Design 6.3: page title Sora 20, button Outfit 13, form label Outfit 12, eyebrow and tag 11.
+   Inputs stay 16px, below which iOS zooms the page (a gap for the mobile chapter, O14). */
+:root{
+  --ink:#0D1F2D; --onInk:#FFFFFF; --onInkMid:rgba(255,255,255,.6); --inkAmber:#FBBF24;
+  --accent:#1E87A8; --accentD:#156B87;
+  --cream:#F5F7F9; --white:#FFFFFF; --stone:#E4EEF4; --border:#D4E3EC;
+  --text:#0D1F2D; --textMid:#3A5A72; --textMuted:#4A6E8C;
+  --amber:#D97706; --amberBg:#FFFBEB; --amberText:#92400E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream)}
+body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-height:1.45;-webkit-text-size-adjust:100%;min-height:100vh;display:flex;flex-direction:column}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+/* Design 12.7: the focus ring is 2px solid accent, offset 2px, on every focusable element. */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+textarea:focus,input:focus,select:focus{outline:2px solid var(--accent);outline-offset:2px}
+#app{flex:1;display:flex;flex-direction:column;max-width:560px;width:100%;margin:0 auto}
+/* Design 6.9: numbers in Sora with tabular figures. */
+.n{font-family:Sora,sans-serif;font-variant-numeric:tabular-nums}
+
+/* page title, on the page surface (Design 4.13: the navy surface belongs to the hero) */
+.head{padding:calc(12px + env(safe-area-inset-top)) 16px 8px}
+.eb{font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:var(--textMuted)}
+.head h1{font:800 20px/1.2 Sora;margin:4px 0}
+.head .sub{font-size:15px;color:var(--textMid);display:flex;align-items:center;flex-wrap:wrap}
+.head .sub b{color:var(--text)}
+.link{background:none;border:none;color:var(--accentD);text-decoration:underline;min-height:44px;padding:0 8px;font:600 13px Outfit}
+
+.top{display:flex;align-items:center;gap:4px;padding:calc(4px + env(safe-area-inset-top)) 8px 4px;background:var(--cream);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--border)}
+.top .t{flex:1;font:800 20px Sora;text-align:center}
+.ibtn{width:44px;height:44px;border-radius:8px;display:grid;place-items:center;color:var(--accentD);background:none;border:none;flex:none}
+.ibtn svg{width:20px;height:20px}
+
+/* notes and states */
+.note{margin:12px 16px 0;background:var(--white);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:0 8px 8px 0;padding:12px;font-size:15px;color:var(--textMid)}
+.note b{color:var(--text);font-weight:700}
+.note.amber{border-left-color:var(--amber)}
+.note .eb{display:block;margin-bottom:4px}
+.note.amber .eb{color:var(--amberText)}
+.note .btn{margin-top:12px}
+
+.lab{font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:var(--textMuted);padding:20px 16px 8px}
+
+/* the verb list */
+.list{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.verb{display:flex;align-items:center;gap:12px;min-height:64px;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--border);padding:12px 12px 12px 16px}
+.verb:last-child{border-bottom:none}
+.verb .ic{width:44px;height:44px;border-radius:8px;background:var(--stone);color:var(--accentD);display:grid;place-items:center;flex:none}
+.verb .ic svg{width:20px;height:20px}
+.verb .m{flex:1;min-width:0}
+.verb .nm{font:600 15px Outfit;display:block}
+.verb .ln{font-size:12px;color:var(--textMuted);display:block}
+.verb[disabled]{cursor:default}
+.verb[disabled] .ic{color:var(--textMuted)}
+.verb[disabled] .nm{color:var(--textMid)}
+.chev{color:var(--textMuted);width:20px;height:20px;flex:none}
+
+.rows{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.row{display:flex;gap:12px;align-items:baseline;padding:12px 16px;border-bottom:1px solid var(--border);font-size:15px}
+.row:last-child{border-bottom:none}
+.row .w{flex:1;min-width:0}
+.row .k{color:var(--textMuted);font-size:12px;width:64px;flex:none}
+.mono{font-family:ui-monospace,'SFMono-Regular',Consolas,monospace;font-size:12px}
+/* Design 9.3: tags are Outfit 700 11px, sentence case, no tracking. */
+.tag{font:700 11px Outfit;padding:4px 8px;border-radius:6px;white-space:nowrap;flex:none;background:var(--stone);color:var(--textMid)}
+.tag.next{background:var(--white);color:var(--text);box-shadow:inset 0 0 0 1.5px var(--textMuted)}
+
+/* forms */
+.form{padding:16px 0 24px;flex:1;display:flex;flex-direction:column}
+.field{margin:0 16px 20px}
+.field>label,.field>.fl{display:block;font:600 12px Outfit;color:var(--text);margin-bottom:8px}
+.field .opt{color:var(--textMuted)}
+textarea,input[type=text],select{width:100%;background:var(--white);border:1.5px solid var(--textMuted);border-radius:8px;padding:12px;font-size:16px;min-height:48px}
+textarea{min-height:96px;resize:vertical;line-height:1.4}
+::placeholder{color:var(--textMuted);opacity:1}
+.help{font-size:12px;color:var(--textMuted);margin-top:8px}
+.help.err{color:var(--amberText);font-weight:700}
+.inrow{display:flex;gap:8px}
+.inrow input{flex:1;min-width:0}
+.sugg{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-top:8px;overflow:hidden}
+.sugg button{display:block;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--border);min-height:48px;padding:8px 12px;font-size:15px}
+.sugg button:last-child{border-bottom:none}
+.sugg small{display:block;color:var(--textMuted);font-size:12px}
+.chip{display:flex;align-items:center;gap:12px;background:var(--white);border:1.5px solid var(--textMuted);border-radius:8px;padding:8px 4px 8px 12px;min-height:48px}
+.chip .m{flex:1;min-width:0}
+.chip .nm{font-weight:700}
+.chip small{display:block;color:var(--textMuted);font-size:12px}
+
+/* buttons: Design 6.3, Outfit 13 600, Title Case */
+.btn{min-height:48px;border-radius:8px;border:none;font:600 13px Outfit;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:0 16px}
+.btn.p{background:var(--accentD);color:var(--onInk)}
+.btn.g{background:var(--white);color:var(--accentD);border:1.5px solid var(--accentD)}
+.btn.sm{width:auto;flex:none}
+.btn[disabled]{background:var(--stone);color:var(--textMid);border-color:var(--stone);cursor:default}
+.btn svg{width:20px;height:20px;flex:none}
+.foot{margin-top:auto;padding:8px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.foot .why{font-size:12px;color:var(--textMuted);text-align:center}
+
+/* photos */
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.th{width:76px;height:76px;border-radius:8px;background:var(--stone) center/cover no-repeat;position:relative;border:1px solid var(--border);display:grid;place-items:center;font:700 11px Outfit;color:var(--textMid)}
+.th .x{position:absolute;top:-8px;right:-8px;width:44px;height:44px;border:none;background:none;display:grid;place-items:center}
+.th .x i{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--onInk);display:grid;place-items:center;font-style:normal;font-size:15px;line-height:1}
+.th.add{background:var(--white);border:1.5px dashed var(--textMuted);color:var(--accentD);cursor:pointer}
+.th.add svg{width:20px;height:20px}
+.th.add input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* reading */
+.outlet{padding:4px 16px 12px}
+.outlet h2{font:800 20px/1.2 Sora;margin:4px 0}
+.outlet .w{font-size:15px;color:var(--textMid)}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin:0 16px 12px}
+.fig{display:flex;align-items:center;gap:12px;padding:4px 0}
+.fig+.fig{border-top:1px solid var(--border);padding-top:12px;margin-top:8px}
+.fig label{font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:var(--textMuted);width:56px;flex:none}
+.fig input{font:800 28px Sora;font-variant-numeric:tabular-nums;height:64px;width:100%;min-width:0;text-align:right}
+.fig .u{font:600 20px Sora;color:var(--textMid);flex:none}
+.rng{font-size:15px;color:var(--textMid);margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+
+/* round */
+.pt{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);min-height:64px}
+.pt .num{font:600 15px Sora;font-variant-numeric:tabular-nums;color:var(--textMuted);width:24px;text-align:right;flex:none}
+.pt .m{flex:1;min-width:0}
+.pt .nm{font-weight:500}
+.pt small{display:block;color:var(--textMuted);font-size:12px}
+
+/* sent */
+.done{padding:20px 16px 0;flex:1;display:flex;flex-direction:column}
+.mk{width:44px;height:44px;border-radius:50%;background:var(--stone);color:var(--text);display:grid;place-items:center;margin-bottom:12px}
+.mk.a{background:var(--amberBg);color:var(--amberText)}
+.mk svg{width:20px;height:20px}
+.done h2{font:800 20px/1.2 Sora}
+.done .lead{font-size:15px;color:var(--textMid);margin-top:8px}
+.done .rows{margin:20px -16px 0}
+
+/* scanner: the camera's own dark surface (no rule covers it yet; O14) */
+.scan{position:fixed;inset:0;background:var(--ink);color:var(--onInk);z-index:20;display:flex;flex-direction:column}
+.scan>.top{background:var(--ink);border-bottom-color:var(--ink)}
+.scan>.top .t{color:var(--onInk)}
+.scan>.top .ibtn{color:var(--onInk)}
+.scan .vf{flex:1;position:relative;overflow:hidden;display:grid;place-items:center}
+.scan video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scan .frame{position:relative;width:62vmin;height:62vmin;max-width:280px;max-height:280px;border:2px solid var(--onInk);border-radius:16px}
+.scan .say{padding:16px;font-size:15px;text-align:center;color:var(--onInk)}
+.scan .say.err{color:var(--inkAmber)}
+.scan>.foot{background:var(--ink)}
+.scan>.foot .btn.g{background:transparent;color:var(--onInk);border-color:var(--onInkMid)}
+.scan .file{position:relative}
+.scan .file input{position:absolute;inset:0;opacity:0}
+.scan .pick{position:absolute;inset:0;background:var(--cream);color:var(--text);overflow:auto}
+
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="shapes.js"></script>
+<script>
+'use strict';
+// ── Where captures go ────────────────────────────────────────────────────────────────────────
+// One interface, two backings (Work 015 plan, D2a). add(path, blob) never overwrites: it fails with
+// code 'exists' if the file is already there (DEC-0265 rule 2). read(path) gives text, or null when
+// the file is not there. Nothing on this page deletes, renames or edits a file.
+// The real backing is the site's Google relay (DEC-0279, companion/relay.gs): a set-up link from the
+// desk carries its address and the site code, kept on this phone. Staff sign in to nothing.
+// The sandbox check hands the page an in-memory folder instead.
+function testStore(){ try{ return window.parent!==window&&window.parent.wfmTestStore||null; }catch(e){ return null; } }
+function b64(blob){ return new Promise((ok,no)=>{ const r=new FileReader(); r.onload=()=>ok(String(r.result).split(',')[1]||''); r.onerror=()=>no(r.error); r.readAsDataURL(blob); }); }
+// A set-up link is ?relay=<address>&code=<site code>. It is kept, then taken out of the address bar.
+function takeSetupLink(href){
+  try{ const q=new URL(href,location.href).searchParams, relay=q.get('relay'), code=q.get('code');
+    if(!relay||!code||!/^https:\/\/script\.google\.com\//.test(relay)&&!/^http:\/\/localhost[:\/]/.test(relay)) return false;
+    localStorage.setItem('wl_relay',JSON.stringify({url:relay,code:code})); return true; }catch(e){ return false; }
+}
+function relayStore(){
+  if(takeSetupLink(location.href)) history.replaceState(null,'',location.pathname);
+  let r=null; try{ r=JSON.parse(localStorage.getItem('wl_relay')||'null'); }catch(e){}
+  if(!r||!r.url||!r.code) return null;
+  const call=async body=>{
+    // text/plain keeps it a simple request, so the browser sends it without a preflight.
+    const res=await fetch(r.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({code:r.code},body))});
+    let j=null; try{ j=await res.json(); }catch(e){ throw new Error('The site’s relay did not answer properly ('+res.status+')'); }
+    if(!j.ok){ const e=new Error(j.why||'The site’s relay refused it'); e.code=j.code; throw e; }
+    return j;
+  };
+  return {
+    account:async()=>null,
+    add:async(path,blob)=>{ await call({op:'add',path:path,type:blob.type||'',data:await b64(blob)}); },
+    read:async path=>{ try{ return (await call({op:'read',path:path})).text; }catch(e){ if(e.code==='missing') return null; throw e; } }
+  };
+}
+const STORE=testStore()||relayStore();
+
+// ── Small helpers ────────────────────────────────────────────────────────────────────────────
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>(n<10?'0':'')+n;
+// Design 8.8: DD MMM YYYY and the 24-hour clock.
+const day=d=>{d=new Date(d);return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear();};
+const hm=d=>{d=new Date(d);return pad(d.getHours())+':'+pad(d.getMinutes());};
+const when=d=>{const x=new Date(d),t=new Date();return (x.toDateString()===t.toDateString()?'today':day(x))+' at '+hm(x);};
+function ago(ms){
+  const m=Math.round(ms/6e4);
+  if(m<2) return 'just now';
+  if(m<60) return m+' minutes ago';
+  const h=Math.round(m/60); if(h<48) return h+(h===1?' hour ago':' hours ago');
+  return Math.round(h/24)+' days ago';
+}
+const plural=(n,a,b)=>n+' '+(n===1?a:(b||a+'s'));
+function newId(){
+  const d=new Date(), r=Math.random().toString(36).slice(2,6).toUpperCase().padEnd(4,'0');
+  return 'CAP-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds())+'-'+r;
+}
+function device(){
+  const u=navigator.userAgent||'';
+  const what=/iPhone/.test(u)?'iPhone':/iPad/.test(u)?'iPad':/Android/.test(u)?'Android phone':'Computer';
+  const br=/EdgA?\//.test(u)?'Edge':/CriOS|Chrome\//.test(u)?'Chrome':/FxiOS|Firefox\//.test(u)?'Firefox':/Safari\//.test(u)?'Safari':'a browser';
+  return what+', '+br;
+}
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+          set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
+          del(k){try{localStorage.removeItem(k);}catch(e){}}};
+const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}},
+          set(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}};
+
+const I={
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  chev:'<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5l5 5-5 5"/></svg>',
+  fault:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>',
+  cert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 15h5M10 18h3"/></svg>',
+  reading:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4a2 2 0 0 1 4 0v10a4 4 0 1 1-4 0z"/><path d="M12 9v7"/></svg>',
+  photo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  round:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8"/></svg>',
+  scan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 12h8"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg>',
+  tick:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4L18 8"/></svg>',
+  wait:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>'
+};
+
+// ── State ────────────────────────────────────────────────────────────────────────────────────
+// Only what this phone needs. Records live in the desk app; this page keeps the site details it
+// last read, the captures it has not managed to send, and a short list of what it sent.
+const st={screen:'start',site:null,siteAt:0,siteErr:'',account:null,walker:'',form:null,scanFor:null,outbox:[],sent:ls.get('wl_sent',[]),busy:false,last:null};
+
+// ── The site file (DEC-0271) ─────────────────────────────────────────────────────────────────
+// Read, never written. A copy is kept on the phone so it still knows the site when it has no
+// signal, and its age is always said (DEC-0271 rule 4).
+async function loadSite(){
+  const path=WFM_SITE_SHAPE.folder+'/'+WFM_SITE_SHAPE.file;
+  let text=null;
+  try{ text=await STORE.read(path); st.siteErr=text==null?'missing':''; }
+  catch(e){ st.siteErr=e&&e.code==='refused'?'refused':'unreachable'; }
+  if(text!=null){
+    try{
+      const o=JSON.parse(text);
+      if(!o||o.format!==WFM_SITE_SHAPE.format) st.siteErr='notsite';
+      else if(Number(o.version)>WFM_SITE_SHAPE.version) st.siteErr='newer';
+      else { st.site=o; ls.set('wl_site',o); st.siteErr=''; }
+    }catch(e){ st.siteErr='broken'; }
+  }
+  if(!st.site){ const kept=ls.get('wl_site',null); if(kept&&kept.format===WFM_SITE_SHAPE.format) st.site=kept; }
+}
+const siteAge=()=>st.site&&st.site.published?Date.now()-Date.parse(st.site.published):Infinity;
+const siteStale=()=>!(siteAge()<WFM_SITE_SHAPE.freshHours*36e5);
+const points=()=>(st.site&&st.site.points)||[];
+const pointById=id=>points().find(p=>p.id===id)||null;
+const lineById=id=>((st.site&&st.site.lines)||[]).find(l=>l.id===id)||null;
+const roundById=id=>((st.site&&st.site.rounds)||[]).find(r=>r.id===id)||null;
+function pointLabel(p){ return p?(p.name+(p.where?' — '+p.where:'')):''; }
+
+// The site file's line about itself: how old it is, or why there is none.
+function siteNote(){
+  const pub=st.site&&st.site.published;
+  const why={missing:'The desk has not published the site details yet.',unreachable:'The site details could not be reached just now.',refused:'This phone’s site code is not this site’s. Open the latest set-up link from the desk.',
+    notsite:'The file in Phone/ is not a site details file.',newer:'The desk published a newer kind of site details than this page reads. Reload the page.',
+    broken:'The site details file could not be read. It may still be arriving.'}[st.siteErr]||'';
+  if(!st.site) return '<div class="note amber"><span class="eb">No site details</span>'+esc(why)+' You can still report a fault or send a photo in your own words. Lines, outlet ranges and past faults show once the desk publishes them.</div>';
+  const age='Published by the desk '+(pub?'<span class="n">'+day(pub)+' at '+hm(pub)+'</span>, '+ago(siteAge()):'at a time it did not say')+'.';
+  if(siteStale()) return '<div class="note amber"><span class="eb">Site details out of date</span>'+age+(why?' '+esc(why):'')+' Lines, ranges and past faults may have changed since. The desk republishes every time it reads the Inbox.</div>';
+  return '<div class="note"><span class="eb">Site details</span>'+age+(why?' '+esc(why)+' This is the copy kept on this phone.':'')+'</div>';
+}
+
+// ── The outbox: captures kept on the phone until they are sent ────────────────────────────────
+// IndexedDB, because photos are too big for localStorage. A capture is written here before any
+// upload starts, and removed only when its record has landed.
+let _db=null;
+function db(){
+  if(_db) return _db;
+  _db=new Promise((ok,no)=>{ const r=indexedDB.open('waterline-capture',1);
+    r.onupgradeneeded=()=>r.result.createObjectStore('outbox',{keyPath:'id'});
+    r.onsuccess=()=>ok(r.result); r.onerror=()=>no(r.error); });
+  return _db;
+}
+async function obAll(){ const d=await db(); return new Promise((ok,no)=>{ const q=d.transaction('outbox').objectStore('outbox').getAll(); q.onsuccess=()=>ok(q.result||[]); q.onerror=()=>no(q.error); }); }
+async function obPut(c){ const d=await db(); return new Promise((ok,no)=>{ const t=d.transaction('outbox','readwrite'); t.objectStore('outbox').put(c); t.oncomplete=ok; t.onerror=()=>no(t.error); }); }
+async function obDel(id){ const d=await db(); return new Promise((ok,no)=>{ const t=d.transaction('outbox','readwrite'); t.objectStore('outbox').delete(id); t.oncomplete=ok; t.onerror=()=>no(t.error); }); }
+
+// Files first, the record last, so the desk lists a capture only once everything is there (slice A).
+// A file already there was sent on an earlier try: ids are new for every capture.
+async function deliver(c){
+  const put=async(path,blob)=>{ try{ await STORE.add(path,blob); }catch(e){ if(!(e&&e.code==='exists')) throw e; } };
+  for(const f of c.files){
+    if(c.done.indexOf(f.name)>=0) continue;
+    await put('Inbox/'+f.name,f.blob);
+    c.done.push(f.name); await obPut(c);
+  }
+  await put('Inbox/'+c.id+'.json',new Blob([JSON.stringify(c.record,null,1)],{type:'application/json'}));
+}
+async function send(c){
+  await obPut(c);
+  try{ await deliver(c); await obDel(c.id); remember(c); return true; }
+  catch(e){ console.warn('send',e); c.err=String(e&&e.message||e); c.errCode=e&&e.code||''; await obPut(c); return false; }
+}
+function remember(c){
+  const r=c.record;
+  st.sent.unshift({id:r.id,kind:r.kind,what:summary(r),taken:r.taken,files:c.files.length});
+  st.sent=st.sent.slice(0,20); ls.set('wl_sent',st.sent);
+}
+async function sendKept(){
+  if(st.busy) return; st.busy=true;
+  const all=await obAll(); let n=0;
+  for(const c of all){ if(await send(c)) n++; }
+  st.outbox=await obAll(); st.busy=false;
+  return n;
+}
+
+// ── Building a capture record (WFM_CAPTURE_SHAPE, read by the desk's wfmCaptureRead) ──────────
+function kindLabel(k){ return (WFM_CAPTURE_SHAPE.kinds[k]||{}).label||k; }
+function summary(r){
+  if(r.kind==='round'){ const rd=roundById(r.round); return (rd?rd.name:'Round')+', '+plural((r.scans||[]).length,'point')+' scanned'; }
+  if(r.kind==='reading'){ const p=pointById(r.point); return 'Reading at '+(p?p.name:r.place||'a tag'); }
+  if(r.kind==='certificate'){ const l=lineById(r.duty); return kindLabel('certificate')+(l?' for '+l.what:''); }
+  const p=r.point?pointById(r.point):null;
+  return kindLabel(r.kind)+(p?' at '+pointLabel(p):r.place?' at '+r.place:r.point?' at tag '+r.point:'');
+}
+async function shrink(file){
+  // Camera photos run to several megabytes; a long edge of 2400px keeps a certificate readable on the
+  // desk and the upload small on mobile data. Anything that is not a photo is sent as it is.
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type)) return file;
+  try{
+    const bm=await createImageBitmap(file), k=Math.min(1,2400/Math.max(bm.width,bm.height));
+    if(k===1&&file.size<1.5e6) return file;
+    const cv=document.createElement('canvas'); cv.width=Math.round(bm.width*k); cv.height=Math.round(bm.height*k);
+    cv.getContext('2d').drawImage(bm,0,0,cv.width,cv.height);
+    return await new Promise(ok=>cv.toBlob(b=>ok(b||file),'image/jpeg',.85));
+  }catch(e){ return file; }
+}
+function extOf(blob,name){
+  const t=blob.type||'';
+  if(t==='image/jpeg') return 'jpg'; if(t==='image/png') return 'png'; if(t==='image/webp') return 'webp';
+  if(t==='application/pdf') return 'pdf'; if(t==='image/heic') return 'heic';
+  const m=/\.([a-z0-9]{2,5})$/i.exec(name||''); return m?m[1].toLowerCase():'bin';
+}
+async function makeCapture(kind,fields,photos){
+  const id=newId(), files=[];
+  for(let i=0;i<photos.length;i++){
+    const b=await shrink(photos[i].file), name=id+'-'+(i+1)+'.'+extOf(b,photos[i].file.name);
+    files.push({name:name,blob:b,type:b.type||'application/octet-stream'});
+  }
+  const rec={format:WFM_CAPTURE_SHAPE.format,version:WFM_CAPTURE_SHAPE.version,id:id,kind:kind,
+    taken:fields.taken||new Date().toISOString(),person:st.walker,account:st.account?st.account.username:'',device:device()};
+  ['place','note','outcome','duty','point','round','started','reading','scans'].forEach(k=>{ const v=fields[k]; if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)) rec[k]=v; });
+  rec.files=files.map(f=>({name:f.name,type:f.type,bytes:f.blob.size}));
+  // Every field written is one the shape names: the desk is the judge of the contract.
+  Object.keys(rec).forEach(k=>{ if(WFM_CAPTURE_SHAPE.fields.indexOf(k)<0) throw new Error('Not in the capture shape: '+k); });
+  return {id:id,record:rec,files:files,done:[],made:Date.now()};
+}
+
+// ── Screens ──────────────────────────────────────────────────────────────────────────────────
+const app=document.getElementById('app');
+function go(screen,extra){ st.screen=screen; if(extra) Object.assign(st,extra); render(); window.scrollTo(0,0); }
+function bar(title,back){ return '<div class="top"><button class="ibtn" data-act="'+(back||'home')+'" aria-label="'+(back==='home'||!back?'Close':'Back')+'">'+(back&&back!=='home'?I.back:I.close)+'</button><div class="t">'+esc(title)+'</div><div style="width:44px"></div></div>'; }
+
+function render(){
+  const f={start:vStart,setup:vSetup,who:vWho,home:vHome,fault:vFault,certificate:vCert,reading:vReading,photo:vPhoto,rounds:vRounds,walk:vWalk,sent:vSent}[st.screen]||vHome;
+  app.innerHTML=f();
+  if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
+  after();
+}
+function head(eb,title,sub){ return '<div class="head"><div class="eb">'+esc(eb)+'</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</div>'; }
+function vStart(){ return head('Waterline','Capture','Opening…'); }
+
+// No backing: the page is up but cannot reach any site yet. Say exactly that (Design 9.11).
+function vSetup(){
+  return head('Waterline','Capture','Not connected to a site yet')
+    +'<div class="note amber"><span class="eb">Not set up</span>This phone has not been given the site’s set-up link, so nothing can be sent from here yet.</div>'
+    +'<div class="form"><div class="field"><label for="setup">Set-up link</label><input id="setup" type="url" autocomplete="off" placeholder="Paste the link from the desk" value="'+esc((st.form&&st.form.link)||'')+'" data-in="link"><div class="help">Open the link on this phone, or paste it here. You only do this once.</div></div>'
+    +'<div class="foot"><button class="btn p" data-act="setupLink"'+(st.form&&String(st.form.link||'').trim()?'':' disabled')+'>Use This Link</button>'
+    +(st.form&&st.form.bad?'<div class="why">That is not a Waterline set-up link. Ask the desk for it again.</div>':'')+'</div></div>'
+    +'<div class="note">What you capture goes only to the site’s own Inbox folder. This phone keeps a copy only until it has been sent.</div>';
+}
+
+// Who is capturing, asked once per session (Design 13.7: provenance names the person). With the
+// Google relay nobody signs in (DEC-0279), so the name is the only person on the record.
+function vWho(){
+  if(!st.account&&!(st.form&&st.form.other)) st.form={other:true,name:'',solo:true};
+  const a=st.account||{name:'',username:''}, other=st.form&&st.form.other;
+  return head(st.site&&st.site.site||'Waterline','Who Is Capturing?',st.account?'Signed in as '+esc(a.username||a.name):'Your name goes on everything you send')
+    +'<div class="form">'
+    +(other
+      ?'<div class="field"><label for="who">Your name</label><input id="who" type="text" autocomplete="name" value="'+esc(st.form.name||'')+'" data-in="name"><div class="help">Every capture says who took it. This phone asks again next time it is opened.</div></div>'
+       +'<div class="foot"><button class="btn p" data-act="whoSet"'+(String(st.form.name||'').trim()?'':' disabled')+'>Capture Under This Name</button>'+(st.form.solo?'':'<button class="btn g" data-act="whoBack">Back</button>')+'</div>'
+      :'<div class="foot" style="margin-top:0"><button class="btn p" data-act="whoMe">Capture as '+esc(a.name||a.username)+'</button><button class="btn g" data-act="whoOther">Someone Else on This Sign-In</button>'
+       +'<div class="why">On a shared phone, the person walking is named on every capture alongside the account it was sent from.</div></div>')
+    +'</div>';
+}
+
+function vHome(){
+  const s=st.site, rounds=(s&&s.rounds)||[], hasOutlets=points().some(p=>p.reading);
+  const verb=(act,ic,nm,ln,off)=>'<button class="verb" data-act="'+act+'"'+(off?' disabled':'')+'><span class="ic">'+I[ic]+'</span><span class="m"><span class="nm">'+esc(nm)+'</span><span class="ln">'+esc(ln)+'</span></span>'+(off?'':I.chev)+'</button>';
+  let h=head(s&&s.site||'Waterline','Capture','Capturing as&nbsp;<b>'+esc(st.walker)+'</b><button class="link" data-act="whoAgain">Change</button>');
+  if(st.outbox.length){
+    const errs=st.outbox.filter(c=>c.err).length;
+    h+='<div class="note amber" role="status"><span class="eb">Not sent yet</span>'+esc(plural(st.outbox.length,'capture'))+' kept on this phone'+(errs?', because sending failed':'')+'. '
+      +'They are not in the Inbox until they are sent.<button class="btn g" data-act="sendKept"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':'Send Again')+'</button></div>';
+  }
+  h+=siteNote();
+  h+='<div class="lab">What are you capturing</div><div class="list">'
+    +verb('fault','fault','Report a Fault','A sentence, a place and a photo.')
+    +verb('certificate','cert','Send a Certificate or Report','A photo or PDF of the document, sent against its line.')
+    +verb('reading','reading','Take a Reading',hasOutlets?'Scan an outlet’s tag, then enter the temperatures.':'No tagged outlets in the site details yet.',!hasOutlets)
+    +verb('photo','photo','Take a Photo','Proves who was there, where and when.')
+    +verb('rounds','round','Walk a Round',rounds.length?'Scan each point as you go. '+plural(rounds.length,'round')+' set up.':'No rounds set up on the desk yet.',!rounds.length)
+    +'</div>';
+  const today=st.sent.filter(x=>new Date(x.taken).toDateString()===new Date().toDateString());
+  h+='<div class="lab">Sent from this phone today</div>';
+  h+=today.length
+    ?'<div class="rows">'+today.slice(0,8).map(x=>'<div class="row"><span class="n" style="color:var(--textMuted)">'+hm(x.taken)+'</span><span class="w">'+esc(x.what)+'</span></div>').join('')+'</div>'
+     +'<div class="help" style="padding:0 16px 24px">Sent means it is in the Inbox. It is on a record once the desk files it.</div>'
+    :'<div class="help" style="padding:0 16px 24px">Nothing yet. What you send shows here, so you can see it went.</div>';
+  return h;
+}
+
+// Shared parts of the capture forms.
+function photosField(label,opt,accept){
+  const F=st.form;
+  return '<div class="field"><span class="fl">'+esc(label)+(opt?' <span class="opt">(optional)</span>':'')+'</span><div class="thumbs">'
+    +F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+(p.url?'':esc(extOf(p.file,p.file.name).toUpperCase()))+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove"><i>×</i></button></div>').join('')
+    +'<label class="th add" aria-label="Add">'+I.plus+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
+    +'</div></div>';
+}
+// Where: a tag scanned, a tag or past place picked, or words typed (Law 6: the place is derived when it can be).
+function whereField(opts){
+  const F=st.form, p=F.point?pointById(F.point):null;
+  if(F.point) return '<div class="field"><span class="fl">Where</span><div class="chip"><span class="m"><span class="nm">'+esc(p?p.name:F.point)+'</span><small>'+esc(p?(p.where||'Tag '+p.id):'This tag is not in the site details from the desk.')+(F.via==='qr'?' · tag scanned':' · picked from the list')+'</small></span><button class="ibtn" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
+  let h='<div class="field"><label for="place">Where</label><div class="inrow"><input id="place" type="text" autocomplete="off" placeholder="Room, corridor or plant" value="'+esc(F.place||'')+'" data-in="place">'
+    +'<button class="btn g sm" data-act="scan" data-for="where">'+I.scan+'Scan</button></div>';
+  const q=String(F.place||'').trim().toLowerCase();
+  if(opts&&opts.suggest&&q.length>=2&&!F.picked){
+    const s=[];
+    points().forEach(pt=>{ if((pt.name+' '+pt.where).toLowerCase().indexOf(q)>=0) s.push('<button data-act="pickPoint" data-id="'+esc(pt.id)+'">'+esc(pt.name)+'<small>'+esc(pt.where||'Tagged')+'</small></button>'); });
+    ((st.site&&st.site.faults)||[]).forEach(g=>{ if(!g.point&&g.place&&g.place.toLowerCase().indexOf(q)>=0&&g.place!==F.place) s.push('<button data-act="pickPlace" data-key="'+esc(g.key)+'">'+esc(g.place)+'<small><span class="n">'+g.count+'</span> '+(g.count===1?'fault':'faults')+' reported here in 12 months</small></button>'); });
+    if(s.length) h+='<div class="sugg">'+s.slice(0,6).join('')+'</div>';
+  }
+  return h+'<div class="help">In your own words, or scan the tag on the sticker.</div></div>';
+}
+// Faults already reported at this place: the desk's judgement, repeated, never the phone's own
+// (DEC-0271 rule 3; Principles, Law 7). Matched by the tag, or by a place picked from the desk's list.
+function faultHistory(){
+  const F=st.form, gs=(st.site&&st.site.faults)||[];
+  const g=F.point?gs.find(x=>x.point===F.point):gs.find(x=>!x.point&&x.place&&x.place===F.place);
+  if(!g) return '';
+  const eb=g.recurs?'Recurring here':'Reported here before', pub=st.site&&st.site.published;
+  return '<div class="note '+(g.recurs?'amber':'')+'" style="margin:0 16px 20px"><span class="eb">'+eb+'</span>'
+    +'<b><span class="n">'+g.count+'</span> '+(g.count===1?'fault':'faults')+' reported here in 12 months</b>'+(pub?', as at <span class="n">'+esc(day(pub))+'</span>':'')+'.'
+    +'<div style="margin-top:8px">'+g.faults.slice(0,3).map(x=>'<div style="padding:4px 0;border-top:1px solid var(--border)">'+esc(x.what||'No description')+'<br><span class="n" style="font-size:12px;color:var(--textMuted)">'+esc(x.raised?day(x.raised):'')+'</span>'+(x.status==='Open'?'<span style="font-size:12px;color:var(--textMuted)"> · still open</span>':'')+'</div>').join('')+'</div>'
+    +'<div class="help">Send it anyway: the desk links them. This only shows what has been reported, not that it is the same fault.</div></div>';
+}
+function lineSelect(opt){
+  const F=st.form, lines=(st.site&&st.site.lines)||[];
+  if(!lines.length) return '<div class="field"><span class="fl">Which line it is for</span><div class="help" style="margin-top:0">No lines in the site details yet. Sent without one, it waits in the Inbox until someone on the desk says where it belongs.</div></div>';
+  const by={}; lines.forEach(l=>{ (by[l.section]=by[l.section]||[]).push(l); });
+  return '<div class="field"><label for="duty">Which line it is for'+(opt?' <span class="opt">(optional)</span>':'')+'</label><select id="duty" data-in="duty"><option value="">'+(opt?'None':'Choose the line')+'</option>'
+    +Object.keys(by).map(sec=>'<optgroup label="'+esc(sec)+'">'+by[sec].map(l=>'<option value="'+esc(l.id)+'"'+(F.duty===l.id?' selected':'')+'>'+esc(l.what)+' ('+esc(l.id)+')</option>').join('')+'</optgroup>').join('')
+    +'</select></div>';
+}
+function sendBtn(label,ok,why){
+  return '<div class="foot" role="status"><button class="btn p" data-act="send"'+(ok&&!st.busy?'':' disabled')+'>'+(st.busy?'Sending…':esc(label))+'</button>'+(ok||!why?'':'<div class="why">'+esc(why)+'</div>')+(st.form&&st.form.err?'<div class="note amber" role="alert" style="margin:0"><span class="eb">Not made</span>'+esc(st.form.err)+'</div>':'')+'</div>';
+}
+
+function vFault(){
+  const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim();
+  return bar('Report a Fault')+'<div class="form">'
+    +'<div class="field"><label for="note">What’s wrong</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
+    +whereField({suggest:true})+faultHistory()+photosField('Photos',true)
+    +sendBtn('Send Fault',said&&where,!said?'Say what is wrong first.':'Say where it is, or scan its tag.')+'</div>';
+}
+function vCert(){
+  const F=st.form;
+  return bar('Send a Certificate or Report')+'<div class="form">'
+    +photosField('The document',false,'image/*,application/pdf')
+    +'<div class="help" style="margin:-12px 16px 20px">A photo of each page, or the PDF. It is read on the desk when it files, not on this phone.</div>'
+    +lineSelect(false)
+    +'<div class="field"><label for="note">Note <span class="opt">(optional)</span></label><input id="note" type="text" data-in="note" value="'+esc(F.note||'')+'" placeholder="Anything the desk should know"></div>'
+    +sendBtn('Send Certificate',F.photos.length>0,'Add the document first.')+'</div>';
+}
+function vPhoto(){
+  const F=st.form, where=F.point||String(F.place||'').trim();
+  return bar('Take a Photo')+'<div class="form">'
+    +'<div class="note" style="margin:0 16px 20px"><span class="eb">What a photo proves</span>'+esc(WFM_CAPTURE_SHAPE.photoSays)+'</div>'
+    +photosField('Photo',false)+whereField({suggest:false})
+    +'<div class="field"><label for="note">What it shows <span class="opt">(optional)</span></label><input id="note" type="text" data-in="note" value="'+esc(F.note||'')+'"></div>'
+    +lineSelect(true)
+    +sendBtn('Send Photo',F.photos.length&&where,!F.photos.length?'Take the photo first.':'Say where it was taken, or scan the tag.')+'</div>';
+}
+
+// A reading is taken at an outlet's tag. The tag must be scanned: a reading proves someone stood at
+// that outlet. The figures it takes and the sentence it is judged by come from the desk; the verdict
+// stays on the desk (Design 7.1; John, 14 Oct 2026: range shown, verdict on the desk).
+function vReading(){
+  const F=st.form, p=F.point?pointById(F.point):null;
+  if(!p) return bar('Take a Reading')+'<div class="form">'
+    +'<div class="note" style="margin:0 16px 20px">Scan the tag on the outlet. Its kind, the figures it takes and the range it is judged by come with it.</div>'
+    +'<div class="foot" style="margin-top:0"><button class="btn p" data-act="scan" data-for="reading">'+I.scan+'Scan the Outlet’s Tag</button></div>'
+    +(F.scanErr?'<div class="note amber" role="alert"><span class="eb">Not an outlet</span>'+esc(F.scanErr)+'</div>':'')+'</div>';
+  const r=p.reading, figs=[];
+  if(r.hot) figs.push(['hot','Hot']); if(r.cold) figs.push(['cold','Cold']);
+  const ok=figs.every(x=>num(F[x[0]])!=null)&&(figs.length||F.flushed);
+  const bad=figs.filter(x=>F.left&&F.left[x[0]]&&F[x[0]]&&num(F[x[0]])==null).length;
+  return bar('Take a Reading')+'<div class="form" style="padding-top:8px">'
+    +'<div class="outlet"><div class="eb">'+esc(r.label)+'</div><h2>'+esc(p.name)+'</h2><div class="w">'+esc(p.where||'')+(p.rec&&p.rec.ref?' · <span class="mono">'+esc(p.rec.ref)+'</span>':'')+'</div></div>'
+    +'<div class="card">'
+    +(figs.length
+      ?figs.map(x=>'<div class="fig"><label for="f-'+x[0]+'">'+x[1]+'</label><input id="f-'+x[0]+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(F[x[0]]||'')+'" data-in="'+x[0]+'"><span class="u">'+esc(r.unit||'')+'</span></div>').join('')
+      :'<label class="fig" style="cursor:pointer;min-height:48px"><input type="checkbox" data-in="flushed"'+(F.flushed?' checked':'')+' style="width:28px;height:28px;flex:none"> <span style="font-weight:600">Run and flushed</span></label>')
+    +'<div class="rng">'+esc(r.says||'The desk sent no range for this outlet.')+'</div></div>'
+    +(bad?'<div class="help err" role="alert" style="margin:0 16px 20px">Enter the figure as the thermometer shows it, like 52.4.</div>'
+         :'<div class="help" style="margin:0 16px 20px">Judged on the desk when it files. This phone does not say whether it passes.</div>')
+    +photosField('Photo of the thermometer',true)
+    +sendBtn('Send Reading',ok,figs.length?'Enter every figure.':'Tick it once it has been run.')+'</div>';
+}
+function num(v){ const s=String(v==null?'':v).trim().replace(',','.'); return /^-?\d+(\.\d+)?$/.test(s)?s:null; }
+
+// Rounds: a walk of fixed points, one capture per walk, with every scan's time inside it (slice C).
+function vRounds(){
+  const rs=(st.site&&st.site.rounds)||[];
+  return bar('Walk a Round')+'<div class="lab">Choose the round</div><div class="list">'
+    +rs.map(r=>'<button class="verb" data-act="roundStart" data-id="'+esc(r.id)+'"><span class="ic">'+I.round+'</span><span class="m"><span class="nm">'+esc(r.name)+'</span><span class="ln">'+esc(plural(r.points.length,'point'))+(r.lines.length?' · for '+esc(r.lines.map(id=>{const l=lineById(id);return l?l.what:id;}).join(', ')):'')+'</span></span>'+I.chev+'</button>').join('')
+    +'</div>';
+}
+function vWalk(){
+  const W=st.form, r=roundById(W.round);
+  if(!r) return bar('Walk a Round','rounds')+'<div class="note amber" role="alert"><span class="eb">Round not found</span>This round is no longer in the site details from the desk. Go back and choose another, or ask the desk to publish again.</div>';
+  const seen={}; W.scans.forEach(x=>{ if(!seen[x.point]) seen[x.point]=x; });
+  const n=r.points.filter(id=>seen[id]).length, next=r.points.find(id=>!seen[id]);
+  let h=bar(r.name,'walkQuit')
+    +'<div style="padding:12px 16px;font-size:15px;color:var(--textMid)"><b class="n" style="color:var(--text)">'+n+' of '+r.points.length+'</b> points scanned · started <span class="n">'+hm(W.started)+'</span></div>';
+  if(W.msg) h+='<div class="note '+(W.msgTone==='amber'?'amber':'')+'" role="status" style="margin:0 16px 12px">'+esc(W.msg)+'</div>';
+  h+='<div class="list">'+r.points.map((id,i)=>{ const p=pointById(id), s=seen[id];
+    return '<div class="pt"><span class="num">'+(i+1)+'</span><span class="m"><span class="nm">'+esc(p?p.name:id)+'</span><small>'+esc(p&&p.where||'')+'</small></span>'
+      +(s?'<span class="tag">Scanned <span class="n">'+hm(s.at)+'</span></span>':id===next?'<span class="tag next">Next</span>':'<span class="tag">Not yet</span>')+'</div>'; }).join('')+'</div>';
+  if(W.finishing){
+    const miss=r.points.filter(id=>!seen[id]);
+    h+='<div class="note '+(miss.length?'amber':'')+'"><span class="eb">'+(miss.length?esc(plural(miss.length,'point'))+' not scanned':'Every point scanned')+'</span>'
+      +(miss.length?'The record names '+(miss.length===1?'it':'them')+': '+esc(miss.map(id=>{const p=pointById(id);return p?p.name:id;}).join(', '))+'. The round is still sent as done, with the gap named.':'The record carries the time of every scan.')+'</div>'
+      +'<div class="foot"><button class="btn p" data-act="send"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':'Send Round')+'</button><button class="btn g" data-act="walkResume">Keep Walking</button></div>';
+  } else {
+    h+='<div class="foot"><button class="btn p" data-act="scan" data-for="walk">'+I.scan+(next?'Scan Next Point':'Scan Again')+'</button><button class="btn g" data-act="walkFinish">Finish Round</button></div>';
+  }
+  return h;
+}
+
+function vSent(){
+  const L=st.last, r=L.record, ok=L.ok;
+  return '<div class="done" role="status"><div class="mk'+(ok?'':' a')+'">'+(ok?I.tick:I.wait)+'</div>'
+    +'<h2>'+(ok?'Sent':'Not sent yet')+'</h2>'
+    +'<p class="lead">'+(ok?'It is in the Inbox. Waterline files it the next time the desk reads the Inbox; until then it is not on any record.'
+                         :(L.refused?esc(L.err)+' It is kept on this phone, and is sent when you tap Send Again once the phone has the new link.':'There is no connection to the site’s Inbox just now. It is kept on this phone, and is sent when you tap Send Again on the first screen.'))+'</p>'
+    +'<div class="rows">'
+    +'<div class="row"><span class="k">What</span><span class="w">'+esc(summary(r))+'</span></div>'
+    +'<div class="row"><span class="k">Taken</span><span class="w"><span class="n">'+esc(day(r.taken)+' at '+hm(r.taken))+'</span> by '+esc(r.person)+'</span></div>'
+    +(r.files.length?'<div class="row"><span class="k">Files</span><span class="w"><span class="n">'+r.files.length+'</span> '+(r.files.length===1?'file':'files')+'</span></div>':'')
+    +'<div class="row"><span class="k">Record</span><span class="w mono">'+esc(r.id)+'</span></div>'
+    +'</div>'
+    +'<div class="foot" style="padding-left:0;padding-right:0"><button class="btn p" data-act="home">Back to Capture</button>'
+    +(r.kind==='round'?'':'<button class="btn g" data-act="again" data-kind="'+esc(r.kind)+'">'+esc({fault:'Report Another Fault',certificate:'Send Another Certificate',reading:'Take Another Reading',photo:'Take Another Photo'}[r.kind]||'Another')+'</button>')
+    +'</div></div>';
+}
+
+// ── The tag scanner ──────────────────────────────────────────────────────────────────────────
+// A tag holds WATERLINE:PT:<id> (slice C). Read with the camera: the browser's own barcode reader
+// where there is one, else jsQR. Where the camera cannot run live (no HTTPS, no permission) a photo
+// of the tag is read instead. For a fault, a tag can also be picked from the list.
+function vScan(){
+  const S=st.scanFor;
+  return '<div class="scan" role="dialog" aria-modal="true" aria-label="Scan a tag"><div class="top"><button class="ibtn" data-act="scanClose" aria-label="Close">'+I.close+'</button><div class="t">Scan a Tag</div><div style="width:44px"></div></div>'
+    +'<div class="vf"><video playsinline muted class="'+(S.live?'':'hide')+'"></video><div class="frame"></div></div>'
+    +'<div class="say'+(S.err?' err':'')+'"'+(S.err?' role="alert"':' role="status"')+'>'+esc(S.err||S.say||'Point the camera at the QR code on the sticker.')+'</div>'
+    +'<div class="foot"><label class="btn g file">'+I.photo+'Take a Photo of the Tag<input type="file" accept="image/*" capture="environment" data-file="tagphoto"></label>'
+    +(S.for==='where'?'<button class="btn g" data-act="scanList">Pick From the List</button>':'')+'</div>'
+    +(S.list?vScanList():'')+'</div>';
+}
+function vScanList(){
+  if(!points().length) return '<div class="pick">'+bar('Pick a Tag','scanListClose')+'<div class="note">No tags in the site details yet. Type the place in your own words instead; the desk publishes tags the next time it reads the Inbox.</div></div>';
+  return '<div class="pick">'+bar('Pick a Tag','scanListClose')
+    +'<div class="list">'+points().map(p=>'<button class="verb" data-act="scanPick" data-id="'+esc(p.id)+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||'')+'</span></span>'+I.chev+'</button>').join('')+'</div></div>';
+}
+let _stream=null,_raf=0,_detector=null;
+async function scanStart(){
+  const S=st.scanFor; if(!S) return;
+  if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ S.live=false; S.say='The camera cannot run live on this connection. Take a photo of the tag instead.'; render(); return; }
+  try{
+    _stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+    S.live=true; render();
+    const v=app.querySelector('.scan video'); v.srcObject=_stream; await v.play();
+    if('BarcodeDetector' in window){ try{ _detector=new BarcodeDetector({formats:['qr_code']}); }catch(e){ _detector=null; } }
+    if(!_detector) await loadJsQR();
+    tickScan();
+  }catch(e){ S.live=false; S.say='The camera is not available. Take a photo of the tag instead.'; render(); }
+}
+function scanStop(){ cancelAnimationFrame(_raf); if(_stream){ _stream.getTracks().forEach(t=>t.stop()); _stream=null; } }
+function loadJsQR(){
+  if(window.jsQR) return Promise.resolve();
+  return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js'; s.onload=ok; s.onerror=no; document.head.appendChild(s); });
+}
+const _cv=document.createElement('canvas');
+async function decodeFrom(src,w,h){
+  if(_detector){ const r=await _detector.detect(src); return r[0]&&r[0].rawValue||''; }
+  const k=Math.min(1,960/Math.max(w,h)); _cv.width=Math.round(w*k); _cv.height=Math.round(h*k);
+  const cx=_cv.getContext('2d',{willReadFrequently:true}); cx.drawImage(src,0,0,_cv.width,_cv.height);
+  const d=cx.getImageData(0,0,_cv.width,_cv.height), r=window.jsQR(d.data,d.width,d.height);
+  return r?r.data:'';
+}
+let _busyScan=false;
+function tickScan(){
+  _raf=requestAnimationFrame(async()=>{
+    const v=app.querySelector('.scan video');
+    if(!v||!st.scanFor) return;
+    if(!_busyScan&&v.readyState>=2){
+      _busyScan=true;
+      try{ const t=await decodeFrom(v,v.videoWidth,v.videoHeight); if(t){ _busyScan=false; return scanned(t,'qr'); } }catch(e){}
+      _busyScan=false;
+    }
+    tickScan();
+  });
+}
+async function scanPhoto(file){
+  const S=st.scanFor; S.err=''; S.say='Reading the tag…'; render();
+  try{
+    if(!('BarcodeDetector' in window)) await loadJsQR(); else if(!_detector) _detector=new BarcodeDetector({formats:['qr_code']});
+    const bm=await createImageBitmap(file), t=await decodeFrom(bm,bm.width,bm.height);
+    if(t) return scanned(t,'qr');
+    S.say=''; S.err='No QR code found in that photo. Fill the frame with the sticker and try again.'; render();
+  }catch(e){ S.say=''; S.err='That photo could not be opened. Take it again, or pick a different photo.'; render(); }
+}
+// Every scan comes through here, from the camera, a photo, or the check page.
+function scanned(text,via){
+  const S=st.scanFor; if(!S) return;
+  const m=/^WATERLINE:PT:(.+)$/.exec(String(text||'').trim());
+  if(!m){ S.err='That code is not a Waterline tag. Scan the QR code on the Waterline sticker.'; render(); if(S.live) tickScan(); return; }
+  const id=m[1], p=pointById(id);
+  if(!p&&S.for!=='where'){ S.err='This tag is not in the site details from the desk'+(st.site&&st.site.published?' (published '+day(st.site.published)+')':'')+'. If it is new, the desk publishes it the next time it reads the Inbox.'; render(); if(S.live) tickScan(); return; }
+  if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+  const F=st.form, at=new Date().toISOString();
+  scanStop(); st.scanFor=null;
+  if(S.for==='where'){ F.point=id; F.via=via; F.place=''; }
+  else if(S.for==='reading'){
+    if(!p.reading){ F.scanErr=p.name+' is not an outlet the desk takes readings at. Scan the outlet’s own tag.'; }
+    else { F.point=id; F.scanErr=''; }
+  } else if(S.for==='walk'){
+    const r=roundById(F.round), prev=F.scans.find(x=>x.point===id);
+    if(r.points.indexOf(id)<0){ F.msg=(p?p.name:id)+' is not on this round. Nothing was recorded.'; F.msgTone='amber'; }
+    else if(prev){ F.msg=(p?p.name:id)+' was already scanned at '+hm(prev.at)+'.'; F.msgTone=''; }
+    else { F.scans.push({point:id,at:at,via:via}); F.msg=(p?p.name:id)+' scanned at '+hm(at)+'.'; F.msgTone='green'; ls.set('wl_walk',F); }
+  }
+  render();
+}
+
+// ── Events ───────────────────────────────────────────────────────────────────────────────────
+function blank(kind){ return {kind:kind,note:'',place:'',point:'',via:'',duty:'',photos:[],hot:'',cold:'',flushed:false}; }
+// The scan dialog (Design 9.5): focus goes into it, Tab stays inside it, Escape closes it, and focus
+// returns to the button that opened it.
+let _scanFrom='';
+function after(){
+  const dlg=app.querySelector('.scan');
+  if(dlg&&!dlg.contains(document.activeElement)){ const c=dlg.querySelector('button,label.btn'); if(c) c.focus(); }
+  if(!dlg&&_scanFrom){ const t=app.querySelector('[data-act="scan"][data-for="'+_scanFrom+'"]'); _scanFrom=''; if(t) t.focus(); }
+  if(st.scanFor&&!st.scanFor.started){ st.scanFor.started=true; scanStart(); }
+}
+function scanClose(){ scanStop(); st.scanFor=null; render(); }
+document.addEventListener('keydown',e=>{
+  const dlg=app.querySelector('.scan'); if(!dlg) return;
+  if(e.key==='Escape'){ e.preventDefault(); return scanClose(); }
+  if(e.key==='Tab'){
+    const f=[...dlg.querySelectorAll('button,input,label.btn')].filter(x=>x.offsetParent!==null);
+    if(!f.length) return;
+    const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1);
+    e.preventDefault(); f[n].focus();
+  }
+});
+app.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]'); if(!b||b.disabled) return;
+  const a=b.dataset.act, F=st.form;
+  if(a==='home'){ st.form=null; return go('home'); }
+  if(['fault','certificate','reading','photo'].indexOf(a)>=0){ st.form=blank(a); return go(a); }
+  if(a==='again'){ st.form=blank(b.dataset.kind); return go(b.dataset.kind); }
+  if(a==='rounds') return go('rounds');
+  if(a==='roundStart'){ st.form={kind:'round',round:b.dataset.id,started:new Date().toISOString(),scans:[],photos:[]}; ls.set('wl_walk',st.form); return go('walk'); }
+  if(a==='walkFinish'){ F.finishing=true; F.msg=''; return render(); }
+  if(a==='walkResume'){ F.finishing=false; return render(); }
+  if(a==='walkQuit'){
+    if(F.scans.length&&!confirm('Stop this round? The '+plural(F.scans.length,'scan')+' so far are not sent.')) return;
+    ls.del('wl_walk'); st.form=null; return go('home');
+  }
+  if(a==='scan'){ _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
+  if(a==='scanClose') return scanClose();
+  if(a==='scanList'){ st.scanFor.list=true; return render(); }
+  if(a==='scanListClose'){ st.scanFor.list=false; return render(); }
+  if(a==='scanPick'){ scanStop(); st.scanFor=null; F.point=b.dataset.id; F.via='list'; F.place=''; return render(); }
+  if(a==='pickPoint'){ F.point=b.dataset.id; F.via='list'; F.place=''; return render(); }
+  if(a==='pickPlace'){ const g=((st.site&&st.site.faults)||[]).find(x=>x.key===b.dataset.key); if(g){ F.place=g.place; F.picked=true; } return render(); }
+  if(a==='whereClear'){ F.point=''; F.via=''; return render(); }
+  if(a==='photoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
+  if(a==='setupLink'){ if(takeSetupLink(String(F.link||'').trim())) return location.reload(); F.bad=true; return render(); }
+  if(a==='whoMe'){ st.walker=st.account.name||st.account.username; ss.set('wl_walker',st.walker); st.form=null; return home(); }
+  if(a==='whoOther'){ st.form={other:true,name:''}; return render(); }
+  if(a==='whoBack'){ st.form=null; return render(); }
+  if(a==='whoSet'){ st.walker=String(F.name).trim(); ss.set('wl_walker',st.walker); st.form=null; return home(); }
+  if(a==='whoAgain'){ st.form=null; return go('who'); }
+  if(a==='sendKept'){ const p=sendKept(); render(); await p; return render(); }
+  if(a==='send') return doSend();
+});
+app.addEventListener('input',e=>{
+  const k=e.target.dataset.in; if(!k||!st.form) return;
+  st.form[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;
+  if(k==='place') st.form.picked=false;
+  if(st.form.left&&(k==='hot'||k==='cold')) st.form.left[k]=false;   // judged again on the next blur
+  // Re-render only what depends on the typing, keeping focus and the caret where they are.
+  const id=e.target.id, pos=e.target.selectionStart;
+  render();
+  const el=id&&document.getElementById(id);
+  if(el&&el!==document.activeElement){ el.focus(); try{ if(pos!=null) el.setSelectionRange(pos,pos); }catch(x){} }
+});
+app.addEventListener('focusout',e=>{
+  const k=e.target.dataset&&e.target.dataset.in;
+  if(!st.form||(k!=='hot'&&k!=='cold')) return;
+  st.form.left=st.form.left||{}; if(st.form.left[k]) return;
+  st.form.left[k]=true; setTimeout(render,0);
+});
+app.addEventListener('change',e=>{
+  const k=e.target.dataset.file;
+  if(k==='photos'){ Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
+  if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
+  if(e.target.tagName==='SELECT'&&e.target.dataset.in){ st.form[e.target.dataset.in]=e.target.value; render(); }
+});
+window.addEventListener('online',async()=>{ if(st.outbox.length){ await sendKept(); if(st.screen==='home') render(); } });
+
+async function doSend(){
+  const F=st.form; if(st.busy) return;
+  st.busy=true; render();
+  F.err='';
+  let fields={note:String(F.note||'').trim()};
+  // A tag's name and place are the desk's to read from its record every time (Law 3; slice C2), so they
+  // are not copied into the capture. A tag the site details do not know yet still sends its id.
+  if(F.point) fields.point=F.point;
+  else fields.place=String(F.place||'').trim();
+  if(F.duty) fields.duty=F.duty;
+  if(F.kind==='reading'){
+    const p=pointById(F.point), r=p.reading;
+    // Named figures (Work 015 plan, D2b). The desk's reader takes them from v458.
+    fields.reading={unit:r.unit||''}; if(r.hot) fields.reading.hot=num(F.hot); if(r.cold) fields.reading.cold=num(F.cold);
+    if(!r.hot&&!r.cold){ fields.outcome='Run and flushed'; fields.reading=null; }
+  }
+  if(F.kind==='round'){
+    const r=roundById(F.round), seen=F.scans.map(x=>x.point), miss=r.points.filter(id=>seen.indexOf(id)<0);
+    fields={round:F.round,started:F.started,scans:F.scans,
+      outcome:miss.length?'Done, gap named':'Done',
+      note:miss.length?'Not scanned: '+miss.map(id=>{const p=pointById(id);return p?p.name:id;}).join(', ')+'.':''};
+  }
+  let c;
+  try{ c=await makeCapture(F.kind,fields,F.photos); }
+  catch(e){ st.busy=false; F.err='Nothing was sent. Take the photos again and send it again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
+  const ok=await send(c);
+  st.outbox=await obAll(); st.busy=false;
+  if(F.kind==='round') ls.del('wl_walk');
+  F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url));
+  st.last={ok:ok,record:c.record,err:c.err||'',refused:c.errCode==='refused'}; st.form=null;
+  go('sent');
+}
+
+async function home(){
+  st.outbox=await obAll().catch(()=>[]);
+  if(st.outbox.length&&navigator.onLine!==false) await sendKept();
+  const walk=ls.get('wl_walk',null);
+  if(walk&&walk.round&&roundById(walk.round)){ st.form=walk; return go('walk'); }
+  go('home');
+}
+async function boot(){
+  render();
+  if(!STORE){ st.form={link:''}; return go('setup'); }
+  st.account=await STORE.account();
+  await loadSite();
+  st.walker=ss.get('wl_walker');
+  if(!st.walker) return go('who');
+  home();
+}
+// For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
+if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render};
+boot();
+</script>
+</body>
+</html>
