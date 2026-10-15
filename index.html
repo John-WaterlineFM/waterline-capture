@@ -374,7 +374,7 @@ async function makeCapture(kind,fields,photos){
   }
   const rec={format:WFM_CAPTURE_SHAPE.format,version:WFM_CAPTURE_SHAPE.version,id:id,kind:kind,
     taken:fields.taken||new Date().toISOString(),person:st.walker,account:st.account?st.account.username:'',device:device()};
-  ['place','note','outcome','duty','point','round','started','reading','scans'].forEach(k=>{ const v=fields[k]; if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)) rec[k]=v; });
+  ['place','note','outcome','duty','point','round','started','reading','scans','group'].forEach(k=>{ const v=fields[k]; if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)) rec[k]=v; });
   rec.files=files.map(f=>({name:f.name,type:f.type,bytes:f.blob.size}));
   // Every field written is one the shape names: the desk is the judge of the contract.
   Object.keys(rec).forEach(k=>{ if(WFM_CAPTURE_SHAPE.fields.indexOf(k)<0) throw new Error('Not in the capture shape: '+k); });
@@ -497,7 +497,7 @@ function vFault(){
   const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim();
   return bar('Report a Fault')+'<div class="form">'
     +'<div class="field"><label for="note">What’s wrong</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
-    +whereField({suggest:true})+faultHistory()+photosField('Photos',true)
+    +whereField({suggest:true})+faultHistory()+groupSelect()+photosField('Photos',true)
     +sendBtn('Send Fault',said&&where,!said?'Say what is wrong first.':'Say where it is, or scan its tag.')+'</div>';
 }
 function vCert(){
@@ -682,7 +682,14 @@ function scanned(text,via){
 }
 
 // ── Events ───────────────────────────────────────────────────────────────────────────────────
-function blank(kind){ return {kind:kind,note:'',place:'',point:'',via:'',duty:'',photos:[],hot:'',cold:'',flushed:false}; }
+function blank(kind){ return {kind:kind,note:'',place:'',point:'',via:'',duty:'',photos:[],hot:'',cold:'',flushed:false,group:'maintenance'}; }
+// The group a fault lands in on the desk, as in Snapfix (DEC-0280). Maintenance unless changed.
+function groupSelect(){
+  const F=st.form, gs=(st.site&&st.site.groups)||[];
+  if(!gs.length) return '';
+  return '<div class="field"><label for="group">Group</label><select id="group" data-in="group">'
+    +gs.map(g=>'<option value="'+esc(g.id)+'"'+((F.group||'maintenance')===g.id?' selected':'')+'>'+esc(g.name)+'</option>').join('')+'</select></div>';
+}
 // The scan dialog (Design 9.5): focus goes into it, Tab stays inside it, Escape closes it, and focus
 // returns to the button that opened it.
 let _scanFrom='';
@@ -770,6 +777,7 @@ async function doSend(){
   if(F.point) fields.point=F.point;
   else fields.place=String(F.place||'').trim();
   if(F.duty) fields.duty=F.duty;
+  if(F.kind==='fault') fields.group=F.group||'maintenance';
   if(F.kind==='reading'){
     const p=pointById(F.point), r=p.reading;
     // Named figures (Work 015 plan, D2b). The desk's reader takes them from v458.
