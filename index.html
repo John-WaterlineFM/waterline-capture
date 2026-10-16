@@ -168,7 +168,7 @@ textarea{min-height:96px;resize:vertical;line-height:1.4}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js"></script>
+<script src="shapes.js?v=4e24f01152"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -391,6 +391,14 @@ const app=document.getElementById('app');
 function go(screen,extra){ st.screen=screen; if(extra) Object.assign(st,extra); render(); window.scrollTo(0,0); }
 function bar(title,back){ return '<div class="top"><button class="ibtn" data-act="'+(back||'home')+'" aria-label="'+(back==='home'||!back?'Close':'Back')+'">'+(back&&back!=='home'?I.back:I.close)+'</button><div class="t">'+esc(title)+'</div><div style="width:44px"></div></div>'; }
 
+// Swaps in only the help line and the send button of the screen as it would now draw, leaving every
+// field where it is, so the keyboard and what is being typed are never disturbed.
+function softRender(){
+  const f={reading:vReading}[st.screen]; if(!f) return render();
+  const tpl=document.createElement('div'); tpl.innerHTML=f();
+  ['.help','.foot'].forEach(sel=>{ const o=app.querySelectorAll(sel), n=tpl.querySelectorAll(sel);
+    if(o.length===n.length) o.forEach((el,i)=>el.replaceWith(n[i])); else render(); });
+}
 function render(){
   const f={start:vStart,setup:vSetup,who:vWho,home:vHome,fault:vFault,certificate:vCert,reading:vReading,photo:vPhoto,rounds:vRounds,walk:vWalk,sent:vSent}[st.screen]||vHome;
   app.innerHTML=f();
@@ -776,6 +784,7 @@ app.addEventListener('input',e=>{
   st.form[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;
   if(k==='place') st.form.picked=false;
   if(st.form.left&&(k==='hot'||k==='cold'||k==='value')) st.form.left[k]=false;   // judged again on the next blur
+  if(k==='hot'||k==='cold'||k==='value') return softRender();
   // Re-render only what depends on the typing, keeping focus and the caret where they are.
   const id=e.target.id, pos=e.target.selectionStart;
   render();
@@ -786,7 +795,7 @@ app.addEventListener('focusout',e=>{
   const k=e.target.dataset&&e.target.dataset.in;
   if(!st.form||(k!=='hot'&&k!=='cold'&&k!=='value')) return;
   st.form.left=st.form.left||{}; if(st.form.left[k]) return;
-  st.form.left[k]=true; setTimeout(render,0);
+  st.form.left[k]=true; setTimeout(softRender,0);
 });
 app.addEventListener('change',e=>{
   const k=e.target.dataset.file;
