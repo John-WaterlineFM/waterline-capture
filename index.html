@@ -421,7 +421,7 @@ function vWho(){
 }
 
 function vHome(){
-  const s=st.site, rounds=(s&&s.rounds)||[], hasOutlets=points().some(p=>p.reading);
+  const s=st.site, rounds=(s&&s.rounds)||[], hasReading=points().some(p=>p.reading);
   const verb=(act,ic,nm,ln,off)=>'<button class="verb" data-act="'+act+'"'+(off?' disabled':'')+'><span class="ic">'+I[ic]+'</span><span class="m"><span class="nm">'+esc(nm)+'</span><span class="ln">'+esc(ln)+'</span></span>'+(off?'':I.chev)+'</button>';
   let h=head(s&&s.site||'Waterline','Capture','Capturing as&nbsp;<b>'+esc(st.walker)+'</b><button class="link" data-act="whoAgain">Change</button>');
   if(st.outbox.length){
@@ -433,7 +433,7 @@ function vHome(){
   h+='<div class="lab">What are you capturing</div><div class="list">'
     +verb('fault','fault','Report a Fault','A sentence, a place and a photo.')
     +verb('certificate','cert','Send a Certificate or Report','A photo or PDF of the document, sent against its line.')
-    +verb('reading','reading','Take a Reading',hasOutlets?'Scan an outlet’s tag, then enter the temperatures.':'No tagged outlets in the site details yet.',!hasOutlets)
+    +verb('reading','reading','Take a Reading',hasReading?'Scan the tag on an outlet or a meter, then enter what it shows.':'No tagged outlets or meters in the site details yet.',!hasReading)
     +verb('photo','photo','Take a Photo','Proves who was there, where and when.')
     +verb('rounds','round','Walk a Round',rounds.length?'Scan each point as you go. '+plural(rounds.length,'round')+' set up.':'No rounds set up on the desk yet.',!rounds.length)
     +'</div>';
@@ -519,16 +519,18 @@ function vPhoto(){
     +sendBtn('Send Photo',F.photos.length&&where,!F.photos.length?'Take the photo first.':'Say where it was taken, or scan the tag.')+'</div>';
 }
 
-// A reading is taken at an outlet's tag. The tag must be scanned: a reading proves someone stood at
-// that outlet. The figures it takes and the sentence it is judged by come from the desk; the verdict
-// stays on the desk (Design 7.1; John, 14 Oct 2026: range shown, verdict on the desk).
+// A reading is taken at an outlet's or a meter's tag. The tag must be scanned: a reading proves someone
+// stood there. The figures it takes and the sentence it is judged by come from the desk; the verdict
+// stays on the desk (Design 7.1; John, 14 Oct 2026: range shown, verdict on the desk). A meter's tag
+// carries its last reading, which the new figure is read against (job 015 slice M, DEC-0281).
 function vReading(){
   const F=st.form, p=F.point?pointById(F.point):null;
   if(!p) return bar('Take a Reading')+'<div class="form">'
-    +'<div class="note" style="margin:0 16px 20px">Scan the tag on the outlet. Its kind, the figures it takes and the range it is judged by come with it.</div>'
-    +'<div class="foot" style="margin-top:0"><button class="btn p" data-act="scan" data-for="reading">'+I.scan+'Scan the Outlet’s Tag</button></div>'
-    +(F.scanErr?'<div class="note amber" role="alert"><span class="eb">Not an outlet</span>'+esc(F.scanErr)+'</div>':'')+'</div>';
+    +'<div class="note" style="margin:0 16px 20px">Scan the tag on the outlet or the meter. What it takes, and what the figure is read against, come with it.</div>'
+    +'<div class="foot" style="margin-top:0"><button class="btn p" data-act="scan" data-for="reading">'+I.scan+'Scan the Tag</button></div>'
+    +(F.scanErr?'<div class="note amber" role="alert"><span class="eb">Takes no reading</span>'+esc(F.scanErr)+'</div>':'')+'</div>';
   const r=p.reading, figs=[];
+  if(r.kind==='meter') return vMeterReading(F,p,r);
   if(r.hot) figs.push(['hot','Hot']); if(r.cold) figs.push(['cold','Cold']);
   const ok=figs.every(x=>num(F[x[0]])!=null)&&(figs.length||F.flushed);
   const bad=figs.filter(x=>F.left&&F.left[x[0]]&&F[x[0]]&&num(F[x[0]])==null).length;
@@ -545,6 +547,24 @@ function vReading(){
     +sendBtn('Send Reading',ok,figs.length?'Enter every figure.':'Tick it once it has been run.')+'</div>';
 }
 function num(v){ const s=String(v==null?'':v).trim().replace(',','.'); return /^-?\d+(\.\d+)?$/.test(s)?s:null; }
+// One figure at a meter: as the dial or gauge shows it, with the last reading beside it. A dial only
+// counts up, so a figure below the last one is stopped here as the desk would refuse it (DEC-0282).
+function vMeterReading(F,p,r){
+  const v=num(F.value), n=x=>Number(x).toLocaleString('en-IE');
+  const typedBad=F.left&&F.left.value&&F.value&&v==null;
+  const back=v!=null&&r.dial&&r.last&&Number(v)<r.last.value;
+  const what=r.dial?'On the dial':(r.unit==='litres'?'In the tank':'Used');
+  return bar('Take a Reading')+'<div class="form" style="padding-top:8px">'
+    +'<div class="outlet"><div class="eb">'+esc(r.label)+'</div><h2>'+esc(p.name)+'</h2><div class="w">'+esc(p.where||'')+(p.rec&&p.rec.ref?' · <span class="mono">'+esc(p.rec.ref)+'</span>':'')+'</div></div>'
+    +'<div class="card">'
+    +'<div class="fig"><label for="f-value">'+esc(what)+'</label><input id="f-value" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(F.value||'')+'" data-in="value"><span class="u">'+esc(r.unit||'')+'</span></div>'
+    +'<div class="rng">'+(r.last?'Last reading <span class="n">'+esc(n(r.last.value))+'</span> '+esc(r.unit||'')+' on <span class="n">'+esc(day(r.last.date))+'</span>.':'No reading on record yet, so there is nothing to compare it with.')+' '+esc(r.says||'')+'</div></div>'
+    +(typedBad?'<div class="help err" role="alert" style="margin:0 16px 20px">Enter the figure as the '+(r.dial?'dial':'meter')+' shows it, with no spaces or commas, like 285312.1.</div>'
+      :back?'<div class="help err" role="alert" style="margin:0 16px 20px">That is lower than the last reading. A dial does not run backwards, so check the figure on the dial.</div>'
+      :'<div class="help" style="margin:0 16px 20px">Added to the meter on the desk when it files.</div>')
+    +photosField('Photo of the dial',true)
+    +sendBtn('Send Reading',v!=null&&!back,back?'':'Enter the figure.')+'</div>';
+}
 
 // Rounds: a walk of fixed points, one capture per walk, with every scan's time inside it (slice C).
 function vRounds(){
@@ -670,7 +690,7 @@ function scanned(text,via){
   scanStop(); st.scanFor=null;
   if(S.for==='where'){ F.point=id; F.via=via; F.place=''; }
   else if(S.for==='reading'){
-    if(!p.reading){ F.scanErr=p.name+' is not an outlet the desk takes readings at. Scan the outlet’s own tag.'; }
+    if(!p.reading){ F.scanErr=p.name+' is not an outlet or a meter the desk takes readings at. Scan the tag on the outlet or the meter.'; }
     else { F.point=id; F.scanErr=''; }
   } else if(S.for==='walk'){
     const r=roundById(F.round), prev=F.scans.find(x=>x.point===id);
@@ -683,7 +703,7 @@ function scanned(text,via){
 
 // ── Events ───────────────────────────────────────────────────────────────────────────────────
 function blank(kind){ return {kind:kind,note:'',place:'',point:'',via:'',duty:'',photos:[],hot:'',cold:'',flushed:false,group:'maintenance'}; }
-// The group a fault lands in on the desk, as in Snapfix (DEC-0280). Maintenance unless changed.
+// The group a fault lands in on the desk (DEC-0280). Maintenance unless changed.
 function groupSelect(){
   const F=st.form, gs=(st.site&&st.site.groups)||[];
   if(!gs.length) return '';
@@ -746,7 +766,7 @@ app.addEventListener('input',e=>{
   const k=e.target.dataset.in; if(!k||!st.form) return;
   st.form[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;
   if(k==='place') st.form.picked=false;
-  if(st.form.left&&(k==='hot'||k==='cold')) st.form.left[k]=false;   // judged again on the next blur
+  if(st.form.left&&(k==='hot'||k==='cold'||k==='value')) st.form.left[k]=false;   // judged again on the next blur
   // Re-render only what depends on the typing, keeping focus and the caret where they are.
   const id=e.target.id, pos=e.target.selectionStart;
   render();
@@ -755,7 +775,7 @@ app.addEventListener('input',e=>{
 });
 app.addEventListener('focusout',e=>{
   const k=e.target.dataset&&e.target.dataset.in;
-  if(!st.form||(k!=='hot'&&k!=='cold')) return;
+  if(!st.form||(k!=='hot'&&k!=='cold'&&k!=='value')) return;
   st.form.left=st.form.left||{}; if(st.form.left[k]) return;
   st.form.left[k]=true; setTimeout(render,0);
 });
@@ -781,8 +801,11 @@ async function doSend(){
   if(F.kind==='reading'){
     const p=pointById(F.point), r=p.reading;
     // Named figures (Work 015 plan, D2b). The desk's reader takes them from v458.
-    fields.reading={unit:r.unit||''}; if(r.hot) fields.reading.hot=num(F.hot); if(r.cold) fields.reading.cold=num(F.cold);
-    if(!r.hot&&!r.cold){ fields.outcome='Run and flushed'; fields.reading=null; }
+    if(r.kind==='meter') fields.reading={unit:r.unit||'',value:num(F.value)};
+    else{
+      fields.reading={unit:r.unit||''}; if(r.hot) fields.reading.hot=num(F.hot); if(r.cold) fields.reading.cold=num(F.cold);
+      if(!r.hot&&!r.cold){ fields.outcome='Run and flushed'; fields.reading=null; }
+    }
   }
   if(F.kind==='round'){
     const r=roundById(F.round), seen=F.scans.map(x=>x.point), miss=r.points.filter(id=>seen.indexOf(id)<0);
