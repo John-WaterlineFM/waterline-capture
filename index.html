@@ -562,19 +562,27 @@ function vReading(){
     +photosField('Photo of the thermometer',true)
     +sendBtn('Send Reading',ok,figs.length?'Enter every figure.':'Tick it once it has been run.')+'</div>';
 }
+// Digits typed as they read across a dial, with the point put in its place (DEC-0284). The desk's
+// wfmDialFix is the same rule; the places come from the desk in the site file.
+function dialFix(v,dp){ let d=String(v||'').replace(/\D/g,'').replace(/^0+(?=\d)/,''); if(!d||!dp) return d; while(d.length<=dp) d='0'+d; return d.slice(0,-dp)+'.'+d.slice(-dp); }
 function num(v){ const s=String(v==null?'':v).trim().replace(',','.'); return /^-?\d+(\.\d+)?$/.test(s)?s:null; }
 // One figure at a meter: as the dial or gauge shows it, with the last reading beside it. A dial only
 // counts up, so a figure below the last one is stopped here as the desk would refuse it (DEC-0282).
 function vMeterReading(F,p,r){
   const v=num(F.value), n=x=>Number(x).toLocaleString('en-IE');
   const typedBad=F.left&&F.left.value&&F.value&&v==null;
-  const back=v!=null&&r.dial&&r.last&&Number(v)<r.last.value;
+  const digits=x=>String(x).replace(/\D/g,'').replace(/^0+/,'').length;
+  // Judged once as many digits are in as the last reading has, so it does not flash while typing.
+  const back=v!=null&&r.dial&&r.last&&Number(v)<r.last.value&&digits(v)>=digits(Number(r.last.value).toFixed(r.dp>0?r.dp:0));
   const what=r.dial?'On the dial':(r.unit==='litres'?'In the tank':'Used');
+  const dp=r.dial&&r.dp>0?r.dp:0;
+  const eg=dp?(r.last?Number(r.last.value).toFixed(dp):'285312.1'):'';
+  const how=dp?' Type every digit as it reads across the dial, including those after the point. The point goes in for you: '+eg.replace('.','')+' is '+Number(eg).toLocaleString('en-IE',{minimumFractionDigits:dp,maximumFractionDigits:dp})+'.':'';
   return bar('Take a Reading')+'<div class="form" style="padding-top:8px">'
     +'<div class="outlet"><div class="eb">'+esc(r.label)+'</div><h2>'+esc(p.name)+'</h2><div class="w">'+esc(p.where||'')+(p.rec&&p.rec.ref?' · <span class="mono">'+esc(p.rec.ref)+'</span>':'')+'</div></div>'
     +'<div class="card">'
-    +'<div class="fig"><label for="f-value">'+esc(what)+'</label><input id="f-value" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(F.value||'')+'" data-in="value"><span class="u">'+esc(r.unit||'')+'</span></div>'
-    +'<div class="rng">'+(r.last?'Last reading <span class="n">'+esc(n(r.last.value))+'</span> '+esc(r.unit||'')+' on <span class="n">'+esc(day(r.last.date))+'</span>.':'No reading on record yet, so there is nothing to compare it with.')+' '+esc(r.says||'')+'</div></div>'
+    +'<div class="fig"><label for="f-value">'+esc(what)+'</label><input id="f-value" type="text" inputmode="'+(dp?'numeric':'decimal')+'" autocomplete="off" placeholder="–" value="'+esc(F.value||'')+'" data-in="value"><span class="u">'+esc(r.unit||'')+'</span></div>'
+    +'<div class="rng">'+(r.last?'Last reading <span class="n">'+esc(n(r.last.value))+'</span> '+esc(r.unit||'')+' on <span class="n">'+esc(day(r.last.date))+'</span>.':'No reading on record yet, so there is nothing to compare it with.')+' '+esc(dp?'':(r.says||''))+esc(how)+'</div></div>'
     +(typedBad?'<div class="help err" role="alert" style="margin:0 16px 20px">Enter the figure as the '+(r.dial?'dial':'meter')+' shows it, with no spaces or commas, like 285312.1.</div>'
       :back?'<div class="help err" role="alert" style="margin:0 16px 20px">That is lower than the last reading. A dial does not run backwards, so check the figure on the dial.</div>'
       :'<div class="help" style="margin:0 16px 20px">'+(p.picked?'Picked from the list, not scanned at the meter, and the record says so. ':'')+'Added to the meter on the desk when it files.</div>')
@@ -782,6 +790,8 @@ app.addEventListener('click',async e=>{
 app.addEventListener('input',e=>{
   const k=e.target.dataset.in; if(!k||!st.form) return;
   st.form[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;
+  if(k==='value'){ const F=st.form, p=F.point?pointById(F.point):(F.meter?meterAsPoint(F.meter):null), dp=p&&p.reading&&p.reading.dial&&p.reading.dp>0?p.reading.dp:0;
+    if(dp){ const fx=dialFix(e.target.value,dp); if(e.target.value!==fx) e.target.value=fx; F.value=fx; } }
   if(k==='place') st.form.picked=false;
   if(st.form.left&&(k==='hot'||k==='cold'||k==='value')) st.form.left[k]=false;   // judged again on the next blur
   if(k==='hot'||k==='cold'||k==='value') return softRender();
