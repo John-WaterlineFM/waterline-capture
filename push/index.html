@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0D1F2D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Alerts Test">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Alerts Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@800&family=Outfit:wght@600;700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Work 015, DEC-0288 rule 2: proves an alert reaches a closed phone through the site's relay before
+   Messages is built on it. A test page: one job, plain words (Design 8.5), 44px controls (Design 9.12). */
+:root{--ink:#0D1F2D;--accentD:#156B87;--cream:#F5F7F9;--white:#fff;--border:#D4E3EC;--text:#0D1F2D;--textMid:#3A5A72;--amber:#D97706;--amberText:#92400E;--green:#16A34A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);font:15px/1.5 'DM Sans',sans-serif;color:var(--text);min-height:100dvh}
+.band{background:var(--ink);padding:calc(16px + env(safe-area-inset-top)) 16px 16px}
+.tile{background:#fff;border-radius:12px;padding:8px;text-align:center}.tile img{height:56px}
+.eb{font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-top:12px;text-align:center}
+main{padding:16px}
+h1{font:800 20px Sora;margin-bottom:8px}
+.st{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:0 8px 8px 0;padding:12px;margin:16px 0}
+.st.ok{border-left-color:var(--green)}.st.amber{border-left-color:var(--amber)}
+.st b{display:block;font:700 11px Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMid);margin-bottom:4px}
+.st.amber b{color:var(--amberText)}
+label{display:block;font:600 12px Outfit;margin:16px 0 8px}
+input{width:100%;min-height:48px;font-size:16px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#fff}
+.btn{min-height:48px;width:100%;border-radius:8px;border:none;font:600 13px Outfit;margin-top:12px;background:var(--accentD);color:#fff}
+.btn.g{background:#fff;color:var(--accentD);border:1.5px solid var(--accentD)}
+.btn[disabled]{opacity:.5}
+.log{font:12px/1.5 ui-monospace,monospace;color:var(--textMid);margin-top:24px;white-space:pre-wrap;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="band"><div class="tile"><img src="icon-192.png" alt="Carnbeg"></div><div class="eb">Alerts test</div></div>
+<main>
+  <h1>Can this phone get alerts?</h1>
+  <p>Turn alerts on, close the app, then send a test from the desk or press the button below and lock the phone.</p>
+  <div id="state" class="st"><b>Checking</b>Looking for the site's relay on this phone.</div>
+  <label for="name">Your name</label>
+  <input id="name" autocomplete="name" placeholder="So the desk knows whose phone this is">
+  <button class="btn" id="on">Turn On Alerts</button>
+  <button class="btn g" id="test" disabled>Send Me a Test Alert</button>
+  <div class="log" id="log"></div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const log=m=>{ $('log').textContent+=new Date().toLocaleTimeString()+'  '+m+'\n'; };
+function say(tone,head,text){ const s=$('state'); s.className='st'+(tone?' '+tone:''); s.innerHTML='<b></b>'; s.firstChild.textContent=head; s.append(text); }
+// The relay and site code come from the phone page's set-up link, kept on this phone (same site).
+let R=null; try{ R=JSON.parse(localStorage.getItem('wl_relay')||'null'); }catch(e){}
+let token=localStorage.getItem('wl_pushToken')||'';
+try{ $('name').value=localStorage.getItem('wl_pushName')||sessionStorage.getItem('wl_walker')||''; }catch(e){}
+async function relay(body){
+  const res=await fetch(R.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({code:R.code},body))});
+  const j=await res.json(); log(body.op+': '+JSON.stringify(j).slice(0,300)); return j;
+}
+const iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const installed=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+function ready(){
+  if(!R||!R.url) return say('amber','Not set up','This phone has not opened the site\'s set-up link. Open the Waterline phone page with the link from the desk first, then come back here.'), false;
+  if(!('serviceWorker' in navigator)||!('Notification' in window)) {
+    if(iOS&&!installed) return say('amber','Add it to the home screen first','On an iPhone, alerts only work once the app is on the home screen. Tap Share, then Add to Home Screen, then open it from there.'), false;
+    return say('amber','This browser cannot take alerts','Try Chrome on Android, or Safari on an iPhone with the app on the home screen.'), false;
+  }
+  return true;
+}
+async function turnOn(){
+  if(!ready()) return;
+  const name=$('name').value.trim(); if(!name){ say('amber','Your name is needed','Type your name so the desk knows whose phone this is.'); return; }
+  localStorage.setItem('wl_pushName',name);
+  $('on').disabled=true; say('','Turning on','Asking this phone for permission.');
+  try{
+    const p=await Notification.requestPermission(); log('permission: '+p);
+    if(p!=='granted'){ say('amber','Alerts are blocked','This phone said no to alerts. Turn them on for this app in the phone\'s settings, then try again.'); return; }
+    const reg=await navigator.serviceWorker.register('sw.js',{scope:'./'}); await navigator.serviceWorker.ready;
+    const c=await relay({op:'pushConfig'});
+    if(!c.ok){ say('amber','The relay is not ready',c.why); return; }
+    if(!firebase.apps.length) firebase.initializeApp(c.config);
+    token=await firebase.messaging().getToken({vapidKey:c.vapidKey,serviceWorkerRegistration:reg});
+    log('alert address: '+(token?token.slice(0,24)+'…':'none'));
+    if(!token){ say('amber','No alert address','The phone did not give one. Try again in a minute.'); return; }
+    const r=await relay({op:'pushRegister',token:token,name:name,role:'test'});
+    if(!r.ok){ say('amber','The relay did not keep it',r.why); return; }
+    localStorage.setItem('wl_pushToken',token);
+    say('ok','Alerts are on','Now press Send Me a Test Alert and lock the phone straight away. It should buzz within a minute.');
+    $('test').disabled=false;
+  }catch(e){ log('error: '+(e&&e.message||e)); say('amber','Turning on failed',String(e&&e.message||e)); }
+  finally{ $('on').disabled=false; }
+}
+async function test(){
+  $('test').disabled=true; say('','Sending','Asking the relay to send a test alert to this phone.');
+  try{ const r=await relay({op:'pushTest',token:token});
+    say(r.ok?'ok':'amber',r.ok?'Sent':'Not sent',r.ok?'Google accepted it. Lock the phone now: the alert should arrive within a minute.':r.why); }
+  catch(e){ say('amber','Sending failed',String(e&&e.message||e)); }
+  finally{ $('test').disabled=false; }
+}
+$('on').onclick=turnOn; $('test').onclick=test;
+if(ready()){ if(token&&Notification.permission==='granted'){ say('ok','Alerts are on','This phone is registered. Send a test whenever you like.'); $('test').disabled=false; } else say('','Ready','Type your name and turn alerts on.'); }
+</script>
+</body>
+</html>
