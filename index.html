@@ -210,7 +210,7 @@ const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pad=n=>(n<10?'0':'')+n;
 // Design 8.8: DD MMM YYYY and the 24-hour clock.
-const day=d=>{d=new Date(d);return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear();};
+const day=d=>{d=new Date(d);return pad(d.getDate())+' '+MON[d.getMonth()]+' '+d.getFullYear();};   // DD MMM YYYY (Design 8.8)
 const hm=d=>{d=new Date(d);return pad(d.getHours())+':'+pad(d.getMinutes());};
 const when=d=>{const x=new Date(d),t=new Date();return (x.toDateString()===t.toDateString()?'today':day(x))+' at '+hm(x);};
 function ago(ms){
@@ -243,6 +243,7 @@ const I={
   chev:'<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5l5 5-5 5"/></svg>',
   fault:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>',
   cert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 15h5M10 18h3"/></svg>',
+  meter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 13l3.5-3.5"/><path d="M8 17h8"/></svg>',
   reading:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4a2 2 0 0 1 4 0v10a4 4 0 1 1-4 0z"/><path d="M12 9v7"/></svg>',
   photo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
   round:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8"/></svg>',
@@ -279,6 +280,10 @@ const siteAge=()=>st.site&&st.site.published?Date.now()-Date.parse(st.site.publi
 const siteStale=()=>!(siteAge()<WFM_SITE_SHAPE.freshHours*36e5);
 const points=()=>(st.site&&st.site.points)||[];
 const pointById=id=>points().find(p=>p.id===id)||null;
+// Every meter a phone can read, from the desk, tagged or not (DEC-0283). A picked meter is shown as a
+// point with no tag, so the reading screen is the same one.
+const meters=()=>(st.site&&st.site.meters)||[];
+const meterAsPoint=id=>{ const m=meters().find(x=>x.id===id); return m?{id:'',name:m.name,where:m.where,rec:{reg:'meterItems',id:m.id,ref:m.id},reading:m.reading,picked:true}:null; };
 const lineById=id=>((st.site&&st.site.lines)||[]).find(l=>l.id===id)||null;
 const roundById=id=>((st.site&&st.site.rounds)||[]).find(r=>r.id===id)||null;
 function pointLabel(p){ return p?(p.name+(p.where?' — '+p.where:'')):''; }
@@ -343,7 +348,7 @@ async function sendKept(){
 function kindLabel(k){ return (WFM_CAPTURE_SHAPE.kinds[k]||{}).label||k; }
 function summary(r){
   if(r.kind==='round'){ const rd=roundById(r.round); return (rd?rd.name:'Round')+', '+plural((r.scans||[]).length,'point')+' scanned'; }
-  if(r.kind==='reading'){ const p=pointById(r.point); return 'Reading at '+(p?p.name:r.place||'a tag'); }
+  if(r.kind==='reading'){ const p=r.point?pointById(r.point):(r.record?meterAsPoint(r.record.id):null); return 'Reading at '+(p?p.name:r.place||'a tag'); }
   if(r.kind==='certificate'){ const l=lineById(r.duty); return kindLabel('certificate')+(l?' for '+l.what:''); }
   const p=r.point?pointById(r.point):null;
   return kindLabel(r.kind)+(p?' at '+pointLabel(p):r.place?' at '+r.place:r.point?' at tag '+r.point:'');
@@ -374,7 +379,7 @@ async function makeCapture(kind,fields,photos){
   }
   const rec={format:WFM_CAPTURE_SHAPE.format,version:WFM_CAPTURE_SHAPE.version,id:id,kind:kind,
     taken:fields.taken||new Date().toISOString(),person:st.walker,account:st.account?st.account.username:'',device:device()};
-  ['place','note','outcome','duty','point','round','started','reading','scans','group'].forEach(k=>{ const v=fields[k]; if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)) rec[k]=v; });
+  ['place','note','outcome','duty','point','round','started','reading','scans','group','record'].forEach(k=>{ const v=fields[k]; if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)) rec[k]=v; });
   rec.files=files.map(f=>({name:f.name,type:f.type,bytes:f.blob.size}));
   // Every field written is one the shape names: the desk is the judge of the contract.
   Object.keys(rec).forEach(k=>{ if(WFM_CAPTURE_SHAPE.fields.indexOf(k)<0) throw new Error('Not in the capture shape: '+k); });
@@ -421,7 +426,7 @@ function vWho(){
 }
 
 function vHome(){
-  const s=st.site, rounds=(s&&s.rounds)||[], hasReading=points().some(p=>p.reading);
+  const s=st.site, rounds=(s&&s.rounds)||[], hasReading=points().some(p=>p.reading)||meters().length>0;
   const verb=(act,ic,nm,ln,off)=>'<button class="verb" data-act="'+act+'"'+(off?' disabled':'')+'><span class="ic">'+I[ic]+'</span><span class="m"><span class="nm">'+esc(nm)+'</span><span class="ln">'+esc(ln)+'</span></span>'+(off?'':I.chev)+'</button>';
   let h=head(s&&s.site||'Waterline','Capture','Capturing as&nbsp;<b>'+esc(st.walker)+'</b><button class="link" data-act="whoAgain">Change</button>');
   if(st.outbox.length){
@@ -524,11 +529,14 @@ function vPhoto(){
 // stays on the desk (Design 7.1; John, 14 Oct 2026: range shown, verdict on the desk). A meter's tag
 // carries its last reading, which the new figure is read against (job 015 slice M, DEC-0281).
 function vReading(){
-  const F=st.form, p=F.point?pointById(F.point):null;
+  const F=st.form, p=F.point?pointById(F.point):(F.meter?meterAsPoint(F.meter):null);
+  const ms=meters(), n=x=>Number(x).toLocaleString('en-IE');
   if(!p) return bar('Take a Reading')+'<div class="form">'
     +'<div class="note" style="margin:0 16px 20px">Scan the tag on the outlet or the meter. What it takes, and what the figure is read against, come with it.</div>'
     +'<div class="foot" style="margin-top:0"><button class="btn p" data-act="scan" data-for="reading">'+I.scan+'Scan the Tag</button></div>'
-    +(F.scanErr?'<div class="note amber" role="alert"><span class="eb">Takes no reading</span>'+esc(F.scanErr)+'</div>':'')+'</div>';
+    +(F.scanErr?'<div class="note amber" role="alert"><span class="eb">Takes no reading</span>'+esc(F.scanErr)+'</div>':'')
+    +(ms.length?'<div class="lab">Or pick the meter</div><div class="list">'+ms.map(m=>'<button class="verb" data-act="pickMeter" data-id="'+esc(m.id)+'"><span class="ic">'+I.meter+'</span><span class="m"><span class="nm">'+esc(m.name)+'</span><span class="ln">'+esc((m.where?m.where+' · ':'')+(m.reading.last?'last read '+n(m.reading.last.value)+' '+(m.reading.unit||'')+' on '+day(m.reading.last.date):'no reading on record yet'))+'</span></span>'+I.chev+'</button>').join('')+'</div>':'')
+    +'</div>';
   const r=p.reading, figs=[];
   if(r.kind==='meter') return vMeterReading(F,p,r);
   if(r.hot) figs.push(['hot','Hot']); if(r.cold) figs.push(['cold','Cold']);
@@ -561,8 +569,8 @@ function vMeterReading(F,p,r){
     +'<div class="rng">'+(r.last?'Last reading <span class="n">'+esc(n(r.last.value))+'</span> '+esc(r.unit||'')+' on <span class="n">'+esc(day(r.last.date))+'</span>.':'No reading on record yet, so there is nothing to compare it with.')+' '+esc(r.says||'')+'</div></div>'
     +(typedBad?'<div class="help err" role="alert" style="margin:0 16px 20px">Enter the figure as the '+(r.dial?'dial':'meter')+' shows it, with no spaces or commas, like 285312.1.</div>'
       :back?'<div class="help err" role="alert" style="margin:0 16px 20px">That is lower than the last reading. A dial does not run backwards, so check the figure on the dial.</div>'
-      :'<div class="help" style="margin:0 16px 20px">Added to the meter on the desk when it files.</div>')
-    +photosField('Photo of the dial',true)
+      :'<div class="help" style="margin:0 16px 20px">'+(p.picked?'Picked from the list, not scanned at the meter, and the record says so. ':'')+'Added to the meter on the desk when it files.</div>')
+    +photosField(r.dial?'Photo of the dial':'Photo of the gauge',true)
     +sendBtn('Send Reading',v!=null&&!back,back?'':'Enter the figure.')+'</div>';
 }
 
@@ -691,7 +699,7 @@ function scanned(text,via){
   if(S.for==='where'){ F.point=id; F.via=via; F.place=''; }
   else if(S.for==='reading'){
     if(!p.reading){ F.scanErr=p.name+' is not an outlet or a meter the desk takes readings at. Scan the tag on the outlet or the meter.'; }
-    else { F.point=id; F.scanErr=''; }
+    else { F.point=id; F.meter=''; F.scanErr=''; }
   } else if(S.for==='walk'){
     const r=roundById(F.round), prev=F.scans.find(x=>x.point===id);
     if(r.points.indexOf(id)<0){ F.msg=(p?p.name:id)+' is not on this round. Nothing was recorded.'; F.msgTone='amber'; }
@@ -744,6 +752,7 @@ app.addEventListener('click',async e=>{
     if(F.scans.length&&!confirm('Stop this round? The '+plural(F.scans.length,'scan')+' so far are not sent.')) return;
     ls.del('wl_walk'); st.form=null; return go('home');
   }
+  if(a==='pickMeter'){ F.meter=b.dataset.id; F.point=''; F.scanErr=''; return render(); }
   if(a==='scan'){ _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
   if(a==='scanClose') return scanClose();
   if(a==='scanList'){ st.scanFor.list=true; return render(); }
@@ -795,11 +804,12 @@ async function doSend(){
   // A tag's name and place are the desk's to read from its record every time (Law 3; slice C2), so they
   // are not copied into the capture. A tag the site details do not know yet still sends its id.
   if(F.point) fields.point=F.point;
+  else if(F.kind==='reading'&&F.meter) fields.record={reg:'meterItems',id:F.meter};
   else fields.place=String(F.place||'').trim();
   if(F.duty) fields.duty=F.duty;
   if(F.kind==='fault') fields.group=F.group||'maintenance';
   if(F.kind==='reading'){
-    const p=pointById(F.point), r=p.reading;
+    const p=F.point?pointById(F.point):meterAsPoint(F.meter), r=p.reading;
     // Named figures (Work 015 plan, D2b). The desk's reader takes them from v458.
     if(r.kind==='meter') fields.reading={unit:r.unit||'',value:num(F.value)};
     else{
