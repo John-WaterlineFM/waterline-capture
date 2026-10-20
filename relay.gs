@@ -1,7 +1,7 @@
 // Waterline capture relay (DEC-0279). A Google Apps Script web app in the site's own Google account.
 // It adds a capture's files to Inbox/ in the Waterline Workspace,
 // never over a file already there (DEC-0265 rule 2), and reads Phone/site.json, which the desk
-// publishes (DEC-0271); and, once set up, registers phones for alerts and sends them (DEC-0288). Every request carries the site code; a wrong code writes nothing.
+// publishes (DEC-0271), with the job photos and voice notes the desk copies to Phone/photos/ and Phone/audio/ (DEC-0308 rule 4; P6); and, once set up, registers phones for alerts and sends them (DEC-0288). Every request carries the site code; a wrong code writes nothing.
 //
 // Set up once:
 //   1. script.google.com > New project. Paste this file over Code.gs. Save.
@@ -56,9 +56,11 @@ function doPost(e){
       return out({ok:true});
     }
     if(b.op === 'read'){
-      if(b.path !== 'Phone/site.json') return out({ok:false, code:'bad', why:'Only the site details can be read.'});
-      const ph = folder(ws, 'Phone', false), it = ph && ph.getFilesByName('site.json');
-      if(!it || !it.hasNext()) return out({ok:false, code:'missing', why:'The desk has not published the site details yet.'});
+      // The site details, and the copies of open jobs' photos and voice notes the desk writes beside them (DEC-0305, DEC-0308 rule 4; P6).
+      const p = String(b.path || ''), pm = /^Phone\/(photos|audio)\/([A-Za-z0-9._-]{1,120}\.b64)$/.exec(p);
+      if(p !== 'Phone/site.json' && !pm) return out({ok:false, code:'bad', why:'Only the site details, job photos and voice notes can be read.'});
+      const ph = folder(ws, 'Phone', false), dir = pm ? (ph && folder(ph, pm[1], false)) : ph, it = dir && dir.getFilesByName(pm ? pm[2] : 'site.json');
+      if(!it || !it.hasNext()) return out({ok:false, code:'missing', why: pm ? 'That file is not in Phone/' + pm[1] + '.' : 'The desk has not published the site details yet.'});
       return out({ok:true, text:it.next().getBlob().getDataAsString('UTF-8')});
     }
     if(b.op === 'pushConfig'){

@@ -298,11 +298,103 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .cin textarea{flex:1;min-width:0;min-height:48px;height:48px;resize:none}
 .cam input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .comp .th{width:64px;height:64px}
+/* P6, the opened job (DEC-0317, DEC-0318; mockup sandbox/mockups/job-2026-10-20, round 1). The screen is one column the
+   height of the phone: the zone, the photo strip and who is on it stay put; the conversation scrolls between them and the
+   message bar (21.6, 21.9). Icons drawn under 24px keep a 1.75 stroke on the 24 grid (21.7). */
+.jb{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.jb .zone{flex:none;padding:calc(8px + env(safe-area-inset-top)) 8px 16px 8px}
+.jb .ztop{display:flex;align-items:center;gap:4px;margin:0}
+.jb .ztop .eb{flex:1;min-width:0;letter-spacing:.08em}
+.jb .ztop .eb .mono{font:400 12px ui-monospace,'SFMono-Regular',Consolas,monospace;letter-spacing:0;text-transform:none;color:var(--navMid)}
+.jb .zone h1{font:800 20px/1.25 Sora;margin:4px 12px 0;overflow-wrap:anywhere}
+.jwh{display:flex;align-items:flex-start;gap:6px;font-size:15px;line-height:1.4;color:var(--navMid);margin:4px 12px 0}
+.jwh svg{width:16px;height:16px;stroke-width:2.6;margin-top:3px}
+.jfl{display:flex;gap:8px;align-items:flex-start;margin:12px 12px 0;font-size:15px;line-height:1.35;color:var(--onInk)}
+.jfl svg{width:18px;height:18px;stroke-width:2.33;margin-top:1px}
+.jfl b{font-weight:700}
+.zact{display:flex;align-items:center;gap:12px;margin:16px 12px 0}
+.jst{flex:1;min-width:0;font-size:15px;line-height:1.3;color:var(--onInk)}
+.jst b{display:block;font-weight:700}
+.jst span{display:block;font-size:12px;line-height:1.4;color:var(--navMid);margin-top:2px}
+.pbtn{height:44px;padding:0 16px;border-radius:8px;background:var(--accentOnInk);color:var(--zBtnText);font:600 13px Outfit;display:flex;align-items:center;gap:8px;flex:none}
+.pbtn svg{width:18px;height:18px;stroke-width:2.33}
+.pbtn[disabled]{opacity:.6;cursor:default}
+.jwhy{font-size:12px;line-height:1.4;color:var(--navMid);margin:8px 12px 0}
+.strip{flex:none;display:flex;gap:8px;padding:12px 16px;background:var(--white);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip .ph{width:72px;height:72px;border-radius:10px;flex:none;overflow:hidden;background:var(--stone)}
+.strip .ph img{width:72px;height:72px;object-fit:cover;display:block}
+.strip .ph .pic{width:72px;height:72px;padding:4px;border-radius:0}
+.pnc{flex:none;padding:8px 16px;background:var(--white);border-bottom:1px solid var(--border);font-size:12px;line-height:1.4;color:var(--textMuted)}
+.people{flex:none;display:flex;align-items:center;gap:8px;padding:6px 8px 6px 16px;background:var(--white);border-bottom:1px solid var(--border)}
+.people .lab{flex:none;font:700 11px Outfit;letter-spacing:.08em;text-transform:uppercase;color:var(--textMid);margin-right:4px}
+.people .who{flex:1;min-width:0;font-size:15px;line-height:1.35;padding:6px 0;overflow-wrap:anywhere}
+.people .who .none{color:var(--textMuted)}
+.people .who .sub{margin-top:2px}
+.tbtn{height:44px;padding:0 8px;font:600 13px Outfit;color:var(--accentD);flex:none}
+.tw{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column}
+.tw .thr{flex:1;justify-content:flex-end;padding:12px 12px 8px;gap:8px}
+.jb .dayb{letter-spacing:.08em;margin:4px 0;padding:0}
+.ev{align-self:center;display:flex;align-items:flex-start;gap:6px;max-width:92%;font-size:12px;line-height:1.4;color:var(--textMuted);text-align:center}
+.ev svg{width:14px;height:14px;stroke-width:3;margin-top:2px}
+.jb .msg{flex-direction:column;align-items:flex-start;gap:2px;max-width:82%}
+.jb .msg.me{align-self:flex-end;align-items:flex-end}
+.jb .bub{max-width:100%;border:0;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:15px;line-height:1.4}
+.jb .msg.me .bub{border-radius:16px 16px 4px 16px}
+.jb .bub p{margin:0}
+.jb .bub p.nw{color:var(--textMid)}
+.kd{display:block;font:700 11px Outfit;letter-spacing:.08em;text-transform:uppercase;color:var(--textMid);margin-bottom:2px}
+.meta{font-size:12px;line-height:1.4;color:var(--textMuted);padding:0 4px}
+.tpb{display:block;margin:-2px -4px 6px;border-radius:10px;overflow:hidden}
+.jb img.tp{width:200px;max-width:100%;height:140px;object-fit:cover;border-radius:10px;margin:0}
+.jb span.pic.tp{width:200px;height:140px;margin:0}
+.voice{display:flex;align-items:center;gap:8px;min-width:220px;padding:0 4px 0 0}
+.vp{width:44px;height:44px;border-radius:22px;border:1.5px solid var(--accentD);color:var(--accentD);display:grid;place-items:center;flex:none}
+.vp svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.vp[aria-busy=true]{opacity:.5}
+.wave{flex:1;min-width:0;display:flex;align-items:center;gap:2px;height:28px;overflow:hidden}
+.wave b{width:3px;flex:none;border-radius:2px;background:var(--textMid);opacity:.4}
+.wave b.on{opacity:1}
+.dur{font:600 12px Sora;color:var(--textMid);font-variant-numeric:tabular-nums;flex:none}
+.jbar{flex:none;background:var(--white);border-top:1px solid var(--border);padding:8px 8px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.jbar .bl{display:flex;align-items:flex-end;gap:4px}
+.jbar .thumbs{padding:0 8px}
+.fw{flex:1;min-width:0;min-height:44px;border-radius:8px;border:1px solid var(--textMuted);display:flex;align-items:flex-start;padding:0 4px;background:var(--white)}
+.fw:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.fw textarea{flex:1;min-width:0;border:0;border-radius:0;background:none;padding:11px 8px 11px 0;min-height:44px;height:44px;font-size:16px;line-height:1.35;resize:none;overflow-y:auto}
+.fw textarea:focus{outline:none}
+.ktag{height:44px;display:flex;align-items:center;gap:2px;padding:0 6px 0 10px;font:700 11px Outfit;letter-spacing:.06em;text-transform:uppercase;color:var(--accentD);flex:none;white-space:nowrap}
+.ktag svg{width:14px;height:14px;stroke-width:3}
+.jbar.w .fw{flex-direction:column;align-items:stretch;border:0;padding:0}
+.jbar.w .fw:focus-within{outline:none}
+.jbar.w .fw .ktag{align-self:flex-start;height:44px;margin:-6px 0;padding-left:4px}
+.jbar.w .fw textarea{flex:none;border:1px solid var(--textMuted);border-radius:8px;padding:11px 12px}
+.jbar.w .fw textarea:focus{outline:2px solid var(--accent);outline-offset:2px}
+.snd{width:44px;height:44px;border-radius:22px;border:1.5px solid var(--accentD);color:var(--accentD);display:grid;place-items:center;flex:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.snd svg{width:20px;height:20px;stroke-width:2.1}
+.snd .i-s{display:none}
+.jbar.w .snd .i-m,.jbar.r .snd .i-m{display:none}
+.jbar.w .snd .i-s,.jbar.r .snd .i-s{display:block}
+.rec{flex:1;min-width:0;height:44px;display:none;align-items:center;gap:10px;padding:0 0 0 12px;border-radius:8px;border:1px solid var(--textMuted);background:var(--cream)}
+.jbar.r .rec{display:flex}
+.jbar.r .fw{display:none}
+.dot{width:10px;height:10px;border-radius:5px;flex:none;background:var(--accentD);box-shadow:0 0 0 4px color-mix(in srgb,var(--accentD) 20%,transparent);animation:wlpulse 1.2s ease-in-out infinite}
+@keyframes wlpulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--accentD) 8%,transparent)}}
+@media (prefers-reduced-motion: reduce){ .dot{animation:none} }
+.rec .t{font:700 15px Sora;font-variant-numeric:tabular-nums;flex:none}
+.rec .s{flex:1;min-width:0;font-size:12px;line-height:1.3;color:var(--textMuted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vrev .vh{display:flex;align-items:center;gap:4px;padding-left:4px}
+.vrev .vh .voice{flex:1;min-width:0}
+.vrev .help{margin:0 8px}
+.pv{position:fixed;inset:0;z-index:25;background:var(--ink);display:flex;flex-direction:column}
+.pv .ib{color:var(--accentOnInk);margin:calc(4px + env(safe-area-inset-top)) 4px 0}
+.pv img{flex:1;min-height:0;width:100%;object-fit:contain}
+.pv .para{color:var(--onInk)}
 </style>
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=f420f2d424"></script>
+<script src="shapes.js?v=82342c2e3b"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -407,9 +499,14 @@ const LUCIDE={
   'flag-off':'<path d="M8 2c3 0 5 2 8 2s4-1 4-1v11"/><path d="M4 22V4"/><path d="M4 15s1-1 4-1 5 2 8 2"/><line x1="2" x2="22" y1="2" y2="22"/>',
   'play':'<polygon points="6 3 20 12 6 21 6 3"/>',
   'pause':'<rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/>',
+  'mic':'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+  'ellipsis-vertical':'<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+  'map-pin':'<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  'users':'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  'chevron-down':'<path d="m6 9 6 6 6-6"/>',
 };
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause')};
+const I={close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -481,7 +578,7 @@ async function phGet(n){ const d=await db(); return new Promise(ok=>{ const q=d.
 async function phPut(n,v){ const d=await db(); return new Promise(ok=>{ const t=d.transaction('photos','readwrite'); t.objectStore('photos').put(v,n); t.oncomplete=ok; t.onerror=()=>ok(); }); }
 // Photos of jobs no longer in the site file go from the phone.
 async function phPrune(){ if(!st.site) return; const keep=new Set();
-  (SITE().jobs||[]).forEach(j=>{ (j.photos||[]).forEach(n=>keep.add(n)); (j.thread||[]).forEach(e=>(e.photos||[]).forEach(n=>keep.add(n))); });
+  (SITE().jobs||[]).forEach(j=>{ (j.photos||[]).forEach(n=>keep.add(n)); (j.thread||[]).forEach(e=>{ (e.photos||[]).forEach(n=>keep.add(n)); if(e.audio&&e.audio.name) keep.add('a:'+e.audio.name); }); });
   const d=await db(), s=d.transaction('photos','readwrite').objectStore('photos'), q=s.getAllKeys();
   q.onsuccess=()=>(q.result||[]).forEach(k=>{ if(!keep.has(k)) s.delete(k); }); }
 async function obDel(id){ const d=await db(); return new Promise((ok,no)=>{ const t=d.transaction('outbox','readwrite'); t.objectStore('outbox').delete(id); t.oncomplete=ok; t.onerror=()=>no(t.error); }); }
@@ -538,6 +635,7 @@ function extOf(blob,name){
   const t=blob.type||'';
   if(t==='image/jpeg') return 'jpg'; if(t==='image/png') return 'png'; if(t==='image/webp') return 'webp';
   if(t==='application/pdf') return 'pdf'; if(t==='image/heic') return 'heic';
+  if(/^audio\/mp4/.test(t)) return 'm4a'; if(/^audio\/webm/.test(t)) return 'webm';
   const m=/\.([a-z0-9]{2,5})$/i.exec(name||''); return m?m[1].toLowerCase():'bin';
 }
 async function makeCapture(kind,fields,photos){
@@ -580,10 +678,15 @@ function softRender(){
 }
 function render(){
   document.body.className='t-'+theme();
+  if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
+  // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
+  const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
+  const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
   after();
 }
 function head(eb,title,sub){ return '<div class="head"><div class="eb">'+esc(eb)+'</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</div>'; }
@@ -903,10 +1006,12 @@ function vLine(){
     +(isFM(myPos())?f('Whose',(i.duties||[]).length?esc(i.duties.map(d=>{ const t=positions().filter(p=>(p.duties||[]).indexOf(d)>=0).map(p=>p.title); return t.length?t.join(', '):d; }).join(', '))+(i.nobody?'<span class="sub">Nobody holds this duty. Tick it under Duties held on the desk’s Organisation Structure.</span>':''):'Names no one, so it is shown to the FM.'):'')+'</div>'
     +'<p class="para">Send the certificate, report or photo that proves it. The desk files it against this line.</p></div>';
 }
-// A job opened (DEC-0307 rule 2; Design 21.1, 21.6): its photo first, the navy zone directly under it with the flag, the
-// title, where it stands and its one action (Start, then Mark Done); then the conversation, newest at the bottom, others'
-// on the left, yours on the right, and one box at the foot. Each thing done here is a capture of kind job, which the desk
-// files with wfmCapApplyJobUpdate. Until the site file shows it filed it reads as sent, never as done (Design 9.11).
+// A job opened (P6; DEC-0317, DEC-0318; mockup sandbox/mockups/job-2026-10-20). The zone carries the record and its one
+// action (Design 21.1): the group and the job's number, title, place, the flag in words, where it stands and since when,
+// and Start the Job, Mark Done or Restart; Pause, Flag and Change Who Is on It are under More. The photos not in the
+// conversation are a strip (21.6), who is on it is said once (10.7), and the conversation takes the rest (21.9) above one
+// message bar. Each thing done here is a capture of kind job, filed by the desk's wfmCapApplyJobUpdate; until the site
+// file shows it filed it reads as sent, never as done (Design 9.11).
 const _sentPics={};
 const jSent=()=>ls.get('wl_jobSent',[]);
 function jPending(j){
@@ -918,81 +1023,258 @@ function jSentPrune(){ if(!st.site) return; const wk=Date.now()-7*864e5, out=new
   ls.set('wl_jobSent',jSent().filter(x=>{ const j=jobById(x.job); return Date.parse(x.at)>wk&&(j?jPending(j).some(y=>y.cap===x.cap):out.has(x.cap)); })); }
 const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned'};
 const pName=id=>{ const p=PEOPLE().find(x=>x.id===id); return p?p.name:id; };
-function pendText(x){ if(x.act==='note') return x.note; if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
+function pendText(x){ if(x.act==='note') return x.note||(x.au?WFM_CAPTURE_SHAPE.noWords:''); if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
   if(x.act==='pause') return x.note?'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'):'Paused.'; if(x.act==='restart') return 'Restarted.';
   if(x.act==='assign'){ const a=x.assign||{on:[],off:[]}; return [(a.on||[]).length?'Put on: '+a.on.map(pName).join(', ')+'.':'',(a.off||[]).length?'Taken off: '+a.off.map(pName).join(', ')+'.':''].filter(Boolean).join(' '); }
   if(x.act==='flag'){ const w=String((x.flag&&x.flag.why)||'').trim(); return flagLabel(x.flag)+(w?': '+w+(/[.!?]$/.test(w)?'':'.'):'.'); } return 'Remove the flag.'; }
 const dayLab=t=>{ const d=new Date(t); if(isNaN(d)) return ''; const k=d.toDateString(); return k===new Date().toDateString()?'Today':k===new Date(Date.now()-864e5).toDateString()?'Yesterday':day(d); };
-function jThread(j,pend){
-  const hero=(j.photos||[])[0], th=j.thread||[];
+const at2=t=>{ const d=dayLab(t); return hm(t)+(d==='Today'?'':', '+d); };
+const clock=n=>{ n=Math.max(0,Math.round(Number(n)||0)); return Math.floor(n/60)+':'+pad(n%60); };
+const youOr=n=>(!!st.walker&&nk(n)===nk(st.walker))?'you':(n||'someone not named');
+// Where a job stands on this phone: the site file's job with what was sent from here and not yet filed.
+function jState(j){
+  const pend=jPending(j), pS=pend.find(x=>x.act==='start'), pD=pend.find(x=>x.act==='done');
+  const fl=pend.some(x=>x.act==='unflag')?null:j.flag, doing=j.state==='doing'||!!pS;
+  // A paused job is still in progress (DEC-0311 rule 1): the latest pause or restart sent from here, else the desk's.
+  const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart').sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act==='pause':!!j.paused;
+  // Pausing is for the job's group; assigning for the group and the FM (DEC-0314 rule 3).
+  return {pend:pend,pS:pS,pD:pD,fl:fl,doing:doing,pPR:pPR,paused:paused,canPause:!pD&&!!meP()&&inGroup(j)&&doing&&!paused,canAsg:!pD&&!!meP()&&(inGroup(j)||isFM(myOwnPos()))};
+}
+// What the desk wrote as a job changed, as one small line across the middle (DEC-0307 rule 2): "Started by you".
+const EVK={Started:'play',Restarted:'play',Paused:'pause',Assigned:'users',Flagged:'flag',Done:'check'};
+function evWords(kind,text,by){ const t=String(text||'').trim();
+  if(kind==='Flagged'){ if(/^(Flag removed|Remove the flag)/i.test(t)) return 'Flag removed by '+by; if(/^Asked/.test(t)) return t.replace(/\.$/,'')+', by '+by;
+    const m=/^([^:.]+)[:.]?\s*(.*)$/.exec(t)||['',t,'']; return 'Flagged '+m[1]+' by '+by+(m[2]?'. '+m[2].replace(/\.$/,''):''); }
+  if(kind==='Assigned') return t.replace(/\.$/,'')+', by '+by;
+  const rest=t.replace(new RegExp('^'+kind+'[:.]?\\s*'),'').trim();
+  return kind+' by '+by+(rest?'. '+rest.replace(/\.$/,''):''); }
+// A voice note in its bubble: play, a waveform drawn the same for every note (it shows how far it has played, not the
+// sound), the length in Sora (Design 6.9).
+function voiceEl(k,secs,t){ let w=''; for(let i=0;i<26;i++) w+='<b style="height:'+(6+Math.round(Math.abs(Math.sin(i*1.7)+Math.sin(i*.6))*9))+'px"></b>';
+  return '<div class="voice" data-k="'+esc(k)+'" data-s="'+(Number(secs)||0)+'"><button class="vp" data-act="vplay" data-k="'+esc(k)+'"'+(t?' data-t="'+esc(t)+'"':'')+' aria-label="Play the voice note">'+I.play+'</button>'
+    +'<div class="wave" aria-hidden="true">'+w+'</div><span class="dur n">'+clock(secs)+'</span></div>'; }
+function jThread(j,pend,inStrip){
+  const th=j.thread||[];
   const all=th.concat(pend.map(x=>({at:x.at,by:x.by,kind:x.act==='note'?(x.kind||'Note'):PK[x.act],text:pendText(x),photos:[],pend:x})));
-  if(!all.length) return '<p class="para">Nothing is written on this job yet. Write the first entry below.</p>';
-  let h='<div class="thr">'+(th.length>=WFM_SITE_SHAPE.threadMax?'<div class="sys">Earlier entries are on the desk’s Jobs page.</div>':''), last='';
+  if(!all.length) return '<p class="para" style="align-self:center;text-align:center">Nothing is written on this job yet. Write the first entry below.</p>';
+  let h=th.length>=WFM_SITE_SHAPE.threadMax?'<div class="sys">Earlier entries are on the desk’s Jobs page.</div>':'', last='';
   all.forEach(e=>{
     const dl=dayLab(e.at); if(dl&&dl!==last){ h+='<div class="dayb">'+esc(dl)+'</div>'; last=dl; }
-    const tm=isNaN(Date.parse(e.at))?'':hm(e.at), kind=e.kind||'Note', x=e.pend;
+    const tm=isNaN(Date.parse(e.at))?'':' · <span class="n">'+hm(e.at)+'</span>', kind=e.kind||'Note', x=e.pend, ps=x?' · '+(x.waiting?'Waiting for signal':'Sent, waiting for the desk'):'';
     // What the desk wrote by itself reads as a line across the middle, as a messaging app's own notices do.
-    if(!e.by||e.by==='Waterline FM'){ h+='<div class="sys"><span class="k">'+esc(kind)+'</span> '+esc(e.text)+(tm?' <span class="n">'+tm+'</span>':'')+'</div>'; return; }
-    const own=!!x||(!!st.walker&&nk(e.by)===nk(st.walker)), sp=x?(_sentPics[x.cap]||[]):[];
-    const pics=(e.photos||[]).filter(n=>n!==hero).map(n=>phImg(n,'tp','Photo from '+e.by)).join('')
-      +sp.map(u=>'<img class="tp" src="'+u+'" alt="Your photo">').join('')+(x&&!sp.length&&x.n?'<span class="sub">'+esc(plural(x.n,'photo'))+' sent with it</span>':'');
-    h+='<div class="msg'+(own?' me':'')+'"><div class="bub"><div class="mh"><b>'+(own?'You':esc(e.by))+'</b><span class="k">'+esc(kind)+'</span></div>'
-      +(e.text?'<p>'+esc(e.text)+'</p>':'')+pics
-      +'<div class="mt"><span class="n">'+tm+'</span>'+(x?' · '+(x.waiting?'Waiting for signal':'Sent, waiting for the desk'):'')+'</div></div></div>';
+    if(!e.by||e.by==='Waterline FM'){ h+='<div class="sys"><span class="k">'+esc(kind)+'</span> '+esc(e.text)+(tm?' <span class="n">'+hm(e.at)+'</span>':'')+'</div>'; return; }
+    const own=!!x||(!!st.walker&&nk(e.by)===nk(st.walker)), ph=(e.photos||[]).filter(n=>!inStrip.has(n)), sp=x?(_sentPics[x.cap]||[]):[];
+    if(EVK[kind]&&!ph.length&&!sp.length){ h+='<div class="ev">'+ICO(EVK[kind])+'<span>'+esc(evWords(kind,e.text,own?'you':e.by))+tm+esc(ps)+'</span></div>'; return; }
+    const au=x?(x.au?{k:'p:'+x.cap,s:x.au,ok:!!_sentAudio[x.cap]}:null):(e.audio?{k:'a:'+(e.audio.name||''),t:e.audio.type,s:e.audio.secs,ok:!!e.audio.name}:null);
+    const pics=ph.map(n=>'<button class="tpb" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open the photo from '+esc(own?'you':e.by)+'">'+phImg(n,'tp','Photo from '+e.by)+'</button>').join('')
+      +sp.map((u,i)=>'<button class="tpb" data-act="pvOpen" data-cap="'+esc(x.cap)+'" data-i="'+i+'" aria-label="Open your photo"><img class="tp" src="'+u+'" alt="Your photo"></button>').join('')
+      +(x&&!sp.length&&x.n&&!x.au?'<span class="sub">'+esc(plural(x.n,'photo'))+' sent with it</span>':'');
+    const vo=au?(au.ok?voiceEl(au.k,au.s,au.t):'<span class="sub" style="margin-top:0">'+(x?'Voice note sent from this phone.':'On the desk only: the desk copies voice notes for the phone each time it publishes.')+'</span>'):'';
+    h+='<div class="msg'+(own?' me':'')+'"><div class="bub">'+(kind!=='Note'?'<span class="kd">'+esc(kind)+'</span>':'')+pics+(au&&au.ok?vo:'')
+      +(e.text?'<p'+(au&&e.text===WFM_CAPTURE_SHAPE.noWords?' class="nw"':'')+'>'+esc(e.text)+'</p>':'')+(au&&!au.ok?vo:'')+'</div>'
+      +'<div class="meta">'+(own?'You':esc(e.by))+tm+esc(ps)+'</div></div>';
   });
-  return h+'</div>';
+  return h;
 }
-// One box at the foot (DEC-0307 rule 2): the kind of entry, a photo, the words, Send.
-function jCompose(F){
-  return '<div class="foot comp"><div class="kinds" role="radiogroup" aria-label="Kind of entry">'
-    +WFM_CAPTURE_SHAPE.msgKinds.map(k=>'<button class="chip'+(F.kind===k?' on':'')+'" role="radio" aria-checked="'+(F.kind===k)+'" data-act="jkind" data-v="'+esc(k)+'">'+esc(k)+'</button>').join('')+'</div>'
+// The message bar (DEC-0318 rules 2 and 3): the camera, one field with the kind as a tag in it, and the microphone,
+// which becomes send once something is written or a photo is added. While writing, the kind sits above the field.
+// A voice note once recorded is shown with its words to check before it is sent (DEC-0318 rule 4).
+function jBar(F){
+  const err=F.err?'<div class="help err" role="alert" style="margin:0 8px">'+esc(F.err)+'</div>':'';
+  const ktag=id=>'<button class="ktag" data-act="jkinds" aria-haspopup="dialog" aria-controls="'+id+'" aria-label="Kind of entry: '+esc(F.kind)+'. Change it">'+esc(F.kind)+I.down+'</button>';
+  const V=F.voice;
+  if(V) return '<div class="jbar vrev w">'+err+'<div class="vh">'+voiceEl('r:',V.secs)+'<button class="ib" data-act="vdiscard" aria-label="Discard the voice note">'+I.close+'</button></div>'
+    +'<div class="bl"><div class="fw">'+ktag('vwords')+'<textarea id="vwords" rows="1" data-in="vwords" placeholder="Its words" aria-label="The voice note’s words, as '+esc(F.kind)+'">'+esc(V.words)+'</textarea></div>'
+    +'<button class="snd" data-act="vsend" aria-label="Send the voice note"'+(st.busy?' disabled':'')+'><span class="i-s">'+I.send+'</span></button></div>'
+    +'<div class="help">'+(String(V.words||'').trim()?'Check the words before sending: they go with the voice note.':(SR?'No words were heard. Type a line about it, or send it as it is: the desk files it as “'+esc(WFM_CAPTURE_SHAPE.noWords)+'”.':'This phone cannot write the words. Type a line about it, or send it as it is: the desk files it as “'+esc(WFM_CAPTURE_SHAPE.noWords)+'”.'))+'</div></div>';
+  const w=!!(String(F.note||'').trim()||F.photos.length);
+  return '<div class="jbar comp'+(w?' w':'')+'">'+err
     +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
-    +'<div class="cin"><label class="ib cam" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label>'
-    +'<textarea id="jnote" rows="1" data-in="note" placeholder="Write on this job" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea>'
-    +'<button class="ib snd" data-act="jobSend" aria-label="Send"'+(st.busy?' disabled':'')+'>'+I.send+'</button></div>'
-    +(F.err?'<div class="help err" role="alert" style="margin:0">'+esc(F.err)+'</div>':'')+'</div>';
+    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label>'
+    +'<div class="fw">'+ktag('jnote')+'<textarea id="jnote" rows="1" data-in="note" placeholder="Message" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea></div>'
+    +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="ib" data-act="vdiscard" aria-label="Stop and discard the voice note">'+I.close+'</button></div>'
+    +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
 }
 function vJob(){
   const j=jobById(st.form.id); if(!j) return '<div class="body">'+formZone(st.place||'due','Job','No Longer Open','This job is no longer open in the site details from the desk.')+'</div>';
   const F=st.form; if(!F.kind) F.kind='Note'; F.photos=F.photos||[]; if(F.note==null) F.note='';
-  const e=Date.parse(j.end), a=jLate(j), pend=jPending(j), pS=pend.find(x=>x.act==='start'), pD=pend.find(x=>x.act==='done');
-  const fl=pend.some(x=>x.act==='unflag')?null:j.flag, doing=j.state==='doing'||!!pS, f=(k,v,act)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+(act?'<button class="lnk" data-act="'+act+'">Change</button>':'')+'</div>';
-  const sent=x=>x.waiting?'Waiting for signal; it sends by itself.':'Sent, waiting for the desk to file it.';
-  // A paused job is still in progress (DEC-0311 rule 1): the latest pause or restart sent from here, else the desk's.
-  const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart').sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act==='pause':!!j.paused;
+  const S0=jState(j), e=Date.parse(j.end), a=jLate(j), pend=S0.pend, pD=S0.pD, pS=S0.pS, pPR=S0.pPR, paused=S0.paused, doing=S0.doing, fl=S0.fl;
+  const sent=x=>x.waiting?'Waiting for signal; it sends by itself.':'Sent, waiting for the desk.';
   const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.note,x:pPR}:j.paused):null;
-  const pzAt=pz&&!isNaN(Date.parse(pz.at))?' at <b class="n">'+esc(hm(pz.at))+'</b>'+(dayLab(pz.at)==='Today'?'':', '+esc(dayLab(pz.at))):'';
-  const pzWhy=String(pz&&pz.why||'').trim(), pzMe=pz&&(pz.x||(!!st.walker&&nk(pz.by)===nk(st.walker)));
-  const pzLine=pz?'<p>Paused by <b>'+(pzMe?'you':esc(pz.by||'someone not named'))+'</b>'+pzAt+'. '+(pzWhy?esc(pzWhy+(/[.!?]$/.test(pzWhy)?'':'.')):'')+(pz.x?' '+sent(pz.x):'')+'</p>':'';
-  let act;
-  if(pD) act='<p>You marked it done at <b class="n">'+esc(hm(pD.at))+'</b>. '+sent(pD)+'</p>';
-  else if(!meP()) act=pzLine+'<p>Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.</p>';
-  else if(!inGroup(j)) act=pzLine+'<p>'+(paused?'Restart':'Start, Pause')+' and Mark Done are for the people in '+esc(GROUP(j.group))+'. Your position is not in it on the desk’s Organisation Structure.</p>';
-  else if(paused) act=pzLine+'<button class="btn" data-act="jobRestart"'+(st.busy?' disabled':'')+'>'+I.play+'Restart the Job</button>';
-  else act=(pS?'<p>You started it at <b class="n">'+esc(hm(pS.at))+'</b>. '+sent(pS)+'</p>':'')
-    +(pPR&&pPR.act==='restart'?'<p>You restarted it at <b class="n">'+esc(hm(pPR.at))+'</b>. '+sent(pPR)+'</p>':'')
-    +'<button class="btn" data-act="'+(doing?'jobDone':'jobStart')+'"'+(st.busy?' disabled':'')+'>'+(doing?I.tick+'Mark Done':I.play+'Start the Job')+'</button>';
-  // Pause the Job is a ghost (Design 21.1: the zone keeps the record's one action); assigning is for the group and the FM (DEC-0314 rule 3).
-  const canPause=!pD&&!!meP()&&inGroup(j)&&doing&&!paused, canAsg=!pD&&!!meP()&&(inGroup(j)||isFM(myOwnPos())), pA=pend.filter(x=>x.act==='assign');
-  const hero=(j.photos||[]).length?phImg(j.photos[0],'wide','Photo of '+(j.title||'the job'),j):words(j,'wide'), dg=j.state==='doing';
-  return '<div class="body"><div class="hp">'+hero+'<span class="ov"><button class="ib ov" data-act="'+esc(st.place||'due')+'" aria-label="Back">'+I.back+'</button></span></div>'
-    +'<div class="zone"><span class="eb">'+esc(GROUP(j.group))+'</span>'
-    +(fl?'<div class="zfl">'+I.flag+'<span><b>Flagged: '+esc(flagLabel(fl))+'</b>'+(fl.why?'<span class="why">'+esc(fl.why)+'</span>':'')+'</span></div>':'')
-    +'<h1>'+esc(j.title||'Job')+'</h1><p>'+esc(jWhere(j))+(a?' · <b data-urg style="color:var(--inkRed)">'+esc(a.join(' '))+'</b>':'')+'</p>'
-    +'<div class="steps"><span class="d"></span><span'+(dg?' class="d"':'')+'></span><span></span></div><div class="stepl">'+['To do','In progress','Done'].map((w,k)=>k===(dg?1:0)?'<b>'+w+'</b>':'<span>'+w+'</span>').join('')+'</div>'
-    +act+'</div>'
-    +(canPause?'<div class="pad"><button class="gh" data-act="jobPause"'+(st.busy?' disabled':'')+'>'+I.pause+'Pause the Job</button></div>':'')
-    +'<div class="pad row2"><button class="gh" data-act="jobFlag">'+I.flag+(fl?'Change the Flag':'Flag This Job')+'</button>'
-    +(fl?'<button class="gh" data-act="jobUnflag"'+(st.busy?' disabled':'')+'>'+I.unflag+'Remove the Flag</button>':'')+'</div>'
-    +'<div class="list" style="margin-top:12px">'
-    // One fact once (Design 4.11): who flagged it and when it was raised are in the conversation; lateness is in the zone.
-    +f('Assigned',esc(holders(j).length?holders(j).map(x=>x.name+(isMe(x)?' (you)':'')).join(', '):'unassigned')
-      +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':canAsg||pD?'':'<span class="sub">Changing who is on it is for the people in '+esc(GROUP(j.group))+' and the FM.</span>'),canAsg?'jobAssign':'')
-    +(j.due?f('Fell due','<span class="n">'+esc(when(j.due))+'</span>'):'')
-    +(e&&!a?f('Its time','until <span class="n">'+esc(when(j.end))+'</span>'):'')
-    +(j.photosNotCopied?f('Photos',esc(plural(j.photosNotCopied,'photo'))+' on the desk only. The desk copies photos for the phone each time it publishes.'):'')+'</div>'
-    +grp('Conversation',(j.thread||[]).length+pend.length)+jThread(j,pend)+'<div style="height:16px"></div></div>'+jCompose(F);
+  // Where it stands, and since when.
+  let sw, ss='';
+  if(pD){ sw='Done'; ss='You marked it done at '+hm(pD.at)+'. '+sent(pD); }
+  else if(paused){ const why=String(pz.why||'').trim(), me=pz.x||(!!st.walker&&nk(pz.by)===nk(st.walker));
+    sw='In progress, paused'; ss='Paused by '+(me?'you':pz.by||'someone not named')+(isNaN(Date.parse(pz.at))?'':', '+at2(pz.at))+'.'+(why?' '+why+(/[.!?]$/.test(why)?'':'.'):'')+(pz.x?' '+sent(pz.x):''); }
+  else if(doing){ sw='In progress'; const sx=pPR&&pPR.act==='restart'?pPR:pS;
+    if(sx) ss=(sx.act==='restart'?'You restarted it at ':'You started it at ')+hm(sx.at)+'. '+sent(sx);
+    else { const se=(j.thread||[]).filter(x=>(x.kind==='Started'||x.kind==='Restarted')&&!isNaN(Date.parse(x.at))).pop(); if(se) ss=se.kind+' by '+youOr(se.by)+', '+at2(se.at); } }
+  else { sw='To do'; const r=(j.thread||[]).find(x=>x.kind==='Raised'&&!isNaN(Date.parse(x.at))); ss=r?'Raised'+(r.by?' by '+youOr(r.by):'')+', '+at2(r.at):(j.raised?'Raised '+jAge(j):''); }
+  // The one action (Design 9.1), for the people in the job's group (DEC-0308 rule 3).
+  let btn=null, why='';
+  if(!pD){
+    if(!meP()) why='Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.';
+    else if(!inGroup(j)) why=(paused?'Restart':'Start, Pause')+' and Mark Done are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
+    else btn=paused?['jobRestart','play','Restart']:doing?['jobDone','tick','Mark Done']:['jobStart','play','Start the Job'];
+  }
+  const due=j.due?'Fell due '+when(j.due)+(e&&!a?', its time runs to '+when(j.end):''):'';
+  const zone='<div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(GROUP(j.group))+' · <span class="mono">'+esc(j.id)+'</span></span>'
+      +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>'
+    +'<h1>'+esc(j.title||'Job')+'</h1>'
+    +'<div class="jwh">'+I.pin+'<span>'+esc(jWhere(j))+(a?' · <b data-urg style="color:var(--inkRed)">'+esc(a.join(' '))+'</b>':'')+'</span></div>'
+    +(fl?'<div class="jfl">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.why?'. '+esc(fl.why):'')+'</span></div>':'')
+    +'<div class="zact"><div class="jst"><b>'+esc(sw)+'</b>'+(ss?'<span>'+esc(ss)+'</span>':'')+'</div>'
+    +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'
+    +(due?'<p class="jwhy">'+esc(due)+'</p>':'')+(why?'<p class="jwhy">'+esc(why)+'</p>':'')+'</div>';
+  // The photos not in the conversation, shown once (Design 4.11): those it was raised with, and any no entry carries.
+  const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
+  const sp=(j.photos||[]).filter(n=>!inThr.has(n)), inStrip=new Set(sp);
+  const strip=sp.length?'<div class="strip">'+sp.map((n,i)=>'<button class="ph" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+sp.length+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'))+'</button>').join('')+'</div>':'';
+  const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+' on the desk only. The desk copies photos for the phone each time it publishes.</div>':'';
+  const hs=holders(j), pA=pend.filter(x=>x.act==='assign');
+  const people='<div class="people"><span class="lab">On it</span><span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'<span class="none">No one yet</span>')
+    +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':'')+'</span>'
+    +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="Change who is on this job">Change</button>':'')+'</div>';
+  return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+jBar(F)+'</div>';
 }
+// More (⋮): the occasional things, out of the way of the one action (Design 21.1).
+function jMoreSheet(){
+  const j=jobById(st.form.id); if(!j) return ''; const S0=jState(j), fl=S0.fl, n=holders(j).length;
+  const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +(S0.canPause?v('jobPause','pause','Pause the Job','Reason optional'):'')
+    +v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged')
+    +(fl?v('jobUnflag','unflag','Remove the Flag',''):'')
+    +(S0.canAsg?v('jobAssign','users','Change Who Is on It',n?n+' on it':'No one on it yet'):'')
+    +'</div><div style="height:24px"></div></div>';
+}
+// The kind of entry (DEC-0307 rule 2), chosen from the tag in the message bar.
+function jKindSheet(){
+  const F=st.form;
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Kind of entry"><div class="sh"><b>Kind of Entry</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<div class="opts" role="radiogroup" aria-label="Kind of entry">'+WFM_CAPTURE_SHAPE.msgKinds.map(k=>'<button class="opt'+(F.kind===k?' on':'')+'" role="radio" aria-checked="'+(F.kind===k)+'" data-act="jkind" data-v="'+esc(k)+'"><span class="rad"></span><span class="m">'+esc(k)+'</span></button>').join('')+'</div><div style="height:24px"></div></div>';
+}
+// A photo full screen (21.6), from the strip or the conversation.
+function vPhoto(){
+  const P=st.pv, s=P.u||(_ph[P.n]&&_ph[P.n]!=='loading'&&_ph[P.n]!=='missing'?_ph[P.n]:'');
+  return '<div class="pv" role="dialog" aria-modal="true" aria-label="Photo"><div><button class="ib" data-act="pvClose" aria-label="Close the photo">'+I.close+'</button></div>'
+    +(s?'<img src="'+s+'" alt="A photo on this job">':'<p class="para">The photo is not on this phone yet.</p>')+'</div>';
+}
+// ── Voice notes (P6; DEC-0318 rule 4, DEC-0319 rule 2) ────────────────────────────────────────
+// Hold the microphone to record, up to two minutes; let go to see the words, check them and send. A short press records
+// without holding, and send stops it. Slide left, or press ×, to throw it away. The phone's own speech recognition
+// writes the words as it records; where there is none, a line may be typed. Sent as a job note with the sound as its
+// file (audio/mp4 or audio/webm) and the words as its note.
+const SR=(()=>{ try{ if(window.parent!==window&&window.parent.wfmTestSR) return window.parent.wfmTestSR; }catch(e){} return window.SpeechRecognition||window.webkitSpeechRecognition||null; })();   // a test bench may stand in
+const _sentAudio={};
+let _hold=null, _ptrAt=0, _play={};
+const recWords=R=>(R.base+' '+R.fin+' '+R.int).replace(/\s+/g,' ').trim();
+function grow(t){ const cs=getComputedStyle(t), lh=parseFloat(cs.lineHeight)||21.6, pad=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom), bd=t.offsetHeight-t.clientHeight;
+  t.style.height='auto'; t.style.height=Math.min(t.scrollHeight+bd,Math.ceil(lh*4+pad+bd))+'px'; }
+function recUi(){
+  const bar=app.querySelector('.jbar'), R=st.rec; if(!bar) return;
+  bar.classList.toggle('r',!!R); if(!R) return;
+  const n=R.live?Math.floor((Date.now()-R.t0)/1000):0, w=recWords(R), sb=bar.querySelector('.snd');
+  bar.querySelector('.rec .t').textContent=clock(n);
+  bar.querySelector('.rec .s').textContent=_hold&&_hold.cancel?'Let go to throw it away.':!R.live?'Starting the microphone…':w?(w.length>48?'…'+w.slice(-48):w)
+    :R.tap?'Recording. Press send when done.':'Recording. Let go to check the words.';
+  if(sb) sb.setAttribute('aria-label',R.tap?'Stop and check the words':'Let go to check the words');
+}
+async function recStart(tap){
+  const F=st.form; if(!F||st.rec||st.busy) return;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){ F.err='This phone cannot record sound on this page. Write the note instead.'; return keepRender(); }
+  F.err=''; const R=st.rec={tap:tap,live:false,t0:0,base:'',fin:'',int:'',chunks:[]}; recUi();
+  let s; try{ s=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ if(st.rec===R) st.rec=null; F.err='The microphone is not allowed for this page. Allow it for this site in the phone’s settings, or write the note.'; return render(); }
+  if(st.rec!==R){ s.getTracks().forEach(t=>t.stop()); return; }   // thrown away while the phone asked
+  R.stream=s;
+  const type=['audio/mp4;codecs=mp4a.40.2','audio/mp4','audio/webm;codecs=opus','audio/webm'].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||'';
+  try{ R.mr=new MediaRecorder(s,type?{mimeType:type}:undefined); }
+  catch(e){ s.getTracks().forEach(t=>t.stop()); st.rec=null; F.err='This phone would not record sound ('+(e.message||e)+'). Write the note instead.'; return render(); }
+  R.mr.ondataavailable=ev=>{ if(ev.data&&ev.data.size) R.chunks.push(ev.data); };
+  R.mr.start(1000); R.live=true; R.t0=Date.now();
+  R.tick=setInterval(()=>{ if(Date.now()-R.t0>=WFM_CAPTURE_SHAPE.soundMaxSecs*1000) return recStop(); recUi(); },250);
+  if(SR){ try{ const r=new SR(); R.sr=r; r.lang=navigator.language||'en-IE'; r.continuous=true; r.interimResults=true;
+      r.onresult=ev=>{ let f='', i=''; for(let k=0;k<ev.results.length;k++){ const x=ev.results[k]; if(x.isFinal) f+=x[0].transcript+' '; else i+=x[0].transcript+' '; } R.fin=f; R.int=i; wordsIn(R); };
+      r.onerror=()=>{};
+      // Phones stop listening at a pause: it listens again while the recording goes on, keeping the words so far.
+      r.onend=()=>{ R.base=(R.base+' '+R.fin).trim(); R.fin=''; R.int=''; if(st.rec===R&&R.live){ try{ r.start(); }catch(x){} } };
+      r.start(); }catch(e){} }
+  recUi();
+}
+// Words that arrive while recording show in the bar; those after it ends go into the words to check, unless typed over.
+function wordsIn(R){ if(st.rec===R) return recUi(); const V=st.form&&st.form.voice; if(!V||V.r!==R||V.edited) return;
+  V.words=(R.base+' '+R.fin).replace(/\s+/g,' ').trim(); const t=document.getElementById('vwords'); if(t&&t!==document.activeElement){ t.value=V.words; grow(t); } }
+function recStop(){
+  const R=st.rec; if(!R) return;
+  if(!R.live){ R.tap=true; return recUi(); }   // still asking for the microphone: it records until send is pressed
+  R.live=false; clearInterval(R.tick);
+  const secs=Math.min(WFM_CAPTURE_SHAPE.soundMaxSecs,Math.max(1,Math.round((Date.now()-R.t0)/1000)));
+  R.mr.onstop=()=>{ R.stream.getTracks().forEach(t=>t.stop());
+    const mt=String(R.mr.mimeType||(R.chunks[0]&&R.chunks[0].type)||''), type=/mp4/.test(mt)?'audio/mp4':'audio/webm', blob=new Blob(R.chunks,{type:type});
+    if(st.rec===R) st.rec=null; const F=st.form; if(!F||st.screen!=='job') return;
+    F.voice={blob:blob,type:type,url:URL.createObjectURL(blob),secs:secs,words:recWords(R),edited:false,r:R}; render(); };
+  try{ R.mr.stop(); }catch(e){ R.mr.onstop(); }
+  if(R.sr){ try{ R.sr.stop(); }catch(e){} }   // its last words still arrive, into the words to check
+}
+function recDiscard(){
+  const R=st.rec; st.rec=null;
+  if(R){ R.live=false; clearInterval(R.tick); try{ if(R.mr&&R.mr.state!=='inactive'){ R.mr.onstop=null; R.mr.stop(); } }catch(e){}
+    if(R.stream) R.stream.getTracks().forEach(t=>t.stop()); if(R.sr){ try{ R.sr.abort(); }catch(e){} } }
+  const F=st.form; if(F&&F.voice){ if(_play.k==='r:'&&_play.a){ _play.a.pause(); _play={}; } URL.revokeObjectURL(F.voice.url); F.voice=null; }
+  render();
+}
+// A voice note's sound: yours from this phone, or the desk's copy, read once from Phone/audio/ and kept on the phone.
+const _au={};
+async function auUrl(k,type){
+  if(k==='r:') return st.form&&st.form.voice?st.form.voice.url:null;
+  if(k.indexOf('p:')===0){ const x=_sentAudio[k.slice(2)]; return x?x.url:null; }
+  if(_au[k]) return _au[k];
+  const nm=k.slice(2); let t=await phGet('a:'+nm).catch(()=>null);
+  if(!t){ try{ t=await STORE.read(WFM_SITE_SHAPE.folder+'/'+WFM_SITE_SHAPE.audio.folder+'/'+nm); }
+    catch(e){ toast(e&&e.code==='timeout'?'The desk did not answer. Try the voice note again in a moment.':'No signal: the voice note could not be fetched. Try again in a moment.'); return null; }
+    if(!t){ toast('This voice note is no longer in the desk’s copy for the phone.'); return null; }
+    phPut('a:'+nm,t).catch(()=>{}); }
+  const bin=atob(String(t).trim()), u8=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i);
+  return _au[k]=URL.createObjectURL(new Blob([u8],{type:type||'audio/mp4'}));
+}
+async function vPlay(b){
+  const k=b.dataset.k;
+  if(_play.k===k&&_play.a&&!_play.a.paused){ _play.a.pause(); return vUi(); }
+  if(_play.k===k&&_play.a){ try{ await _play.a.play(); }catch(e){} return vUi(); }
+  b.setAttribute('aria-busy','true'); const u=await auUrl(k,b.dataset.t); b.removeAttribute('aria-busy'); if(!u) return;
+  if(_play.a) _play.a.pause();
+  const a=new Audio(u); _play={k:k,a:a}; a.ontimeupdate=vUi; a.onpause=vUi; a.onended=vUi;
+  try{ await a.play(); }catch(e){ _play={}; toast('This phone cannot play this voice note. Its words are written with it.'); }
+  vUi();
+}
+// Shows, in place, which note is playing and how far it has got.
+function vUi(){
+  const P=_play;
+  app.querySelectorAll('.voice[data-k]').forEach(v=>{ const on=!!P.a&&P.k===v.dataset.k, playing=on&&!P.a.paused&&!P.a.ended, b=v.querySelector('.vp'), du=v.querySelector('.dur');
+    const want=playing?'Pause':'Play'; if(b.dataset.st!==want){ b.dataset.st=want; b.innerHTML=playing?I.pause:I.play; b.setAttribute('aria-label',want+' the voice note'); }
+    const d=Number(v.dataset.s)||(on&&isFinite(P.a.duration)?P.a.duration:0), bars=v.querySelectorAll('.wave b'), f=on&&d&&!P.a.ended?Math.min(1,P.a.currentTime/d):0, n=Math.round(f*bars.length);
+    bars.forEach((x,i)=>x.classList.toggle('on',i<n));
+    if(du) du.textContent=on&&!P.a.ended&&P.a.currentTime>0?clock(Math.floor(P.a.currentTime)):clock(v.dataset.s); });
+}
+app.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('[data-hold]'); if(!b||b.disabled||e.button>0||st.screen!=='job') return;
+  const bar=b.closest('.jbar'); if(!bar||bar.classList.contains('w')) return;
+  e.preventDefault(); _ptrAt=Date.now();
+  if(st.rec){ if(st.rec.tap) recStop(); return; }
+  try{ b.setPointerCapture(e.pointerId); }catch(x){}
+  _hold={x:e.clientX,t:Date.now(),cancel:false}; recStart(false);
+});
+app.addEventListener('pointermove',e=>{ if(!_hold||!st.rec) return; const c=e.clientX-_hold.x<-80; if(c!==_hold.cancel){ _hold.cancel=c; recUi(); } });
+function holdEnd(e){
+  if(!_hold) return; const h=_hold; _hold=null; _ptrAt=Date.now(); const R=st.rec; if(!R) return;
+  if(h.cancel) return recDiscard();
+  // A short press, a press the phone took over, or one let go before the microphone started: it records until send.
+  if(e.type==='pointercancel'||Date.now()-h.t<400||!R.live){ R.tap=true; return recUi(); }
+  recStop();
+}
+app.addEventListener('pointerup',holdEnd); app.addEventListener('pointercancel',holdEnd);
+app.addEventListener('contextmenu',e=>{ if(e.target.closest('[data-hold]')) e.preventDefault(); });
 // Flag This Job (DEC-0304, DEC-0315): the level is asked for; the reason is there when it needs saying, never required.
 function jFlagSheet(){
   const F=st.form, miss=!F.level?'Choose how soon it needs doing.':'';
@@ -1040,8 +1322,10 @@ function jAssignSheet(){
 // Sends one job update and stays on the job. Kept in wl_jobSent so the thread shows it as sent until it is filed.
 async function jobSend(act){
   const F=st.form, j=F&&jobById(F.id); if(!j||st.busy) return;
-  const fields={job:j.id,act:act}; let photos=[];
+  const V=act==='voice'?F.voice:null; if(act==='voice'&&!V) return;
+  const fields={job:j.id,act:V?'note':act}; let photos=[];
   if(act==='note'){ fields.msgKind=F.kind||'Note'; fields.note=String(F.note||'').trim(); photos=F.photos; }
+  if(V){ fields.msgKind=F.kind||'Note'; fields.note=String(V.words||'').trim(); fields.secs=V.secs; photos=[{file:new File([V.blob],'voice.'+(V.type==='audio/mp4'?'m4a':'webm'),{type:V.type})}]; }
   if(act==='flag') fields.flag={level:F.level,why:String(F.why||'').trim()};
   if(act==='done'){ fields.note=String(F.dnote||'').trim(); photos=F.dphotos||[]; }
   if(act==='pause') fields.note=String(F.pwhy||'').trim();
@@ -1051,19 +1335,19 @@ async function jobSend(act){
   try{ c=await makeCapture('job',fields,photos); }
   catch(e){ st.busy=false; st.sheet=false; F.err='Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  const s=jSent(); s.push({cap:c.id,job:j.id,act:act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length}); ls.set('wl_jobSent',s);
-  _sentPics[c.id]=photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
-  if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; }   // the kind is chosen for each entry, so a note is never filed under the last one's
+  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0}); ls.set('wl_jobSent',s);
+  _sentPics[c.id]=V?[]:photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
+  if(V){ _sentAudio[c.id]={url:V.url,secs:V.secs}; if(_play.k==='r:') _play.k='p:'+c.id; F.voice=null; F.kind='Note'; st.twEnd=true; }
+  if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; st.twEnd=true; }   // the kind is chosen for each entry, so a note is never filed under the last one's
   if(act==='done'){ F.dnote=''; F.dphotos=[]; }
   if(act==='flag'){ F.why=''; F.level=''; F.ftried=false; }
   if(act==='pause'){ F.pwhy=''; F.ptried=false; }
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
   st.sheet=false; render();
-  if(act==='note') window.scrollTo({top:document.body.scrollHeight,behavior:'instant'});
   toast(ok?'Sent':c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
 }
 // Draws the screen again keeping where the page is scrolled and what is being typed.
-function keepRender(){ const a=document.activeElement, id=a&&a.id, pos=a&&a.selectionStart, y=window.scrollY; render(); window.scrollTo({top:y,behavior:'instant'});
+function keepRender(){ if(st.rec) return; const a=document.activeElement, id=a&&a.id, pos=a&&a.selectionStart, y=window.scrollY; render(); window.scrollTo({top:y,behavior:'instant'});
   const n=id&&document.getElementById(id); if(n&&n!==document.activeElement){ n.focus({preventScroll:true}); try{ if(pos!=null) n.setSelectionRange(pos,pos); }catch(x){} } }
 function vMissed(){
   const r=roundById(st.form.id), it=r&&(SITE().due||[]).find(i=>i.round===r.id), w=it&&it.walk;
@@ -1096,6 +1380,7 @@ function vMe(){
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
     +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
     +'<p class="para">Walks come from your department, lines from the duties your position holds, jobs from the groups it belongs to, all set on the desk’s Organisation Structure.</p>'
+    +'<div class="grp">Voice notes</div><p class="para" style="padding-top:0">A voice note’s words are written by this phone’s own speech recognition as you speak, and you check them before sending. On Android the phone sends the sound to Google to do it; on an iPhone it may stay on the phone. '+(SR?'':'This phone has no speech recognition here, so a line can be typed instead. ')+'Notes are up to <span class="n">2</span> minutes.</p>'
     +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
 // ── Send Proof: photo first, then what it is (DEC-0286 rule 3) ───────────────────────────────
@@ -1409,12 +1694,14 @@ function after(){
   if(st.scanFor&&!st.scanFor.started){ st.scanFor.started=true; scanStart(); }
   if(st.screen==='job'){ const j=st.form&&jobById(st.form.id); if(j) phLoad([].concat(j.photos||[],...(j.thread||[]).map(e=>e.photos||[]))); }
   if(st.screen==='jobs') phLoad(jobsShown().map(j=>(j.photos||[])[0]).filter(Boolean));
+  if(st.screen==='job'){ ['jnote','vwords'].forEach(id=>{ const t=document.getElementById(id); if(t) grow(t); }); vUi(); if(st.rec) recUi(); }
 }
 function scanClose(){ scanStop(); st.scanFor=null; render(); }
 document.addEventListener('keydown',e=>{
+  if(st.pv&&e.key==='Escape'){ e.preventDefault(); st.pv=null; return render(); }
   const sh=app.querySelector('.sheet');
   if(sh&&!app.querySelector('.scan')){
-    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jflag:'[data-act="jobFlag"]',jdone:'[data-act="jobDone"]',jpause:'[data-act="jobPause"]',jassign:'[data-act="jobAssign"]'}[was]||'.nv.cap'); if(f) f.focus(); return; }
+    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobDone"]',jkinds:'.jbar .ktag'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
     if(e.key==='Tab'){ const f=[...sh.querySelectorAll('button:not([disabled]),textarea,input')]; if(!f.length) return; const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1); e.preventDefault(); f[n].focus(); }
     return;
   }
@@ -1491,7 +1778,18 @@ app.addEventListener('click',async e=>{
   if(a==='pickDuty'){ F.duty=b.dataset.id; F.dq=''; return render(); }
   if(a==='dutyClear'){ F.duty=''; return render(); }
   // A job's actions (P4): each is a capture of kind job, filed on the desk by wfmCapApplyJobUpdate.
-  if(a==='jkind'){ F.kind=b.dataset.v; return keepRender(); }
+  if(a==='jkind'){ F.kind=b.dataset.v; st.sheet=false; render(); const t=app.querySelector('.jbar .ktag'); if(t) t.focus(); return; }
+  // P6: the kind tag, More, a photo full screen, the microphone and send, a voice note played, checked, sent or thrown away.
+  if(a==='jkinds'){ st.sheet='jkinds'; render(); const v=app.querySelector('.sheet .opt.on')||app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
+  if(a==='jmore'){ st.sheet='jmore'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
+  if(a==='pvOpen'){ st.pv=b.dataset.cap?{u:(_sentPics[b.dataset.cap]||[])[Number(b.dataset.i)]}:{n:b.dataset.n}; render(); const c=app.querySelector('.pv .ib'); if(c) c.focus(); return; }
+  if(a==='pvClose'){ st.pv=null; render(); return; }
+  if(a==='sndPress'){ if(Date.now()-_ptrAt<700) return;   // a press the microphone's own handlers took
+    if(b.closest('.jbar.w')){ if(!String(F.note||'').trim()&&!F.photos.length) return; return jobSend('note'); }
+    return st.rec?recStop():recStart(true); }
+  if(a==='vplay') return vPlay(b);
+  if(a==='vdiscard') return recDiscard();
+  if(a==='vsend'){ if(Date.now()-_ptrAt<700) return; return jobSend('voice'); }   // never the press that stopped the recording
   if(a==='jobSend'){ if(!String(F.note||'').trim()&&!F.photos.length){ F.err='Write something or add a photo, then send.'; keepRender(); const t=document.getElementById('jnote'); if(t) t.focus(); return; } return jobSend('note'); }
   if(a==='jobStart') return jobSend('start');
   if(a==='jobUnflag') return jobSend('unflag');
@@ -1547,7 +1845,11 @@ app.addEventListener('change',e=>{
 // Fields that live inside the form's parts: the tag that will not scan, a No's sentence.
 function special(k,el){
   const F=st.form;
-  if(st.screen==='job'&&(k==='note'||k==='why'||k==='dnote')){ F[k]=el.value; return true; }
+  if(st.screen==='job'&&(k==='note'||k==='why'||k==='dnote')){ F[k]=el.value;
+    // The microphone becomes send once something is written, and the kind moves above the field (P6).
+    if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
+    return true; }
+  if(st.screen==='job'&&k==='vwords'&&F.voice){ F.voice.words=el.value; F.voice.edited=true; grow(el); return true; }
   if(k==='pid'){ F.pid=el.value; const p=PEOPLE().find(x=>x.id===el.value);
     if(p){ F.name=p.name; if(positions().some(x=>x.id===p.position)) F.pos=p.position; } else if(el.value==='__other'||!el.value) F.name='';
     render(); return true; }
@@ -1570,7 +1872,7 @@ async function siteRefresh(){
   if(!st.site||st.site.published===was) return;
   jSentPrune();
   const a=document.activeElement;
-  if(st.sheet||st.scanFor||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
+  if(st.sheet||st.scanFor||st.rec||st.pv||(st.form&&st.form.voice)||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
   const y=window.scrollY; render(); window.scrollTo(0,y);
 }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ retry(); siteRefresh(); } });

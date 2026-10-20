@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v480.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v481.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -14,7 +14,7 @@ const WFM_CAPTURE_SHAPE={
     job:        {direction:'operational', label:'Job update'}
   },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','device','files','round','started','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign'],
+  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','device','files','round','started','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs'],
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
   photoSays:'This photo proves who was there, where and when, and nothing else.',
@@ -23,6 +23,9 @@ const WFM_CAPTURE_SHAPE={
   jobActs:['note','flag','unflag','start','done','pause','restart','assign'],
   // What a person writes on a job's thread (DEC-0307 rule 2). The desk writes the other kinds as it changes the job.
   msgKinds:['Note','Handover','Investigation','Parts needed','Resident said'],
+  // A voice note (P6; DEC-0317 rule 3, DEC-0318 rule 4, DEC-0319 rule 2): one sound file on a job note, of these types,
+  // up to soundMaxSecs long, its length in secs. A note sent with no words is filed with noWords, never blank.
+  sounds:['audio/mp4','audio/webm'], soundMaxSecs:120, noWords:'Voice note, no words given',
   deskKinds:['Raised','Flagged','Assigned','Started','Paused','Restarted','Done'],
   // A flag's level, in order (DEC-0304): words, never a colour. What each means in time is John's to rule (rule 4).
   flagLevels:[{id:'urgent',label:'Urgent'},{id:'asap',label:'As soon as possible'},{id:'week',label:'This week'},{id:'able',label:'When able'},{id:'planned',label:'When planned'}]
@@ -38,6 +41,9 @@ const WFM_SITE_SHAPE={
   // Small copies of open jobs' photos for the phone (DEC-0305, DEC-0308 rule 4): base64 JPEG text in
   // Phone/photos/, long edge 480px, kept 7 days after the job is done. The site file names them per job.
   photos:{folder:'photos', edge:480, type:'image/jpeg', ext:'.b64', keepDays:7},
+  // Open jobs' voice notes for the phone (P6), as the photos are: the sound as base64 text in Phone/audio/, named per
+  // entry in the thread with its type and length.
+  audio:{folder:'audio', ext:'.b64', keepDays:7},
   // A job's thread on the phone: its last entries, oldest first (DEC-0307 rule 2).
   threadMax:30
 };
