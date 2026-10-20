@@ -334,7 +334,12 @@ function relayStore(){
   return {
     account:async()=>null,
     add:async(path,blob)=>{ await call({op:'add',path:path,type:blob.type||'',data:await b64(blob)}); },
-    read:async path=>{ try{ return (await call({op:'read',path:path})).text; }catch(e){ if(e.code==='missing') return null; throw e; } }
+    // A read gives up after 20 seconds, so a relay that does not answer never holds the page on "Reading the site
+    // details": it opens on the copy kept on this phone and says the desk could not be reached (DEC-0287 rule 3).
+    read:async path=>{ let t;
+      try{ return (await Promise.race([call({op:'read',path:path}),new Promise((_,no)=>{ t=setTimeout(()=>{ const e=new Error('The site’s relay did not answer in 20 seconds'); e.code='timeout'; no(e); },20000); })])).text; }
+      catch(e){ if(e.code==='missing') return null; throw e; }
+      finally{ clearTimeout(t); } }
   };
 }
 const STORE=testStore()||relayStore();
