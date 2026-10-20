@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v475.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v479.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -14,15 +14,16 @@ const WFM_CAPTURE_SHAPE={
     job:        {direction:'operational', label:'Job update'}
   },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','device','files','round','started','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag'],
+  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','device','files','round','started','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign'],
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
   photoSays:'This photo proves who was there, where and when, and nothing else.',
-  // What a job update does (P3).
-  jobActs:['note','flag','unflag','start','done'],
+  // What a job update does (P3). P5 (DEC-0311, DEC-0314): pause carries its reason in note; assign carries
+  // assign:{on:[person ids],off:[person ids]}.
+  jobActs:['note','flag','unflag','start','done','pause','restart','assign'],
   // What a person writes on a job's thread (DEC-0307 rule 2). The desk writes the other kinds as it changes the job.
   msgKinds:['Note','Handover','Investigation','Parts needed','Resident said'],
-  deskKinds:['Raised','Flagged','Assigned','Started','Done'],
+  deskKinds:['Raised','Flagged','Assigned','Started','Paused','Restarted','Done'],
   // A flag's level, in order (DEC-0304): words, never a colour. What each means in time is John's to rule (rule 4).
   flagLevels:[{id:'urgent',label:'Urgent'},{id:'asap',label:'As soon as possible'},{id:'week',label:'This week'},{id:'able',label:'When able'},{id:'planned',label:'When planned'}]
 };
