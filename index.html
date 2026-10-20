@@ -916,7 +916,7 @@ const pName=id=>{ const p=PEOPLE().find(x=>x.id===id); return p?p.name:id; };
 function pendText(x){ if(x.act==='note') return x.note; if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
   if(x.act==='pause') return 'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'); if(x.act==='restart') return 'Restarted.';
   if(x.act==='assign'){ const a=x.assign||{on:[],off:[]}; return [(a.on||[]).length?'Put on: '+a.on.map(pName).join(', ')+'.':'',(a.off||[]).length?'Taken off: '+a.off.map(pName).join(', ')+'.':''].filter(Boolean).join(' '); }
-  if(x.act==='flag') return flagLabel(x.flag)+': '+((x.flag&&x.flag.why)||'')+'.'; return 'Remove the flag.'; }
+  if(x.act==='flag'){ const w=String((x.flag&&x.flag.why)||'').trim(); return flagLabel(x.flag)+(w?': '+w+(/[.!?]$/.test(w)?'':'.'):'.'); } return 'Remove the flag.'; }
 const dayLab=t=>{ const d=new Date(t); if(isNaN(d)) return ''; const k=d.toDateString(); return k===new Date().toDateString()?'Today':k===new Date(Date.now()-864e5).toDateString()?'Yesterday':day(d); };
 function jThread(j,pend){
   const hero=(j.photos||[])[0], th=j.thread||[];
@@ -988,12 +988,12 @@ function vJob(){
     +(j.photosNotCopied?f('Photos',esc(plural(j.photosNotCopied,'photo'))+' on the desk only. The desk copies photos for the phone each time it publishes.'):'')+'</div>'
     +grp('Conversation',(j.thread||[]).length+pend.length)+jThread(j,pend)+'<div style="height:16px"></div></div>'+jCompose(F);
 }
-// Flag This Job (DEC-0304): the five levels and a reason, both asked for, as on the desk.
+// Flag This Job (DEC-0304, DEC-0315): the level is asked for; the reason is there when it needs saying, never required.
 function jFlagSheet(){
-  const F=st.form, miss=!F.level?'Choose how soon it needs doing.':!String(F.why||'').trim()?'Say why it is flagged.':'';
+  const F=st.form, miss=!F.level?'Choose how soon it needs doing.':'';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Flag this job"><div class="sh"><b>Flag This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<div class="grp">How soon</div><div class="opts" role="radiogroup" aria-label="How soon">'+WFM_CAPTURE_SHAPE.flagLevels.map(l=>'<button class="opt'+(F.level===l.id?' on':'')+'" role="radio" aria-checked="'+(F.level===l.id)+'" data-act="jlevel" data-v="'+esc(l.id)+'"><span class="rad"></span><span class="m">'+esc(l.label)+'</span></button>').join('')+'</div>'
-    +'<div class="field"><label for="why">Why</label><textarea id="why" data-in="why">'+esc(F.why||'')+'</textarea><div class="help">A flagged job sits at the top of Jobs with its level, your reason and your name.</div></div>'
+    +'<div class="field"><label for="why">Why <span class="opt-w">(optional)</span></label><textarea id="why" data-in="why">'+esc(F.why||'')+'</textarea><div class="help">A flagged job sits at the top of Jobs with its level, your reason and your name.</div></div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobFlagSend"'+(st.busy?' disabled':'')+'>'+I.flag+'Flag the Job</button>'
     +(F.ftried&&miss?'<div class="help err" role="alert" style="margin:0">'+esc(miss)+'</div>':'')+'</div></div>';
 }
@@ -1503,7 +1503,7 @@ app.addEventListener('click',async e=>{
     if(!on.length&&!off.length){ F.atried=true; render(); return; } F.asgSend={on:on,off:off}; return jobSend('assign'); }
   if(a==='jobFlag'){ const j=jobById(F.id); if(j&&j.flag){ if(!F.level) F.level=j.flag.level; if(!F.why) F.why=j.flag.why||''; } F.ftried=false; st.sheet='jflag'; render(); const v=app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jlevel'){ F.level=b.dataset.v; render(); const v=app.querySelector('.sheet .opt.on'); if(v) v.focus(); return; }
-  if(a==='jobFlagSend'){ if(!F.level||!String(F.why||'').trim()){ F.ftried=true; render(); const t=F.level?document.getElementById('why'):app.querySelector('.sheet .opt'); if(t) t.focus(); return; } return jobSend('flag'); }
+  if(a==='jobFlagSend'){ if(!F.level){ F.ftried=true; render(); const t=app.querySelector('.sheet .opt'); if(t) t.focus(); return; } return jobSend('flag'); }
   if(a==='dphotoDel'){ const p=F.dphotos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
   if(a==='send') return doSend();
 });
@@ -1557,8 +1557,21 @@ function walkKeep(F){ const o=Object.assign({},F); o.photos=[]; o.u=null; o.unsc
 // A capture that could not be sent is sent again by itself until it is (DEC-0291 rule 2).
 async function retry(){ if(!st.outbox.length||st.busy||navigator.onLine===false) return; const before=st.outbox.length; await sendKept(); if(st.outbox.length<before){ toast(st.outbox.length?'Sent '+(before-st.outbox.length)+'; '+st.outbox.length+' still waiting':'Sent'); } if(!st.form||['due','me','job'].indexOf(st.screen)>=0) keepRender(); }
 window.addEventListener('online',retry);
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') retry(); });
+// The desk's file is read again while the page is open: every minute and on coming back to it, so what was sent turns
+// into what the desk filed without closing the app (John, 20 Oct 2026). Never redrawn under a sheet, the scanner or a
+// field in use: the new file is kept and the next screen draws it.
+async function siteRefresh(){
+  if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup') return;
+  const was=st.site&&st.site.published; await loadSite();
+  if(!st.site||st.site.published===was) return;
+  jSentPrune();
+  const a=document.activeElement;
+  if(st.sheet||st.scanFor||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
+  const y=window.scrollY; render(); window.scrollTo(0,y);
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ retry(); siteRefresh(); } });
 setInterval(retry,60000);
+setInterval(siteRefresh,60000);
 
 async function doSend(){
   const F=st.form; if(st.busy) return;
@@ -1634,7 +1647,7 @@ async function boot(){
   home();
 }
 // For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
-if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render};
+if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh};
 // Keeps the page itself on the phone so it opens with no signal (DEC-0287 rule 3). Not in the check.
 if('serviceWorker' in navigator&&!testStore()&&location.protocol==='https:') navigator.serviceWorker.register('sw.js').catch(()=>{});
 boot();
