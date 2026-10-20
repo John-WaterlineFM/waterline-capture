@@ -1,8 +1,8 @@
 // Keeps the phone page itself on the phone, so it opens with no signal (Work 015 P2; DEC-0287 rule 3).
 // Network first: a fresh page whenever there is signal, the kept copy when there is none. Only this
 // site's own files are kept; the relay (Google) and captures are never cached here.
-const KEEP = 'waterline-phone-1';
-const FILES = ['./', 'index.html', 'shapes.js', 'manifest.webmanifest', 'push/icon-192.png', 'push/icon-512.png'];
+const KEEP = 'waterline-phone-2';
+const FILES = ['./', 'index.html', 'shapes.js', 'manifest.webmanifest', 'push/icon-192.png', 'push/icon-512.png', 'waterline-logo.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(KEEP).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== KEEP).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
