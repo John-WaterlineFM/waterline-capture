@@ -43,6 +43,7 @@ input{width:100%;min-height:48px;font-size:16px;padding:0 12px;border:1px solid 
   <input id="name" autocomplete="name" placeholder="So the desk knows whose phone this is">
   <button class="btn" id="on">Turn On Alerts</button>
   <button class="btn g" id="test" disabled>Send Me a Test Alert</button>
+  <a class="btn g" id="back" href="../" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Open Waterline</a>
   <div class="log" id="log"></div>
 </main>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -88,7 +89,7 @@ async function turnOn(){
     const r=await relay({op:'pushRegister',token:token,name:name,role:'test'});
     if(!r.ok){ say('amber','The relay did not keep it',r.why); return; }
     localStorage.setItem('wl_pushToken',token);
-    say('ok','Alerts are on','Now press Send Me a Test Alert and lock the phone straight away. It should buzz within a minute.');
+    say('ok','Alerts are on','Now press Send Me a Test Alert and lock the phone straight away. It should buzz within a minute. Then Open Waterline.');
     $('test').disabled=false;
   }catch(e){ log('error: '+(e&&e.message||e)); say('amber','Turning on failed',String(e&&e.message||e)); }
   finally{ $('on').disabled=false; }
