@@ -1,21 +1,13 @@
-// The alerts test's background worker (Work 015, DEC-0288 rule 2). It shows an alert that
-// arrives while the app is closed, and opens the Waterline app (not this test page) when the alert is tapped.
-// The badge is the Waterline mark (its blocks and the waterline cut as clear gaps), white on clear: Android draws
-// the status-bar icon from its shape only, and the site's arch read as a mess at that size (John, 21 Oct 2026).
-self.addEventListener('install', () => self.skipWaiting());
-self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-self.addEventListener('push', e => {
-  let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) {}
-  const n = d.notification || {};
-  e.waitUntil(self.registration.showNotification(n.title || 'Waterline', {
-    body: n.body || '', icon: 'icon-192.png', badge: 'badge-96.png', data: {link: (d.fcmOptions && d.fcmOptions.link) || '../'}
-  }));
-});
-self.addEventListener('notificationclick', e => {
-  e.notification.close();
-  const link = new URL((e.notification.data && e.notification.data.link) || '../', self.registration.scope).href;
-  e.waitUntil(self.clients.matchAll({type: 'window', includeUncontrolled: true}).then(ws => {
-    for (const w of ws) if (w.url.split('?')[0] === link.split('?')[0] && 'focus' in w) return w.focus();
-    return self.clients.openWindow(link);
-  }));
+// Keeps the phone page itself on the phone, so it opens with no signal (Work 015 P2; DEC-0287 rule 3).
+// Network first: a fresh page whenever there is signal, the kept copy when there is none. Only this
+// site's own files are kept; the relay (Google) and captures are never cached here.
+const KEEP = 'waterline-phone-2';
+const FILES = ['./', 'index.html', 'shapes.js', 'manifest.webmanifest', 'push/icon-192.png', 'push/icon-512.png', 'waterline-logo.png'];
+self.addEventListener('install', e => { e.waitUntil(caches.open(KEEP).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
+self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== KEEP).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener('fetch', e => {
+  const u = new URL(e.request.url);
+  if (e.request.method !== 'GET' || u.origin !== location.origin) return;
+  e.respondWith(fetch(e.request).then(r => { if (r.ok) { const c = r.clone(); caches.open(KEEP).then(k => k.put(e.request, c)); } return r; })
+    .catch(() => caches.match(e.request, { ignoreSearch: true }).then(r => r || caches.match('index.html'))));
 });
