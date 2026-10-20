@@ -919,7 +919,7 @@ function jSentPrune(){ if(!st.site) return; const wk=Date.now()-7*864e5, out=new
 const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned'};
 const pName=id=>{ const p=PEOPLE().find(x=>x.id===id); return p?p.name:id; };
 function pendText(x){ if(x.act==='note') return x.note; if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
-  if(x.act==='pause') return 'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'); if(x.act==='restart') return 'Restarted.';
+  if(x.act==='pause') return x.note?'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'):'Paused.'; if(x.act==='restart') return 'Restarted.';
   if(x.act==='assign'){ const a=x.assign||{on:[],off:[]}; return [(a.on||[]).length?'Put on: '+a.on.map(pName).join(', ')+'.':'',(a.off||[]).length?'Taken off: '+a.off.map(pName).join(', ')+'.':''].filter(Boolean).join(' '); }
   if(x.act==='flag'){ const w=String((x.flag&&x.flag.why)||'').trim(); return flagLabel(x.flag)+(w?': '+w+(/[.!?]$/.test(w)?'':'.'):'.'); } return 'Remove the flag.'; }
 const dayLab=t=>{ const d=new Date(t); if(isNaN(d)) return ''; const k=d.toDateString(); return k===new Date().toDateString()?'Today':k===new Date(Date.now()-864e5).toDateString()?'Yesterday':day(d); };
@@ -963,7 +963,7 @@ function vJob(){
   const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.note,x:pPR}:j.paused):null;
   const pzAt=pz&&!isNaN(Date.parse(pz.at))?' at <b class="n">'+esc(hm(pz.at))+'</b>'+(dayLab(pz.at)==='Today'?'':', '+esc(dayLab(pz.at))):'';
   const pzWhy=String(pz&&pz.why||'').trim(), pzMe=pz&&(pz.x||(!!st.walker&&nk(pz.by)===nk(st.walker)));
-  const pzLine=pz?'<p>Paused by <b>'+(pzMe?'you':esc(pz.by||'someone not named'))+'</b>'+pzAt+'. '+(pzWhy?esc(pzWhy+(/[.!?]$/.test(pzWhy)?'':'.')):'No reason was given.')+(pz.x?' '+sent(pz.x):'')+'</p>':'';
+  const pzLine=pz?'<p>Paused by <b>'+(pzMe?'you':esc(pz.by||'someone not named'))+'</b>'+pzAt+'. '+(pzWhy?esc(pzWhy+(/[.!?]$/.test(pzWhy)?'':'.')):'')+(pz.x?' '+sent(pz.x):'')+'</p>':'';
   let act;
   if(pD) act='<p>You marked it done at <b class="n">'+esc(hm(pD.at))+'</b>. '+sent(pD)+'</p>';
   else if(!meP()) act=pzLine+'<p>Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.</p>';
@@ -1013,13 +1013,12 @@ function jDoneSheet(){
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobDoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Mark Done and Send</button>'
     +(F.dphotos.length?'':'<span class="sub" style="margin:0">With no photo, the job’s record says none was taken.</span>')+'</div></div>';
 }
-// Pause the Job (DEC-0311, DEC-0314 rule 1): a reason, asked for, with a label above the field (Design 9.6).
+// Pause the Job (DEC-0311, DEC-0316): a reason offered, never required, with a label above the field (Design 9.6).
 function jPauseSheet(){
-  const F=st.form, miss=!String(F.pwhy||'').trim();
+  const F=st.form;
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Pause the job"><div class="sh"><b>Pause the Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +'<div class="field"><label for="pwhy">Why it is paused</label><textarea id="pwhy" data-in="pwhy">'+esc(F.pwhy||'')+'</textarea>'
-    // An error replaces the help line, never adds a second (Design 9.6).
-    +(F.ptried&&miss?'<div class="help err" role="alert">Say why it is paused.</div>':'<div class="help">The job stays in progress. Your reason, your name and the time go on it.</div>')+'</div>'
+    +'<div class="field"><label for="pwhy">Why it is paused <span class="opt-w">(optional)</span></label><textarea id="pwhy" data-in="pwhy">'+esc(F.pwhy||'')+'</textarea>'
+    +'<div class="help">The job stays in progress. Your name and the time go on it, and your reason if you give one.</div></div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobPauseSend"'+(st.busy?' disabled':'')+'>'+I.pause+'Pause the Job</button>'
     +'</div></div>';
 }
@@ -1500,7 +1499,7 @@ app.addEventListener('click',async e=>{
   if(a==='jobDoneSend') return jobSend('done');
   // Pause, Restart and Change on Assigned (P5). The desk checks the group and the reason again as it files them.
   if(a==='jobPause'){ F.ptried=false; st.sheet='jpause'; render(); const v=document.getElementById('pwhy'); if(v) v.focus(); return; }
-  if(a==='jobPauseSend'){ if(!String(F.pwhy||'').trim()){ F.ptried=true; render(); const t=document.getElementById('pwhy'); if(t) t.focus(); return; } return jobSend('pause'); }
+  if(a==='jobPauseSend') return jobSend('pause');   // the reason is optional (DEC-0316)
   if(a==='jobRestart') return jobSend('restart');
   if(a==='jobAssign'){ const j=jobById(F.id); F.asg=j?asgNow(j):[]; F.atried=false; st.sheet='jassign'; render(); const v=app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jasg'){ const v0=b.dataset.v, i=F.asg.indexOf(v0); if(i>=0) F.asg.splice(i,1); else F.asg.push(v0); render(); const v=app.querySelector('.sheet .opt[data-v="'+CSS.escape(v0)+'"]'); if(v) v.focus(); return; }

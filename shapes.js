@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v479.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v480.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
