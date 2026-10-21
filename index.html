@@ -148,10 +148,16 @@ svg{width:24px;height:24px;flex:none;display:block}
 .field{padding:16px 16px 0}
 .field>label,.field>.fl{display:block;font:600 12px Outfit;color:var(--text);margin-bottom:8px}
 .field .opt-w{color:var(--textMuted)}
-textarea,input[type=text],input[type=url],input[type=search],select{width:100%;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:12px;font-size:16px;line-height:1.4;min-height:48px;color:var(--text)}
+textarea,input[type=text],input[type=url],input[type=search],input[type=number],input[type=time],select{width:100%;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:12px;font-size:16px;line-height:1.4;min-height:48px;color:var(--text)}
 textarea{min-height:96px;resize:vertical}
 ::placeholder{color:var(--textMuted);opacity:1}
 .help{font-size:12px;line-height:1.4;color:var(--textMuted);margin-top:8px}
+/* parts used (W): a line is the thing and how many */
+.pl{display:flex;gap:8px;align-items:flex-end;padding:8px 16px 0}
+.pl .w{flex:1;min-width:0}
+.pl .q{width:96px;flex:none}
+.pl .fl{display:block;font:600 12px Outfit;color:var(--text);margin-bottom:8px}
+.sheet .para{padding:0 16px}
 .help.err{color:var(--text)}
 .inrow{display:flex;gap:8px}
 .inrow input{flex:1;min-width:0}
@@ -402,7 +408,7 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=10a819c318"></script>
+<script src="shapes.js?v=10a727c3a6"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -513,10 +519,12 @@ const LUCIDE={
   'users':'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   'chevron-down':'<path d="m6 9 6 6 6-6"/>',
   'pencil':'<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
+  'shield-check':'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  'package':'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>',
   'trash-2':'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
 };
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2')};
+const I={close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -693,7 +701,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
@@ -1031,10 +1039,11 @@ function jPending(j){
 // Kept a week at most; gone once filed, or once its job has left the site file and it has left the outbox.
 function jSentPrune(){ if(!st.site) return; const wk=Date.now()-7*864e5, out=new Set(st.outbox.map(c=>c.id));
   ls.set('wl_jobSent',jSent().filter(x=>{ const j=jobById(x.job); return Date.parse(x.at)>wk&&(j?jPending(j).some(y=>y.cap===x.cap):out.has(x.cap)); })); }
-const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned'};
+const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned',parts:'Parts used',permit:'Permit'};
 const pName=id=>{ const p=PEOPLE().find(x=>x.id===id); return p?p.name:id; };
 function pendText(x){ if(x.act==='note') return x.note||(x.au?WFM_CAPTURE_SHAPE.noWords:''); if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
   if(x.act==='pause') return x.note?'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'):'Paused.'; if(x.act==='restart') return 'Restarted.';
+  if(x.act==='parts') return partsWords(x.parts); if(x.act==='permit') return 'Applied for a permit to work: '+(x.types||[]).join(', ')+'.';
   if(x.act==='assign'){ const a=x.assign||{on:[],off:[]}; return [(a.on||[]).length?'Put on: '+a.on.map(pName).join(', ')+'.':'',(a.off||[]).length?'Taken off: '+a.off.map(pName).join(', ')+'.':''].filter(Boolean).join(' '); }
   if(x.act==='flag'){ const w=String((x.flag&&x.flag.why)||'').trim(); return flagLabel(x.flag)+(w?': '+w+(/[.!?]$/.test(w)?'':'.'):'.'); } return 'Remove the flag.'; }
 const dayLab=t=>{ const d=new Date(t); if(isNaN(d)) return ''; const k=d.toDateString(); return k===new Date().toDateString()?'Today':k===new Date(Date.now()-864e5).toDateString()?'Yesterday':day(d); };
@@ -1051,11 +1060,13 @@ function jState(j){
   return {pend:pend,pS:pS,pD:pD,fl:fl,doing:doing,pPR:pPR,paused:paused,canPause:!pD&&!!meP()&&inGroup(j)&&doing&&!paused,canAsg:!pD&&!!meP()&&(inGroup(j)||isFM(myOwnPos()))};
 }
 // What the desk wrote as a job changed, as one small line across the middle (DEC-0307 rule 2): "Started by you".
-const EVK={Started:'play',Restarted:'play',Paused:'pause',Assigned:'users',Flagged:'flag',Done:'check'};
+const EVK={Started:'play',Restarted:'play',Paused:'pause',Assigned:'users',Flagged:'flag',Done:'check','Safety check':'shield-check','Parts used':'package',Permit:'file-check'};
 function evWords(kind,text,by){ const t=String(text||'').trim();
   if(kind==='Flagged'){ if(/^(Flag removed|Remove the flag)/i.test(t)) return 'Flag removed by '+by; if(/^Asked/.test(t)) return t.replace(/\.$/,'')+', by '+by;
     const m=/^([^:.]+)[:.]?\s*(.*)$/.exec(t)||['',t,'']; return 'Flagged '+m[1]+' by '+by+(m[2]?'. '+m[2].replace(/\.$/,''):''); }
   if(kind==='Assigned') return t.replace(/\.$/,'')+', by '+by;
+  // A permit line names who issued or refused it; an application is said as who applied (W).
+  if(kind==='Permit') return /^Permit (issued|refused) by /.test(t)?t.replace(/\.$/,''):(by==='you'?'You':by)+' '+t.charAt(0).toLowerCase()+t.slice(1).replace(/\.$/,'');
   const rest=t.replace(new RegExp('^'+kind+'[:.]?\\s*'),'').trim();
   return kind+' by '+by+(rest?'. '+rest.replace(/\.$/,''):''); }
 // A voice note in its bubble: play, a waveform drawn the same for every note (it shows how far it has played, not the
@@ -1124,13 +1135,19 @@ function vJob(){
     if(sx) ss=(sx.act==='restart'?'You restarted it at ':'You started it at ')+hm(sx.at)+'. '+sent(sx);
     else { const se=(j.thread||[]).filter(x=>(x.kind==='Started'||x.kind==='Restarted')&&!isNaN(Date.parse(x.at))).pop(); if(se) ss=se.kind+' by '+youOr(se.by)+', '+at2(se.at); } }
   else { sw='To do'; const r=(j.thread||[]).find(x=>x.kind==='Raised'&&!isNaN(Date.parse(x.at))); ss=r?'Raised'+(r.by?' by '+youOr(r.by):'')+', '+at2(r.at):(j.raised?'Raised '+jAge(j):''); }
+  // Its permits (W; DEC-0313 rule 3): one applied for and not issued holds Start back.
+  const pms=j.permits||[], pPm=pend.find(x=>x.act==='permit'), pmWait=pms.filter(p=>p.state==='Requested'), pmOn=pms.filter(p=>p.state==='Active');
+  const pmRef=pms.filter(p=>p.state==='Cancelled'&&p.why!=null&&p.by).pop();
+  const waitT=pmWait.map(p=>p.type).concat(pPm?(pPm.types||[]).filter(t=>!pmWait.some(p=>p.type===t)):[]);
   // The one action (Design 9.1), for the people in the job's group (DEC-0308 rule 3).
   let btn=null, why='';
   if(!pD){
     if(!meP()) why='Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.';
     else if(!inGroup(j)) why=(paused?'Restart':'Start, Pause')+' and Mark Done are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
+    else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' The desk issues it; '+(paused?'Restart':'Start the Job')+' comes back here once it does.';
     else btn=paused?['jobRestart','play','Restart']:doing?['jobDone','tick','Mark Done']:['jobStart','play','Start the Job'];
   }
+  const pmSay=pmOn.map(p=>'Permit to work, '+p.type.toLowerCase()+': issued'+(p.by?' by '+youOr(p.by):'')+'.').concat(pmRef&&!pmOn.length&&!waitT.length?['Permit to work, '+pmRef.type.toLowerCase()+': refused by '+youOr(pmRef.by)+(pmRef.why?'. '+pmRef.why.replace(/\.$/,''):'')+'.']:[]).join(' ');
   const due=j.due?'Fell due '+when(j.due)+(e&&!a?', its time runs to '+when(j.end):''):'';
   const zone='<div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(GROUP(j.group))+(j.no?' · Job <span class="mono">'+esc(j.no)+'</span>':'')+'</span>'
       +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>'
@@ -1139,7 +1156,7 @@ function vJob(){
     +(fl?'<div class="jfl">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.why?'. '+esc(fl.why):'')+'</span></div>':'')
     +'<div class="zact"><div class="jst"><b>'+esc(sw)+'</b>'+(ss?'<span>'+esc(ss)+'</span>':'')+'</div>'
     +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'
-    +(due?'<p class="jwhy">'+esc(due)+'</p>':'')+(why?'<p class="jwhy">'+esc(why)+'</p>':'')+'</div>';
+    +(due?'<p class="jwhy">'+esc(due)+'</p>':'')+(pmSay?'<p class="jwhy">'+esc(pmSay)+'</p>':'')+(why?'<p class="jwhy">'+esc(why)+'</p>':'')+'</div>';
   // The photos not in the conversation, shown once (Design 4.11): those it was raised with, and any no entry carries.
   const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
   const sp=(j.photos||[]).filter(n=>!inThr.has(n)), inStrip=new Set(sp);
@@ -1157,6 +1174,7 @@ function jMoreSheet(){
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +(S0.canPause?v('jobPause','pause','Pause the Job','Reason optional'):'')
+    +(!S0.pD&&meP()?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged')
     +(fl?v('jobUnflag','unflag','Remove the Flag',''):'')
     +(S0.canAsg?v('jobAssign','users','Change Who Is on It',n?n+' on it':'No one on it yet'):'')
@@ -1332,8 +1350,76 @@ function jDoneSheet(){
     +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
     +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label></div></div>'
     +'<div class="field"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
+    +partsPart(F,'Used any parts or materials?')
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobDoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Mark Done and Send</button>'
+    +(F.ptried&&!partsOut(F).ok?'<div class="help err" role="alert" style="margin:0">Say what parts or materials were used, or choose None Used.</div>':'')
     +(F.dphotos.length?'':'<span class="sub" style="margin:0">With no photo, the job’s record says none was taken.</span>')+'</div></div>';
+}
+// ── Before You Start, permits and parts used (W; DEC-0313, DEC-0325) ─────────────────────────────────────────
+// The permit types a check needs, read from the shape's table; the desk's wfmCheckPermits reads the same table and
+// refuses a start whose permit is not issued, so this only decides which button the sheet shows.
+function ckPermits(ck){ if(!ck||ck.none) return []; const T=WFM_CAPTURE_SHAPE, up=(T.heightFrom||[]).find(h=>h.id===ck.from), out=[];
+  (ck.hazards||[]).forEach(h=>{ const t=(T.permitFor||{})[h.id]; if(!t||out.indexOf(t)>=0) return; if(h.id==='electricity'&&!ck.isolate) return; if(h.id==='height'&&!(up&&up.permit)) return; out.push(t); });
+  return out; }
+// The check as it is sent: the site's hazards ticked, or None of These, never neither (the desk refuses both).
+function ckOut(C){ const hz=(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).map(h=>({id:h.id,label:h.label})), k=C.kit?C.kit.split('|'):null;
+  return {none:!!C.none,hazards:hz,note:String(C.note||'').trim(),same:!!C.same,kit:k?[{reg:k[0],id:k[1]}]:[],from:C.hz.indexOf('height')>=0?C.from||'':'',isolate:C.hz.indexOf('electricity')>=0&&!!C.iso}; }
+function ckWhy(C){ if(C.none&&C.hz.length) return 'Choose the hazards here, or None of These, not both.'; if(!C.none&&!C.hz.length) return 'Tick each hazard here, or choose None of These.';
+  if(C.hz.indexOf('height')>=0&&!C.from) return 'Say what you are working at height from.'; return ''; }
+function ckMissing(j,C){ return ckPermits(ckOut(C)).filter(t=>!(j.permits||[]).some(p=>p.type===t&&p.state==='Active')); }
+// The earlier check on this job, as the site file has it, for Same as Before (DEC-0325 rule 2).
+function ckFrom(last){ return {hz:(last.hazards||[]).map(h=>h.id),none:!!last.none,note:last.note||'',from:last.from||'',iso:!!last.isolate,kit:(last.kit||[])[0]?last.kit[0].reg+'|'+last.kit[0].id:''}; }
+function jCheckSheet(){
+  const F=st.form, C=F.ck, j=jobById(F.id); if(!j||!C) return '';
+  const hz=SITE().hazards||[], kit=SITE().kit||[], on=id=>C.hz.indexOf(id)>=0, last=j.check, miss=ckMissing(j,C), err=C.tried?ckWhy(C):'';
+  const tick=(act,v,lab,sub,o)=>'<button class="opt'+(o?' on':'')+'" data-act="'+act+'"'+(v!=null?' data-v="'+esc(v)+'"':'')+' aria-pressed="'+!!o+'"><span class="ck">'+(o?I.tick:'')+'</span><span class="m">'+esc(lab)+(sub?'<span class="sub">'+esc(sub)+'</span>':'')+'</span></button>';
+  const rad=(act,v,lab,sub,o)=>'<button class="opt'+(o?' on':'')+'" role="radio" aria-checked="'+!!o+'" data-act="'+act+'" data-v="'+esc(v)+'"><span class="rad"></span><span class="m">'+esc(lab)+(sub?'<span class="sub">'+esc(sub)+'</span>':'')+'</span></button>';
+  const go=miss.length?['permit','Apply for a Permit']:[C.mode==='restart'?'play':'play',C.mode==='restart'?'Restart the Job':'Start the Job'];
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Before you start"><div class="sh"><b>Before You Start</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +(last?'<div class="opts"><button class="verb" data-act="jckSame"'+(st.busy?' disabled':'')+'>'+I.shield+'<span class="m"><span class="w">Same as Before</span><span class="sub">'+esc(youOr(last.by)==='you'?'You':youOr(last.by))+', '+esc(at2(last.at))+': '+esc(last.says||'')+'</span></span></button></div>':'')
+    +'<div class="grp">Is any of these here?</div><div class="opts">'+hz.map(h=>tick('jck',h.id,h.label,'',on(h.id))).join('')+'</div>'
+    +'<div class="opts" style="margin-top:8px">'+tick('jcknone',null,'None of These','',C.none)+'</div>'
+    +(on('height')?'<div class="grp">Working at height, from</div><div class="opts" role="radiogroup" aria-label="Working at height, from">'
+      +(WFM_CAPTURE_SHAPE.heightFrom||[]).map(h=>rad('jfrom',h.id,h.label,h.permit?'Needs a permit to work':'',C.from===h.id)).join('')+'</div>'
+      +(kit.length?'<div class="grp">Ladder or kit used</div><div class="opts" role="radiogroup" aria-label="Ladder or kit used">'+rad('jkit','','Nothing from the register','',!C.kit)
+        +kit.map(k=>rad('jkit',k.reg+'|'+k.id,k.label,[k.where,'inspection: '+k.state].filter(Boolean).join(' · '),C.kit===k.reg+'|'+k.id)).join('')+'</div>':''):'')
+    +(on('electricity')?'<div class="opts" style="margin-top:8px">'+tick('jiso',null,'Isolating a supply','Needs a permit to work',C.iso)+'</div>':'')
+    +'<div class="field"><label for="cknote">What was done about them <span class="opt-w">(optional)</span></label><textarea id="cknote" data-in="cknote">'+esc(C.note||'')+'</textarea>'
+    +'<div class="help">Your name and the time sign it. '+esc(WFM_CAPTURE_SHAPE.checkSays||'')+'</div></div>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jckGo"'+(st.busy?' disabled':'')+'>'+I[go[0]]+esc(go[1])+'</button>'
+    +(miss.length?'<span class="sub" style="margin:0">Issued on the desk, before the job starts.</span>':'')
+    +(err?'<div class="help err" role="alert" style="margin:0">'+esc(err)+'</div>':'')+'</div></div>';
+}
+// Apply for a Permit (DEC-0313 rule 3): the permit register's own fields for each type, and the times, all optional;
+// the check goes with it. The desk issues it; the job's Start waits until then.
+function jPermitSheet(){
+  const F=st.form, j=jobById(F.id); if(!j||!F.ck) return ''; const miss=ckMissing(j,F.ck), pf=F.pf||{}, T=WFM_CAPTURE_SHAPE.permitFields||{};
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Apply for a permit"><div class="sh"><b>Apply for a Permit</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<p class="para">'+esc(miss.join(' and '))+' needs a permit to work. The desk issues it, and Start the Job comes back once it does. Your Before You Start goes with it.</p>'
+    +'<div class="field"><span class="fl">When <span class="opt-w">(optional)</span></span><div class="inrow"><input type="time" id="pfrom" data-in="pfrom" aria-label="From" value="'+esc(F.pfrom||'')+'"><input type="time" id="pto" data-in="pto" aria-label="To" value="'+esc(F.pto||'')+'"></div></div>'
+    +miss.map(t=>'<div class="grp">'+esc(t)+'</div>'+(T[t]||[]).map(d=>'<div class="field" style="padding-top:8px"><label for="pf-'+d.k+'">'+esc(d.l)+' <span class="opt-w">(optional)</span></label><input type="text" id="pf-'+d.k+'" data-in="pf" data-k="'+d.k+'" value="'+esc(pf[d.k]||'')+'"></div>').join('')).join('')
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpermitSend"'+(st.busy?' disabled':'')+'>'+I.permit+'Apply for the Permit</button></div></div>';
+}
+// Parts used: each line a thing and how many, picked from what this site has used before or typed, or None Used.
+function partsOut(F){ const seen=SITE().parts||[], lines=(F.pl||[]).filter(l=>String(l.what||'').trim()).map(l=>{ const w=String(l.what).trim(), k=seen.find(p=>nk(p.what)===nk(w));
+    return {what:w,qty:Number(l.qty)>0?Number(l.qty):1,unit:k?k.unit||'':''}; });
+  return {ok:!!F.pnone!==(lines.length>0),v:{none:!!F.pnone,lines:F.pnone?[]:lines}}; }
+function partsWords(p){ if(!p||p.none) return 'None used.'; return (p.lines||[]).map(l=>l.unit?l.qty+' '+l.unit+' of '+l.what:l.qty+' × '+l.what).join(', ')+'.'; }
+function partsPart(F,title){ F.pl=F.pl&&F.pl.length?F.pl:[{what:'',qty:'1'}];
+  return '<div class="grp">'+esc(title)+'</div>'
+    +(F.pnone?'':F.pl.map((l,i)=>'<div class="pl"><div class="w"><label class="fl" for="pw'+i+'">Part or material</label><input type="text" id="pw'+i+'" list="pseen" autocomplete="off" data-in="pw" data-i="'+i+'" value="'+esc(l.what||'')+'"></div>'
+      +'<div class="q"><label class="fl" for="pq'+i+'">How many</label><input type="number" id="pq'+i+'" inputmode="decimal" min="0" step="any" data-in="pq" data-i="'+i+'" value="'+esc(l.qty||'')+'"></div></div>').join('')
+      +'<datalist id="pseen">'+(SITE().parts||[]).map(p=>'<option value="'+esc(p.what)+'">').join('')+'</datalist>'
+      +'<div class="field" style="padding-top:8px"><button class="tbtn" data-act="jpAdd">Add Another Line</button></div>')
+    +'<div class="opts" style="margin-top:8px"><button class="opt'+(F.pnone?' on':'')+'" data-act="jpNone" aria-pressed="'+!!F.pnone+'"><span class="ck">'+(F.pnone?I.tick:'')+'</span><span class="m">None Used</span></button></div>';
+}
+// Add Parts Used, from More, at any time.
+function jPartsSheet(){
+  const F=st.form;
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Parts used"><div class="sh"><b>Parts Used</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +partsPart(F,'What this job used')
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpartsSend"'+(st.busy?' disabled':'')+'>'+I.pkg+'Add Parts Used</button>'
+    +(F.ptried&&!partsOut(F).ok?'<div class="help err" role="alert" style="margin:0">Write each part and how many, or choose None Used.</div>':'')+'</div></div>';
 }
 // Pause the Job (DEC-0311, DEC-0316): a reason offered, never required, with a label above the field (Design 9.6).
 function jPauseSheet(){
@@ -1369,7 +1455,10 @@ async function jobSend(act){
   if(act==='delete') fields.entry=F.mid;
   if(V){ fields.msgKind=F.kind||'Note'; fields.note=String(V.words||'').trim(); fields.secs=V.secs; photos=[{file:new File([V.blob],'voice.'+(V.type==='audio/mp4'?'m4a':'webm'),{type:V.type})}]; }
   if(act==='flag') fields.flag={level:F.level,why:String(F.why||'').trim()};
-  if(act==='done'){ fields.note=String(F.dnote||'').trim(); photos=F.dphotos||[]; }
+  if(act==='done'){ fields.note=String(F.dnote||'').trim(); photos=F.dphotos||[]; fields.parts=partsOut(F).v; }
+  if(act==='parts') fields.parts=partsOut(F).v;
+  if((act==='start'||act==='restart'||act==='permit')&&F.ck) fields.check=ckOut(F.ck);
+  if(act==='permit'){ fields.permit={from:F.pfrom||'',to:F.pto||'',fields:Object.assign({},F.pf||{})}; F.ckNeed=ckMissing(j,F.ck); }
   if(act==='pause') fields.note=String(F.pwhy||'').trim();
   if(act==='assign') fields.assign=F.asgSend;
   st.busy=true; F.err=''; keepRender();
@@ -1377,12 +1466,13 @@ async function jobSend(act){
   try{ c=await makeCapture('job',fields,photos); }
   catch(e){ st.busy=false; st.sheet=false; F.err='Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||''}); ls.set('wl_jobSent',s);
+  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null}); ls.set('wl_jobSent',s);
   _sentPics[c.id]=V?[]:photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
   if(V){ _sentAudio[c.id]={url:V.url,secs:V.secs}; F.voice=null; F.kind='Note'; st.twEnd=true; }
   if(act==='edit'||act==='delete'){ F.mid=''; F.etext=''; F.eerr=''; }
   if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; st.twEnd=true; }   // the kind is chosen for each entry, so a note is never filed under the last one's
-  if(act==='done'){ F.dnote=''; F.dphotos=[]; }
+  if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.pl=null; F.pnone=false; F.ptried=false; }
+  if(act==='start'||act==='restart'||act==='permit'){ F.ck=null; F.pf={}; F.pfrom=''; F.pto=''; }
   if(act==='flag'){ F.why=''; F.level=''; F.ftried=false; }
   if(act==='pause'){ F.pwhy=''; F.ptried=false; }
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
@@ -1841,14 +1931,31 @@ app.addEventListener('click',async e=>{
   if(a==='msgDel'){ st.sheet='jdel'; render(); const v=app.querySelector('.sheet .btn.p'); if(v) v.focus(); return; }
   if(a==='msgDelSend'){ const j=jobById(F.id), m=j&&msgNow(j,F.mid); if(!m) return; if(m.x&&m.x.waiting) return msgTakeBack(m.x); return jobSend('delete'); }
   if(a==='jobSend'){ if(!String(F.note||'').trim()&&!F.photos.length){ F.err='Write something or add a photo, then send.'; keepRender(); const t=document.getElementById('jnote'); if(t) t.focus(); return; } return jobSend('note'); }
-  if(a==='jobStart') return jobSend('start');
+  // Before You Start on every Start and Restart (DEC-0313 rule 1, DEC-0325 rules 1 and 2).
+  if(a==='jobStart'||a==='jobRestart'){ F.ck={hz:[],none:false,note:'',from:'',iso:false,kit:'',same:false,tried:false,mode:a==='jobRestart'?'restart':'start'}; st.sheet='jcheck'; render(); const v=app.querySelector('.sheet .verb')||app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
+  if(a==='jck'||a==='jcknone'||a==='jiso'||a==='jfrom'||a==='jkit'){ const C=F.ck; if(!C) return; C.same=false;
+    if(a==='jck'){ const v0=b.dataset.v, i=C.hz.indexOf(v0); if(i>=0) C.hz.splice(i,1); else { C.hz.push(v0); C.none=false; } }
+    if(a==='jcknone'){ C.none=!C.none; if(C.none) C.hz=[]; }
+    if(a==='jiso') C.iso=!C.iso; if(a==='jfrom') C.from=b.dataset.v; if(a==='jkit') C.kit=b.dataset.v;
+    const sc=app.querySelector('.sheet'), y=sc?sc.scrollTop:0; render(); const s2=app.querySelector('.sheet'); if(s2) s2.scrollTop=y;
+    const sel=a==='jcknone'?'.sheet [data-act=jcknone]':a==='jiso'?'.sheet [data-act=jiso]':'.sheet [data-act='+a+'][data-v="'+CSS.escape(b.dataset.v||'')+'"]', v=app.querySelector(sel); if(v) v.focus({preventScroll:true}); return; }
+  if(a==='jckSame'||a==='jckGo'){ const j=jobById(F.id), C=F.ck; if(!j||!C) return;
+    if(a==='jckSame'){ if(!j.check) return; Object.assign(C,ckFrom(j.check),{same:true}); }
+    if(ckWhy(C)){ C.tried=true; render(); const t=app.querySelector('.sheet [role=alert]'); if(t) t.scrollIntoView({block:'nearest'}); return; }
+    if(ckMissing(j,C).length){ F.pf=F.pf||{}; st.sheet='jpermit'; render(); const v=app.querySelector('.sheet input'); if(v) v.focus(); return; }
+    return jobSend(C.mode); }
+  if(a==='jpermitSend') return jobSend('permit');
+  // Parts used (DEC-0313 rule 4).
+  if(a==='jobParts'){ F.pl=[{what:'',qty:'1'}]; F.pnone=false; F.ptried=false; st.sheet='jparts'; render(); const v=document.getElementById('pw0'); if(v) v.focus(); return; }
+  if(a==='jpAdd'){ F.pl=(F.pl||[]).concat([{what:'',qty:'1'}]); render(); const v=document.getElementById('pw'+(F.pl.length-1)); if(v) v.focus(); return; }
+  if(a==='jpNone'){ F.pnone=!F.pnone; render(); const v=app.querySelector('.sheet [data-act=jpNone]'); if(v) v.focus(); return; }
+  if(a==='jpartsSend'){ if(!partsOut(F).ok){ F.ptried=true; render(); return; } return jobSend('parts'); }
   if(a==='jobUnflag') return jobSend('unflag');
-  if(a==='jobDone'){ st.sheet='jdone'; render(); const v=app.querySelector('.sheet .th.add input'); if(v) v.focus(); return; }
-  if(a==='jobDoneSend') return jobSend('done');
+  if(a==='jobDone'){ F.pl=[{what:'',qty:'1'}]; F.pnone=false; F.ptried=false; st.sheet='jdone'; render(); const v=app.querySelector('.sheet .th.add input'); if(v) v.focus(); return; }
+  if(a==='jobDoneSend'){ if(!partsOut(F).ok){ F.ptried=true; render(); const t=app.querySelector('.sheet [role=alert]'); if(t) t.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
   // Pause, Restart and Change on Assigned (P5). The desk checks the group and the reason again as it files them.
   if(a==='jobPause'){ F.ptried=false; st.sheet='jpause'; render(); const v=document.getElementById('pwhy'); if(v) v.focus(); return; }
   if(a==='jobPauseSend') return jobSend('pause');   // the reason is optional (DEC-0316)
-  if(a==='jobRestart') return jobSend('restart');
   if(a==='jobAssign'){ const j=jobById(F.id); F.asg=j?asgNow(j):[]; F.atried=false; st.sheet='jassign'; render(); const v=app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jasg'){ const v0=b.dataset.v, i=F.asg.indexOf(v0); if(i>=0) F.asg.splice(i,1); else F.asg.push(v0); render(); const v=app.querySelector('.sheet .opt[data-v="'+CSS.escape(v0)+'"]'); if(v) v.focus(); return; }
   if(a==='jobAssignSend'){ const j=jobById(F.id), base=j?asgNow(j):[], on=F.asg.filter(x=>base.indexOf(x)<0), off=base.filter(x=>F.asg.indexOf(x)<0);
@@ -1900,6 +2007,10 @@ function special(k,el){
     if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
     return true; }
   if(st.screen==='job'&&k==='etext'){ F.etext=el.value; return true; }
+  if(st.screen==='job'&&(k==='pw'||k==='pq')){ const i=Number(el.dataset.i); F.pl=F.pl||[]; F.pl[i]=F.pl[i]||{what:'',qty:'1'}; F.pl[i][k==='pw'?'what':'qty']=el.value; return true; }
+  if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
+  if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }
+  if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
   if(k==='pid'){ F.pid=el.value; const p=PEOPLE().find(x=>x.id===el.value);
     if(p){ F.name=p.name; if(positions().some(x=>x.id===p.position)) F.pos=p.position; } else if(el.value==='__other'||!el.value) F.name='';
     render(); return true; }
