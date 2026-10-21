@@ -359,7 +359,7 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .wave b.on{opacity:1}
 .dur{font:600 12px Sora;color:var(--textMid);font-variant-numeric:tabular-nums;flex:none}
 .jbar{flex:none;background:var(--white);border-top:1px solid var(--border);padding:8px 8px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
-.jbar .bl{display:flex;align-items:flex-end;gap:4px}
+.jbar .bl{display:flex;align-items:flex-end;gap:4px;position:relative}
 .jbar .thumbs{padding:0 8px}
 .fw{flex:1;min-width:0;min-height:44px;border-radius:8px;border:1px solid var(--textMuted);display:flex;align-items:flex-start;padding:0 4px;background:var(--white)}
 .fw:focus-within{outline:2px solid var(--accent);outline-offset:2px}
@@ -375,11 +375,15 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .snd{width:44px;height:44px;border-radius:22px;border:1.5px solid var(--accentD);color:var(--accentD);display:grid;place-items:center;flex:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .snd svg{width:20px;height:20px;stroke-width:2.1}
 .snd .i-s{display:none}
-.jbar.w .snd .i-m,.jbar.r .snd .i-m{display:none}
-.jbar.w .snd .i-s,.jbar.r .snd .i-s{display:block}
-.rec{flex:1;min-width:0;height:44px;display:none;align-items:center;gap:10px;padding:0 12px;border-radius:8px;border:1px solid var(--textMuted);background:var(--cream)}
-.jbar.r .rec{display:flex}
-.jbar.r .fw{display:none}
+.jbar.w .snd .i-m,.jbar.rec-on .snd .i-m{display:none}
+.jbar.w .snd .i-s,.jbar.rec-on .snd .i-s{display:block}
+/* Recording lies over the field at the field's own size, so nothing on the screen moves under the held finger and the
+   keyboard is left as it is: a phone gives up a press when the page shifts under it (John, 21 Oct 2026). */
+.rec{position:absolute;left:48px;right:48px;bottom:0;height:46px;z-index:1;display:none;align-items:center;gap:10px;padding:0 4px 0 12px;border-radius:8px;border:1px solid var(--textMuted);background:var(--cream)}
+.jbar.rec-on .rec{display:flex}
+.jbar.rec-on .fw{opacity:0;pointer-events:none}
+.rcan{display:none;height:44px;padding:0 8px;font:600 13px Outfit;color:var(--accentD);flex:none}
+.jbar.lk .rcan{display:block}
 .dot{width:10px;height:10px;border-radius:5px;flex:none;background:var(--accentD);box-shadow:0 0 0 4px color-mix(in srgb,var(--accentD) 20%,transparent);animation:wlpulse 1.2s ease-in-out infinite}
 @keyframes wlpulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--accentD) 8%,transparent)}}
 @media (prefers-reduced-motion: reduce){ .dot{animation:none} }
@@ -1101,7 +1105,7 @@ function jBar(F){
     +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
     +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label>'
     +'<div class="fw">'+ktag('jnote')+'<textarea id="jnote" rows="1" data-in="note" placeholder="Message" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea></div>'
-    +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span></div>'
+    +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="rcan" data-act="vdiscard">Cancel</button></div>'
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
 }
 function vJob(){
@@ -1183,10 +1187,10 @@ function grow(t){ const cs=getComputedStyle(t), lh=parseFloat(cs.lineHeight)||21
   t.style.height='auto'; t.style.height=Math.min(t.scrollHeight+bd,Math.ceil(lh*4+pad+bd))+'px'; }
 function recUi(){
   const bar=app.querySelector('.jbar'), R=st.rec; if(!bar) return;
-  bar.classList.toggle('r',!!R); if(!R) return;
+  bar.classList.toggle('rec-on',!!R); bar.classList.toggle('lk',!!(R&&R.key)); if(!R) return;
   const n=R.live?Math.floor((Date.now()-R.t0)/1000):0, w=recWords(R), sb=bar.querySelector('.snd');
   bar.querySelector('.rec .t').textContent=clock(n);
-  bar.querySelector('.rec .s').textContent=_hold&&_hold.cancel?'Let go to cancel':!R.live?'Starting the microphone…':R.key?'Recording. Enter sends it.':w?(w.length>40?'…'+w.slice(-40):w):'‹ Slide left to cancel';
+  bar.querySelector('.rec .s').textContent=_hold&&_hold.cancel?'Let go to cancel':!R.live?'Starting the microphone…':R.key?'Recording. Send when done.':w?(w.length>40?'…'+w.slice(-40):w):'‹ Slide left to cancel';
   if(sb) sb.setAttribute('aria-label',R.key?'Send the voice note':'Let go to send the voice note');
 }
 async function recStart(key){
@@ -1279,7 +1283,8 @@ function holdEnd(e){
   if(!_hold) return; const h=_hold; _hold=null; _ptrAt=Date.now(); const R=st.rec; if(!R) return;
   if(h.cancel) return recDiscard();
   if(!R.live){ R.gone=true; return; }   // the phone is still asking for the microphone
-  if(e.type==='pointercancel') return recDiscard('The recording stopped and was not sent.');
+  // The phone took the press away (it can when anything on screen changes): it goes on recording, with send and Cancel.
+  if(e.type==='pointercancel'){ R.key=true; return recUi(); }
   if(Date.now()-h.t<400) return recDiscard(HOLD_SAYS);
   recStop();
 }
