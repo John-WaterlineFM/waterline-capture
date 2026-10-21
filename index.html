@@ -1070,12 +1070,12 @@ function jThread(j,pend,inStrip){
   let h=th.length>=WFM_SITE_SHAPE.threadMax?'<div class="sys">Earlier entries are on the desk’s Jobs page.</div>':'', last='';
   all.forEach(e=>{
     const dl=dayLab(e.at); if(dl&&dl!==last){ h+='<div class="dayb">'+esc(dl)+'</div>'; last=dl; }
-    const tm=isNaN(Date.parse(e.at))?'':' · <span class="n">'+hm(e.at)+'</span>', kind=e.kind||'Note', x=e.pend, ps=x?' · '+(x.waiting?'Waiting for signal':'Sent, waiting for the desk'):'';
+    const tm=isNaN(Date.parse(e.at))?'':' · <span class="n">'+hm(e.at)+'</span>', kind=e.kind||'Note', x=e.pend, ps=x?' · '+(x.waiting?'Not delivered, no signal':'Delivered'):'';
     // What the desk wrote by itself reads as a line across the middle, as a messaging app's own notices do.
     if(!e.by||e.by==='Waterline FM'){ h+='<div class="sys"><span class="k">'+esc(kind)+'</span> '+esc(e.text)+(tm?' <span class="n">'+hm(e.at)+'</span>':'')+'</div>'; return; }
     const own=!!x||(!!st.walker&&nk(e.by)===nk(st.walker)), id=x?x.cap:(e.cap||''), c=id?chg.filter(y=>y.entry===id).pop():null;
     // Deleted (DEC-0321 rule 3): a line in its place, from the desk or sent from here.
-    if(e.deleted||(c&&c.act==='delete')){ const d=e.deleted||{by:st.walker,at:c.at}, cs=c?' · '+(c.waiting?'Waiting for signal':'Sent, waiting for the desk'):'';
+    if(e.deleted||(c&&c.act==='delete')){ const d=e.deleted||{by:st.walker,at:c.at}, cs=c?' · '+(c.waiting?'Not delivered, no signal':'Delivered'):'';
       h+='<div class="ev">'+ICO('trash-2')+'<span>'+esc((own?'You':e.by)+' deleted a message')+(isNaN(Date.parse(d.at))?'':' · <span class="n">'+hm(d.at)+'</span>')+esc(cs)+'</span></div>'; return; }
     const ph=(e.photos||[]).filter(n=>!inStrip.has(n)), sp=x?(_sentPics[x.cap]||[]):[];
     if(EVK[kind]&&!ph.length&&!sp.length){ h+='<div class="ev">'+ICO(EVK[kind])+'<span>'+esc(evWords(kind,e.text,own?'you':e.by))+tm+esc(ps)+'</span></div>'; return; }
@@ -1085,7 +1085,7 @@ function jThread(j,pend,inStrip){
       +(x&&!sp.length&&x.n&&!x.au?'<span class="sub">'+esc(plural(x.n,'photo'))+' sent with it</span>':'');
     // A voice note's player is its label (DEC-0320 rule 3): the words show only when there are some.
     const text=c&&c.act==='edit'?c.note:e.text, words=au&&text===WFM_CAPTURE_SHAPE.noWords?'':text;
-    const ed=c&&c.act==='edit'?' · Edited'+(c.waiting?', waiting for signal':', sent, waiting for the desk'):e.edited?' · Edited':'';
+    const ed=c&&c.act==='edit'?' · Edited'+(c.waiting?', not delivered, no signal':''):e.edited?' · Edited':'';
     // Your own message on a job can be edited or deleted by pressing and holding it (DEC-0321 rule 1).
     const mine=own&&id&&WFM_CAPTURE_SHAPE.msgKinds.indexOf(kind)>=0;
     h+='<div class="msg'+(own?' me':'')+'"><div class="bub"'+(mine?' data-mine="'+esc(id)+'" tabindex="0" aria-description="Press and hold to edit or delete"':'')+'>'+(kind!=='Note'?'<span class="kd">'+esc(kind)+'</span>':'')+pics+(au?voiceEl(au.k,au.s,au.t):'')
@@ -1112,7 +1112,8 @@ function vJob(){
   const j=jobById(st.form.id); if(!j) return '<div class="body">'+formZone(st.place||'due','Job','No Longer Open','This job is no longer open in the site details from the desk.')+'</div>';
   const F=st.form; if(!F.kind) F.kind='Note'; F.photos=F.photos||[]; if(F.note==null) F.note='';
   const S0=jState(j), e=Date.parse(j.end), a=jLate(j), pend=S0.pend, pD=S0.pD, pS=S0.pS, pPR=S0.pPR, paused=S0.paused, doing=S0.doing, fl=S0.fl;
-  const sent=x=>x.waiting?'Waiting for signal; it sends by itself.':'Sent, waiting for the desk.';
+  // Delivered or not (John, 21 Oct 2026, DEC-0323): delivered once it is in the site's Inbox.
+  const sent=x=>x.waiting?'Not delivered, no signal: it sends by itself.':'Delivered.';
   const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.note,x:pPR}:j.paused):null;
   // Where it stands, and since when.
   let sw, ss='';
@@ -1395,7 +1396,7 @@ async function jobSend(act){
   if(act==='pause'){ F.pwhy=''; F.ptried=false; }
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
   st.sheet=false; render();
-  // Sent says itself on the job: the entry reads "Sent, waiting for the desk" (Design 9.11). Only a problem is said here.
+  // Sent says itself on the job: the entry reads "Delivered" (DEC-0323). Only a problem is said here.
   if(!ok) toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
 }
 // Draws the screen again keeping where the page is scrolled and what is being typed.
