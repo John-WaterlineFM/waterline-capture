@@ -1176,10 +1176,8 @@ function vPhoto(){
 }
 // ── Voice notes (P6; DEC-0318 rule 4, DEC-0319 rule 2, DEC-0320) ──────────────────────────────
 // Held to record, up to two minutes; let go and it is sent; slide left while holding to cancel. A press too short to be a
-// hold says how it works. From a keyboard, Enter starts and Enter sends. The phone's own speech recognition writes the
-// words as it records; they go as heard and can be edited afterwards (DEC-0321). Sent as a job note with the sound as its
+// hold says how it works. From a keyboard, Enter starts and Enter sends. No words are taken from the sound (DEC-0324). Sent as a job note with the sound as its
 // file (audio/mp4 or audio/webm) and the words as its note.
-const SR=(()=>{ try{ if(window.parent!==window&&window.parent.wfmTestSR) return window.parent.wfmTestSR; }catch(e){} return window.SpeechRecognition||window.webkitSpeechRecognition||null; })();   // a test bench may stand in
 const _sentAudio={};
 let _hold=null, _ptrAt=0, _play={};
 const recWords=R=>(R.base+' '+R.fin+' '+R.int).replace(/\s+/g,' ').trim();
@@ -1209,12 +1207,7 @@ async function recStart(key){
   R.mr.ondataavailable=ev=>{ if(ev.data&&ev.data.size) R.chunks.push(ev.data); };
   R.mr.start(1000); R.live=true; R.t0=Date.now();
   R.tick=setInterval(()=>{ if(Date.now()-R.t0>=WFM_CAPTURE_SHAPE.soundMaxSecs*1000) return recStop(); recUi(); },250);
-  if(SR){ try{ const r=new SR(); R.sr=r; r.lang=navigator.language||'en-IE'; r.continuous=true; r.interimResults=true;
-      r.onresult=ev=>{ let f='', i=''; for(let k=0;k<ev.results.length;k++){ const x=ev.results[k]; if(x.isFinal) f+=x[0].transcript+' '; else i+=x[0].transcript+' '; } R.fin=f; R.int=i; if(st.rec===R) recUi(); };
-      r.onerror=()=>{};
-      // Phones stop listening at a pause: it listens again while the recording goes on, keeping the words so far.
-      r.onend=()=>{ R.base=(R.base+' '+R.fin).trim(); R.fin=''; R.int=''; if(st.rec===R&&R.live){ try{ r.start(); }catch(x){} } else if(R.heard) R.heard(); };
-      r.start(); }catch(e){} }
+  // No words are taken from the sound (DEC-0324): the voice note is the message.
   recUi();
 }
 // Let go: the recording stops, the last words are waited for (a second at most), and it is sent.
@@ -1222,11 +1215,9 @@ function recStop(){
   const R=st.rec; if(!R||!R.live) return;
   R.live=false; clearInterval(R.tick);
   const secs=Math.min(WFM_CAPTURE_SHAPE.soundMaxSecs,Math.max(1,Math.round((Date.now()-R.t0)/1000)));
-  const heard=new Promise(ok=>{ R.heard=ok; setTimeout(ok,R.sr?1000:0); });
   const stopped=new Promise(ok=>{ R.mr.onstop=ok; });
   try{ R.mr.stop(); }catch(e){ R.mr.onstop(); }
-  if(R.sr){ try{ R.sr.stop(); }catch(e){} }
-  Promise.all([stopped,heard]).then(()=>{ R.stream.getTracks().forEach(t=>t.stop());
+  stopped.then(()=>{ R.stream.getTracks().forEach(t=>t.stop());
     const mt=String(R.mr.mimeType||(R.chunks[0]&&R.chunks[0].type)||''), type=/mp4/.test(mt)?'audio/mp4':'audio/webm', blob=new Blob(R.chunks,{type:type});
     if(st.rec===R) st.rec=null; const F=st.form; recUi(); if(!F||st.screen!=='job') return;
     F.voice={blob:blob,type:type,url:URL.createObjectURL(blob),secs:secs,words:(R.base+' '+R.fin+' '+R.int).replace(/\s+/g,' ').trim()};
@@ -1235,7 +1226,7 @@ function recStop(){
 function recDiscard(say){
   const R=st.rec; st.rec=null;
   if(R){ R.gone=true; R.live=false; clearInterval(R.tick); try{ if(R.mr&&R.mr.state!=='inactive'){ R.mr.onstop=null; R.mr.stop(); } }catch(e){}
-    if(R.stream) R.stream.getTracks().forEach(t=>t.stop()); if(R.sr){ try{ R.sr.abort(); }catch(e){} } }
+    if(R.stream) R.stream.getTracks().forEach(t=>t.stop()); }
   recUi(); if(say) toast(say);
 }
 // A voice note's sound: yours from this phone, or the desk's copy, read once from Phone/audio/ and kept on the phone.
@@ -1309,7 +1300,7 @@ function msgNow(j,id){ const pend=jPending(j), e=(j.thread||[]).find(x=>x.cap===
 function jMsgSheet(){
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'">'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Your message"><div class="sh"><b>Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
-    +v('msgEdit','edit','Edit','Change its words')+v('msgDel','trash','Delete','Take it off the job for everyone')+'</div><div style="height:24px"></div></div>'; }
+    +((msgNow(jobById(st.form.id),st.form.mid)||{}).voice?'':v('msgEdit','edit','Edit','Change its words'))+v('msgDel','trash','Delete','Take it off the job for everyone')+'</div><div style="height:24px"></div></div>'; }
 function jEditSheet(){ const F=st.form;
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Edit your message"><div class="sh"><b>Edit Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<div class="field"><label for="etext">Its words</label><textarea id="etext" data-in="etext">'+esc(F.etext||'')+'</textarea><div class="help">The job shows it as edited. The desk keeps what it said before.</div></div>'
@@ -1433,7 +1424,6 @@ function vMe(){
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
     +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
     +'<p class="para">Walks come from your department, lines from the duties your position holds, jobs from the groups it belongs to, all set on the desk’s Organisation Structure.</p>'
-    +'<div class="grp">Voice notes</div><p class="para" style="padding-top:0">A voice note’s words are written by this phone’s own speech recognition as you speak, and you check them before sending. On Android the phone sends the sound to Google to do it; on an iPhone it may stay on the phone. '+(SR?'':'This phone has no speech recognition here, so a line can be typed instead. ')+'Notes are up to <span class="n">2</span> minutes.</p>'
     +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
 // ── Send Proof: photo first, then what it is (DEC-0286 rule 3) ───────────────────────────────
