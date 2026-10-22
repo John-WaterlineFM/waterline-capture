@@ -117,6 +117,20 @@ svg{width:24px;height:24px;flex:none;display:block}
 .nv.cap{flex:none;width:88px;height:80px;justify-content:flex-start;margin-top:-24px}
 .nv.cap .capb{width:56px;height:56px;border-radius:50%;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;box-shadow:0 0 0 4px var(--white)}
 
+/* who's in today (DEC-0329): the button sits in the title row; initials ring solid when matched, dashed when not */
+.ttlr{display:flex;align-items:center;padding-right:8px}
+.ttlr .ttl{flex:1;min-width:0}
+.sh .when{display:block;font:400 12px/1.4 'DM Sans';color:var(--textMuted);margin-top:2px}
+.gr2{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.gr2 .t{font:600 12px Sora;letter-spacing:0;text-transform:none;color:var(--textMid);font-variant-numeric:tabular-nums}
+.inr{display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 16px;border-bottom:1px solid var(--border);line-height:1.4}
+.inr .m{flex:1;min-width:0}
+.inr .nm{font-size:15px;font-weight:500}
+.inr .sub{margin-top:0}
+.inr .rt{font:600 12px Sora;color:var(--textMuted);flex:none;font-variant-numeric:tabular-nums}
+.ini{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;font:800 15px Sora;color:var(--text);border:1.5px solid var(--textMid)}
+.ini.un{border-style:dashed;border-color:var(--textMuted);color:var(--textMid)}
+.inr.none{color:var(--textMid);min-height:48px}
 /* sheets */
 .scrim{position:fixed;inset:0;background:rgba(13,31,45,.45);z-index:10}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:11;max-width:560px;margin:0 auto;background:var(--white);border-radius:12px 12px 0 0;max-height:88vh;overflow:auto;padding-bottom:env(safe-area-inset-bottom)}
@@ -521,10 +535,11 @@ const LUCIDE={
   'pencil':'<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
   'shield-check':'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
   'package':'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>',
+  'calendar-days':'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>',
   'trash-2':'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
 };
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check')};
+const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -701,7 +716,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,whosin:whoSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
@@ -800,7 +815,6 @@ function dueFor(){
   const mine=r=>fm||(p&&(r.by===p.id||r.by==='dept:'+p.department));
   (s.rounds||[]).filter(mine).forEach(r=>{
     const it=(s.due||[]).find(i=>i.round===r.id), w=it&&it.walk;
-    if(w&&w.missed) over.push({t:'missed',r:r,w:w,it:it});
     if(w&&w.open) today.push({t:'walk',r:r,from:Date.parse(w.open.at),to:Date.parse(w.open.end),now:true});
     (r.times||[]).forEach(t=>{ const a=timeToday(t); if(a>now){ const n=nextTime(r,t); let b=timeToday(n); if(b<=a) b+=864e5; today.push({t:'walk',r:r,from:a,to:b}); } });
   });
@@ -868,21 +882,53 @@ function dueRow(x){
   return rowHtml('openLine',i.id,i.kind==='soon'?'':T[0],esc(i.what),'<span class="mono">'+esc(i.id)+'</span>'+tag,a[0]||null,a[1],i.kind==='soon'?'var(--textMid)':T[1]);
 }
 // ── Due, the landing place ───────────────────────────────────────────────────────────────────
+// ── Who is in today (DEC-0329) ──
+// The desk publishes the rota for today and the next seven days, so this answers with no signal. A name the desk has
+// not matched to a person shows by the initials of the name as written, and says so.
+const ymdNow=()=>{ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const rotaToday=()=>{ const R=SITE().rota; return R&&(R.days||[]).find(d=>d.date===ymdNow())||null; };
+function whoBtn(){
+  const R=SITE().rota; if(!R) return '';
+  const d=rotaToday(), n=d?d.people.length:0;
+  return '<button class="ib" data-act="whosin" aria-label="Who is in today: '+(d?n:'no rota for today')+'">'+I.whosin+(n?'<span class="bd">'+n+'</span>':'')+'</button>';
+}
+function whoSheet(){
+  const R=SITE().rota||{}, d=rotaToday(), ppl=d?d.people:[], shifts=R.shifts||[];
+  const when=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'short',year:'numeric'}).replace(',','');
+  const row=p=>{ const un=p.match!=='person', t=p.from&&p.to?p.from+'–'+p.to:'';
+    return '<div class="inr"><span class="ini'+(un?' un':'')+'" aria-hidden="true">'+esc(p.ini)+'</span><span class="m"><span class="nm">'+esc(p.name)+'</span>'
+      +'<span class="sub">'+esc(p.match==='absent'?'Not on the Organisation Structure':un?'Not matched on the desk yet':p.role||'No position given')+'</span></span>'
+      +(t?'<span class="rt">'+esc(t)+'</span>':'')+'</div>'; };
+  const head=(label,s)=>'<div class="grp gr2"><span>'+esc(label)+'</span>'+(s&&s.from?'<span class="t">'+esc(s.from)+' – '+esc(s.to)+'</span>':'')+'</div>';
+  let h='', none=[];
+  shifts.forEach(s=>{ const on=ppl.filter(p=>p.shift===s.id);
+    if(on.length) h+=head(s.label,s)+on.map(row).join('');
+    else if(s.rota) h+=head(s.label,s)+'<div class="inr none">Nobody on the rota</div>';
+    else none.push(s.label); });
+  const other=ppl.filter(p=>!shifts.some(s=>s.id===p.shift));
+  if(other.length) h+=head('Other times')+other.map(row).join('');
+  if(none.length) h+=head(none.join(' · '))+'<div class="inr none">No rota loaded</div>';
+  if(!d) h='<div class="para">'+(R.loaded?'The rota the desk last published does not reach today.':'No rota loaded on the desk.')+'</div>';
+  const pub=st.site&&st.site.published;
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who is in today"><div class="sh"><span><b>In Today</b><span class="when">'+esc(when)+'</span></span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +h+'<p class="help" style="padding:0 16px 24px">From the rota the desk published'+(pub?' <span class="n">'+day(pub)+' at '+hm(pub)+'</span>':'')+'. Names are matched to the Organisation Structure on the desk.</p></div>';
+}
+
 // ── Due, the landing place ──
 // The FM's hero is the site's overdue line, as on the desk (DEC-0286 rule 1). Everyone else's is the next thing to do
 // (DEC-0303 rule 5): the walk open now, or the next one, or their overdue count when neither. Lines sit in their
 // categories, each with its count, opening in place the desk's way (DEC-0303 rule 6; DEC-0140).
 function vDue(){
   st.place='due';
-  let h='<div class="body"><h1 class="ttl">Due</h1>';
+  let h='<div class="body"><div class="ttlr"><h1 class="ttl">Due</h1>'+whoBtn()+'</div>';
   if(!st.site) return h+'<div class="zone"><span class="eb">Nothing from the desk yet</span><p>Due shows once the desk has published the site details. You can still capture from the button below.</p></div>'+waitLine()+siteNote()+'<div style="height:96px"></div></div>'+navBar('due');
   const D=dueFor(), s=SITE(), H=s.health||{};
   const nowW=D.fm?null:D.today.find(x=>x.t==='walk'&&x.now&&!sentIn(x.r.id,x.from,x.to)), nextW=D.fm||nowW?null:D.today.find(x=>x.t==='walk'&&!x.now);
   const lead=nowW||nextW;
   if(D.fm){
-    const wk=(s.due||[]).filter(i=>i.round&&i.kind==='overdue').length, ln=(H.overdue||0)-wk;
+    const ln=H.overdue||0;   // missed walks are for the manager on Plan, never on Due (DEC-0330)
     h+='<div class="zone"><span class="eb">On the site</span><div class="row1"><span class="num n" style="color:'+(H.overdue?'var(--inkRed)':'var(--onInk)')+'"'+(H.overdue?' data-urg':'')+'>'+(H.overdue||0)+'</span><span class="what">overdue</span></div>'
-      +'<p><b class="n">'+wk+'</b> '+(wk===1?'walk has':'walks have')+' times not walked and <b class="n">'+ln+'</b> '+(ln===1?'line is':'lines are')+' past due, against <b class="n">'+(H.inDate||0)+'</b> in date.</p></div>';
+      +'<p>'+(ln===1?'Line':'Lines')+' past due, against <b class="n">'+(H.inDate||0)+'</b> in date.</p></div>';
   } else if(lead){
     const r=lead.r;
     h+='<div class="zone"><span class="eb">'+(nowW?'Open now':'Next')+'</span><div class="row1"><span class="num n">'+esc(hm(lead.from))+'</span><span class="what">'+esc(r.name)+'</span></div>'
@@ -1490,7 +1536,7 @@ function vMissed(){
   return '<div class="body"><div class="zone"><div class="ztop">'+backBtn('due')+'<span class="eb">'+esc(r.name)+'</span></div><div class="row1"><span class="num n" data-urg style="color:var(--inkRed)">'+w.missed+'</span><span class="what">not walked</span></div>'
     +'<p>The last at <b class="n">'+esc(hm(w.lastMissed))+'</b>, '+esc(day(w.lastMissed))+'. A walk’s time cannot be walked once it has passed; the desk closes each one with a reason on Jobs.'+(w.open?' The next is open now, until <b class="n">'+esc(hm(w.open.end))+'</b>.':'')+'</p>'
     +(w.open?'<button class="btn" data-act="roundStart" data-id="'+esc(r.id)+'">'+I.scan+'Start the Walk</button>':'')+'</div>'
-    +'<div class="list" style="border-top:none">'+f('Walked by',esc(r.walker||'Not chosen'))+(it.linesLate?f('Its lines','<span class="n">'+esc(overDays(it.linesLate).join(' '))+'</span> on the register'):'')+'</div></div>';
+    +'<div class="list" style="border-top:none">'+f('Walked by',esc(r.walker||'Not chosen'))+(it.linesDue?f('Its lines','not proven since <span class="n">'+esc(day(it.linesDue))+'</span>'):'')+'</div></div>';
 }
 function vWalkInfo(){
   const r=roundById(st.form.id); if(!r) return '<div class="body">'+formZone('due','Walk','Walk Not Found','This walk is no longer in the site details from the desk.')+'</div>';
@@ -1834,7 +1880,7 @@ document.addEventListener('keydown',e=>{
   if(st.pv&&e.key==='Escape'){ e.preventDefault(); st.pv=null; return render(); }
   const sh=app.querySelector('.sheet');
   if(sh&&!app.querySelector('.scan')){
-    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobDone"]',jkinds:'.jbar .ktag'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
+    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobDone"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
     if(e.key==='Tab'){ const f=[...sh.querySelectorAll('button:not([disabled]),textarea,input')]; if(!f.length) return; const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1); e.preventDefault(); f[n].focus(); }
     return;
   }
@@ -1852,8 +1898,9 @@ app.addEventListener('click',async e=>{
   const a=b.dataset.act, F=st.form;
   if(a==='home'||a==='due'){ st.form=null; st.sheet=false; return go('due'); }
   if(a==='me'){ st.form=null; st.sheet=false; return go('me'); }
+  if(a==='whosin'){ st.sheet='whosin'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); return; }
   if(a==='sheet'){ st.sheet=true; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
-  if(a==='sheetClose'){ st.sheet=false; render(); const f=app.querySelector('.nv.cap'); if(f) f.focus(); return; }
+  if(a==='sheetClose'){ const was=st.sheet; st.sheet=false; render(); const f=app.querySelector(was==='whosin'?'[data-act="whosin"]':'.nv.cap'); if(f) f.focus(); return; }
   if(['fault','reading','proof'].indexOf(a)>=0){ st.sheet=false; st.form=blank(a); return go(a); }
   if(a==='proofFor'){ st.form=Object.assign(blank('proof'),{duty:b.dataset.id,what:'certificate'}); return go('proof'); }
   if(a==='proofWhat'){ F.what=b.dataset.v; return render(); }
