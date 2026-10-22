@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0D1F2D">
 <title>Waterline</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -35,6 +35,8 @@ body.t-ni{--cream:#091624;--white:#0D2035;--stone:#122840;--ink:#071320;--onInk:
   --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;min-height:100vh}
+/* Android draws its own buttons in white over the page's bottom edge (the navy theme colour asks for light icons), so that strip is navy in every theme (seen on John's phone, 22 Oct 2026) */
+body::after{content:'';position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom);background:var(--ink);z-index:40;pointer-events:none}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:none;text-align:inherit}
 /* Design 12.7: the focus ring is 2px solid accent, offset 2px, on every focusable element. */
