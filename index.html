@@ -92,9 +92,10 @@ svg{width:24px;height:24px;flex:none;display:block}
 /* a category opened the desk's way (DEC-0140): one stone band; each line's own tier dashed down its edge (DEC-0252) */
 .cat .w{font:700 15px/1.4 Sora}
 .cat.open{background:var(--stone);border-bottom:none}
+.r[aria-current="true"]{background:var(--stone)}
 .inner{background:var(--stone);border-bottom:1px solid var(--border)}
 .inner .r{border-bottom:none;border-top:1px solid var(--border);align-items:flex-start}
-.inner .sub,.cat.open .sub,.no .sub{color:var(--textMS)}
+.inner .sub,.cat.open .sub,.no .sub,.r[aria-current="true"] .sub{color:var(--textMS)}
 .badge{display:inline-block;font:700 11px/20px Outfit;padding:0 8px;border-radius:4px;border:1px solid var(--border);color:var(--textMid);background:var(--white)}
 .wait{padding:12px 16px;background:var(--white);border-bottom:1px solid var(--border);color:var(--textMid);line-height:1.6}
 .wait b{color:var(--text);font-weight:500}
@@ -518,11 +519,158 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .pv .para{color:var(--onInk)}
 .bub[data-mine]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .jb .msg .meta .ed{color:var(--textMuted)}
+
+/* Before You Start as a Take 5 reminder, and Mark Done as a signed sign-out (S5; DEC-0341 to DEC-0343). Drawn as
+   sandbox/mockups/safety-2026-10-23/final.html: the navy zone carries the five Take 5 words (white for the step you are on,
+   onInkMid for those done, inkTrack for those to come: never teal, not pressable; Design 21.2, 3.1 asset 6) and the step's
+   one number in Sora 72 (21.1, 21.5); hazard cards two across, 104px, their picture in a 44px stone circle (21.9, 12.8);
+   one question a card, its sign 112px, the question Sora 22, the hint DM Sans 15, No and Yes 64px; one primary (9.1).
+   The ISO 7010 signs keep their own colours in every theme (DEC-0342 rule 2). */
+.sheet.tf{top:0;bottom:0;max-height:none;border-radius:0;background:var(--cream);display:flex;flex-direction:column;z-index:21}
+.tf .z{padding:calc(8px + env(safe-area-inset-top)) 16px 20px;flex:none}
+.tf .zt{display:flex;align-items:center;justify-content:space-between;height:44px;margin:0 -8px}
+.tf .zt .ib{color:var(--accentOnInk)}
+.tf .zt .eb{margin:0;text-align:center;flex:1;color:var(--navMid)}
+body.t-li .tf .zone{--onInkMid:#4A6E8C}
+.t5{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:10px 0 18px;list-style:none}
+.t5 i{display:block;height:4px;border-radius:2px;background:var(--inkTrack)}
+.t5 .d i{background:var(--onInkMid)}
+.t5 .c i{background:var(--onInk)}
+.t5 span{display:block;margin-top:6px;font:700 11px Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--onInkMid)}
+.t5 .c span{color:var(--onInk)}
+.tf .hero{display:flex;align-items:flex-end;gap:14px}
+.tf .hero b{font:900 72px/0.85 Sora;letter-spacing:-2px}
+.tf .hero p{font:800 20px/1.25 Sora;padding-bottom:4px}
+.tf .hero p.stoph{padding:4px 0 0}
+.tf .zsub{margin-top:12px;font-size:12px;color:var(--navMid);line-height:1.4}
+.tf .z h1{font:800 20px/1.3 Sora;margin-top:4px}
+.tf .pg{flex:1;padding:20px 16px 16px}
+.tf .lab{font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:var(--textMuted);margin:0 0 10px}
+.tf .lab.sp{margin-top:22px}
+.tf .help.err{margin-top:12px}
+.tf .ft{position:sticky;bottom:0;flex:none;background:var(--white);border-top:1px solid var(--border);padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+.tf .ft .btn{min-height:52px;border-radius:10px}
+.tf .ft .btn svg{width:20px;height:20px}
+.tf .say{font-size:12px;line-height:1.4;color:var(--textMuted);margin:0 0 10px;text-align:center}
+.same{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 8px 12px 14px;margin-bottom:20px;background:var(--white);border:2px solid var(--accentD);border-radius:12px;line-height:1.35}
+.same .bi{width:44px;height:44px;border-radius:50%;background:var(--accentD);color:var(--btnText);display:grid;place-items:center;flex:none}
+.same .m{flex:1;min-width:0}
+.same b{display:block;font:500 15px 'DM Sans';color:var(--accentD)}
+.same .m span{font-size:12px;color:var(--textMuted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.same .chev{color:var(--accentD)}
+.hz,.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hc,.kt{position:relative;min-height:104px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;text-align:left}
+.hc .ic,.kt .ic{width:44px;height:44px;border-radius:50%;background:var(--stone);display:grid;place-items:center;color:var(--text)}
+.hc b,.kt b{font:500 15px/1.25 'DM Sans'}
+.hc .tk{display:none}
+.hc.on .tk{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%}
+.hc.on,.kt.on{border:2px solid var(--accentD);padding:13px 13px 11px}
+.hc.on .ic,.kt.on .ic{background:var(--accentD);color:var(--btnText)}
+.hc.on .tk{background:var(--accentD);border-color:var(--accentD);display:grid;place-items:center;color:var(--btnText)}
+.hc.on .tk svg{width:14px;height:14px;stroke-width:3}
+.kt .pm{position:absolute;top:12px;right:12px;font:700 11px Outfit;letter-spacing:1px;text-transform:uppercase;color:var(--textMid)}
+.tf .none{margin-top:10px;width:100%;min-height:52px;border:1px solid var(--border);border-radius:12px;background:var(--white);display:flex;align-items:center;justify-content:center;gap:8px;font:600 13px Outfit;color:var(--accentD)}
+.tf .none.on{border:2px solid var(--accentD)}
+.tf .none svg{width:18px;height:18px;stroke-width:2.5}
+.tf .ok{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.kr{display:flex;align-items:center;gap:12px;min-height:72px;padding:12px 14px;border-top:1px solid var(--border);width:100%;text-align:left}
+.kr:first-child{border-top:0}
+.kr.sm{min-height:52px}
+.kr .rad{width:24px;height:24px;border-radius:50%;border:1.75px solid var(--accentD);flex:none}
+.kr.on .rad{box-shadow:inset 0 0 0 4px var(--white),inset 0 0 0 12px var(--accentD)}
+.kr .m{flex:1;line-height:1.35}
+.kr .m b{display:block;font:500 15px 'DM Sans'}
+.kr .m span{font-size:12px;color:var(--textMuted)}
+.cardpg{flex:1;padding:20px 16px 0;display:flex;flex-direction:column}
+.qc{flex:1;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px 22px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.qc .of{position:absolute;top:16px;left:18px;font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:var(--textMuted)}
+.qc .for{position:absolute;top:12px;right:14px;display:flex;align-items:center;gap:6px;font:400 12px 'DM Sans';color:var(--textMid)}
+.qc .for svg{width:16px;height:16px}
+.qc .art{margin:36px 0 22px;display:flex;align-items:center;justify-content:center;height:120px}
+.qc .art img.sg{width:124px;height:112px;object-fit:contain}
+.qc .art .big{width:112px;height:112px;border-radius:50%;background:var(--stone);display:grid;place-items:center}
+.qc .art .big svg{width:56px;height:56px}
+.qc h2{font:800 20px/1.3 Sora;margin-bottom:10px}
+.qc h2:focus{outline:none}
+.qc p{color:var(--textMid);font-size:15px;line-height:1.5;max-width:300px}
+.qc p.kits{margin-top:8px;font-size:13px;color:var(--text)}
+.yn{display:flex;gap:10px;margin-top:auto;padding-top:20px;width:100%}
+.yn button{flex:1;min-height:64px;border-radius:12px;font:700 20px Sora;display:flex;align-items:center;justify-content:center;gap:8px}
+.yn .no{border:2px solid var(--accentD);color:var(--accentD)}
+.yn .yes{background:var(--btnFill);color:var(--btnText)}
+.yn svg{width:24px;height:24px;stroke-width:2.5}
+.yn.col{flex-direction:column}
+.yn.col button{min-height:56px;font:600 13px Outfit}
+.yn.col svg{width:20px;height:20px;stroke-width:2}
+.dots2{display:flex;justify-content:center;gap:6px;padding:14px 0 18px}
+.dots2 i{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dots2 i.d{background:var(--textMid)}
+.dots2 i.c{background:var(--text);width:22px;border-radius:4px}
+.sheet.tf.full{background:var(--ink);color:var(--onInk)}
+.tf.full .zone{padding-bottom:0}
+.done{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 28px}
+.done .tick{width:112px;height:112px;border-radius:50%;background:var(--onInk);color:var(--zBtnText);display:grid;place-items:center;margin-bottom:22px}
+.done .tick svg{width:60px;height:60px;stroke-width:2.5}
+.done h2{font:900 28px/1.2 Sora}
+.done h2:focus{outline:none}
+.done p{color:var(--navMid);margin-top:8px;font-size:15px;line-height:1.5}
+.tf.full .wear{margin:0 16px 16px;background:var(--white);color:var(--text);border-radius:12px;padding:14px 12px 12px}
+.tf.full .wear .lab{text-align:center}
+.sgs{display:flex;justify-content:center;flex-wrap:wrap;gap:20px}
+.sgs .sg{display:flex;flex-direction:column;align-items:center;gap:6px;width:84px;text-align:center}
+.sgs .sg img{width:64px;height:64px}
+.sgs .sg b{font:600 13px/1.25 'DM Sans'}
+.okz{list-style:none;background:rgba(255,255,255,.06);border-radius:12px;margin:0 16px 16px;overflow:hidden}
+.okr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--inkTrack);line-height:1.35}
+.okr:first-child{border-top:0}
+.okr .bi{width:36px;height:36px;border-radius:50%;background:var(--inkTrack);display:grid;place-items:center;flex:none}
+.okr .bi svg{width:18px;height:18px}
+.okr span{flex:1}
+.okr em{font:600 13px Outfit;font-style:normal;color:var(--navMid)}
+.tf.full .ras{margin:0 16px 16px}
+.ralink{display:flex;align-items:center;gap:10px;margin-bottom:8px;min-height:52px;padding:0 14px;background:var(--white);border:1px solid var(--border);border-radius:12px;color:var(--accentD);font:600 13px Outfit;width:100%;text-align:left}
+.ralink svg{width:20px;height:20px}
+.ralink span{flex:1;line-height:1.35;padding:8px 0}
+.nora{font-size:12px;line-height:1.4;color:var(--navMid)}
+.tf.full .ft{background:var(--ink);border-top:1px solid var(--inkTrack)}
+.tf.full .ft .btn{background:var(--accentOnInk);color:var(--zBtnText)}
+.tf.full .say{color:var(--navMid)}
+.rasec{background:var(--white);border-bottom:1px solid var(--border);padding:16px}
+.rasec p{line-height:1.5}
+ol.cl{list-style:none;counter-reset:c}
+ol.cl li{counter-increment:c;display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--border);line-height:1.4}
+ol.cl li:first-child{border-top:0;padding-top:0}
+ol.cl li::before{content:counter(c);font:700 13px Sora;color:var(--textMuted);width:18px;flex:none;padding-top:1px}
+.scr{display:flex;gap:24px}
+.scr div{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.scr b{font:800 28px Sora}
+.scr span{font-size:13px;color:var(--textMid)}
+.scr i{flex-basis:100%;font-style:normal;font-size:12px;color:var(--textMuted)}
+.tf .ver{margin:16px;padding:12px 14px;border-radius:10px;background:var(--stone);font-size:13px;line-height:1.5;color:var(--textMid)}
+.tf .ver b{color:var(--text);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border-radius:22px;border:1.5px solid var(--accentD);color:var(--accentD);font:600 13px Outfit;display:inline-flex;align-items:center;gap:6px}
+.chip.on{background:var(--accentD);color:var(--btnText)}
+.chip svg{width:16px;height:16px;stroke-width:2.5}
+.tf .field label,.tf .fl{display:block}
+.so{list-style:none;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sr{padding:12px 14px;border-top:1px solid var(--border)}
+.sr:first-child{border-top:0}
+.sr>b{display:block;font:500 15px/1.35 'DM Sans';margin-bottom:8px}
+.ynp{display:flex;gap:8px}
+.ynp button{flex:1;min-height:44px;border-radius:8px;border:1.5px solid var(--accentD);color:var(--accentD);font:600 13px Outfit;display:flex;align-items:center;justify-content:center;gap:6px}
+.ynp button.on{background:var(--accentD);color:var(--btnText)}
+.ynp svg{width:16px;height:16px;stroke-width:2.5}
+.sigw{padding-top:20px}
+.sigp{margin-top:8px;height:120px;border:1.5px dashed var(--textMuted);border-radius:10px;background:var(--stone);position:relative}
+.sigp canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;color:var(--text);border-radius:10px}
+.sigp .who{position:absolute;left:12px;bottom:6px;font-size:12px;color:var(--textMid);pointer-events:none}
+.sigp .clr{position:absolute;right:4px;top:4px;min-height:44px;padding:0 12px;font:600 13px Outfit;color:var(--accentD)}
 </style>
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=63fb7fb608"></script>
+<script src="shapes.js?v=5a7c9d9e2d"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -640,6 +788,21 @@ const LUCIDE={'flame':'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.
   'calendar-days':'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>',
   'trash-2':'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
 };
+// S5's pictures not in the set above: Lucide's, and the height kit in the same stroke (Lucide has no ladder).
+const T5L={'arrow-up-from-line':'<path d="m18 9-6-6-6 6"/><path d="M12 3v14"/><path d="M5 21h14"/>',
+  zap:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  flame:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  'thermometer-sun':'<path d="M12 9a4 4 0 0 0-2 7.5"/><path d="M12 3v2"/><path d="m6.6 18.4-1.4 1.4"/><path d="M20 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/><path d="M4 13H2"/><path d="M6.34 7.34 4.93 5.93"/>',
+  'flask-conical':'<path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>',
+  cylinder:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/>',
+  'octagon-x':'<path d="m15 9-6 6"/><path d="M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z"/><path d="m9 9 6 6"/>',
+  'arrow-right':'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  'file-text':'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+  stepladder:'<path d="M8 3h4l5 18"/><path d="M8 3 4 21"/><path d="M6.6 9h6.9"/><path d="M5.5 14h9.4"/>',
+  ladder:'<path d="M8 2v20"/><path d="M16 2v20"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/><path d="M8 18h8"/>',
+  tower:'<rect x="5" y="3" width="14" height="6"/><path d="M5 9v10"/><path d="M19 9v10"/><path d="m5 9 14 10"/><path d="M5 19h14"/><circle cx="6" cy="21" r="1"/><circle cx="18" cy="21" r="1"/>',
+  roof:'<path d="M2 12 12 4l10 8"/><path d="M5 10v10h14V10"/>'};
+const T5FROM={stepladder:'stepladder',ladder:'ladder',tower:'tower',scaffold:'tower',mewp:'tower',roof:'roof'};
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
 const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check')};
 
@@ -776,7 +939,8 @@ function extOf(blob,name){
 async function makeCapture(kind,fields,photos){
   const id=newId(), files=[];
   for(let i=0;i<photos.length;i++){
-    const b=await shrink(photos[i].file), name=id+'-'+(i+1)+'.'+extOf(b,photos[i].file.name);
+    // A signature is kept as it was drawn (S5): never shrunk or turned into a JPEG.
+    const b=photos[i].keep?photos[i].file:await shrink(photos[i].file), name=id+'-'+(i+1)+'.'+extOf(b,photos[i].file.name);
     files.push({name:name,blob:b,type:b.type||'application/octet-stream'});
   }
   const rec={format:WFM_CAPTURE_SHAPE.format,version:WFM_CAPTURE_SHAPE.version,id:id,kind:kind,
@@ -784,6 +948,7 @@ async function makeCapture(kind,fields,photos){
   // The fields the shape names, read from it (Principles, Law 3): a field added on the desk travels without a list here.
   WFM_CAPTURE_SHAPE.fields.filter(k=>!(k in rec)&&k!=='files').forEach(k=>{ const v=fields[k]; if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)) rec[k]=v; });
   rec.files=files.map(f=>({name:f.name,type:f.type,bytes:f.blob.size}));
+  if(rec.sig){ const k=photos.findIndex(p=>p.sig); if(k>=0) rec.sig=Object.assign({},rec.sig,{file:files[k].name}); else delete rec.sig; }
   // Every field written is one the shape names: the desk is the judge of the contract.
   Object.keys(rec).forEach(k=>{ if(WFM_CAPTURE_SHAPE.fields.indexOf(k)<0) throw new Error('Not in the capture shape: '+k); });
   return {id:id,record:rec,files:files,done:[],made:Date.now()};
@@ -816,14 +981,15 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   if(st.ds){ app.insertAdjacentHTML('beforeend',vDocScan()); dsBind(); }
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
   after();
+  if(st.sheet==='jdone') t5SigBind();
 }
 function head(eb,title,sub){ return '<div class="head"><div class="eb">'+esc(eb)+'</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</div>'; }
 // The start-up screen (DEC-0301; DEC-0303 rule 1): the site's logo large, where it is the brand; the Waterline mark as
@@ -1263,11 +1429,12 @@ function jPending(j){
 // Kept a week at most; gone once filed, or once its job has left the site file and it has left the outbox.
 function jSentPrune(){ if(!st.site) return; const wk=Date.now()-7*864e5, out=new Set(st.outbox.map(c=>c.id));
   ls.set('wl_jobSent',jSent().filter(x=>{ const j=jobById(x.job); return Date.parse(x.at)>wk&&(j?jPending(j).some(y=>y.cap===x.cap):out.has(x.cap)); })); }
-const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned',parts:'Parts used',permit:'Permit'};
+const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned',parts:'Parts used',permit:'Permit',stop:'Stopped'};
 const pName=id=>{ const p=PEOPLE().find(x=>x.id===id); return p?p.name:id; };
 function pendText(x){ if(x.act==='note') return x.note||(x.au?WFM_CAPTURE_SHAPE.noWords:''); if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
   if(x.act==='pause') return x.note?'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'):'Paused.'; if(x.act==='restart') return 'Restarted.';
-  if(x.act==='parts') return partsWords(x.parts); if(x.act==='permit') return 'Applied for a permit to work: '+(x.types||[]).join(', ')+'.';
+  if(x.act==='parts') return partsWords(x.parts);
+  if(x.act==='stop'){ const w=String((x.stopped&&x.stopped.why)||'').trim(); return 'Stopped and told the FM: '+w+(/[.!?]$/.test(w)?'':'.')+(x.note?' '+x.note:''); } if(x.act==='permit') return 'Applied for a permit to work: '+(x.types||[]).join(', ')+'.';
   if(x.act==='assign'){ const a=x.assign||{on:[],off:[]}; return [(a.on||[]).length?'Put on: '+a.on.map(pName).join(', ')+'.':'',(a.off||[]).length?'Taken off: '+a.off.map(pName).join(', ')+'.':''].filter(Boolean).join(' '); }
   if(x.act==='flag'){ const w=String((x.flag&&x.flag.why)||'').trim(); return flagLabel(x.flag)+(w?': '+w+(/[.!?]$/.test(w)?'':'.'):'.'); } return 'Remove the flag.'; }
 const dayLab=t=>{ const d=new Date(t); if(isNaN(d)) return ''; const k=d.toDateString(); return k===new Date().toDateString()?'Today':k===new Date(Date.now()-864e5).toDateString()?'Yesterday':day(d); };
@@ -1567,18 +1734,6 @@ function jFlagSheet(){
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobFlagSend"'+(st.busy?' disabled':'')+'>'+I.flag+'Flag the Job</button>'
     +(F.ftried&&miss?'<div class="help err" role="alert" style="margin:0">'+esc(miss)+'</div>':'')+'</div></div>';
 }
-// Mark Done (DEC-0308 rule 3): a photo of the finished work is asked for, never required.
-function jDoneSheet(){
-  const F=st.form; F.dphotos=F.dphotos||[];
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Mark done"><div class="sh"><b>Mark Done</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +'<div class="field"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
-    +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
-    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label></div></div>'
-    +'<div class="field"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
-    +partsPart(F,'Parts and materials used',true)
-    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobDoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Mark Done and Send</button>'
-    +(F.dphotos.length?'':'<span class="sub" style="margin:0">With no photo, the job’s record says none was taken.</span>')+'</div></div>';
-}
 // ── Before You Start, permits and parts used (W; DEC-0313, DEC-0325) ─────────────────────────────────────────
 // The permit types a check needs, read from the shape's table; the desk's wfmCheckPermits reads the same table and
 // refuses a start whose permit is not issued, so this only decides which button the sheet shows.
@@ -1586,33 +1741,223 @@ function ckPermits(ck){ if(!ck||ck.none) return []; const T=WFM_CAPTURE_SHAPE, u
   (ck.hazards||[]).forEach(h=>{ const t=(T.permitFor||{})[h.id]; if(!t||out.indexOf(t)>=0) return; if(h.id==='electricity'&&!ck.isolate) return; if(h.id==='height'&&!(up&&up.permit)) return; out.push(t); });
   return out; }
 // The check as it is sent: the site's hazards ticked, or None of These, never neither (the desk refuses both).
-function ckOut(C){ const hz=(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).map(h=>({id:h.id,label:h.label})), k=C.kit?C.kit.split('|'):null;
-  return {none:!!C.none,hazards:hz,note:String(C.note||'').trim(),same:!!C.same,kit:k?[{reg:k[0],id:k[1]}]:[],from:C.hz.indexOf('height')>=0?C.from||'':'',isolate:C.hz.indexOf('electricity')>=0&&!!C.iso}; }
+function ckOut(C){ const hz=(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).map(h=>({id:h.id,label:h.label})), k=C.kit&&C.kit!=='-'?C.kit.split('|'):null;
+  const ans=C.ans?t5Answers(C):[], j=st.form&&jobById(st.form.id);
+  return {none:!!C.none,hazards:hz,note:String(C.note||'').trim(),same:!!C.same,kit:k?[{reg:k[0],id:k[1]}]:[],from:C.hz.indexOf('height')>=0?C.from||'':'',
+    isolate:C.hz.indexOf('electricity')>=0&&(!!C.iso||ans.some(a=>a.id==='e-iso'&&a.a==='yes')),answers:ans,
+    ras:j&&C.ans?t5Ras(j,C).map(r=>({id:r.id,read:r.read||'',fp:r.fp||'',opened:!!(C.ras||{})[r.id]})):[]}; }
+// The old sheet's reasons, kept for a check sent before S5.
 function ckWhy(C){ if(C.none&&C.hz.length) return 'Choose the hazards here, or None of These, not both.'; if(!C.none&&!C.hz.length) return 'Tick each hazard here, or choose None of These.';
   if(C.hz.indexOf('height')>=0&&!C.from) return 'Say what you are working at height from.'; return ''; }
 function ckMissing(j,C){ return ckPermits(ckOut(C)).filter(t=>!(j.permits||[]).some(p=>p.type===t&&p.state==='Active')); }
 // The earlier check on this job, as the site file has it, for Same as Before (DEC-0325 rule 2).
-function ckFrom(last){ return {hz:(last.hazards||[]).map(h=>h.id),none:!!last.none,note:last.note||'',from:last.from||'',iso:!!last.isolate,kit:(last.kit||[])[0]?last.kit[0].reg+'|'+last.kit[0].id:''}; }
-function jCheckSheet(){
+function ckFrom(last){ const ans={}, sorted={}; (last.answers||[]).forEach(a=>{ ans[a.id]=a.a; if(a.sorted) sorted[a.id]=a.sorted; });
+  return {hz:(last.hazards||[]).map(h=>h.id),none:!!last.none,note:'',from:last.from||'',iso:!!last.isolate,kit:(last.kit||[])[0]?last.kit[0].reg+'|'+last.kit[0].id:'',ans:ans,sorted:sorted}; }
+// ── Before You Start as a Take 5 reminder (S5; DEC-0341, DEC-0342, DEC-0343) ──────────────────────────────
+// Drawn as sandbox/mockups/safety-2026-10-23/final.html. The questions, what to wear and what holds Start are the desk's
+// one table (WFM_CAPTURE_SHAPE.take5, Law 3); this page asks them and sends the answers. Stop, Look, Assess, Control, Go.
+const T5=()=>WFM_CAPTURE_SHAPE.take5;
+const t5Ic=n=>LUCIDE[n]?ICO(n):T5L[n]?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+T5L[n]+'</svg>':'';
+// A sign is a meaning, never a button (DEC-0342 rule 4): its own colours in every theme, its words beside it or as alt.
+const t5Sign=(c,cls)=>'<img class="'+(cls||'')+'" src="signs/ISO_7010_'+c+'.svg" alt="'+esc(T5().signs[c]||c)+'">';
+function t5Hz(id){ return T5().hazards[id]||null; }
+// The cards this check asks, in the site's order: each hazard tapped, then the question every job asks (DEC-0341 rule 2).
+// Working from above a stepladder is one card that holds Start for its permit (DEC-0313 rule 3).
+function t5Cards(C){
+  const out=[], hf=(WFM_CAPTURE_SHAPE.heightFrom||[]).find(h=>h.id===C.from);
+  if(!C.none) (SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).forEach(h=>{ const H=t5Hz(h.id); if(!H) return;
+    if(h.id==='height'&&hf&&hf.permit){ out.push({h:'height',q:{id:'h-permit',q:hf.label+' needs a permit to work',hint:'',ok:'none',says:'Permit',
+      hold:hf.label+' needs a permit to work.',clear:'The FM issues it on the desk.',permit:WFM_CAPTURE_SHAPE.permitFor.height}}); return; }
+    H.qs.forEach(q=>out.push({h:h.id,q:q})); });
+  T5().every.forEach(q=>out.push({h:'',q:q}));
+  return out;
+}
+const t5Fine=(q,a)=>q.ok==='none'?a==='seen':a===q.ok;
+// The permit types this check needs, and whether each is issued on the job (the desk's wfmCheckPermits reads the same table).
+function t5Missing(j,C){ return ckMissing(j,C); }
+function t5Held(C){ return t5Cards(C).filter(c=>c.q.hold&&!c.q.permit&&C.ans[c.q.id]!=null&&!t5Fine(c.q,C.ans[c.q.id])); }
+// What must be worn: told, never asked (DEC-0343 rule 1), from each hazard tapped and what the work is done from.
+function t5Wear(C){ const w=(T5().everyWear||[]).slice(); if(C.none) return w;
+  C.hz.forEach(h=>{ const H=t5Hz(h); (H&&H.wear||[]).forEach(c=>{ if(w.indexOf(c)<0) w.push(c); }); });
+  if(C.hz.indexOf('height')>=0) ((T5().fromWear||{})[C.from]||[]).forEach(c=>{ if(w.indexOf(c)<0) w.push(c); });
+  return w; }
+// The risk assessments one tap away (DEC-0343 rule 3): linked on the desk to a hazard tapped or to the job's group.
+function t5Ras(j,C){ return (SITE().ras||[]).filter(r=>{ const f=r.for||{}; return (!C.none&&(f.hazards||[]).some(h=>C.hz.indexOf(h)>=0))||(f.groups||[]).indexOf(j.group)>=0; }); }
+function t5Kit(C){ const k=SITE().kit||[], step=C.from==='stepladder';
+  return k.filter(x=>/ladder/i.test(x.label)).sort((a,b)=>(/step/i.test(b.label)===step)-(/step/i.test(a.label)===step)); }
+// Start or Restart opens it; an earlier check on the job offers Same as Before (DEC-0341 rule 10).
+function t5Open(mode){ const F=st.form;
+  F.ck={mode:mode,step:'look',hz:[],none:false,note:'',from:'',iso:false,kit:'',same:false,tried:false,ans:{},sorted:{},qi:0,ras:{},stop:null,back:'',raId:''};
+  st.sheet='take5'; t5Draw(); }
+// Draws again and puts the focus where the person's eyes go: the card's question, else the first thing to press.
+function t5Draw(){ render(); const t=app.querySelector('.tf'); if(!t) return; t.scrollTop=0;
+  const f=t.querySelector('[data-t5focus]')||t.querySelector('.pg button,.cardpg button,.ft button'); if(f) f.focus({preventScroll:true}); }
+// The answers as sent: each card as it was shown, and how it was sorted.
+function t5Answers(C){ return t5Cards(C).filter(c=>C.ans[c.q.id]!=null).map(c=>({id:c.q.id,q:c.q.q,a:C.ans[c.q.id],sorted:C.sorted[c.q.id]||''})); }
+function t5Zone(eb,n,extra){ return '<div class="zone z"><div class="zt"><button class="ib" data-act="t5Back" aria-label="Back">'+I.back+'</button><span class="eb">'+esc(eb)+'</span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+  +(n==null?'':'<ol class="t5" aria-label="Take 5">'+T5().steps.map((w,i)=>'<li class="'+(i<n?'d':i===n?'c':'')+'"'+(i===n?' aria-current="step"':'')+'><i></i><span>'+w+'</span></li>').join('')+'</ol>')+(extra||'')+'</div>'; }
+function vTake5(){
   const F=st.form, C=F.ck, j=jobById(F.id); if(!j||!C) return '';
-  const hz=SITE().hazards||[], kit=SITE().kit||[], on=id=>C.hz.indexOf(id)>=0, last=j.check, miss=ckMissing(j,C), err=C.tried?ckWhy(C):'';
-  const tick=(act,v,lab,sub,o)=>'<button class="opt'+(o?' on':'')+'" data-act="'+act+'"'+(v!=null?' data-v="'+esc(v)+'"':'')+' aria-pressed="'+!!o+'"><span class="ck">'+(o?I.tick:'')+'</span><span class="m">'+esc(lab)+(sub?'<span class="sub">'+esc(sub)+'</span>':'')+'</span></button>';
-  const rad=(act,v,lab,sub,o)=>'<button class="opt'+(o?' on':'')+'" role="radio" aria-checked="'+!!o+'" data-act="'+act+'" data-v="'+esc(v)+'"><span class="rad"></span><span class="m">'+esc(lab)+(sub?'<span class="sub">'+esc(sub)+'</span>':'')+'</span></button>';
-  const go=miss.length?['permit','Apply for a Permit']:[C.mode==='restart'?'play':'play',C.mode==='restart'?'Restart the Job':'Start the Job'];
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Before you start"><div class="sh"><b>Before You Start</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +(last?'<div class="opts"><button class="verb" data-act="jckSame"'+(st.busy?' disabled':'')+'>'+I.shield+'<span class="m"><span class="w">Same as Before</span><span class="sub">'+esc(youOr(last.by)==='you'?'You':youOr(last.by))+', '+esc(at2(last.at))+': '+esc(last.says||'')+'</span></span></button></div>':'')
-    +'<div class="grp">Is any of these here?</div><div class="opts">'+hz.map(h=>tick('jck',h.id,h.label,'',on(h.id))).join('')+'</div>'
-    +'<div class="opts" style="margin-top:8px">'+tick('jcknone',null,'None of These','',C.none)+'</div>'
-    +(on('height')?'<div class="grp">Working at height, from</div><div class="opts" role="radiogroup" aria-label="Working at height, from">'
-      +(WFM_CAPTURE_SHAPE.heightFrom||[]).map(h=>rad('jfrom',h.id,h.label,h.permit?'Needs a permit to work':'',C.from===h.id)).join('')+'</div>'
-      +(kit.length?'<div class="grp">Ladder or kit used</div><div class="opts" role="radiogroup" aria-label="Ladder or kit used">'+rad('jkit','','Nothing from the register','',!C.kit)
-        +kit.map(k=>rad('jkit',k.reg+'|'+k.id,k.label,[k.where,'inspection: '+k.state].filter(Boolean).join(' · '),C.kit===k.reg+'|'+k.id)).join('')+'</div>':''):'')
-    +(on('electricity')?'<div class="opts" style="margin-top:8px">'+tick('jiso',null,'Isolating a supply','Needs a permit to work',C.iso)+'</div>':'')
-    +'<div class="field"><label for="cknote">What was done about them <span class="opt-w">(optional)</span></label><textarea id="cknote" data-in="cknote">'+esc(C.note||'')+'</textarea>'
-    +'<div class="help">Your name and the time sign it. '+esc(WFM_CAPTURE_SHAPE.checkSays||'')+'</div></div>'
-    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jckGo"'+(st.busy?' disabled':'')+'>'+I[go[0]]+esc(go[1])+'</button>'
-    +(miss.length?'<span class="sub" style="margin:0">Issued on the desk, before the job starts.</span>':'')
-    +(err?'<div class="help err" role="alert" style="margin:0">'+esc(err)+'</div>':'')+'</div></div>';
+  const eb='Before You Start · Job '+(j.no||''), wrap=(h,cls)=>'<div class="sheet tf'+(cls?' '+cls:'')+'" role="dialog" aria-modal="true" aria-label="Before you start">'+h+'</div>';
+  const ft=(b,sub)=>'<div class="ft">'+(sub||'')+b+'</div>';
+  if(C.step==='ra') return wrap(t5RaView(C));
+  if(C.step==='stop') return wrap(t5StopView(j,C));
+  if(C.step==='look'){ const hz=(SITE().hazards||[]).filter(h=>t5Hz(h.id)), n=C.hz.length, last=j.check;
+    return wrap(t5Zone(eb,1,'<div class="hero"><b class="n">'+(C.none?0:n)+'</b><p>'+(n===1&&!C.none?'thing here<br>that could hurt':'things here<br>that could hurt')+'</p></div><div class="zsub">'+esc([jWhere(j),j.title].filter(Boolean).join(' · '))+'</div>')
+      +'<div class="pg">'+(last?'<button class="same" data-act="t5Same" data-t5focus><span class="bi">'+I.shield+'</span><span class="m"><b>Same as Before</b><span>'+esc(youOr(last.by)==='you'?'You':youOr(last.by))+', '+esc(at2(last.at))+': '+esc(last.says||'')+'</span></span>'+I.chev+'</button>':'')
+      +'<div class="lab">Tap each one that’s here</div><div class="hz">'+hz.map(h=>{ const on=C.hz.indexOf(h.id)>=0;
+        return '<button class="hc'+(on?' on':'')+'" data-act="t5Hz" data-v="'+esc(h.id)+'" aria-pressed="'+on+'"><span class="tk">'+(on?I.tick:'')+'</span><span class="ic">'+t5Ic(t5Hz(h.id).icon)+'</span><b>'+esc(h.label)+'</b></button>'; }).join('')+'</div>'
+      +'<button class="none'+(C.none?' on':'')+'" data-act="t5None" aria-pressed="'+C.none+'">'+(C.none?I.tick:'')+'None of These</button>'
+      +(C.tried&&!n&&!C.none?'<div class="help err" role="alert">Tap each one that’s here, or None of These.</div>':'')+'</div>'
+      +ft('<button class="btn" data-act="t5Next">Next'+t5Ic('arrow-right')+'</button>')); }
+  if(C.step==='from'){ const kit=t5Kit(C), hf=WFM_CAPTURE_SHAPE.heightFrom||[], up=hf.find(h=>h.id===C.from), ladder=up&&!up.permit;
+    return wrap(t5Zone(eb,2)+'<div class="pg"><div class="lab" id="t5from">Working at height · from</div><div class="tiles" role="radiogroup" aria-labelledby="t5from">'
+      +hf.map(h=>'<button class="kt'+(C.from===h.id?' on':'')+'" role="radio" aria-checked="'+(C.from===h.id)+'" data-act="t5From" data-v="'+esc(h.id)+'">'+(h.permit?'<span class="pm">Permit</span>':'')+'<span class="ic">'+t5Ic(T5FROM[h.id]||'arrow-up-from-line')+'</span><b>'+esc(h.label)+'</b></button>').join('')+'</div>'
+      +(ladder&&kit.length?'<div class="lab sp" id="t5kit">Which one</div><div class="ok" role="radiogroup" aria-labelledby="t5kit">'
+        +kit.map(k=>{ const v=k.reg+'|'+k.id, on=C.kit===v; return '<button class="kr'+(on?' on':'')+'" role="radio" aria-checked="'+on+'" data-act="t5Kit" data-v="'+esc(v)+'"><span class="rad"></span><span class="m"><b>'+esc(k.label)+'</b><span>'+esc([k.where,k.state].filter(Boolean).join(' · '))+'</span></span></button>'; }).join('')
+        +'<button class="kr'+(C.kit==='-'?' on':'')+'" role="radio" aria-checked="'+(C.kit==='-')+'" data-act="t5Kit" data-v="-"><span class="rad"></span><span class="m"><b>Not on the register</b></span></button></div>':'')
+      +(C.tried&&!C.from?'<div class="help err" role="alert">Say what you are working from.</div>':'')+'</div>'
+      +ft('<button class="btn" data-act="t5Next">Next'+t5Ic('arrow-right')+'</button>')); }
+  if(C.step==='q'){ const cards=t5Cards(C), c=cards[C.qi]; if(!c){ C.step='go'; return vTake5(); }
+    const q=c.q, a=C.ans[q.id], H=c.h?t5Hz(c.h):null, hl=c.h?(SITE().hazards||[]).find(h=>h.id===c.h):null;
+    const forW=hl?hl.label.replace(/^Working at height$/,'Height'):'Every job', forI=H?H.icon:q.icon||'wrench';
+    const issued=q.permit&&(j.permits||[]).some(p=>p.type===q.permit&&p.state==='Active');
+    const art=q.ok==='none'?'<span class="big">'+t5Ic(c.h==='height'?T5FROM[C.from]||'arrow-up-from-line':forI)+'</span>':H&&H.sign?t5Sign(H.sign,'sg'):'<span class="big">'+t5Ic(forI)+'</span>';
+    let h2=q.q, p=q.hint, btns;
+    if(q.ok==='none'){ h2=issued?'The permit to work is issued':q.q; p=issued?'Issued on the desk. Carry on.':(q.hint?q.hint+' ':'')+q.clear+' Answer the rest, then it goes with your application.';
+      btns=issued?'<div class="yn col"><button class="yes" data-act="t5Seen" data-t5focus>'+t5Ic('arrow-right')+'Next</button></div>'
+        :'<div class="yn col"><button class="yes" data-act="t5Seen" data-t5focus>'+I.permit+'Apply for the Permit</button>'
+        +(c.h==='height'?'<button class="no" data-act="t5Step">Use a Stepladder Instead</button>':'<button class="no" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button>')+'</div>'; }
+    else if(a!=null&&!t5Fine(q,a)&&q.sort){ p='You said '+a+'. '+q.hint;
+      btns='<div class="yn col"><button class="yes" data-act="t5Sort" data-t5focus>'+I.tick+esc(q.sort)+'</button><button class="no" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button></div>'; }
+    else if(a!=null&&!t5Fine(q,a)&&q.hold&&q.permit){ h2=issued?'The permit to work is issued':q.hold; p=issued?'Issued on the desk. Carry on.':q.clear+' Answer the rest, then it goes with your application.';
+      btns='<div class="yn col"><button class="yes" data-act="t5Held" data-t5focus>'+(issued?t5Ic('arrow-right')+'Next':I.permit+'Apply for the Permit')+'</button><button class="no" data-act="t5Undo">Change My Answer</button></div>'; }
+    else if(a!=null&&!t5Fine(q,a)&&q.hold){ h2=q.hold; p='Start the Job is held. '+q.clear;
+      btns='<div class="yn col"><button class="yes" data-act="t5Stop" data-t5focus>'+t5Ic('octagon-x')+'Stop and Tell the FM</button><button class="no" data-act="t5Undo">Change My Answer</button></div>'; }
+    else btns='<div class="yn"><button class="no'+(a==='no'?' on':'')+'" data-act="t5Ans" data-v="no" aria-pressed="'+(a==='no')+'">No</button><button class="yes'+(a==='yes'?' on':'')+'" data-act="t5Ans" data-v="yes" aria-pressed="'+(a==='yes')+'">'+I.tick+'Yes</button></div>';
+    const held=a!=null&&!t5Fine(q,a)&&q.hold&&!q.permit;
+    return wrap(t5Zone(eb,3)+'<div class="cardpg"><div class="qc'+(held||q.ok==='none'&&!issued?' stop':'')+'"><span class="of">'+(C.qi+1)+' of '+cards.length+'</span><span class="for">'+t5Ic(forI)+esc(forW)+'</span>'
+      +'<div class="art">'+art+'</div><h2 data-t5focus tabindex="-1">'+esc(h2)+'</h2><p>'+esc(p)+'</p>'
+      +(c.h==='height'&&q.id==='h-sound'&&C.kit&&C.kit!=='-'?t5KitSays(C):'')+btns+'</div>'
+      +'</div>'); }
+  // Go (DEC-0341 rule 6): Good to Go fills the screen, or says what still holds Start and what clears it.
+  const held=t5Held(C), miss=t5Missing(j,C), cards=t5Cards(C), wear=t5Wear(C), ras=t5Ras(j,C);
+  const good=!held.length&&!miss.length, when=hm(new Date().toISOString());
+  const row=c=>{ const a=C.ans[c.q.id]; if(a==null) return ''; const ok=t5Fine(c.q,a), s=C.sorted[c.q.id], H=c.h?t5Hz(c.h):null;
+    const w=c.q.ok==='none'?c.q.hold.replace(/\.$/,''):!ok&&s?(c.q.sortSays||s):!ok&&c.q.hold?c.q.hold.replace(/\.$/,''):c.q.says||c.q.q;
+    return '<li class="okr"><span class="bi">'+t5Ic(H?H.icon:c.q.icon||'wrench')+'</span><span>'+esc(w)+'</span><em>'+(c.q.ok==='none'||(!ok&&c.q.hold)?(c.q.permit&&(j.permits||[]).some(p=>p.type===c.q.permit&&p.state==='Active')?'Issued':'Held'):!ok&&s?'Sorted':a==='yes'?'Yes':'No')+'</em></li>'; };
+  const hzNoRa=C.none?[]:(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0&&!ras.some(r=>((r.for||{}).hazards||[]).indexOf(h.id)>=0));
+  const top=good?'<div class="done"><span class="tick">'+I.tick+'</span><h2 data-t5focus tabindex="-1">Good to Go</h2><p>'+esc([jWhere(j)||j.title,st.walker,when].filter(Boolean).join(' · '))+'</p></div>'
+    :'<div class="done"><span class="tick held">'+t5Ic('octagon-x')+'</span><h2 data-t5focus tabindex="-1">'+(held.length?'Start is held':'Waiting for the permit')+'</h2><p>'
+      +esc(held.length?held.map(c=>c.q.hold+' '+c.q.clear).join(' '):miss.join(' and ')+(miss.length===1?' needs':' need')+' a permit to work. The FM issues it on the desk, and Start the Job comes back once they do.')+'</p></div>';
+  const go=good?'<button class="btn" data-act="t5Start">'+I.play+(C.mode==='restart'?'Restart the Job':'Start the Job')+'</button>'
+    :held.length?'<button class="btn" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button>'
+    :'<button class="btn" data-act="t5Permit">'+I.permit+'Apply for the Permit</button>';
+  return wrap(t5Zone(eb,null)+top
+    +(wear.length?'<div class="wear"><div class="lab">You must wear</div><div class="sgs">'+wear.map(c=>'<span class="sg">'+t5Sign(c)+'<b>'+esc(T5().signs[c]||c)+'</b></span>').join('')+'</div></div>':'')
+    +'<ul class="okz" aria-label="What you said">'+(C.same?'<li class="okr"><span class="bi">'+I.shield+'</span><span>Same as before, '+esc(at2((j.check||{}).at||''))+'</span><em>Kept</em></li>':'')
+      +cards.map(row).join('')+'</ul>'
+    +(ras.length||hzNoRa.length?'<div class="ras">'+ras.map(r=>'<button class="ralink" data-act="t5Ra" data-v="'+esc(r.id)+'">'+t5Ic('file-text')+'<span>Read the risk assessment: '+esc(r.title)+'</span>'+I.chev+'</button>').join('')
+      +(hzNoRa.length?'<p class="nora">No risk assessment is linked to '+esc(hzNoRa.map(h=>h.label.charAt(0).toLowerCase()+h.label.slice(1)).join(' or '))+' yet.</p>':'')+'</div>':'')
+    +ft(go,good?'<p class="say">Your name and the time sign it. '+esc(T5().says)+'</p>':''),'full');
+}
+function t5KitSays(C){ const k=(SITE().kit||[]).find(x=>x.reg+'|'+x.id===C.kit); return k?'<p class="kits">'+esc(k.label)+': '+esc(k.state)+(/no next|out of date|cannot/.test(k.state)?'. The FM sees this on the check.':'.')+'</p>':''; }
+// The risk assessment, full screen, as it reads now (DEC-0343 rule 3): what could happen, its controls in its own words,
+// its score before and after, and "As it read on" with its sign-off at the foot.
+function t5RaView(C){ const r=(SITE().ras||[]).find(x=>x.id===C.raId); if(!r) return '';
+  const sc=x=>x&&x.score?'<b class="n">'+x.score+'</b><span>'+x.l+' × '+x.s+'</span>':'<b class="n">–</b>';
+  return t5Zone('Risk assessment · '+r.id,null,'<h1 data-t5focus tabindex="-1">'+esc(r.title)+'</h1>')
+    +'<div class="rasec"><div class="lab">What could happen</div><p>'+esc(r.could||'Not written on the assessment.')+'</p></div>'
+    +'<div class="rasec"><div class="lab">Its controls, as written</div>'+(r.controls&&r.controls.length?'<ol class="cl">'+r.controls.map(c=>'<li>'+esc(c)+'</li>').join('')+'</ol>':'<p>None written.</p>')+'</div>'
+    +'<div class="rasec"><div class="lab">Risk score</div><div class="scr"><div>'+sc(r.before)+'<i>Before controls</i></div><div>'+sc(r.after)+'<i>After controls</i></div></div></div>'
+    +'<p class="ver">As it read on <b>'+esc(fmtD(r.read))+'</b>. '+(r.signed?'Signed off'+(r.signed!=='yes'?' on '+esc(fmtD(r.signed)):'')+' by a competent person.':'<b>Not signed off by a competent person.</b>')+'</p>'
+    +'<div class="ft"><button class="btn" data-act="t5Back">'+I.back+'Back to the Check</button></div>'; }
+function fmtD(d){ const t=Date.parse(d); return isNaN(t)?String(d||'no date'):new Date(t).toLocaleDateString('en-IE',{day:'numeric',month:'short',year:'numeric'}); }
+// Stop and Tell the FM (DEC-0341 rule 5): a reason, a word or a photo, then Send. The desk pauses the job and flags it.
+function t5StopView(j,C){ const S0=C.stop;
+  return t5Zone('Stop and Tell the FM · Job '+(j.no||''),null,'<div class="hero"><p class="stoph">The job stops here.<br>The FM is told.</p></div>')
+    +'<div class="pg"><div class="lab" id="t5why">Why</div><div class="ok" role="radiogroup" aria-labelledby="t5why">'+T5().stopWhy.map(w=>'<button class="kr sm'+(S0.why===w?' on':'')+'" role="radio" aria-checked="'+(S0.why===w)+'" data-act="t5Why" data-v="'+esc(w)+'"'+(w===T5().stopWhy[0]?' data-t5focus':'')+'><span class="rad"></span><span class="m"><b>'+esc(w)+'</b></span></button>').join('')+'</div>'
+    +'<div class="field" style="padding:16px 0 0"><label for="t5word">A word for the FM <span class="opt-w">(optional)</span></label><textarea id="t5word" data-in="t5word">'+esc(S0.note||'')+'</textarea></div>'
+    +'<div class="field" style="padding:16px 0 0"><span class="fl">A photo <span class="opt-w">(optional)</span></span><div class="thumbs">'
+    +S0.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="t5PhotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
+    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="t5photo"></label></div></div>'
+    +(S0.tried&&!S0.why?'<div class="help err" role="alert">Pick why it is stopped.</div>':'')+'</div>'
+    +'<div class="ft"><button class="btn" data-act="t5StopSend"'+(st.busy?' disabled':'')+'>'+I.send+'Send to the FM</button></div>'; }
+// Mark Done (DEC-0341 rule 8): left safe, anything new, then a finger signature. "Power back on" only when Electricity was tapped.
+function t5Elec(j){ const s=jSent().filter(x=>x.job===j.id&&x.hz).pop(); return s?s.hz.indexOf('electricity')>=0:!!(j.check&&(j.check.hazards||[]).some(h=>h.id==='electricity')); }
+function t5FinQs(j){ return T5().finish.filter(f=>!f.when||(f.when==='electricity'&&t5Elec(j))); }
+function vFinish(){
+  const F=st.form, j=jobById(F.id); if(!j) return ''; const D=F.fin, qs=t5FinQs(j), err=D.tried?t5FinWhy(j):'';
+  F.dphotos=F.dphotos||[];
+  return '<div class="sheet tf" role="dialog" aria-modal="true" aria-label="Mark done">'+t5Zone('Mark Done · Job '+(j.no||''),null,'<div class="hero"><b class="n">'+qs.length+'</b><p>checks,<br>then sign</p></div>')
+    +'<div class="pg"><ul class="so">'+qs.map((f,i)=>{ const a=D.ans[f.id], id='fq'+i;
+      return '<li class="sr"><b id="'+id+'">'+esc(f.q)+'</b><div class="ynp" role="radiogroup" aria-labelledby="'+id+'">'+['yes','no'].map(v=>'<button class="'+(a===v?'on':'')+'" role="radio" aria-checked="'+(a===v)+'" data-act="t5Fin" data-k="'+f.id+'" data-v="'+v+'"'+(i===0&&v==='yes'?' data-t5focus':'')+'>'+(a===v?I.tick:'')+(v==='yes'?'Yes':'No')+'</button>').join('')+'</div>'
+        +(f.ask&&a===f.ask?'<div class="field" style="padding:12px 0 0"><label for="t5found">'+esc(f.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')+'</li>'; }).join('')+'</ul>'
+    +'<div class="field" style="padding:20px 0 0"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
+    +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
+    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label></div></div>'
+    +'<div class="field" style="padding:16px 0 0"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
+    +'<div style="margin:0 -16px">'+partsPart(F,'Parts and materials used',true)+'</div>'
+    +'<div class="field sigw" style="padding:20px 0 0"><span class="fl" id="t5sigl">Sign with your finger</span><div class="sigp"><canvas id="t5sig" role="img" aria-labelledby="t5sigl"></canvas><span class="who">'+esc((st.walker||'')+(D.strokes.length?' · '+hm(D.at||new Date().toISOString()):''))+'</span>'
+      +(D.strokes.length?'<button class="clr" data-act="t5SigClear">Clear</button>':'')+'</div></div>'
+    +(err?'<div class="help err" role="alert">'+esc(err)+'</div>':'')+'</div>'
+    +'<div class="ft">'+(F.dphotos.length?'':'<p class="say">With no photo, the job’s record says none was taken.</p>')+'<button class="btn" data-act="t5DoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Sign and Mark Done</button></div></div>';
+}
+function t5FinWhy(j){ const D=st.form.fin, qs=t5FinQs(j), un=qs.filter(f=>D.ans[f.id]==null);
+  if(un.length) return 'Answer '+(un.length===1?'“'+un[0].q+'”':'each question')+'.';
+  const nw=qs.find(f=>f.ask&&D.ans[f.id]===f.ask); if(nw&&!String(st.form.t5found||'').trim()) return 'Say what you found.';
+  if(!D.strokes.length) return 'Sign with your finger.'; return ''; }
+// The signature pad: strokes kept in the form so a redraw keeps them, drawn again on each render.
+function t5SigBind(){ const cv=document.getElementById('t5sig'); if(!cv) return; const D=st.form.fin, r=cv.getBoundingClientRect(), k=window.devicePixelRatio||1;
+  cv.width=Math.round(r.width*k); cv.height=Math.round(r.height*k); const g=cv.getContext('2d'); g.scale(k,k);
+  const ink=getComputedStyle(cv).color; g.strokeStyle=ink; g.lineWidth=2.5; g.lineCap='round'; g.lineJoin='round';
+  const paint=s=>{ g.beginPath(); s.forEach((p,i)=>i?g.lineTo(p[0]*r.width,p[1]*r.height):g.moveTo(p[0]*r.width,p[1]*r.height)); if(s.length===1) g.lineTo(s[0][0]*r.width+.1,s[0][1]*r.height); g.stroke(); };
+  D.strokes.forEach(paint);
+  let cur=null; const pt=e=>{ const b=cv.getBoundingClientRect(); return [Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)),Math.min(1,Math.max(0,(e.clientY-b.top)/b.height))]; };
+  cv.onpointerdown=e=>{ e.preventDefault(); cv.setPointerCapture(e.pointerId); cur=[pt(e)]; D.strokes.push(cur); };
+  cv.onpointermove=e=>{ if(!cur) return; cur.push(pt(e)); g.clearRect(0,0,r.width,r.height); D.strokes.forEach(paint); };
+  cv.onpointerup=cv.onpointercancel=()=>{ if(!cur) return; cur=null; D.at=new Date().toISOString(); const y=document.querySelector('.tf').scrollTop; keepRender(); const t=document.querySelector('.tf'); if(t) t.scrollTop=y; }; }
+// The signature as a PNG of its own, black on clear, 600 × 200 (Records §7: kept as the evidence it is).
+function t5SigPng(){ const D=st.form.fin, cv=document.createElement('canvas'); cv.width=600; cv.height=200; const g=cv.getContext('2d');
+  g.strokeStyle='#0D1F2D'; g.lineWidth=4; g.lineCap='round'; g.lineJoin='round';
+  D.strokes.forEach(s=>{ g.beginPath(); s.forEach((p,i)=>i?g.lineTo(p[0]*600,p[1]*200):g.moveTo(p[0]*600,p[1]*200)); if(s.length===1) g.lineTo(s[0][0]*600+.1,s[0][1]*200); g.stroke(); });
+  return new Promise(res=>cv.toBlob(b=>res(new File([b],'signature.png',{type:'image/png'})),'image/png')); }
+// What each press on the check and the sign-out does (S5).
+function t5Act(a,b){
+  const F=st.form, C=F.ck, j=jobById(F.id), v=b.dataset.v; if(!j) return;
+  if(a==='t5Fin'){ F.fin.ans[b.dataset.k]=v; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const n=t.querySelector('[data-act="t5Fin"][data-k="'+b.dataset.k+'"][data-v="'+v+'"]'); if(n) n.focus({preventScroll:true}); return; }
+  if(a==='t5SigClear'){ F.fin.strokes=[]; F.fin.at=''; const y=app.querySelector('.tf').scrollTop; render(); app.querySelector('.tf').scrollTop=y; return; }
+  if(a==='t5DoneSend'){ if(t5FinWhy(j)){ F.fin.tried=true; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const e=t.querySelector('[role=alert]'); if(e) e.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
+  if(!C) return;
+  const cards=()=>t5Cards(C), cur=()=>cards()[C.qi];
+  const next=()=>{ C.qi++; if(C.qi>=cards().length) C.step='go'; t5Draw(); };
+  if(a==='t5Back'){
+    if(C.step==='ra'||C.step==='stop'){ C.step=C.back||'go'; C.back=''; return t5Draw(); }
+    if(C.step==='go'){ if(C.same){ C.same=false; C.step='look'; C.ans={}; C.sorted={}; C.qi=0; return t5Draw(); } C.step='q'; C.qi=Math.max(0,cards().length-1); return t5Draw(); }
+    if(C.step==='q'){ if(C.qi>0){ C.qi--; return t5Draw(); } C.step=C.hz.indexOf('height')>=0?'from':'look'; return t5Draw(); }
+    if(C.step==='from'){ C.step='look'; return t5Draw(); }
+    st.sheet=false; render(); const f=app.querySelector('[data-act="jobStart"],[data-act="jobRestart"]'); if(f) f.focus(); return; }
+  if(a==='t5Hz'){ const i=C.hz.indexOf(v); if(i>=0) C.hz.splice(i,1); else { C.hz.push(v); C.none=false; } C.same=false; render(); const n=app.querySelector('.tf [data-act="t5Hz"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
+  if(a==='t5None'){ C.none=!C.none; if(C.none) C.hz=[]; C.same=false; render(); const n=app.querySelector('.tf [data-act="t5None"]'); if(n) n.focus({preventScroll:true}); return; }
+  if(a==='t5Next'){
+    if(C.step==='look'){ if(!C.hz.length&&!C.none){ C.tried=true; return render(); } C.tried=false; C.ans={}; C.sorted={}; C.qi=0; C.step=C.hz.indexOf('height')>=0?'from':'q'; return t5Draw(); }
+    if(C.step==='from'){ if(!C.from){ C.tried=true; return render(); } C.tried=false; C.qi=0; C.step='q'; return t5Draw(); } return; }
+  if(a==='t5From'){ C.from=v; const up=(WFM_CAPTURE_SHAPE.heightFrom||[]).find(h=>h.id===v); if(up&&up.permit) C.kit=''; C.ans={}; C.sorted={}; render(); const n=app.querySelector('.tf [data-act="t5From"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
+  if(a==='t5Kit'){ C.kit=v; render(); const n=app.querySelector('.tf [data-act="t5Kit"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
+  if(a==='t5Step'){ C.from='stepladder'; C.kit=''; C.ans={}; C.sorted={}; C.qi=0; C.step='from'; return t5Draw(); }
+  if(a==='t5Ans'){ const q=cur().q; C.ans[q.id]=v; delete C.sorted[q.id]; if(t5Fine(q,v)) return next(); return t5Draw(); }
+  if(a==='t5Sort'){ const q=cur().q; C.sorted[q.id]=q.sort; return next(); }
+  if(a==='t5Seen'){ C.ans[cur().q.id]='seen'; return next(); }
+  if(a==='t5Held') return next();
+  if(a==='t5Undo'){ delete C.ans[cur().q.id]; return t5Draw(); }
+  if(a==='t5Same'){ if(!j.check) return; Object.assign(C,ckFrom(j.check),{same:true,step:'go',qi:0}); return t5Draw(); }
+  if(a==='t5Ra'){ C.raId=v; C.ras[v]=true; C.back=C.step; C.step='ra'; return t5Draw(); }
+  if(a==='t5Stop'){ const c=C.step==='q'?cur():null; C.stopQ=c?c.q.q:''; C.stop=C.stop||{why:'',photos:[],tried:false}; C.back=C.step; C.step='stop'; return t5Draw(); }
+  if(a==='t5Why'){ C.stop.why=v; render(); const n=app.querySelector('.tf [data-act="t5Why"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
+  if(a==='t5PhotoDel'){ const p=C.stop.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
+  if(a==='t5StopSend'){ if(!C.stop.why){ C.stop.tried=true; return render(); } return jobSend('stop'); }
+  if(a==='t5Permit'){ F.pf=F.pf||{}; st.sheet='jpermit'; render(); const n=app.querySelector('.sheet input'); if(n) n.focus(); return; }
+  if(a==='t5Start'){ if(t5Held(C).length||t5Missing(j,C).length) return t5Draw(); return jobSend(C.mode); }
 }
 // Apply for a Permit (DEC-0313 rule 3): the permit register's own fields for each type, and the times, all optional;
 // the check goes with it. The desk issues it; the job's Start waits until then.
@@ -1679,18 +2024,24 @@ async function jobSend(act){
   // The types go with it for the alert's words only (DEC-0344); the desk works them out again from the check.
   if(act==='permit'){ F.ckNeed=ckMissing(j,F.ck); fields.permit={from:F.pfrom||'',to:F.pto||'',fields:Object.assign({},F.pf||{}),types:F.ckNeed.slice()}; }
   if(act==='pause') fields.note=String(F.pwhy||'').trim();
+  if(act==='stop'){ const C=F.ck, q=C&&C.stopQ; fields.stopped={why:C.stop.why}; photos=C.stop.photos;
+    fields.note=[q?'At “'+q+'”.':'',String(F.t5word||'').trim()].filter(Boolean).join(' '); }
+  if(act==='done'){ const D=F.fin; fields.finish={answers:t5FinQs(j).map(f=>({id:f.id,q:f.q,a:D.ans[f.id]})),found:String(F.t5found||'').trim()};
+    if(D.strokes.length){ photos=photos.concat([{file:await t5SigPng(),keep:true,sig:true}]); fields.sig={file:'',by:st.walker,at:D.at||new Date().toISOString()}; } }
   if(act==='assign') fields.assign=F.asgSend;
   st.busy=true; F.err=''; keepRender();
   let c;
   try{ c=await makeCapture('job',fields,photos); }
   catch(e){ st.busy=false; st.sheet=false; F.err='Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null}); ls.set('wl_jobSent',s);
+  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null,
+    hz:fields.check&&!fields.check.none?fields.check.hazards.map(h=>h.id):null,stopped:fields.stopped||null}); ls.set('wl_jobSent',s);
   _sentPics[c.id]=V?[]:photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
   if(V){ _sentAudio[c.id]={url:V.url,secs:V.secs}; F.voice=null; F.kind='Note'; st.twEnd=true; }
   if(act==='edit'||act==='delete'){ F.mid=''; F.etext=''; F.eerr=''; }
   if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; st.twEnd=true; }   // the kind is chosen for each entry, so a note is never filed under the last one's
-  if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.ptext=''; F.ptried=false; }
+  if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.ptext=''; F.ptried=false; F.fin=null; F.t5found=''; }
+  if(act==='stop'){ F.ck=null; F.t5word=''; }
   if(act==='start'||act==='restart'||act==='permit'){ F.ck=null; F.pf={}; F.pfrom=''; F.pto=''; }
   if(act==='flag'){ F.why=''; F.level=''; F.ftried=false; }
   if(act==='pause'){ F.pwhy=''; F.ptried=false; }
@@ -1789,6 +2140,8 @@ function vMe(){
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
     +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
     +alertsGroup()
+    +'<div class="grp">Tags</div><div class="list"><button class="r" data-act="linkTags"><span class="m"><span class="w">Link NFC Tags</span><span class="sub">'
+      +(NFC_OK?'Tap a tag at its point, so a tap names the point':'Needs Chrome on an Android phone')+'</span></span>'+I.chev+'</button></div>'
     +'<p class="para">Walks come from your department, lines from the duties your position holds, jobs from the groups it belongs to, all set on the desk’s Organisation Structure.</p>'
     +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
@@ -2011,6 +2364,61 @@ function dsBind(){
 
 // ── A walk: points are scans (DEC-0294 rule 1), in the order set on the desk (DEC-0300 rule 2) ──
 function ptPlace(p){ const l=p&&p.loc?LOC(p.loc):null; return l?l.level+' · '+l.name:(p&&p.where)||'Place not set'; }
+// ── Link NFC Tags (DEC-0345): pick the point, hold the phone to its tag. The serial goes to the desk as a capture.
+function linkedOf(p,k){ return p.nfc&&!k[p.id]?'desk':k[p.id]?'kept':''; }
+// A link made here says where it is, read from the outbox (Design 9.11): waiting for signal, or sent and waiting for the desk.
+function linkSays(p,k){
+  const s=linkedOf(p,k); if(s==='desk') return 'Linked · <span class="n">'+esc(p.nfc)+'</span>';
+  const q=st.outbox.some(c=>c.id===k[p.id].cap);
+  return (q?'Waiting for signal to send':'Sent, waiting for the desk')+' · <span class="n">'+esc(k[p.id].serial)+'</span>';
+}
+function vTags(){
+  const ps=points(), k=linksKept(), todo=ps.filter(p=>!linkedOf(p,k)), done=ps.filter(p=>linkedOf(p,k)), L=st.link;
+  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('me')+'<span class="eb">Link NFC Tags</span></div>'
+    +'<div class="row1"><span class="num n">'+todo.length+'</span><span class="what">'+(todo.length===1?'point still to link':'points still to link')+'</span></div></div>';
+  if(!NFC_OK) return h+'<div class="note">This phone cannot read NFC tags from a web page. Linking needs Chrome on an Android phone. The QR code on the same sticker works on every phone.</div></div>';
+  if(!ps.length) return h+'<div class="note">There are no points in the site details yet. Points are set on the desk, in Walk Checklists and Tags.</div></div>';
+  if(L){
+    const p=pointById(L.point);
+    h+='<div class="note" role="'+(L.err?'alert':'status')+'">'+(L.err?esc(L.err):L.state==='off'?'NFC is turned off on this phone. Turn it on in the phone’s settings, then pick the point again.'
+      :L.state==='denied'?'This page is not allowed to use NFC. Allow it in Chrome’s site settings, then pick the point again.'
+      :'Hold the phone to the tag on <b>'+esc(p?p.name:L.point)+'</b>. Nothing is written to the tag.')+'</div>'
+      +'<div style="padding:12px 16px 0"><button class="btn g" data-act="linkCancel">Cancel</button></div>';
+  }
+  const row=(p,sub)=>'<button class="r" data-act="linkPick" data-id="'+esc(p.id)+'"'+(L&&L.point===p.id?' aria-current="true"':'')+'><span class="m"><span class="w">'+esc(p.name)+'</span>'+(sub?'<span class="sub">'+sub+'</span>':'')+'</span>'+I.chev+'</button>';
+  // Still to link, by level in the site's walking order (Design 15.5: chunked); the place only, the state is the group's.
+  const lv=p=>{ const l=p.loc?LOC(p.loc):null; return l?l.level:''; }, order=(SITE().levels||[]).map(l=>l.code), groups=[];
+  todo.forEach(p=>{ const c=lv(p); let g=groups.find(x=>x.c===c); if(!g) groups.push(g={c:c,ps:[]}); g.ps.push(p); });
+  groups.sort((x,y)=>(x.c===''?1e3:order.indexOf(x.c))-(y.c===''?1e3:order.indexOf(y.c)));
+  groups.forEach(g=>{ h+='<div class="grp">'+esc(g.c?(lvName(g.c)?g.c+' · '+lvName(g.c):g.c):'Place not set')+'</div><div class="list">'
+    +g.ps.map(p=>{ const l=p.loc?LOC(p.loc):null; return row(p,esc(l?l.name:(p.where||''))); }).join('')+'</div>'; });
+  if(done.length) h+='<div class="list" style="margin-top:16px"><div class="r" style="min-height:56px"><span class="m"><button class="lnk" data-act="linkShowDone" aria-expanded="'+!!st.linkShowDone+'">'+(st.linkShowDone?'Hide':'Show')+' the <span class="n">'+done.length+'</span> Linked</button></span></div>'
+    +(st.linkShowDone?done.map(p=>row(p,linkSays(p,k))).join(''):'')+'</div>';
+  return h+'</div>';
+}
+// Sends one link (DEC-0345) and keeps it on this phone until the desk publishes it. True when it went.
+async function linkSend(p,s){
+  const c=await makeCapture('tag',{point:p.id,serial:s,place:pointLabel(p)},[]);
+  const k=ls.get('wl_links',{}); k[p.id]={serial:s,at:new Date().toISOString(),cap:c.id}; ls.set('wl_links',k);
+  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); return ok;
+}
+async function linkRead(sn){
+  const L=st.link; if(!L||L.busy) return;
+  const p=pointById(L.point); if(!p){ st.link=null; return render(); }
+  if(sn===null){ L.err='The tag could not be read. Hold the phone still against it and try again.'; return render(); }
+  const s=WFM_CAPTURE_SHAPE.serialOf(sn);
+  if(!s){ L.err='This phone did not give the tag’s serial number, so it cannot be linked. Use the QR code on the sticker.'; return render(); }
+  const o=pointBySerial(s);
+  if(o&&o.id!==p.id){ L.err='This tag is already linked to '+o.name+'. One tag names one point. Use a different tag.'; return render(); }
+  if(o&&o.id===p.id){ nfcStop(); st.link=null; render(); return toast('This tag is already linked to '+p.name+'.'); }
+  L.busy=true; nfcStop();
+  if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+  let ok;
+  try{ ok=await linkSend(p,s); }
+  catch(e){ L.busy=false; L.err='Nothing was sent. Pick the point and try again. ('+(e.message||e)+')'; return render(); }
+  st.link=null; render();
+  toast((ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.')+(p.nfc&&p.nfc!==s?' It takes the place of the old tag.':''));
+}
 function vRounds(){
   const rs=SITE().rounds||[];
   return '<div class="body">'+formZone('home','Capture','Walk a Round','Choose the walk. Its points come in the order set on the desk.')
@@ -2202,11 +2610,32 @@ function vMeterReading(F,p,r){
 // A tag holds WATERLINE:PT:<id> (slice C). Read with the camera: the browser's own barcode reader
 // where there is one, else jsQR. Where the camera cannot run live (no HTTPS, no permission) a photo
 // of the tag is read instead. For a fault, a tag can also be picked from the list.
+// The walk's points that are still to scan and have no tag linked, in walking order.
+function walkLinkable(){
+  const F=st.form, r=F&&roundById(F.round); if(!r) return [];
+  const k=linksKept();
+  return r.points.filter(id=>!F.scans.some(x=>x.point===id)&&!(F.unscanned||[]).some(x=>x.point===id))
+    .map(pointById).filter(p=>p&&!p.nfc&&!k[p.id]);
+}
+// The offer (Design 9.1: one primary, the point the walk says is next). Nothing is written to the tag (DEC-0345).
+function vWalkLink(S){
+  const F=st.form, r=roundById(F.round), nextId=r.points.find(id=>!F.scans.some(x=>x.point===id)&&!(F.unscanned||[]).some(x=>x.point===id));
+  const cs=walkLinkable(), nx=cs.find(p=>p.id===nextId);
+  // Design 9.5: what happens (the scan as well), and how a wrong link is put right. The button carries the name (4.11).
+  return '<div class="say" role="status">This NFC tag is not linked to a point yet. '+(nx?'Link it to the next point on this walk?':'Pick the point it is on.')
+    +' Linking also counts as that point’s scan. A wrong link is put right by linking the point again. Nothing is written to the tag.</div>'
+    +'<div class="foot">'+(nx?'<button class="btn p" data-act="walkLink" data-id="'+esc(nx.id)+'">Link to '+esc(nx.name)+'</button>':'')
+    +'<button class="btn g" data-act="walkLinkList">'+(nx?'Another Point':'Pick the Point')+'</button>'
+    +'<button class="btn g" data-act="walkLinkNo">Not Now</button></div>'
+    +(S.offerList?'<div class="pick">'+bar('Pick the Point','walkLinkListClose')+'<div class="list">'+cs.map(p=>'<button class="verb" data-act="walkLink" data-id="'+esc(p.id)+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||ptPlace(p))+'</span></span>'+I.chev+'</button>').join('')+'</div></div>':'');
+}
 function vScan(){
   const S=st.scanFor;
+  if(S.offer) return '<div class="scan" role="dialog" aria-modal="true" aria-label="Link this tag"><div class="top"><button class="ibtn" data-act="scanClose" aria-label="Close">'+I.close+'</button><div class="t">Link This Tag</div><div style="width:44px"></div></div>'
+    +'<div class="vf" style="visibility:hidden"></div>'+vWalkLink(S)+'</div>';
   return '<div class="scan" role="dialog" aria-modal="true" aria-label="Scan a tag"><div class="top"><button class="ibtn" data-act="scanClose" aria-label="Close">'+I.close+'</button><div class="t">Scan a Tag</div><div style="width:44px"></div></div>'
     +'<div class="vf"><video playsinline muted class="'+(S.live?'':'hide')+'"></video><div class="frame"></div></div>'
-    +'<div class="say'+(S.err?' err':'')+'"'+(S.err?' role="alert"':' role="status"')+'>'+esc(S.err||S.say||'Point the camera at the QR code on the sticker.')+'</div>'
+    +'<div class="say'+(S.err?' err':'')+'"'+(S.err?' role="alert"':' role="status"')+'>'+esc(S.err||S.say||scanHint(S))+'</div>'
     +'<div class="foot"><label class="btn g file">'+I.photo+'Take a Photo of the Tag<input type="file" accept="image/*" capture="environment" data-file="tagphoto"></label>'
     +(S.for==='where'?'<button class="btn g" data-act="scanList">Pick From the List</button>':'')+'</div>'
     +(S.list?vScanList():'')+'</div>';
@@ -2216,9 +2645,57 @@ function vScanList(){
   return '<div class="pick">'+bar('Pick a Tag','scanListClose')
     +'<div class="list">'+points().map(p=>'<button class="verb" data-act="scanPick" data-id="'+esc(p.id)+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||'')+'</span></span>'+I.chev+'</button>').join('')+'</div></div>';
 }
+// ── NFC tags (DEC-0345): a tag is known by its own serial, read here and never written ──────────
+// Web NFC is Chrome on Android only; everywhere else the QR code on the same sticker does the job.
+const NFC_OK=('NDEFReader' in window)&&window.isSecureContext;
+// Links made on this phone, kept until the desk publishes them in the site file (Design 9.11: queued, never saved).
+function linksKept(){
+  const k=ls.get('wl_links',{}), out={};
+  Object.keys(k).forEach(id=>{ const p=pointById(id); if(p&&p.nfc!==k[id].serial) out[id]=k[id]; });
+  if(Object.keys(out).length!==Object.keys(k).length) ls.set('wl_links',out);
+  return out;
+}
+function pointBySerial(s){
+  const sn=WFM_CAPTURE_SHAPE.serialOf(s); if(!sn) return null;
+  const k=linksKept(), id=Object.keys(k).find(i=>k[i].serial===sn);
+  if(id) return pointById(id);
+  return points().find(p=>p.nfc===sn&&!k[p.id])||null;
+}
+// One reader at a time. `on` gets the serial, '' when the phone gives none, or null when the tag could not be read.
+// Returns 'on', 'off' (NFC turned off in the phone's settings), 'denied', or 'none'. It never writes.
+let _nfc=null;
+async function nfcStart(on){
+  nfcStop(); if(!NFC_OK) return 'none';
+  const ctl=new AbortController(); _nfc=ctl;
+  try{
+    const r=new NDEFReader();
+    r.onreading=ev=>{ if(_nfc===ctl) on(String(ev.serialNumber||'')); };
+    r.onreadingerror=()=>{ if(_nfc===ctl) on(null); };
+    await r.scan({signal:ctl.signal}); return 'on';
+  }catch(e){ if(_nfc===ctl) _nfc=null; const n=e&&e.name; return n==='NotAllowedError'?'denied':n==='NotReadableError'?'off':'none'; }
+}
+function nfcStop(){ if(_nfc){ try{ _nfc.abort(); }catch(e){} _nfc=null; } }
+const scanHint=S=>S.nfc==='on'?'Hold the phone to the tag, or point the camera at the QR code on the sticker.':'Point the camera at the QR code on the sticker.';
+// Says a line in the scanner without drawing it again, so the camera keeps running.
+function scanSay(){
+  const S=st.scanFor, el=app.querySelector('.scan .say'); if(!S||!el) return;
+  el.className='say'+(S.err?' err':''); el.setAttribute('role',S.err?'alert':'status'); el.textContent=S.err||S.say||scanHint(S);
+}
 let _stream=null,_raf=0,_detector=null;
 async function scanStart(){
   const S=st.scanFor; if(!S) return;
+  // A tap names its point through the same path as a QR code (Principles, Law 3).
+  if(NFC_OK) nfcStart(sn=>{
+    if(st.scanFor!==S) return;
+    if(sn===null){ S.err='The tag could not be read. Hold the phone still against it, or scan the QR code.'; return scanSay(); }
+    const p=pointBySerial(sn);
+    if(p) return scanned('WATERLINE:PT:'+p.id,'nfc');
+    // A walk links the tag where the person stands (John, 23 Oct 2026): the next point, or another point of the walk.
+    const s=WFM_CAPTURE_SHAPE.serialOf(sn);
+    if(S.for==='walk'&&s&&walkLinkable().length){ scanStop(); S.offer={serial:s}; S.err=''; return render(); }
+    S.err=S.for==='walk'&&!s?'This phone did not give the tag’s serial number, so it cannot be linked. Scan its QR code.'
+      :'This NFC tag is not linked to a point. Scan its QR code, or link it in Settings, Link NFC Tags.'; scanSay();
+  }).then(r=>{ S.nfc=r; if(st.scanFor===S&&!S.err&&!S.say) scanSay(); });
   if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ S.live=false; S.say='The camera cannot run live on this connection. Take a photo of the tag instead.'; render(); return; }
   try{
     _stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
@@ -2229,7 +2706,7 @@ async function scanStart(){
     tickScan();
   }catch(e){ S.live=false; S.say='The camera is not available. Take a photo of the tag instead.'; render(); }
 }
-function scanStop(){ cancelAnimationFrame(_raf); if(_stream){ _stream.getTracks().forEach(t=>t.stop()); _stream=null; } }
+function scanStop(){ nfcStop(); cancelAnimationFrame(_raf); if(_stream){ _stream.getTracks().forEach(t=>t.stop()); _stream=null; } }
 function loadJsQR(){
   if(window.jsQR) return Promise.resolve();
   return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js'; s.onload=ok; s.onerror=no; document.head.appendChild(s); });
@@ -2304,6 +2781,8 @@ function after(){
   if(dlg&&!dlg.contains(document.activeElement)){ const c=dlg.querySelector('button,label.btn'); if(c) c.focus(); }
   if(!dlg&&_scanFrom){ const t=app.querySelector('[data-act="scan"][data-for="'+_scanFrom+'"]'); _scanFrom=''; if(t) t.focus(); }
   if(st.scanFor&&!st.scanFor.started){ st.scanFor.started=true; scanStart(); }
+  if(st.screen==='tags'&&st.link&&!st.link.started){ const L=st.link; L.started=true; nfcStart(sn=>{ if(st.link===L) linkRead(sn); }).then(r=>{ if(st.link===L&&r!=='on'){ L.state=r; render(); } }); }
+  if(!st.scanFor&&!(st.screen==='tags'&&st.link)) nfcStop();
   if(st.screen==='job'){ const j=st.form&&jobById(st.form.id); if(j) phLoad([].concat(j.photos||[],...(j.thread||[]).map(e=>e.photos||[]))); }
   if(st.screen==='jobs') phLoad(jobsShown().map(j=>(j.photos||[])[0]).filter(Boolean));
   if(st.screen==='job'){ ['jnote','vwords'].forEach(id=>{ const t=document.getElementById(id); if(t) grow(t); }); vUi(); if(st.rec) recUi(); }
@@ -2313,7 +2792,7 @@ document.addEventListener('keydown',e=>{
   if(st.pv&&e.key==='Escape'){ e.preventDefault(); st.pv=null; return render(); }
   const sh=app.querySelector('.sheet');
   if(sh&&!app.querySelector('.scan')){
-    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobDone"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
+    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobDone"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
     if(e.key==='Tab'){ const f=[...sh.querySelectorAll('button:not([disabled]),textarea,input')]; if(!f.length) return; const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1); e.preventDefault(); f[n].focus(); }
     return;
   }
@@ -2377,6 +2856,21 @@ app.addEventListener('click',async e=>{
   if(a==='whoSet'){ const nm=String(F.name||'').trim(); if(!nm||!F.pos){ F.tried=true; return render(); }
     st.walker=nm; st.pos=F.pos; st.pid=F.pid&&F.pid!=='__other'?F.pid:''; whoPut({name:nm,pos:F.pos,pid:st.pid,keep:!!F.keep}); st.form=null; home(); return alertsKeep(); }
   if(a==='whoAgain'){ st.form=null; return go('who'); }
+  if(a==='linkTags'){ st.link=null; return go('tags'); }
+  if(a==='linkPick'){ st.link={point:b.dataset.id}; return render(); }
+  if(a==='linkCancel'){ nfcStop(); st.link=null; return render(); }
+  if(a==='walkLink'){ const S=st.scanFor, p=pointById(b.dataset.id); if(!S||!S.offer||!p) return;
+    const s=S.offer.serial, o=pointBySerial(s);
+    if(o){ S.offer=null; S.offerList=false; S.err='This tag is already linked to '+o.name+'.'; S.started=false; return render(); }
+    if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+    S.offer=null; scanned('WATERLINE:PT:'+p.id,'nfc');
+    let ok=false; try{ ok=await linkSend(p,s); }catch(e){ return toast('The tag was scanned, but the link was not sent. Link it again in Settings, Link NFC Tags.'); }
+    if(st.form&&st.form.kind==='round'){ st.form.msg=p.name+' linked and scanned at '+hm(new Date().toISOString())+'.'; st.form.msgTone='green'; render(); }
+    return toast(ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.'); }
+  if(a==='walkLinkList'){ if(st.scanFor){ st.scanFor.offerList=true; render(); } return; }
+  if(a==='walkLinkListClose'){ if(st.scanFor){ st.scanFor.offerList=false; render(); } return; }
+  if(a==='walkLinkNo'){ const S=st.scanFor; if(S){ S.offer=null; S.offerList=false; S.started=false; render(); } return; }
+  if(a==='linkShowDone'){ st.linkShowDone=!st.linkShowDone; return render(); }
   if(a==='sendKept'){ const p=sendKept(); render(); await p; return render(); }
   // Added with the port of round 12: Jobs, a category opening in place, the walk's done list, the theme, the line found by typing.
   if(a==='jobs'){ if(st.screen==='jobs'||st.screen!=='job') Object.assign(st.J,{grp:'',q:''}); st.form=null; st.sheet=false; return go('jobs'); }
@@ -2420,25 +2914,14 @@ app.addEventListener('click',async e=>{
   if(a==='msgDelSend'){ const j=jobById(F.id), m=j&&msgNow(j,F.mid); if(!m) return; if(m.x&&m.x.waiting) return msgTakeBack(m.x); return jobSend('delete'); }
   if(a==='jobSend'){ if(!String(F.note||'').trim()&&!F.photos.length){ F.err='Write something or add a photo, then send.'; keepRender(); const t=document.getElementById('jnote'); if(t) t.focus(); return; } return jobSend('note'); }
   // Before You Start on every Start and Restart (DEC-0313 rule 1, DEC-0325 rules 1 and 2).
-  if(a==='jobStart'||a==='jobRestart'){ F.ck={hz:[],none:false,note:'',from:'',iso:false,kit:'',same:false,tried:false,mode:a==='jobRestart'?'restart':'start'}; st.sheet='jcheck'; render(); const v=app.querySelector('.sheet .verb')||app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
-  if(a==='jck'||a==='jcknone'||a==='jiso'||a==='jfrom'||a==='jkit'){ const C=F.ck; if(!C) return; C.same=false;
-    if(a==='jck'){ const v0=b.dataset.v, i=C.hz.indexOf(v0); if(i>=0) C.hz.splice(i,1); else { C.hz.push(v0); C.none=false; } }
-    if(a==='jcknone'){ C.none=!C.none; if(C.none) C.hz=[]; }
-    if(a==='jiso') C.iso=!C.iso; if(a==='jfrom') C.from=b.dataset.v; if(a==='jkit') C.kit=b.dataset.v;
-    const sc=app.querySelector('.sheet'), y=sc?sc.scrollTop:0; render(); const s2=app.querySelector('.sheet'); if(s2) s2.scrollTop=y;
-    const sel=a==='jcknone'?'.sheet [data-act=jcknone]':a==='jiso'?'.sheet [data-act=jiso]':'.sheet [data-act='+a+'][data-v="'+CSS.escape(b.dataset.v||'')+'"]', v=app.querySelector(sel); if(v) v.focus({preventScroll:true}); return; }
-  if(a==='jckSame'||a==='jckGo'){ const j=jobById(F.id), C=F.ck; if(!j||!C) return;
-    if(a==='jckSame'){ if(!j.check) return; Object.assign(C,ckFrom(j.check),{same:true}); }
-    if(ckWhy(C)){ C.tried=true; render(); const t=app.querySelector('.sheet [role=alert]'); if(t) t.scrollIntoView({block:'nearest'}); return; }
-    if(ckMissing(j,C).length){ F.pf=F.pf||{}; st.sheet='jpermit'; render(); const v=app.querySelector('.sheet input'); if(v) v.focus(); return; }
-    return jobSend(C.mode); }
+  if(a==='jobStart'||a==='jobRestart') return t5Open(a==='jobRestart'?'restart':'start');
+  if(/^t5/.test(a)&&F&&(F.ck||F.fin)) return t5Act(a,b);
   if(a==='jpermitSend') return jobSend('permit');
   // Parts used (DEC-0313 rule 4).
   if(a==='jobParts'){ F.ptext=''; F.ptried=false; st.sheet='jparts'; render(); const v=document.getElementById('ptext'); if(v) v.focus(); return; }
   if(a==='jpartsSend'){ if(!partsOut(F,true).ok){ F.ptried=true; render(); return; } return jobSend('parts'); }
   if(a==='jobUnflag') return jobSend('unflag');
-  if(a==='jobDone'){ F.ptext=''; F.ptried=false; st.sheet='jdone'; render(); const v=app.querySelector('.sheet .th.add input'); if(v) v.focus(); return; }
-  if(a==='jobDoneSend'){ if(!partsOut(F).ok){ F.ptried=true; render(); const t=app.querySelector('.sheet [role=alert]'); if(t) t.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
+  if(a==='jobDone'){ F.ptext=''; F.ptried=false; F.t5found=''; F.fin={ans:{},strokes:[],at:'',tried:false}; st.sheet='jdone'; t5Draw(); return; }
   // Pause, Restart and Change on Assigned (P5). The desk checks the group and the reason again as it files them.
   if(a==='jobPause'){ F.ptried=false; st.sheet='jpause'; render(); const v=document.getElementById('pwhy'); if(v) v.focus(); return; }
   if(a==='jobPauseSend') return jobSend('pause');   // the reason is optional (DEC-0316)
@@ -2481,6 +2964,7 @@ app.addEventListener('change',e=>{
   if(k==='scanshot'||k==='pdf'||k==='wphoto'){ dsFile(k,e.target); return; }
   if(k==='photos'){ Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='dphotos'){ Array.from(e.target.files||[]).forEach(f=>st.form.dphotos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
+  if(k==='t5photo'){ const C=st.form&&st.form.ck; if(C&&C.stop) Array.from(e.target.files||[]).forEach(f=>C.stop.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
   if(k==='uphoto'){ const f=e.target.files&&e.target.files[0]; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.u.photo=st.form.photos.length-1; } return render(); }
   if(k==='ansphoto'){ const f=e.target.files&&e.target.files[0], key=e.target.dataset.k; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.ans[key].photos.push(st.form.photos.length-1); } return render(); }
@@ -2494,6 +2978,7 @@ function special(k,el){
     if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
     return true; }
   if(st.screen==='job'&&k==='etext'){ F.etext=el.value; return true; }
+  if(st.screen==='job'&&(k==='t5word'||k==='t5found')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='ptext'){ F.ptext=el.value; return true; }
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
   if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }

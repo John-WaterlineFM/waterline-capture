@@ -1,0 +1,18 @@
+ISO 7010 safety signs, as Wikimedia Commons publishes them (DEC-0342). Kept unaltered.
+Checked 23 Oct 2026: each file is byte for byte the file Commons served that day (SHA-1 below), and none holds a script.
+Commons tags them public domain on a "no originality" claim; that is not a grant from ISO, whose position is that
+reproduction needs its permission. If ISO or NSAI objects, these files are swapped for a licensed set and no code changes.
+The signs keep their own colours in every theme: they are fixed by S.I. 299 of 2007, Schedule 9 (DEC-0342 rule 2).
+
+ISO_7010_M003.svg  Ear protection   https://commons.wikimedia.org/wiki/File:ISO_7010_M003.svg  sha1 56feae574386
+ISO_7010_M004.svg  Eye protection   https://commons.wikimedia.org/wiki/File:ISO_7010_M004.svg  sha1 640ef8316195
+ISO_7010_M008.svg  Safety boots     https://commons.wikimedia.org/wiki/File:ISO_7010_M008.svg  sha1 d4b57198929f
+ISO_7010_M009.svg  Gloves           https://commons.wikimedia.org/wiki/File:ISO_7010_M009.svg  sha1 f1b4cae530ea
+ISO_7010_M014.svg  Hard hat         https://commons.wikimedia.org/wiki/File:ISO_7010_M014.svg  sha1 bcb76da543c1
+ISO_7010_M015.svg  Hi-vis           https://commons.wikimedia.org/wiki/File:ISO_7010_M015.svg  sha1 0a0650e0fbd5
+ISO_7010_M016.svg  Mask             https://commons.wikimedia.org/wiki/File:ISO_7010_M016.svg  sha1 1f668906e3fa
+ISO_7010_M018.svg  Harness          https://commons.wikimedia.org/wiki/File:ISO_7010_M018.svg  sha1 d178a5a51d43
+ISO_7010_M026.svg  Apron            https://commons.wikimedia.org/wiki/File:ISO_7010_M026.svg  sha1 859e684a945b  (DEC-0346)
+ISO_7010_W008.svg  Fall             https://commons.wikimedia.org/wiki/File:ISO_7010_W008.svg  sha1 ef170a172e02
+ISO_7010_W012.svg  Electricity      https://commons.wikimedia.org/wiki/File:ISO_7010_W012.svg  sha1 ed73d3ac3d2b
+ISO_7010_W017.svg  Hot surface      https://commons.wikimedia.org/wiki/File:ISO_7010_W017.svg  sha1 aa7cdbbdb063
