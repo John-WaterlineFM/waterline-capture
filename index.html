@@ -554,6 +554,8 @@ function relayStore(){
   return {
     account:async()=>null,
     add:async(path,blob)=>{ await call({op:'add',path:path,type:blob.type||'',data:await b64(blob)}); },
+    // Alerts (DEC-0344): pushConfig, pushRegister and pushTest, as the relay names them.
+    ask:call,
     // A read gives up after 20 seconds, so a relay that does not answer never holds the page on "Reading the site
     // details": it opens on the copy kept on this phone and says the desk could not be reached (DEC-0287 rule 3).
     read:async path=>{ let t;
@@ -1674,7 +1676,8 @@ async function jobSend(act){
   if(act==='done'){ fields.note=String(F.dnote||'').trim(); photos=F.dphotos||[]; fields.parts=partsOut(F).v; }
   if(act==='parts') fields.parts=partsOut(F).v;
   if((act==='start'||act==='restart'||act==='permit')&&F.ck) fields.check=ckOut(F.ck);
-  if(act==='permit'){ fields.permit={from:F.pfrom||'',to:F.pto||'',fields:Object.assign({},F.pf||{})}; F.ckNeed=ckMissing(j,F.ck); }
+  // The types go with it for the alert's words only (DEC-0344); the desk works them out again from the check.
+  if(act==='permit'){ F.ckNeed=ckMissing(j,F.ck); fields.permit={from:F.pfrom||'',to:F.pto||'',fields:Object.assign({},F.pf||{}),types:F.ckNeed.slice()}; }
   if(act==='pause') fields.note=String(F.pwhy||'').trim();
   if(act==='assign') fields.assign=F.asgSend;
   st.busy=true; F.err=''; keepRender();
@@ -1716,6 +1719,62 @@ function vWalkInfo(){
     +'<div class="list" style="border-top:none">'+f('Open','<span class="n">'+esc(t)+'</span> to <span class="n">'+esc(to)+'</span>')+f('Points','<span class="n">'+(r.points||[]).length+'</span>')
     +f('Proves',esc(plural((r.lines||[]).length,'line'))+'<span class="sub">'+esc((r.lines||[]).join(', '))+'</span>')+f('Walked by',esc(r.walker||'Not chosen'))+'</div></div>';
 }
+// ── Alerts (DEC-0288 rule 2, DEC-0344) ─────────────────────────────────────────────────────────
+// This phone registers with the relay as the person chosen on it; the relay sends what the desk's site file says is
+// theirs, and sw.js shows it. Firebase's scripts load only when alerts are turned on or the phone re-registers.
+const AL={busy:false,err:'',said:''};
+const FB='https://www.gstatic.com/firebasejs/10.12.2/';
+function alertsCan(){
+  if('serviceWorker' in navigator&&'Notification' in window&&'PushManager' in window&&location.protocol==='https:') return '';
+  const iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  return iOS&&!(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)?'On an iPhone, alerts work only once the app is on the home screen: Share, then Add to Home Screen.':'This browser cannot take alerts. Use Chrome on Android, or the app on an iPhone’s home screen.';
+}
+function fbLoad(){
+  if(window.firebase&&firebase.messaging) return Promise.resolve(firebase);
+  const one=src=>new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=FB+src; s.onload=ok; s.onerror=()=>no(new Error('The alert service could not be reached. Try again with signal.')); document.head.appendChild(s); });
+  return one('firebase-app-compat.js').then(()=>one('firebase-messaging-compat.js')).then(()=>firebase);
+}
+// quiet: re-registering on open, with no question asked and nothing said unless it fails.
+async function alertsOn(quiet){
+  const me=meP(); if(!STORE||!STORE.ask||!me||AL.busy||alertsCan()) return;
+  AL.busy=true; AL.err=''; AL.said=''; if(!quiet) render();
+  try{
+    const perm=quiet?Notification.permission:await Notification.requestPermission();
+    if(perm!=='granted'){ if(!quiet) AL.err=perm==='denied'?'':'Alerts were not allowed. Press Turn On Alerts again and choose Allow.'; return; }
+    const reg=await navigator.serviceWorker.ready, c=await STORE.ask({op:'pushConfig'}), fb=await fbLoad();
+    if(!fb.apps.length) fb.initializeApp(c.config);
+    const token=await fb.messaging().getToken({vapidKey:c.vapidKey,serviceWorkerRegistration:reg});
+    if(!token) throw new Error('The phone gave no alert address. Try again in a minute.');
+    await STORE.ask({op:'pushRegister',token:token,name:st.walker,pid:me.id,role:'phone'});
+    ls.set('wl_alerts',{token:token,pid:me.id,name:st.walker,at:new Date().toISOString()});
+  }catch(e){ AL.err=String(e&&e.message||e); }
+  finally{ AL.busy=false; render(); }
+}
+// On open: registered again when the person on this phone changed, or a week has passed (alert addresses can change).
+function alertsKeep(){
+  const a=ls.get('wl_alerts',null), me=meP();
+  if(!a||!me||alertsCan()||Notification.permission!=='granted') return;
+  if(a.pid!==me.id||a.name!==st.walker||Date.now()-Date.parse(a.at||0)>7*864e5) alertsOn(true);
+}
+async function alertsTest(){
+  const a=ls.get('wl_alerts',null); if(!a||!STORE||AL.busy) return;
+  AL.busy=true; AL.err=''; AL.said=''; render();
+  try{ await STORE.ask({op:'pushTest',token:a.token}); AL.said='Test sent at '+hm(Date.now())+'. Lock the phone: it arrives within a minute.'; }
+  catch(e){ AL.err=String(e&&e.message||e); if(e&&(e.code==='gone'||e.code==='bad')) ls.del('wl_alerts'); }
+  finally{ AL.busy=false; render(); }
+}
+function alertsGroup(){
+  const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), on=!!a&&!cant&&Notification.permission==='granted';
+  const v=cant?esc(cant)
+    :Notification.permission==='denied'?'Blocked in the phone’s settings<span class="sub">Allow notifications for this app there, then come back.</span>'
+    :on?'On, for '+esc(a.name)+'<span class="sub">Since <span class="n">'+esc(when(a.at))+'</span>. They arrive with the app closed. Today the one alert is a permit that waits for you to issue it.</span>'
+    :!me?'Off<span class="sub">Choose your name from the Organisation Structure first: alerts go to a person.</span>'
+    :'Off<span class="sub">A permit that waits for you to issue it cannot reach you while the app is closed.</span>';
+  const btn=cant||Notification.permission==='denied'||(!on&&!me)?'':on?'<button class="btn g" data-act="alertsTest"'+(AL.busy?' disabled':'')+'>'+I.send+'Send Me a Test Alert</button>'
+    :'<button class="btn g" data-act="alertsOn"'+(AL.busy?' disabled':'')+'>'+(AL.busy?'Turning On':'Turn On Alerts')+'</button>';
+  return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">This phone</span><span class="v">'+v+'</span></div></div>'
+    +(btn||AL.err||AL.said?'<div style="padding:12px 16px 0">'+btn+(AL.err?'<div class="help err" role="alert">'+esc(AL.err)+'</div>':'')+(AL.said?'<div class="help" role="status">'+esc(AL.said)+'</div>':'')+'</div>':'');
+}
 // Settings: the site's logo large (DEC-0303 rule 1), the theme for everyone (rule 4), and who you are, here only (DEC-0302).
 function vMe(){
   st.place='me';
@@ -1729,6 +1788,7 @@ function vMe(){
     +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published)))+'<span class="sub">Published <span class="n">'+esc(when(s.published))+'</span></span>':'Not published yet')
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
     +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
+    +alertsGroup()
     +'<p class="para">Walks come from your department, lines from the duties your position holds, jobs from the groups it belongs to, all set on the desk’s Organisation Structure.</p>'
     +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
@@ -2315,7 +2375,7 @@ app.addEventListener('click',async e=>{
   if(a==='photoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
   if(a==='setupLink'){ const l=String(F.link||'').trim(); if(!l){ F.bad='empty'; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; } if(takeSetupLink(l)) return location.reload(); F.bad=true; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; }
   if(a==='whoSet'){ const nm=String(F.name||'').trim(); if(!nm||!F.pos){ F.tried=true; return render(); }
-    st.walker=nm; st.pos=F.pos; st.pid=F.pid&&F.pid!=='__other'?F.pid:''; whoPut({name:nm,pos:F.pos,pid:st.pid,keep:!!F.keep}); st.form=null; return home(); }
+    st.walker=nm; st.pos=F.pos; st.pid=F.pid&&F.pid!=='__other'?F.pid:''; whoPut({name:nm,pos:F.pos,pid:st.pid,keep:!!F.keep}); st.form=null; home(); return alertsKeep(); }
   if(a==='whoAgain'){ st.form=null; return go('who'); }
   if(a==='sendKept'){ const p=sendKept(); render(); await p; return render(); }
   // Added with the port of round 12: Jobs, a category opening in place, the walk's done list, the theme, the line found by typing.
@@ -2334,6 +2394,8 @@ app.addEventListener('click',async e=>{
   if(a==='jclear'){ st.J.groups=[]; st.J.q=''; return render(); }
   if(a==='showDone'){ st.showDone=!st.showDone; return render(); }
   if(a==='theme'){ ls.set('wl_theme',b.dataset.v); return render(); }
+  if(a==='alertsOn') return alertsOn(false);
+  if(a==='alertsTest') return alertsTest();
   if(a==='pickDuty'){ F.duty=b.dataset.id; F.dq=''; return render(); }
   if(a==='dutyClear'){ F.duty=''; return render(); }
   // A job's actions (P4): each is a capture of kind job, filed on the desk by wfmCapApplyJobUpdate.
@@ -2538,6 +2600,7 @@ async function boot(){
   const w=whoGet(); st.walker=w&&w.name||''; st.pos=w&&w.pos||''; st.pid=w&&w.pid||'';
   if(!st.walker||!st.pos) return go('who');
   home();
+  alertsKeep();
 }
 // For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
 if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh};

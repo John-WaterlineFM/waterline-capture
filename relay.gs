@@ -53,6 +53,9 @@ function doPost(e){
         if(inbox.getFilesByName(m[1]).hasNext()) return out({ok:false, code:'exists', why:'That file is already in the Inbox.'});
         inbox.createFile(Utilities.newBlob(Utilities.base64Decode(String(b.data || '')), String(b.type || 'application/octet-stream'), m[1]));
       } finally { lock.releaseLock(); }
+      // A capture's record arrives last (slice A); a permit applied for alerts whoever can issue it (DEC-0344).
+      // Only after the file is kept, and a failure here never fails the add.
+      if(/\.json$/.test(m[1])) try{ alertFor(JSON.parse(Utilities.newBlob(Utilities.base64Decode(String(b.data || ''))).getDataAsString('UTF-8')), ws); }catch(x){ Logger.log('Alert not sent: ' + (x && x.message || x)); }
       return out({ok:true});
     }
     if(b.op === 'read'){
@@ -75,7 +78,7 @@ function doPost(e){
       if(!/^[A-Za-z0-9_:\-]{20,400}$/.test(t)) return out({ok:false, code:'bad', why:'That is not an alert address.'});
       const lock = LockService.getScriptLock(); lock.waitLock(20000);
       try{
-        const d = devices(); d[t] = {name:String(b.name || '').slice(0, 80), role:String(b.role || '').slice(0, 40), at:new Date().toISOString()};
+        const d = devices(); d[t] = {name:String(b.name || '').slice(0, 80), role:String(b.role || '').slice(0, 40), pid:String(b.pid || '').slice(0, 80), at:new Date().toISOString()};
         PROPS.setProperty('DEVICES', JSON.stringify(d));
       } finally { lock.releaseLock(); }
       return out({ok:true});
@@ -130,6 +133,33 @@ function pushSend(token, title, body){
     return {ok:false, code:'gone', why:'That phone no longer takes alerts. Turn alerts on again on the phone.'};
   }
   return {ok:false, code:'error', why:'Google did not send the alert (' + code + '): ' + res.getContentText().slice(0, 300)};
+}
+// The alerts the relay sends (DEC-0344). Who gets one is decided on the desk and published in the site file
+// (alerts.permit: name and Organisation Structure id); this only matches phones to it. The test app's phones
+// (role 'test') never get a real alert.
+function siteFile(ws){
+  const ph = folder(ws, 'Phone', false), it = ph && ph.getFilesByName('site.json');
+  return it && it.hasNext() ? JSON.parse(it.next().getBlob().getDataAsString('UTF-8')) : null;
+}
+function nameKey(n){ return String(n || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
+function phonesOf(people){
+  const d = devices();
+  return Object.keys(d).filter(t => d[t].role !== 'test' && people.some(p => (p.id && d[t].pid === p.id) || (nameKey(p.name) && nameKey(d[t].name) === nameKey(p.name))));
+}
+function alertFor(rec, ws){
+  if(!rec || rec.kind !== 'job' || rec.act !== 'permit') return;
+  const site = siteFile(ws), to = (site && site.alerts && site.alerts.permit) || [];
+  if(!to.length){ Logger.log('Permit applied for, no alert: the site file names no one who can issue it. Reload the desk so it publishes them.'); return; }
+  const j = (site.jobs || []).find(x => x.id === rec.job) || {}, pm = rec.permit || {}, ty = (pm.types || []).filter(Boolean);
+  const at = Utilities.formatDate(new Date(rec.taken || Date.now()), 'Europe/Dublin', 'HH:mm');
+  const title = (ty.length === 1 ? ty[0] + ' permit' : 'Permit to work') + ' applied for';
+  const body = [(j.no ? 'Job ' + j.no : 'A job') + (j.place ? ', ' + j.place : (j.title ? ', ' + j.title : '')) + '.',
+    (rec.person || 'Someone') + ' applied at ' + at + (ty.length > 1 ? ' for ' + ty.join(' and ') : '') + '.',
+    'The job cannot start until the permit is issued on the desk’s Permit to Work page.',
+    /^\d\d:\d\d$/.test(String(pm.from || '')) ? 'Work planned from ' + pm.from + '.' : ''].filter(Boolean).join(' ');
+  const ts = phonesOf(to);
+  if(!ts.length) Logger.log('Permit applied for, no alert: none of ' + to.map(p => p.name).join(', ') + ' has turned alerts on.');
+  ts.forEach(t => Logger.log('Permit alert to ' + devices()[t].name + ': ' + JSON.stringify(pushSend(t, title, body))));
 }
 // Run from the editor: one test alert to every registered phone, with the result in the log.
 function pushTestAll(){

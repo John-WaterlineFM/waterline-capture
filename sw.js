@@ -19,3 +19,20 @@ self.addEventListener('fetch', e => {
   e.respondWith(fetch(e.request).then(r => { if (r.ok) { const c = r.clone(); caches.open(KEEP).then(k => k.put(e.request, c)); } return r; })
     .catch(() => caches.match(e.request, { ignoreSearch: true }).then(r => r || caches.match('index.html'))));
 });
+// Alerts (DEC-0344): shown when one arrives with the app closed; a tap opens the app, or brings it forward if it is open.
+// The badge is the Waterline mark, white on clear, as the alerts test's (Android draws it from its shape only).
+self.addEventListener('push', e => {
+  let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) {}
+  const n = d.notification || {};
+  e.waitUntil(self.registration.showNotification(n.title || 'Waterline', {
+    body: n.body || '', icon: 'push/icon-192.png', badge: 'badge-96.png', data: {link: (d.fcmOptions && d.fcmOptions.link) || './'}
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const link = new URL((e.notification.data && e.notification.data.link) || './', self.registration.scope).href;
+  e.waitUntil(self.clients.matchAll({type: 'window', includeUncontrolled: true}).then(ws => {
+    for (const w of ws) if (w.url.split('?')[0].split('#')[0] === link.split('?')[0].split('#')[0] && 'focus' in w) return w.focus();
+    return self.clients.openWindow(link);
+  }));
+});
