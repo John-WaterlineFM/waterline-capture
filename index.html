@@ -21,10 +21,10 @@
    Themes: the desk's THEMES (Design 5.2), Waterline, Light and Night, switched in Settings by anyone (DEC-0303 rule 4). */
 body.t-wl{--cream:#F5F7F9;--white:#FFFFFF;--stone:#E4EEF4;--ink:#0D1F2D;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#0D1F2D;--textMid:#3A5A72;--textMuted:#4A6E8C;--textMS:#4A6E8C;--border:#D4E3EC;--accent:#1E87A8;--accentD:#156B87;--accentOnInk:#3AABC6;--btnFill:#156B87;--btnText:#FFFFFF;--zBtnText:#071320;
-  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24}
+  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A}
 body.t-li{--cream:#F5F7F9;--white:#FFFFFF;--stone:#E4EEF4;--ink:#0D1F2D;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#0D1F2D;--textMid:#3A5A72;--textMuted:#4A6E8C;--textMS:#4A6E8C;--border:#D4E3EC;--accent:#1E87A8;--accentD:#156B87;--accentOnInk:#3995B2;--btnFill:#156B87;--btnText:#FFFFFF;--zBtnText:#071320;
-  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24}
+  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A}
 /* Light on the phone (John, 21 Oct 2026, DEC-0310): the desk's Light differs from Waterline only in its sidebar, which the
    phone has not got, so on the phone Light turns the top block white with navy words. Its words, teal and state colours
    take the light-surface tokens; the block keeps its place, its one action and its hairline under it. */
@@ -32,7 +32,7 @@ body.t-li .zone{background:var(--white);border-bottom:1px solid var(--border);--
 body.t-li .zone .prog i,body.t-li .zone .fill,body.t-li .zone .steps span.d{background:var(--text)}
 body.t-ni{--cream:#091624;--white:#0D2035;--stone:#122840;--ink:#071320;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#C8E5F2;--textMid:#6A9BB5;--textMuted:#5490AB;--textMS:#6A9BB5;--border:#1C3A52;--accent:#3AABC6;--accentD:#7ECFE0;--accentOnInk:#5BBDD4;--btnFill:#3AABC6;--btnText:#071320;--zBtnText:#071320;
-  --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24}
+  --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#F87171;--jDoing:#FACC15;--jDone:#34D399}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;min-height:100vh}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -276,6 +276,8 @@ img.pl{object-fit:cover;padding:0}
 .srt{display:inline-flex;align-items:center;gap:2px;min-height:44px;padding:0 0 0 12px;font:600 13px Outfit;color:var(--accentD)}
 .srt svg{width:16px;height:16px}
 .ra.c{align-items:center;padding:10px 16px;gap:12px}
+/* A job's state is a line on its right: red To do, yellow In progress, green Done (DEC-0337). */
+.ra.jt,.cb.jt{border-right:5px solid var(--jTodo)}.ra.jd,.cb.jd{border-right:5px solid var(--jDoing)}.ra.jx,.cb.jx{border-right:5px solid var(--jDone)}
 .ra.c .pl{width:60px;height:60px}
 .ra.c .pl b{font:800 20px/1 Sora}
 .ra.c .w{font-weight:500}
@@ -461,6 +463,55 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .vrev .vh{display:flex;align-items:center;gap:4px;padding-left:4px}
 .vrev .vh .voice{flex:1;min-width:0}
 .vrev .help{margin:0 8px}
+.pick{border:1px solid var(--border);border-radius:8px;background:var(--white);overflow:hidden}
+.pick .r{min-height:72px;cursor:pointer}
+.pick .r:last-child{border-bottom:none}
+.pick .r input{position:absolute;opacity:0;width:1px;height:1px}
+.pick .pi{width:44px;height:44px;border-radius:8px;background:var(--stone);display:grid;place-items:center;color:var(--accentD);flex:none}
+.chosen .dt{width:48px;height:64px;border-radius:4px;background:var(--stone) center/cover no-repeat;flex:none;border:1px solid var(--border);display:grid;place-items:center;color:var(--accentD)}
+.chosen .acts{display:flex;align-items:center}
+.field>label.keep{display:flex;gap:12px;font:400 15px/1.4 'DM Sans',sans-serif;color:var(--text);align-items:flex-start;margin-bottom:0}
+.field>label.keep input{margin-top:0}
+.field>label.keep .m{padding-top:1px}
+.keep .m{flex:1;min-width:0}
+.why.sq{border-radius:0;border-left:0;border-right:0}
+.why{background:var(--white);border:1px solid var(--border);border-radius:8px}
+.why .wr{display:block;padding:12px;border-bottom:1px solid var(--border)}
+.why .wr:last-child{border-bottom:none}
+.why .eb{display:block;color:var(--textMuted);margin-bottom:4px}
+.why b{display:block;font:700 15px/1.4 Sora;color:var(--text)}
+.why .lw{display:block;line-height:1.5}
+.why label.keep{display:flex;font:400 15px/1.4 'DM Sans',sans-serif;color:var(--text);align-items:flex-start;margin:0}
+.ds{position:fixed;inset:0;z-index:25;background:var(--ink);color:var(--onInk);display:flex;flex-direction:column}
+.ds .dtop{display:flex;align-items:center;gap:8px;padding:calc(4px + env(safe-area-inset-top)) 4px 0}
+.ds .ib{color:var(--accentOnInk)}
+.ds .eb{color:var(--navMid)}
+.ds .say{padding:4px 16px 8px;color:var(--onInk);font-size:15px;line-height:1.4;min-height:29px}
+.ds .say.miss{color:var(--onInk)}
+.ds .stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:0 16px}
+.ds .stage svg{display:block;position:absolute;inset:0 16px;width:calc(100% - 32px);height:100%;touch-action:none}
+.ds .stage img{display:block;max-width:100%;max-height:100%;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.ds .loupe{position:absolute;top:8px;width:104px;height:104px;border-radius:50%;border:2px solid var(--accentOnInk);background:var(--ink) no-repeat;display:none;pointer-events:none}
+.ds .loupe::after{content:'';position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:2px solid var(--accentOnInk)}
+.ds .dfoot{padding:12px 16px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.ds .two{display:flex;gap:8px}.ds .two>*{flex:1}
+.ds .btn{background:var(--accentOnInk);color:var(--zBtnText)}
+.ds .gh{border-color:var(--accentOnInk);color:var(--accentOnInk);cursor:pointer}
+.ds .gh input{position:absolute;opacity:0;width:1px;height:1px}
+.ds .looks{display:flex;gap:8px}
+.ds .looks button{flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 4px;border-radius:8px;border:1px solid var(--inkTrack);color:var(--accentOnInk);font:600 13px Outfit}
+.ds .looks button.on{border:2px solid var(--accentOnInk)}
+.ds .strip{display:flex;gap:8px;overflow-x:auto;padding:2px;background:transparent;border:0;margin:0}
+.ds .pg{position:relative;width:48px;height:64px;flex:none;border-radius:4px;background:#fff center/cover no-repeat;border:2px solid transparent}
+.ds .pg.on{border-color:var(--accentOnInk)}
+.ds .pg .n{position:absolute;right:2px;bottom:2px;font:800 11px/16px Sora;min-width:16px;border-radius:8px;background:var(--ink);color:var(--onInk);text-align:center}
+.ds .pg.add{background:transparent;border:1px dashed var(--accentOnInk);display:grid;place-items:center;color:var(--accentOnInk);cursor:pointer}
+.ds .pg.add input{position:absolute;opacity:0;width:1px;height:1px}
+.ds .lnks{display:flex;justify-content:space-between}
+.ds .lnk{color:var(--accentOnInk)}
+.ds .lnks>span{color:var(--onInk);align-self:center}
+.ds .lnk input{position:absolute;opacity:0;width:1px;height:1px}
+.ds .wait{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--navMid);text-align:center;padding:0 32px}
 .pv{position:fixed;inset:0;z-index:25;background:var(--ink);display:flex;flex-direction:column}
 .pv .ib{color:var(--accentOnInk);margin:calc(4px + env(safe-area-inset-top)) 4px 0}
 .pv img{flex:1;min-height:0;width:100%;object-fit:contain}
@@ -471,7 +522,7 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=10a727c3a6"></script>
+<script src="shapes.js?v=63fb7fb608"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -768,6 +819,7 @@ function render(){
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
+  if(st.ds){ app.insertAdjacentHTML('beforeend',vDocScan()); dsBind(); }
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
   after();
 }
@@ -1050,7 +1102,8 @@ const flagLine=j=>j.flag?'<span class="flg">'+I.flag+'<span><b>'+esc(flagLabel(j
 // Who holds a job: the list (v476); a site file from before it carries one assignee.
 const holders=j=>Array.isArray(j.assignees)?j.assignees.filter(a=>a&&a.name):(j.assignee&&j.assignee.name?[j.assignee]:[]);
 const isMe=a=>{ const m=meP(); return !!(a&&((m&&a.id&&a.id===m.id)||(st.walker&&nk(a.name)===nk(st.walker)))); };
-function holdersSay(j){ const h=holders(j); if(!h.length) return 'unassigned'; const o=h.filter(a=>!isMe(a)).map(a=>a.name);
+// Nothing is said when nobody has a job: that is the default (DEC-0334).
+function holdersSay(j){ const h=holders(j); if(!h.length) return ''; const o=h.filter(a=>!isMe(a)).map(a=>a.name);
   return h.some(isMe)?'Assigned to you'+(o.length?' and '+o.join(', '):''):'Assigned to '+o.join(', '); }
 // Start and Mark Done are for anyone whose position is in the job's group (DEC-0308 rule 3). The desk checks the
 // person's own position, not the one this phone is showing, so that is the one asked here.
@@ -1079,8 +1132,8 @@ function phImg(n,cls,alt,j){ const s=_ph[n];
   if(s==='missing'&&j) return words(j,cls);
   return '<span class="pic '+cls+'"><i>'+(s==='missing'?'Photo not on this phone':'Photo loading')+'</i></span>'; }
 const jPic=(j,cls)=>(j.photos||[]).length?phImg(j.photos[0],cls,'Photo of '+(j.title||'the job'),j):words(j,cls);
-const SH={todo:'<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>',
-  doing:'<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>'};
+const SH={todo:'<svg viewBox="0 0 16 16" aria-hidden="true" style="color:var(--jTodo)"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>',
+  doing:'<svg viewBox="0 0 16 16" aria-hidden="true" style="color:var(--jDoing)"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>'};
 // The square beside a job: its photo, or its place (a room's number and floor, or the place's name), as the desk's
 // card square (DEC-0327 rule 2). The title is never repeated in it.
 function jSquare(j){
@@ -1092,8 +1145,9 @@ function jSquare(j){
 }
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
+const jCls=j=>j.state==='done'?' jx':j.state==='doing'?' jd':' jt';
 function jobRowP(j,showGroup,own){ const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
-  return '<button class="ra c" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
+  return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +(by?'<span class="sub">'+(j.state==='doing'?'<span class="stt">'+SH.doing+'In progress</span>'+(h.length?' · ':''):'')+(h.length?esc(own?'With '+h.map(x=>x.name).join(', '):holdersSay(j)):'')+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span><span class="ag"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i></span></button>'; }
 // A group's icon, from its name (the site's groups are its own, DEC-0309); one set, one stroke (21.7).
@@ -1115,13 +1169,13 @@ function jobTile(j,showGroup){ const l=LOC(j.loc), ag=jAgeN(j); let top;
   if((j.photos||[]).length&&_ph[j.photos[0]]&&!/^(loading|missing)$/.test(_ph[j.photos[0]])) top='<img class="tp" src="'+_ph[j.photos[0]]+'" alt="Photo of '+esc(j.title||'the job')+'">';
   else if(l&&/^\d+$/.test(l.name)) top='<span class="tp"><b class="n">'+esc(l.name)+'</b></span>';
   else top='<span class="tp">'+(l?'<span>'+esc(l.name)+'</span>':'<i>'+(j.place?esc(j.place):'Place not said')+'</i>')+'</span>';
-  return '<button class="cb tl" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
+  return '<button class="cb tl'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
 function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="list">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
 function jobRow(j){ const a=jLate(j);
-  return '<button class="ra" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'sm')+'<span class="m">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+' · raised '+esc(jAge(j))+'</span><span class="sub">'+esc(holdersSay(j))+'</span>'
+  return '<button class="ra'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'sm')+'<span class="m">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+' · raised '+esc(jAge(j))+'</span>'+(holders(j).length?'<span class="sub">'+esc(holdersSay(j))+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
 function jobCard(j){ const a=jLate(j);
-  return '<button class="cb" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'wide')+'<span class="cbt" style="display:block">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+'</span><span class="sub">Raised '+esc(jAge(j))+'</span><span class="sub">'+esc(holdersSay(j))+'</span>'
+  return '<button class="cb'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'wide')+'<span class="cbt" style="display:block">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+'</span><span class="sub">Raised '+esc(jAge(j))+'</span>'+(holders(j).length?'<span class="sub">'+esc(holdersSay(j))+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
 function jobsShown(){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code);
   let L=jobsAll().filter(j=>!J.grp||j.group===J.grp).filter(j=>(j.state==='doing'?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
@@ -1190,7 +1244,7 @@ function vLine(){
     +'<button class="btn" data-act="proofFor" data-id="'+esc(i.id)+'">'+I.cert+'Send Proof</button></div>'
     +'<div class="list" style="border-top:none">'+f('Register',esc(i.register))+(i.due?f('Due','<span class="n">'+esc(day(i.due))+'</span>'):'')
     +(isFM(myPos())?f('Whose',(i.duties||[]).length?esc(i.duties.map(d=>{ const t=positions().filter(p=>(p.duties||[]).indexOf(d)>=0).map(p=>p.title); return t.length?t.join(', '):d; }).join(', '))+(i.nobody?'<span class="sub">Nobody holds this duty. Tick it under Duties held on the desk’s Organisation Structure.</span>':''):'Names no one, so it is shown to the FM.'):'')+'</div>'
-    +'<p class="para">Send the certificate, report or photo that proves it. The desk files it against this line.</p></div>';
+    +lineWhy(lineById(i.id),i)+'<p class="para">Send the certificate, report or photo that proves it. The desk files it against this line.</p></div>';
 }
 // A job opened (P6; DEC-0317, DEC-0318; mockup sandbox/mockups/job-2026-10-20). The zone carries the record and its one
 // action (Design 21.1): the group and the job's number, title, place, the flag in words, where it stands and since when,
@@ -1331,9 +1385,10 @@ function vJob(){
   const strip=sp.length?'<div class="strip">'+sp.map((n,i)=>'<button class="ph" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+sp.length+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'))+'</button>').join('')+'</div>':'';
   const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+' on the desk only. The desk copies photos for the phone each time it publishes.</div>':'';
   const hs=holders(j), pA=pend.filter(x=>x.act==='assign');
-  const people='<div class="people"><span class="lab">On it</span><span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'<span class="none">No one yet</span>')
+  // Who is on it shows only when someone is; with nobody, only the control that assigns, for whoever may (DEC-0334).
+  const people=(hs.length||pA.length||S0.canAsg)?'<div class="people">'+(hs.length||pA.length?'<span class="lab">On it</span>':'')+'<span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'')
     +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':'')+'</span>'
-    +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="Change who is on this job">Change</button>':'')+'</div>';
+    +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(hs.length?'Change who is on this job':'Give this job to someone')+'">'+(hs.length?'Change':'Assign')+'</button>':'')+'</div>':'';
   return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+jBar(F)+'</div>';
 }
 // More (⋮): the occasional things, out of the way of the one action (Design 21.1).
@@ -1518,9 +1573,8 @@ function jDoneSheet(){
     +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
     +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label></div></div>'
     +'<div class="field"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
-    +partsPart(F,'Used any parts or materials?')
+    +partsPart(F,'Parts and materials used',true)
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jobDoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Mark Done and Send</button>'
-    +(F.ptried&&!partsOut(F).ok?'<div class="help err" role="alert" style="margin:0">Say what parts or materials were used, or choose None Used.</div>':'')
     +(F.dphotos.length?'':'<span class="sub" style="margin:0">With no photo, the job’s record says none was taken.</span>')+'</div></div>';
 }
 // ── Before You Start, permits and parts used (W; DEC-0313, DEC-0325) ─────────────────────────────────────────
@@ -1569,25 +1623,19 @@ function jPermitSheet(){
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpermitSend"'+(st.busy?' disabled':'')+'>'+I.permit+'Apply for the Permit</button></div></div>';
 }
 // Parts used: each line a thing and how many, picked from what this site has used before or typed, or None Used.
-function partsOut(F){ const seen=SITE().parts||[], lines=(F.pl||[]).filter(l=>String(l.what||'').trim()).map(l=>{ const w=String(l.what).trim(), k=seen.find(p=>nk(p.what)===nk(w));
-    return {what:w,qty:Number(l.qty)>0?Number(l.qty):1,unit:k?k.unit||'':''}; });
-  return {ok:!!F.pnone!==(lines.length>0),v:{none:!!F.pnone,lines:F.pnone?[]:lines}}; }
-function partsWords(p){ if(!p||p.none) return 'None used.'; return (p.lines||[]).map(l=>l.unit?l.qty+' '+l.unit+' of '+l.what:l.qty+' × '+l.what).join(', ')+'.'; }
-function partsPart(F,title){ F.pl=F.pl&&F.pl.length?F.pl:[{what:'',qty:'1'}];
-  return '<div class="grp">'+esc(title)+'</div>'
-    +(F.pnone?'':F.pl.map((l,i)=>'<div class="pl"><div class="w"><label class="fl" for="pw'+i+'">Part or material</label><input type="text" id="pw'+i+'" list="pseen" autocomplete="off" data-in="pw" data-i="'+i+'" value="'+esc(l.what||'')+'"></div>'
-      +'<div class="q"><label class="fl" for="pq'+i+'">How many</label><input type="number" id="pq'+i+'" inputmode="decimal" min="0" step="any" data-in="pq" data-i="'+i+'" value="'+esc(l.qty||'')+'"></div></div>').join('')
-      +'<datalist id="pseen">'+(SITE().parts||[]).map(p=>'<option value="'+esc(p.what)+'">').join('')+'</datalist>'
-      +'<div class="field" style="padding-top:8px"><button class="tbtn" data-act="jpAdd">Add Another Line</button></div>')
-    +'<div class="opts" style="margin-top:8px"><button class="opt'+(F.pnone?' on':'')+'" data-act="jpNone" aria-pressed="'+!!F.pnone+'"><span class="ck">'+(F.pnone?I.tick:'')+'</span><span class="m">None Used</span></button></div>';
+// Parts used are typed in one box, in the person's own words (DEC-0339 rule 4): optional on Done, needed on Add Parts Used.
+function partsOut(F,need){ const t=String(F.ptext||'').trim(); return {ok:need?!!t:true,v:t?{text:t}:null}; }
+function partsWords(p){ if(p&&p.text) return p.text+(/[.!?]$/.test(p.text)?'':'.'); if(!p||p.none) return 'None used.'; return (p.lines||[]).map(l=>l.unit?l.qty+' '+l.unit+' of '+l.what:l.qty+' × '+l.what).join(', ')+'.'; }
+function partsPart(F,title,opt){
+  return '<div class="field"><label for="ptext">'+esc(title)+(opt?' <span class="opt-w">(optional)</span>':'')+'</label><textarea id="ptext" data-in="ptext" placeholder="2 × 15mm copper elbows, a metre of 15mm pipe">'+esc(F.ptext||'')+'</textarea></div>';
 }
 // Add Parts Used, from More, at any time.
 function jPartsSheet(){
   const F=st.form;
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Parts used"><div class="sh"><b>Parts Used</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +partsPart(F,'What this job used')
+    +partsPart(F,'What this job used',false)
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpartsSend"'+(st.busy?' disabled':'')+'>'+I.pkg+'Add Parts Used</button>'
-    +(F.ptried&&!partsOut(F).ok?'<div class="help err" role="alert" style="margin:0">Write each part and how many, or choose None Used.</div>':'')+'</div></div>';
+    +(F.ptried&&!partsOut(F,true).ok?'<div class="help err" role="alert" style="margin:0">Write what was used, in your own words.</div>':'')+'</div></div>';
 }
 // Pause the Job (DEC-0311, DEC-0316): a reason offered, never required, with a label above the field (Design 9.6).
 function jPauseSheet(){
@@ -1639,7 +1687,7 @@ async function jobSend(act){
   if(V){ _sentAudio[c.id]={url:V.url,secs:V.secs}; F.voice=null; F.kind='Note'; st.twEnd=true; }
   if(act==='edit'||act==='delete'){ F.mid=''; F.etext=''; F.eerr=''; }
   if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; st.twEnd=true; }   // the kind is chosen for each entry, so a note is never filed under the last one's
-  if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.pl=null; F.pnone=false; F.ptried=false; }
+  if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.ptext=''; F.ptried=false; }
   if(act==='start'||act==='restart'||act==='permit'){ F.ck=null; F.pf={}; F.pfrom=''; F.pto=''; }
   if(act==='flag'){ F.why=''; F.level=''; F.ftried=false; }
   if(act==='pause'){ F.pwhy=''; F.ptried=false; }
@@ -1688,16 +1736,219 @@ function vMe(){
 // ── Send Proof: the photo or PDF first, then what it is and the line it proves (DEC-0286 rule 3) ──
 function vProof(){
   const F=st.form, where=F.point||String(F.place||'').trim();
-  let h='<div class="body">'+formZone(F.back||'home','Capture','Send Proof','The photo or the PDF first, then the line it proves. The desk files it on that line.')
-    +photosField('The photo or PDF',false,'image/*,application/pdf');
-  h+='<div class="field"><span class="fl">What it is</span><div class="seg col">'
-    +[['certificate','A certificate or report'],['photo','A photo of work or a check']].map(x=>'<button class="'+(F.what===x[0]?'on':'')+'" data-act="proofWhat" data-v="'+x[0]+'" aria-pressed="'+(F.what===x[0])+'">'+(F.what===x[0]?I.tick:'')+x[1]+'</button>').join('')+'</div></div>';
+  let h='<div class="body">'+formZone(F.back||'home','Capture','Send Proof','The desk files it on the line it proves.');
+  h+=proofWhatField();
   if(F.what==='photo') h+='<div class="note"><span class="eb">What a photo proves</span>'+esc(WFM_CAPTURE_SHAPE.photoSays)+'</div>'+whereField({suggest:true});
-  h+=lineSelect(F.what!=='certificate');
+  h+=lineSelect(F.what==='photo');
+  h+=planOffer();
   h+='<div class="field"><label for="note">Note <span class="opt-w">(optional)</span></label><input id="note" type="text" data-in="note" value="'+esc(F.note||'')+'" placeholder="Anything the desk should know"></div><div style="height:24px"></div></div>';
-  const miss=!F.photos.length?'Add the photo or PDF first.':!F.what?'Say what it is.':(F.what==='photo'&&!where)?'Say where it was taken, or scan the tag.':'';
+  const miss=!F.photos.length?'Scan the document, choose a PDF or take a photo first.':(F.what!=='photo'&&!F.duty)?'Say which line it proves.':(F.what==='photo'&&!where)?'Say where it was taken, or scan the tag.':'';
   return h+sendBtn('Send Proof',!miss,miss);
 }
+// What the proof is, asked first: a scan, a PDF already on the phone, or a photo of the work (DEC-0338).
+function proofWhatField(){
+  const F=st.form;
+  if(F.doc&&F.photos.length){ const n=F.doc.pages.length, p0=F.doc.pages[0];
+    return '<div class="field"><span class="fl">The proof</span><div class="chosen"><span class="dt" style="background-image:url('+p0.out+')"></span><span class="m">Scanned document<span class="sub"><span class="n">'+n+'</span> '+(n===1?'page':'pages')+', one PDF</span></span>'
+      +'<span class="acts"><button class="lnk" data-act="docEdit">Edit</button><button class="lnk" data-act="docRemove" style="margin-left:16px">Remove</button></span></div></div>'; }
+  if(F.what==='certificate'&&F.photos.length){ const f=F.photos[0].file;
+    return '<div class="field"><span class="fl">The proof</span><div class="chosen"><span class="dt">'+I.clip+'</span><span class="m">'+esc(f.name||'PDF')+'<span class="sub">PDF, <span class="n">'+Math.max(1,Math.round(f.size/1024))+'</span> KB, sent as it is</span></span>'
+      +'<button class="lnk" data-act="docRemove">Remove</button></div></div>'; }
+  if(F.what==='photo') return photosField('The photo of the work',false)+'<div class="field" style="padding-top:4px"><button class="lnk" data-act="docRemove">Scan a document or choose a PDF instead</button></div>';
+  const row=(icon,t,sub,input)=>'<label class="r"><span class="pi">'+icon+'</span><span class="m"><span class="w">'+t+'</span><span class="sub">'+sub+'</span></span>'+I.chev+input+'</label>';
+  return '<div class="field"><span class="fl">The proof</span><div class="pick">'
+    +row(I.scan,'Scan a Document','A certificate, report or sheet. Squared and cleaned like a scanner.','<input type="file" accept="image/*" capture="environment" data-file="scanshot">')
+    +row(I.clip,'Choose a PDF','One already on this phone. Sent as it is.','<input type="file" accept="application/pdf" data-file="pdf">')
+    +row(I.photo,'Take a Photo of the Work','The work itself, not a piece of paper.','<input type="file" accept="image/*" capture="environment" multiple data-file="wphoto">')
+    +'</div></div>';
+}
+// What the line is for, on the line itself, read before the work (DEC-0338 rule 1): how often (the register's own
+// setting, said as that), the legal reference as the register cites it, the HIQA standard, and the proof it needs.
+// Never a claim that the law fixes the period (Build rules, Compliance accuracy).
+const EVERY={Daily:'Every day',Weekly:'Every week',Monthly:'Every month',Quarterly:'Every 3 months',Annual:'Every year'};
+function lineWhy(l,due){
+  if(!l) return '';
+  const ev=EVERY[l.every], law=String(l.law||'').split(/;\s*/).filter(Boolean), g=GROUP((SITE().planGroup)||'planned-maintenance');
+  const wr=(eb,body)=>'<div class="wr"><span class="eb">'+eb+'</span>'+body+'</div>';
+  return '<div class="grp">Why it is done</div><div class="why sq">'
+    +wr('How often',ev?'<b>'+esc(ev)+'</b><span class="sub">As set on the register'+(l.plan?'; on Plan in '+esc(GROUP(l.plan.group)||g):'')+'.</span>':'<span class="lw">'+esc(l.every||'Not set on the register')+'</span>')
+    +wr('Legal and other references',law.length?law.map(x=>'<span class="lw">'+esc(x)+'</span>').join(''):'<span class="sub">None cited on the register.</span>')
+    +(l.std?wr('HIQA standard','<span class="lw">'+esc(l.std)+'</span>'):'')
+    +(l.needs?wr('Proof it needs','<span class="lw">'+esc(l.needs)+'</span>'):'')
+    +'</div>';
+}
+// A line that repeats and that no planned job names: offered here, made on the desk when it files the proof
+// (DEC-0336 rules 2 and 5). Why it repeats is on the line itself (DEC-0338 rule 1), so it is not said again here.
+function planOffer(){
+  const F=st.form, l=F.duty?lineById(F.duty):null, ev=l&&EVERY[l.every];
+  if(!ev||l.plan) return '';
+  return '<div class="field"><label class="keep"><input type="checkbox" data-in="plan"'+(F.plan?' checked':'')+'><span class="m">Make it a planned job<span class="sub">'+esc(ev.replace(/^Every/,'Lands on Plan every'))+', in '+esc(GROUP((SITE().planGroup)||'planned-maintenance'))+'. Proof sent on this line marks the job that is due as done.</span></span></label></div>';
+}
+// ── Send Proof as a scan (DEC-0339; docs/08-evidence/findings/document-scan-2026-10-23.md) ─────────────────
+// As every scanner app does it: the photo taken, the page's corners found and shown to be dragged, the page squared
+// and cleaned to white, more pages added, one PDF filed. jscanify 1.4.3 (MIT) and the OpenCV.js build it ships come
+// from jsDelivr the first time Scan is pressed and the service worker keeps them; jsPDF 2.5.1, as the desk uses,
+// makes the PDF. The photo is cut to 2000px for the page and 1000px for finding it, which keeps an iPhone's memory.
+const SCAN_LIB={js:'https://cdn.jsdelivr.net/npm/jscanify@1.4.3/src/jscanify.js',cv:'https://cdn.jsdelivr.net/npm/jscanify@1.4.3/src/opencv.js',pdf:'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'};
+const DS_LOOKS=[['clean','Clean'],['bw','Black and White'],['orig','Original']];
+let _dsLibs=null, _dsPdf=null;
+function dsScript(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.crossOrigin='anonymous'; s.onload=ok; s.onerror=()=>no(new Error('could not load the scanner')); document.head.appendChild(s); }); }
+function dsLibs(){
+  if(_dsLibs) return _dsLibs;
+  _dsLibs=new Promise((ok,no)=>{
+    if(window.cv&&cv.Mat) return ok();
+    window.Module={onRuntimeInitialized:ok};
+    dsScript(SCAN_LIB.js).then(()=>dsScript(SCAN_LIB.cv)).catch(no);
+  }).catch(e=>{ _dsLibs=null; throw e; });
+  return _dsLibs;
+}
+function dsCanvas(src,max){ const w=src.width||src.naturalWidth, h=src.height||src.naturalHeight, k=Math.min(1,max/Math.max(w,h)), c=document.createElement('canvas');
+  c.width=Math.round(w*k); c.height=Math.round(h*k); c.getContext('2d').drawImage(src,0,0,c.width,c.height); return c; }
+// The page's four corners: the outlines that close into four corners, the largest and lightest of them (the OpenCV
+// document-scanner recipe). jscanify's own finder takes the biggest outline, which on a pile of paper is the pile.
+function dsFind(c){
+  const src=cv.imread(c), g=new cv.Mat(), e=new cv.Mat(), k=cv.Mat.ones(3,3,cv.CV_8U), A=c.width*c.height; let best=null;
+  cv.cvtColor(src,g,cv.COLOR_RGBA2GRAY); cv.GaussianBlur(g,g,new cv.Size(5,5),0);
+  [[30,90],[50,150],[75,200]].forEach(([lo,hi])=>{
+    cv.Canny(g,e,lo,hi); cv.dilate(e,e,k);
+    const cs=new cv.MatVector(), hi2=new cv.Mat(); cv.findContours(e,cs,hi2,cv.RETR_LIST,cv.CHAIN_APPROX_SIMPLE);
+    for(let i=0;i<cs.size();i++){ const ct=cs.get(i), ar=cv.contourArea(ct);
+      if(ar>=A*.08&&ar<=A*.98){ const hull=new cv.Mat(), ap=new cv.Mat(); cv.convexHull(ct,hull); cv.approxPolyDP(hull,ap,.02*cv.arcLength(hull,true),true);
+        if(ap.rows===4){ const m=cv.Mat.zeros(g.rows,g.cols,cv.CV_8U), mv=new cv.MatVector(); mv.push_back(ap); cv.fillPoly(m,mv,new cv.Scalar(255));
+          const lum=cv.mean(g,m)[0]/255, sc=cv.contourArea(ap)*lum*lum; m.delete(); mv.delete();
+          if(!best||sc>best.sc) best={sc:sc,p:Array.from(ap.data32S)}; }
+        hull.delete(); ap.delete(); }
+      ct.delete(); }
+    cs.delete(); hi2.delete(); });
+  [src,g,e,k].forEach(x=>x.delete());
+  if(!best) return null;
+  const P=[0,2,4,6].map(i=>({x:best.p[i],y:best.p[i+1]})), s=P.map(p=>p.x+p.y), d=P.map(p=>p.y-p.x);
+  return {tl:P[s.indexOf(Math.min(...s))],br:P[s.indexOf(Math.max(...s))],tr:P[d.indexOf(Math.min(...d))],bl:P[d.indexOf(Math.max(...d))]};
+}
+// Not found: the corners start set in from the photo's edges, for the person to drag (as Adobe Scan does).
+function dsInset(w,h){ const x=w*.12, y=h*.12; return {tl:{x:x,y:y},tr:{x:w-x,y:y},br:{x:w-x,y:h-y},bl:{x:x,y:h-y}}; }
+// The page squared to its own shape, its long side 1754px (A4 at 150 dpi), then cleaned as chosen. Clean takes the
+// paper's own shading out (dilate, median blur, divide: the usual OpenCV way with shadows on paper) and keeps colour,
+// so a stamp or a signature stays; Black and White is the same in grey, its contrast pulled up; Original is as taken.
+function dsFlat(pg){
+  const q=pg.q, L=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), w=(L(q.tl,q.tr)+L(q.bl,q.br))/2, h=(L(q.tl,q.bl)+L(q.tr,q.br))/2, k=1754/Math.max(w,h);
+  pg.flat=new jscanify().extractPaper(pg.img,Math.round(w*k),Math.round(h*k),{topLeftCorner:q.tl,topRightCorner:q.tr,bottomLeftCorner:q.bl,bottomRightCorner:q.br});
+}
+function dsLook(pg){
+  let c=pg.flat;
+  if(pg.look!=='orig'){
+    const src=cv.imread(pg.flat), g=new cv.Mat(), bg=new cv.Mat(), k=cv.Mat.ones(7,7,cv.CV_8U), out=new cv.Mat();
+    cv.cvtColor(src,g,cv.COLOR_RGBA2GRAY); cv.dilate(g,bg,k); cv.medianBlur(bg,bg,21);
+    if(pg.look==='bw'){ cv.divide(g,bg,out,255); cv.convertScaleAbs(out,out,255/115,-120*255/115); }
+    else{ const ch=new cv.MatVector(), o=new cv.MatVector(); cv.split(src,ch);
+      for(let i=0;i<3;i++){ const m=new cv.Mat(); cv.divide(ch.get(i),bg,m,255); o.push_back(m); m.delete(); }
+      const a=ch.get(3); o.push_back(a); a.delete(); cv.merge(o,out); ch.delete(); o.delete(); }
+    c=document.createElement('canvas'); cv.imshow(c,out); [src,g,bg,k,out].forEach(x=>x.delete());
+  }
+  pg.out=c.toDataURL('image/jpeg',.82);
+}
+async function dsFile(k,input){
+  const F=st.form, f=input.files&&input.files[0]; input.value='';
+  if(!f) return;
+  if(k==='pdf'){ F.doc=null; F.what='certificate'; F.photos=[{file:f,url:''}]; return render(); }
+  if(k==='wphoto'){ F.doc=null; F.what='photo'; F.photos=[{file:f,url:URL.createObjectURL(f)}]; return render(); }
+  const D=st.ds||(st.ds={pages:F.doc?F.doc.pages.slice():[],cur:0,redo:null});
+  D.stage='wait'; D.say='Finding the page…'; render();
+  try{
+    if(!(window.cv&&cv.Mat)){ D.say='Getting the scanner ready. The first time takes a few seconds; after that it works with no signal.'; render(); }
+    await dsLibs();
+    const bm=await createImageBitmap(f), img=dsCanvas(bm,2000), sm=dsCanvas(img,1000), r=img.width/sm.width, q0=dsFind(sm);
+    const q=q0?Object.fromEntries(Object.entries(q0).map(([n,p])=>[n,{x:p.x*r,y:p.y*r}])):dsInset(img.width,img.height);
+    const pg={img:img,view:sm.toDataURL('image/jpeg',.8),q:q,found:!!q0,look:'clean'};
+    if(D.redo!=null){ pg.look=D.pages[D.redo].look; D.pages[D.redo]=pg; D.cur=D.redo; } else { D.pages.push(pg); D.cur=D.pages.length-1; }
+    D.redo=null; D.stage='corners'; D.say=''; render();
+  }catch(e){ D.stage='err'; D.say='The scanner could not start: it needs signal the first time. Take it again with signal, or choose Take a Photo of the Work. ('+(e.message||e)+')'; render(); }
+}
+async function dsDone(){
+  const D=st.ds, F=st.form;
+  D.stage='wait'; D.say='Making the PDF…'; render();
+  try{
+    if(!window.jspdf){ if(!_dsPdf) _dsPdf=dsScript(SCAN_LIB.pdf).catch(e=>{ _dsPdf=null; throw e; }); await _dsPdf; }
+    const pdf=new jspdf.jsPDF({unit:'mm',format:'a4'});
+    for(let i=0;i<D.pages.length;i++){ const p=D.pages[i], w=p.flat.width, h=p.flat.height, k=Math.min(210/w,297/h);
+      if(i) pdf.addPage('a4'); pdf.addImage(p.out,'JPEG',(210-w*k)/2,(297-h*k)/2,w*k,h*k); }
+    const blob=pdf.output('blob');
+    F.photos=[{file:new File([blob],'scan.pdf',{type:'application/pdf'}),url:''}]; F.what='certificate'; F.doc={pages:D.pages}; st.ds=null; render();
+  }catch(e){ D.stage='page'; D.say='The PDF could not be made: '+(e.message||e)+'. Press Done again.'; render(); }
+}
+// Presses inside the scanner and on the chosen proof. Returns false for anything that is not its own.
+function dsAct(a,b){
+  const D=st.ds, F=st.form;
+  if(a==='docRemove'){ F.photos=[]; F.doc=null; F.what=''; render(); return; }
+  if(a==='docEdit'){ st.ds={pages:F.doc.pages.map(p=>Object.assign({},p,{q:Object.assign({},p.q)})),cur:0,stage:'page',redo:null}; render(); return; }
+  if(!D) return false;
+  const pg=D.pages[D.cur];
+  if(a==='dsClose'){ st.ds=null; render(); return; }
+  if(a==='dsKeep'){ dsFlat(pg); dsLook(pg); D.stage='page'; D.say=''; render(); return; }
+  if(a==='dsBack'){ if(!pg.out){ D.pages.splice(D.cur,1); D.cur=Math.max(0,D.cur-1); } if(!D.pages.length){ st.ds=null; return render(); } D.stage='page'; render(); return; }
+  if(a==='dsLook'){ pg.look=b.dataset.v; dsLook(pg); render(); return; }
+  if(a==='dsPage'){ D.cur=Number(b.dataset.i); render(); return; }
+  if(a==='dsAdjust'){ D.stage='corners'; render(); return; }
+  // Deleting a page asks once, as deleting a message does (jDelSheet); nothing is lost on a slip.
+  if(a==='dsDel'){ D.ask=true; render(); return; }
+  if(a==='dsDelNo'){ D.ask=false; render(); return; }
+  if(a==='dsDelYes'){ D.ask=false; D.pages.splice(D.cur,1); D.cur=Math.max(0,D.cur-1); if(!D.pages.length) st.ds=null; render(); return; }
+  if(a==='dsDone'){ dsDone(); return; }
+  return false;
+}
+// The scanner, full screen on ink with its one primary at the foot (Design 21.4, 21.6, 9.1).
+function vDocScan(){
+  const D=st.ds, pg=D.pages[D.cur], n=D.pages.length;
+  const top=(eb,act,label)=>'<div class="dtop"><button class="ib" data-act="'+act+'" aria-label="'+label+'">'+(act==='dsBack'?I.back:I.close)+'</button><span class="eb">'+esc(eb)+'</span></div>';
+  const cam=(cls,inner,redo)=>'<label class="'+cls+'"'+(redo!=null?' data-redo="'+redo+'"':'')+'>'+inner+'<input type="file" accept="image/*" capture="environment" data-file="scanshot"></label>';
+  if(D.stage==='wait'||D.stage==='err') return '<div class="ds" role="dialog" aria-modal="true" aria-label="Scan">'+top('Scan','dsClose','Close the scanner')
+    +'<div class="stage"><div class="wait" role="status">'+(D.stage==='wait'?I.scan:'')+'<span>'+esc(D.say)+'</span></div></div></div>';
+  if(D.stage==='corners'){ const W=pg.img.width, H=pg.img.height, q=pg.q, sw=Math.max(W,H)/300;
+    const pts=[q.tl,q.tr,q.br,q.bl].map(p=>p.x.toFixed(0)+','+p.y.toFixed(0)).join(' ');
+    return '<div class="ds" role="dialog" aria-modal="true" aria-label="The page’s corners">'+top('Scan · Page '+(D.cur+1),'dsBack','Back')
+      +'<p class="say'+(pg.found?'':' miss')+'">'+(pg.found?'Drag a corner, or tap where it belongs, if it is not on the page’s edge.':'No page found. Drag each corner, or tap where it belongs, to the page’s corners.')+'</p>'
+      +'<div class="stage"><svg id="dsq" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet"><image href="'+pg.view+'" width="'+W+'" height="'+H+'"/>'
+      +'<polygon class="pe" points="'+pts+'" fill="none" stroke="var(--ink)" stroke-linejoin="round"/><polygon class="pf" points="'+pts+'" fill="rgba(58,171,198,.16)" stroke="var(--accentOnInk)" stroke-width="'+(sw*1.5)+'" stroke-linejoin="round"/>'
+      +['tl','tr','br','bl'].map(c=>'<circle class="ce" data-e="'+c+'" cx="'+q[c].x+'" cy="'+q[c].y+'" r="'+(sw*7)+'" fill="none" stroke="var(--ink)"/><circle data-c="'+c+'" cx="'+q[c].x+'" cy="'+q[c].y+'" r="'+(sw*7)+'" fill="rgba(13,31,45,.35)" stroke="var(--accentOnInk)" stroke-width="'+(sw*2)+'"/>').join('')
+      +'</svg><div class="loupe" id="dsl"></div></div>'
+      +'<div class="dfoot"><div class="two">'+cam('gh','Retake',D.cur)+'<button class="btn" data-act="dsKeep">Keep Scan</button></div></div></div>'; }
+  return '<div class="ds" role="dialog" aria-modal="true" aria-label="Scanned pages">'+top('Scan · '+plural(n,'page'),'dsClose','Close the scanner')
+    +(D.say?'<p class="say" role="alert">'+esc(D.say)+'</p>':'')
+    +'<div class="stage"><img src="'+pg.out+'" alt="Page '+(D.cur+1)+' as it will be filed"></div>'
+    +'<div class="dfoot"><div class="looks" role="radiogroup" aria-label="How the page looks">'+DS_LOOKS.map(x=>'<button role="radio" aria-checked="'+(pg.look===x[0])+'" class="'+(pg.look===x[0]?'on':'')+'" data-act="dsLook" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'
+    +(D.ask?'<div class="lnks" role="alert"><span>Delete page <span class="n">'+(D.cur+1)+'</span>?</span><button class="lnk" data-act="dsDelYes">Delete It</button><button class="lnk" data-act="dsDelNo">Keep It</button></div>'
+      :'<div class="lnks"><button class="lnk" data-act="dsAdjust">Adjust Corners</button>'+cam('lnk','Retake',D.cur)+'<button class="lnk" data-act="dsDel">Delete Page</button></div>')
+    +'<div class="strip">'+D.pages.map((p,i)=>'<button class="pg'+(i===D.cur?' on':'')+'" data-act="dsPage" data-i="'+i+'" aria-label="Page '+(i+1)+'" style="background-image:url('+p.out+')"><span class="n">'+(i+1)+'</span></button>').join('')+cam('pg add',I.plus)+'</div>'
+    +'<div class="two">'+cam('gh','Add a Page')+'<button class="btn" data-act="dsDone">Done</button></div></div></div>';
+}
+// Corners dragged with a finger, a magnifier above the finger while it moves; Retake marks which page it replaces.
+function dsBind(){
+  const D=st.ds;
+  app.querySelectorAll('.ds label[data-redo]').forEach(l=>l.addEventListener('click',()=>{ D.redo=Number(l.dataset.redo); }));
+  app.querySelectorAll('.ds label:not([data-redo]) input[data-file="scanshot"]').forEach(i=>i.addEventListener('click',()=>{ D.redo=null; }));
+  const svg=document.getElementById('dsq'); if(!svg) return;
+  const pg=D.pages[D.cur], lp=document.getElementById('dsl'), poly=svg.querySelector('polygon.pf'), edge=svg.querySelector('polygon.pe'); let on=null;
+  // Handles 28px and lines 3px on screen, whatever the photo's size (the touch target is 48px round each, below).
+  const u=1/svg.getScreenCTM().a; poly.setAttribute('stroke-width',3*u); edge.setAttribute('stroke-width',6*u);
+  svg.querySelectorAll('circle[data-c]').forEach(c=>{ c.setAttribute('r',14*u); c.setAttribute('stroke-width',2.5*u); }); svg.querySelectorAll('circle.ce').forEach(c=>{ c.setAttribute('r',14*u); c.setAttribute('stroke-width',5.5*u); });
+  const at=e=>{ const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); };
+  svg.addEventListener('pointerdown',e=>{ const p=at(e), sc=svg.getScreenCTM().a; let best=null, bd=1e9;
+    ['tl','tr','br','bl'].forEach(c=>{ const d=Math.hypot(pg.q[c].x-p.x,pg.q[c].y-p.y); if(d<bd){ bd=d; best=c; } });
+    // A press away from every handle moves the nearest corner there: the single-pointer way (Design 12.9).
+    if(bd*sc>48){ pg.q[best]={x:p.x,y:p.y}; D.stage='corners'; render(); return; }
+    on=best; svg.setPointerCapture(e.pointerId); e.preventDefault(); });
+  svg.addEventListener('pointermove',e=>{ if(!on) return; const p=at(e), W=pg.img.width, H=pg.img.height;
+    pg.q[on]={x:Math.max(0,Math.min(W,p.x)),y:Math.max(0,Math.min(H,p.y))};
+    ['[data-c="'+on+'"]','[data-e="'+on+'"]'].forEach(sel=>{ const c=svg.querySelector(sel); c.setAttribute('cx',pg.q[on].x); c.setAttribute('cy',pg.q[on].y); });
+    const pts=[pg.q.tl,pg.q.tr,pg.q.br,pg.q.bl].map(v=>v.x.toFixed(0)+','+v.y.toFixed(0)).join(' '); poly.setAttribute('points',pts); edge.setAttribute('points',pts);
+    const z=3*svg.getScreenCTM().a;
+    lp.style.display='block'; lp.style.backgroundImage='url('+pg.view+')'; lp.style.backgroundSize=(W*z)+'px '+(H*z)+'px';
+    lp.style.backgroundPosition=(52-pg.q[on].x*z)+'px '+(52-pg.q[on].y*z)+'px';
+    lp.style.left=(on==='tl'||on==='bl')?'auto':'8px'; lp.style.right=(on==='tl'||on==='bl')?'8px':'auto'; });
+  const up=()=>{ on=null; lp.style.display='none'; };
+  svg.addEventListener('pointerup',up); svg.addEventListener('pointercancel',up);
+}
+
 // ── A walk: points are scans (DEC-0294 rule 1), in the order set on the desk (DEC-0300 rule 2) ──
 function ptPlace(p){ const l=p&&p.loc?LOC(p.loc):null; return l?l.level+' · '+l.name:(p&&p.where)||'Place not set'; }
 function vRounds(){
@@ -2024,6 +2275,7 @@ app.addEventListener('click',async e=>{
   if(a==='sheet'){ st.sheet=true; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
   if(a==='sheetClose'){ const was=st.sheet; st.sheet=false; render(); const f=app.querySelector(was==='whosin'?'[data-act="whosin"]':'.nv.cap'); if(f) f.focus(); return; }
   if(['fault','reading','proof'].indexOf(a)>=0){ st.sheet=false; st.form=blank(a); return go(a); }
+  if(a.indexOf('ds')===0||a.indexOf('doc')===0){ if(dsAct(a,b)!==false) return; }
   if(a==='proofFor'){ st.form=Object.assign(blank('proof'),{duty:b.dataset.id,what:'certificate'}); return go('proof'); }
   if(a==='proofWhat'){ F.what=b.dataset.v; return render(); }
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
@@ -2120,12 +2372,10 @@ app.addEventListener('click',async e=>{
     return jobSend(C.mode); }
   if(a==='jpermitSend') return jobSend('permit');
   // Parts used (DEC-0313 rule 4).
-  if(a==='jobParts'){ F.pl=[{what:'',qty:'1'}]; F.pnone=false; F.ptried=false; st.sheet='jparts'; render(); const v=document.getElementById('pw0'); if(v) v.focus(); return; }
-  if(a==='jpAdd'){ F.pl=(F.pl||[]).concat([{what:'',qty:'1'}]); render(); const v=document.getElementById('pw'+(F.pl.length-1)); if(v) v.focus(); return; }
-  if(a==='jpNone'){ F.pnone=!F.pnone; render(); const v=app.querySelector('.sheet [data-act=jpNone]'); if(v) v.focus(); return; }
-  if(a==='jpartsSend'){ if(!partsOut(F).ok){ F.ptried=true; render(); return; } return jobSend('parts'); }
+  if(a==='jobParts'){ F.ptext=''; F.ptried=false; st.sheet='jparts'; render(); const v=document.getElementById('ptext'); if(v) v.focus(); return; }
+  if(a==='jpartsSend'){ if(!partsOut(F,true).ok){ F.ptried=true; render(); return; } return jobSend('parts'); }
   if(a==='jobUnflag') return jobSend('unflag');
-  if(a==='jobDone'){ F.pl=[{what:'',qty:'1'}]; F.pnone=false; F.ptried=false; st.sheet='jdone'; render(); const v=app.querySelector('.sheet .th.add input'); if(v) v.focus(); return; }
+  if(a==='jobDone'){ F.ptext=''; F.ptried=false; st.sheet='jdone'; render(); const v=app.querySelector('.sheet .th.add input'); if(v) v.focus(); return; }
   if(a==='jobDoneSend'){ if(!partsOut(F).ok){ F.ptried=true; render(); const t=app.querySelector('.sheet [role=alert]'); if(t) t.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
   // Pause, Restart and Change on Assigned (P5). The desk checks the group and the reason again as it files them.
   if(a==='jobPause'){ F.ptried=false; st.sheet='jpause'; render(); const v=document.getElementById('pwhy'); if(v) v.focus(); return; }
@@ -2166,6 +2416,7 @@ app.addEventListener('focusout',e=>{
 });
 app.addEventListener('change',e=>{
   const k=e.target.dataset.file;
+  if(k==='scanshot'||k==='pdf'||k==='wphoto'){ dsFile(k,e.target); return; }
   if(k==='photos'){ Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='dphotos'){ Array.from(e.target.files||[]).forEach(f=>st.form.dphotos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
@@ -2181,7 +2432,7 @@ function special(k,el){
     if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
     return true; }
   if(st.screen==='job'&&k==='etext'){ F.etext=el.value; return true; }
-  if(st.screen==='job'&&(k==='pw'||k==='pq')){ const i=Number(el.dataset.i); F.pl=F.pl||[]; F.pl[i]=F.pl[i]||{what:'',qty:'1'}; F.pl[i][k==='pw'?'what':'qty']=el.value; return true; }
+  if(st.screen==='job'&&k==='ptext'){ F.ptext=el.value; return true; }
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
   if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
@@ -2226,6 +2477,7 @@ async function doSend(){
   else fields.place=String(F.place||'').trim();
   if(F.loc&&!F.point) fields.loc=F.loc;
   if(F.duty) fields.duty=F.duty;
+  if(F.kind==='proof'&&F.duty&&F.plan) fields.plan=true;
   const kind=F.kind==='proof'?F.what:F.kind;
   if(F.kind==='fault') fields.group=F.group||'maintenance';
   if(F.kind==='reading'){

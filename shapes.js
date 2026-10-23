@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v484.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v492.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -14,7 +14,7 @@ const WFM_CAPTURE_SHAPE={
     job:        {direction:'operational', label:'Job update'}
   },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','device','files','round','started','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit'],
+  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit'],
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
   photoSays:'This photo proves who was there, where and when, and nothing else.',
@@ -23,7 +23,8 @@ const WFM_CAPTURE_SHAPE={
   jobActs:['note','flag','unflag','start','done','pause','restart','assign','edit','delete','parts','permit'],
   // Before You Start (W; DEC-0313 rule 1, DEC-0325): a start or restart carries check:{none, hazards:[{id,label}], note,
   // same, kit:[{reg,id}]}: the hazards ticked, or None of These, never neither. Parts used (DEC-0313 rule 4): a done or a
-  // parts update carries parts:{none, lines:[{what,qty,unit}]}: the lines, or None, never neither.
+  // parts update carries parts:{text}, typed in the person's own words (DEC-0339 rule 4); a capture from before 23 Oct 2026
+  // carries parts:{none, lines:[{what,qty,unit}]}: the lines, or None, never neither. Done's parts are optional.
   checkSays:'This records what the person considered on the day. It is not the site’s risk assessment.',
   partsMax:20,
   // Permits (W; DEC-0313 rule 3): the ticks that need one, by the permit register's type. Electricity needs one only when a
