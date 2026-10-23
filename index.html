@@ -248,6 +248,55 @@ textarea{min-height:96px;resize:vertical}
 .search input:focus{outline:none}
 .search:focus-within{outline:2px solid var(--accent);outline-offset:2px}
 .act{display:flex;gap:8px;align-items:center;padding:0 16px 8px;font-size:12px;color:var(--textMuted)}
+/* proposal 22 Oct: the place square, the group label, the group row */
+.pl{display:grid;place-items:center;align-content:center;text-align:center;flex:none;width:64px;height:64px;border-radius:8px;background:var(--stone);color:var(--text);gap:2px;padding:2px;overflow:hidden}
+.pl b{font:800 20px/1 Sora}
+.pl i{font:700 11px/1.2 Outfit;font-style:normal;color:var(--textMS)}
+.pl span{font:500 12px/1.3 'DM Sans';color:var(--text);overflow-wrap:break-word;hyphens:auto;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+img.pl{object-fit:cover;padding:0}
+.ra .gl{display:block;font:700 11px/1.4 Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMuted);margin-bottom:2px}
+.ra .stt{display:inline-flex;align-items:center;gap:4px}
+.ra .stt svg,.gr .cts svg{width:14px;height:14px;flex:none}
+.gr{align-items:center}
+.gr .w{font:700 15px/1.4 Sora}
+.gr .cts{display:flex;gap:16px;margin-top:4px;font-size:12px;color:var(--textMid)}
+.gr .cts span{display:inline-flex;align-items:center;gap:4px}
+.gr .cts b{font:800 15px Sora;color:var(--text)}
+.gr .chev,.ra .chev{color:var(--accentD);flex:none}
+.zone .what.sm{font:800 20px/1.3 Sora}
+.gi{display:grid;place-items:center;flex:none;width:48px;height:48px;border-radius:8px;background:var(--stone);color:var(--text)}
+.gi svg{width:24px;height:24px}
+.ra .gl{display:flex!important;align-items:center;gap:6px}
+.ra .gl svg{width:14px;height:14px;flex:none}
+.zone .gi{background:transparent;color:var(--onInk);border:1px solid var(--inkTrack);width:44px;height:44px}
+.sortb{padding:0 16px 12px}
+.lh{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 4px}
+.lh .t{font:700 11px Outfit;letter-spacing:2px;text-transform:uppercase;color:var(--textMuted)}
+.lh .t .n{font:800 11px Sora;letter-spacing:0}
+.srt{display:inline-flex;align-items:center;gap:2px;min-height:44px;padding:0 0 0 12px;font:600 13px Outfit;color:var(--accentD)}
+.srt svg{width:16px;height:16px}
+.ra.c{align-items:center;padding:10px 16px;gap:12px}
+.ra.c .pl{width:60px;height:60px}
+.ra.c .pl b{font:800 20px/1 Sora}
+.ra.c .w{font-weight:500}
+.ra.c .ag{flex:none;text-align:right;min-width:40px}
+.ra.c .ag b{display:block;font:800 15px/1.2 Sora;color:var(--text)}
+.ra.c .ag i{display:block;font:400 12px 'DM Sans';font-style:normal;color:var(--textMuted)}
+.gr .cts{margin-top:2px}
+.lh .vw{display:flex;align-items:center;margin-left:auto}
+.lh .vw .ib{width:44px;height:44px;border:none;color:var(--textMuted)}
+.lh .vw .ib.on{color:var(--accentD)}
+.lh .vw .ib svg{width:20px;height:20px}
+.tl .tp{display:grid;place-items:center;align-content:center;gap:4px;height:96px;background:var(--stone);text-align:center;padding:8px}
+.tl .tp b{font:800 20px/1 Sora}
+.tl .tp i{font:700 11px Outfit;font-style:normal;color:var(--textMS)}
+.tl .tp span{font:500 13px/1.3 'DM Sans'}
+.tl img.tp{width:100%;object-fit:cover;padding:0}
+.tl .gl{display:flex;align-items:center;gap:6px;font:700 11px/1.4 Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMuted);margin-bottom:2px}
+.tl .gl svg{width:14px;height:14px;flex:none}
+.ra.c .pl span{font:500 12px/1.25 'DM Sans';hyphens:manual;overflow-wrap:normal}
+.sortb button{min-height:44px}
+.sortb button.on{background:var(--accentD);color:var(--btnText);border-width:1px}
 .act .lnk{margin-left:auto}
 /* start-up (DEC-0301): the site's tile large, the Waterline mark, the progress naming each step */
 .splash{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--cream)}
@@ -498,7 +547,7 @@ const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}}
 
 // One icon set on every screen (John, 20 Oct 2026; DEC-0303 rule 8): Lucide (lucide.dev, ISC licence), each
 // icon's own path data on its 24px grid at one stroke. The names on the left are what this page calls them.
-const LUCIDE={
+const LUCIDE={'flame':'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>','droplets':'<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>','ban':'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>','bed-double':'<path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/>','spray-can':'<path d="M3 3h.01"/><path d="M7 5h.01"/><path d="M11 7h.01"/><path d="M3 7h.01"/><path d="M7 9h.01"/><path d="M3 11h.01"/><rect width="4" height="4" x="15" y="5"/><path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2"/><path d="m13 14 8-2"/><path d="m13 19 8-2"/>','clipboard-check':'<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>','fire-extinguisher':'<path d="M15 6.5V3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3.5"/><path d="M9 18h8"/><path d="M18 3h-3"/><path d="M11 3a6 6 0 0 0-6 6v11"/><path d="M5 13h4"/><path d="M17 10a4 4 0 0 0-8 0v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2Z"/>','calendar-clock':'<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>','folder':'<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
   'calendar-check':'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>',
   'camera':'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
   'check':'<path d="M20 6 9 17l-5-5"/>',
@@ -716,7 +765,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,whosin:whoSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:jDoneSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,jcheck:jCheckSheet,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
@@ -823,13 +872,15 @@ function dueFor(){
     if(!(ds.some(d=>held.has(d))||(fm&&(!ds.length||i.nobody)))) return;
     (i.kind==='soon'?soon:i.kind==='look'?today:over).push({t:'line',i:i});
   });
-  (s.jobs||[]).filter(j=>!j.round&&groups.has(j.group)).forEach(j=>{ const e=Date.parse(j.end); (e&&e<=now?over:today).push({t:'job',j:j}); });
+  const myJobs=[];
+  (s.jobs||[]).filter(j=>!j.round&&groups.has(j.group)).forEach(j=>{ const e=Date.parse(j.end);
+    if(e) (e<=now?over:today).push({t:'job',j:j}); else if(holders(j).some(isMe)) myJobs.push(j); });
   const rk={red:0,amber:1,grey:2};
   over.sort((a,b)=>((a.t==='missed'?0:a.t==='job'?1:a.i.kind==='look'?3:2)-(b.t==='missed'?0:b.t==='job'?1:b.i.kind==='look'?3:2))
     ||(a.t==='line'&&b.t==='line'?(rk[a.i.tier]-rk[b.i.tier])||(b.i.late-a.i.late):0));
   today.sort((a,b)=>(a.t==='walk'?a.from:0)-(b.t==='walk'?b.from:0));
   soon.sort((a,b)=>String(a.i.due).localeCompare(String(b.i.due)));
-  return {over:over,today:today,soon:soon,fm:fm,p:p};
+  return {over:over,today:today,soon:soon,mine:myJobs,fm:fm,p:p};
 }
 
 // ── Parts of the app frame ───────────────────────────────────────────────────────────────────
@@ -934,18 +985,25 @@ function vDue(){
     h+='<div class="zone"><span class="eb">'+(nowW?'Open now':'Next')+'</span><div class="row1"><span class="num n">'+esc(hm(lead.from))+'</span><span class="what">'+esc(r.name)+'</span></div>'
       +'<p><b class="n">'+(r.points||[]).length+'</b> points, '+(nowW?'open until':'open from <b class="n">'+esc(hm(lead.from))+'</b> to')+' <b class="n">'+esc(hm(lead.to))+'</b>.'+((r.lines||[]).length?' Signed off, it brings <b class="n">'+r.lines.length+'</b> '+((r.lines.length===1)?'line':'lines')+' in date.':'')+'</p>'
       +(nowW?'<button class="btn" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+'Start the Walk</button>':'')+'</div>';
+  } else if(!D.over.length&&!D.today.length&&!D.soon.length&&!D.mine.length&&jobsAll().length){
+    h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">0</span><span class="what">jobs given to you</span></div>'
+      +'<p>No walk, line or job is yours today. Your groups’ jobs are on Jobs.</p><button class="gh" data-act="jobs">'+I.jobs+'Open Jobs</button></div>';
+    return h+waitLine()+'<div style="height:96px"></div></div>'+navBar('due');
   } else {
-    const n=D.over.length, all=n+D.today.length+D.soon.length;
-    h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n" style="color:'+(n?'var(--inkRed)':'var(--onInk)')+'"'+(n?' data-urg':'')+'>'+n+'</span><span class="what">overdue</span></div>'
+    const n=D.over.length, all=n+D.today.length+D.soon.length+D.mine.length;
+    if(!n&&D.mine.length){
+      h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">'+D.mine.length+'</span><span class="what">'+(D.mine.length===1?'job given to you':'jobs given to you')+'</span></div>'
+        +'<p>Nothing on your Due is overdue.</p></div>'; }
+    else h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n" style="color:'+(n?'var(--inkRed)':'var(--onInk)')+'"'+(n?' data-urg':'')+'>'+n+'</span><span class="what">overdue</span></div>'
       +'<p>'+(all?'Of <b class="n">'+all+'</b> on your Due.':'Nothing on your Due.')+'</p></div>';
   }
   h+=waitLine();
   if(siteStale()||st.siteErr) h+=siteNote();
   const today=D.today.filter(x=>x!==lead);
-  const any=D.over.length+today.length+D.soon.length;
+  const any=D.over.length+today.length+D.soon.length+D.mine.length;
   if(!any){
     const p=D.p;
-    h+='<p class="para">'+(p?'Nothing else is due for '+esc(p.title)+' today or in the next '+(s.outlook||7)+' days. ':'')+'Due comes from the walks your department does, the lines your position’s duties cover and the jobs in its groups, all set on the desk’s Organisation Structure.</p>';
+    h+='<p class="para">'+(p?'Nothing else is due for '+esc(p.title)+' today or in the next '+(s.outlook||7)+' days. ':'')+'Due holds the walks your department does, the lines your position’s duties cover and the jobs given to you, all set on the desk. The rest of your groups’ jobs are on Jobs.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('due');
   }
   const firstOver=D.over.filter(x=>x.t!=='line'), lines=D.over.filter(x=>x.t==='line'&&x.i.kind!=='look'), look=D.over.filter(x=>x.t==='line'&&x.i.kind==='look');
@@ -953,6 +1011,7 @@ function vDue(){
   if(lines.length) h+=grp('Lines, by category')+'<div class="list">'+cats(lines)+'</div>';
   if(look.length) h+=grp('To look at')+'<div class="list">'+look.map(dueRow).join('')+'</div>';
   if(today.length) h+=grp('Today')+'<div class="list">'+today.map(dueRow).join('')+'</div>';
+  if(D.mine.length) h+=lh('Your jobs')+jl(jSortL(D.mine),true,1);
   if(D.soon.length) h+=grp('Next '+(s.outlook||7)+' days')+'<div class="list">'+D.soon.map(dueRow).join('')+'</div>';
   else h+='<p class="para">Nothing else falls due in the next '+(s.outlook||7)+' days.</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('due');
@@ -977,7 +1036,7 @@ function cats(xs){
 // Walk jobs stay on Due. The site file carries open jobs only, so the switch holds To Do and In Progress. A flagged job
 // sits on top in level order, its level and reason in words, never a colour (DEC-0304; 21.3). Its photo leads it
 // (DEC-0305; 21.6). Each job says who holds it, every name (DEC-0309 rule 6).
-st.J={state:'todo',view:'list',sort:'new',groups:[],q:''};
+st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:'groups',grp:''};
 // Jobs is work that was reported: an occurrence of a planned job (a walk, a flush, a test) stays on Due (DEC-0312 rule 4).
 function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>!j.round&&!j.planned&&(fm||gs.has(j.group))); }
 const jobById=id=>(SITE().jobs||[]).find(x=>x.id===id)||null;
@@ -1020,6 +1079,44 @@ function phImg(n,cls,alt,j){ const s=_ph[n];
   if(s==='missing'&&j) return words(j,cls);
   return '<span class="pic '+cls+'"><i>'+(s==='missing'?'Photo not on this phone':'Photo loading')+'</i></span>'; }
 const jPic=(j,cls)=>(j.photos||[]).length?phImg(j.photos[0],cls,'Photo of '+(j.title||'the job'),j):words(j,cls);
+const SH={todo:'<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>',
+  doing:'<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>'};
+// The square beside a job: its photo, or its place (a room's number and floor, or the place's name), as the desk's
+// card square (DEC-0327 rule 2). The title is never repeated in it.
+function jSquare(j){
+  if((j.photos||[]).length){ const n=j.photos[0], p=_ph[n]; if(p&&p!=='loading'&&p!=='missing') return '<img class="pl" src="'+p+'" alt="Photo of '+esc(j.title||'the job')+'">'; }
+  let l=LOC(j.loc); if(!l&&typeof jPlace==='function'){ const q=jPlace(j); if(q) l=q.l; }
+  if(l&&/^\d+$/.test(l.name)) return '<span class="pl" aria-hidden="true"><b class="n">'+esc(l.name)+'</b></span>';
+  if(l) return '<span class="pl" aria-hidden="true"><span>'+esc(l.name)+'</span></span>';
+  return '<span class="pl" aria-hidden="true"><i>'+(j.place?esc(j.place):'Place not said')+'</i></span>';
+}
+const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
+// A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
+function jobRowP(j,showGroup,own){ const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
+  return '<button class="ra c" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
+    +(by?'<span class="sub">'+(j.state==='doing'?'<span class="stt">'+SH.doing+'In progress</span>'+(h.length?' · ':''):'')+(h.length?esc(own?'With '+h.map(x=>x.name).join(', '):holdersSay(j)):'')+'</span>':'')
+    +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span><span class="ag"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i></span></button>'; }
+// A group's icon, from its name (the site's groups are its own, DEC-0309); one set, one stroke (21.7).
+const GIC=[[/fire.?walk|walk/i,'flame'],[/fire/i,'fire-extinguisher'],[/legionella|water|tmv/i,'droplets'],[/banned/i,'ban'],[/hygiene/i,'spray-can'],[/housekeep/i,'bed-double'],[/inspect/i,'clipboard-check'],[/part|material/i,'pkg'],[/planned/i,'calendar-clock'],[/maint/i,'jobs']];
+function GICO(g){ const n=GROUP(g), m=GIC.find(x=>x[0].test(n)), k=m?m[1]:'folder'; return k==='pkg'?I.pkg:k==='jobs'?I.jobs:ICO(k); }
+// The person's own order for every job list, kept on this phone (John, 22 Oct: "let the user decide").
+function jSortL(L){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code), t=j=>Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc), i=l?lv.indexOf(l.level):-1; return i<0?99:i; };
+  return L.slice().sort((a,b)=>flagRank(a)-flagRank(b)||(J.sort==='old'?t(a)-t(b):J.sort==='place'?fl(a)-fl(b)||jWhere(a).localeCompare(jWhere(b)):t(b)-t(a))); }
+function sortBar(){ return '<div class="seg sortb" role="group" aria-label="Sort jobs">'+[['new','Newest'],['old','Oldest'],['place','By Floor']].map(x=>'<button class="'+(st.J.sort===x[0]?'on':'')+'" data-act="jsortv" data-v="'+x[0]+'" aria-pressed="'+(st.J.sort===x[0])+'">'+x[1]+'</button>').join('')+'</div>'; }
+// A list's heading with its count, and the person's own order as one small control beside it.
+const SORTW={new:'Newest',old:'Oldest',place:'By floor'};
+function lh(t,n,noSort){ return '<div class="lh"><span class="t">'+esc(t)+(n!=null?' · <span class="n">'+n+'</span>':'')+'</span>'+'<span class="vw">'+(noSort?'':'<button class="srt" data-act="jsortOpen" aria-label="Sort: '+SORTW[st.J.sort]+'">'+SORTW[st.J.sort]+I.down+'</button>')
+    +'<button class="ib'+(st.J.view==='list'?' on':'')+'" data-act="jview" data-v="list" aria-label="List" aria-pressed="'+(st.J.view==='list')+'">'+I.list+'</button><button class="ib'+(st.J.view==='grid'?' on':'')+'" data-act="jview" data-v="grid" aria-label="Grid" aria-pressed="'+(st.J.view==='grid')+'">'+I.grid+'</button></span></div>'; }
+function jSortSheet(){ return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Sort"><div class="sh"><b>Sort Jobs</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+  +[['new','Newest first'],['old','Oldest first'],['place','By floor']].map(x=>'<button class="opt'+(st.J.sort===x[0]?' on':'')+'" data-act="jsortv" data-v="'+x[0]+'" aria-pressed="'+(st.J.sort===x[0])+'"><span class="rad"></span><span class="m">'+x[1]+'</span></button>').join('')+'</div><div style="height:24px"></div></div>'; }
+const jAgeN=j=>{ const d=Math.floor((Date.now()-Date.parse(j.raised))/864e5); return isNaN(d)?['','']:d<1?['New','today']:[String(d),d===1?'day':'days']; };
+// A job as a grid tile: its photo, or its place, on top; the group, the title and its age under it.
+function jobTile(j,showGroup){ const l=LOC(j.loc), ag=jAgeN(j); let top;
+  if((j.photos||[]).length&&_ph[j.photos[0]]&&!/^(loading|missing)$/.test(_ph[j.photos[0]])) top='<img class="tp" src="'+_ph[j.photos[0]]+'" alt="Photo of '+esc(j.title||'the job')+'">';
+  else if(l&&/^\d+$/.test(l.name)) top='<span class="tp"><b class="n">'+esc(l.name)+'</b></span>';
+  else top='<span class="tp">'+(l?'<span>'+esc(l.name)+'</span>':'<i>'+(j.place?esc(j.place):'Place not said')+'</i>')+'</span>';
+  return '<button class="cb tl" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
+function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="list">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
 function jobRow(j){ const a=jLate(j);
   return '<button class="ra" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'sm')+'<span class="m">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+' · raised '+esc(jAge(j))+'</span><span class="sub">'+esc(holdersSay(j))+'</span>'
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
@@ -1027,26 +1124,51 @@ function jobCard(j){ const a=jLate(j);
   return '<button class="cb" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'wide')+'<span class="cbt" style="display:block">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+'</span><span class="sub">Raised '+esc(jAge(j))+'</span><span class="sub">'+esc(holdersSay(j))+'</span>'
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
 function jobsShown(){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code);
-  let L=jobsAll().filter(j=>(j.state==='doing'?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
+  let L=jobsAll().filter(j=>!J.grp||j.group===J.grp).filter(j=>(j.state==='doing'?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
   const q=J.q.trim().toLowerCase(); if(q) L=L.filter(j=>(String(j.title)+' '+jWhere(j)).toLowerCase().indexOf(q)>=0);
-  const t=j=>Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc); return l?lv.indexOf(l.level):99; };
+  const t=j=>Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc), i=l?lv.indexOf(l.level):-1; return i<0?99:i; };
   return L.sort((a,b)=>flagRank(a)-flagRank(b)||(J.sort==='old'?t(a)-t(b):J.sort==='place'?fl(a)-fl(b)||jWhere(a).localeCompare(jWhere(b)):t(b)-t(a))); }
+const nobody=j=>!holders(j).length, mineJ=j=>holders(j).some(isMe);
+const oldestDays=L=>L.length?Math.floor((Date.now()-Math.min(...L.map(j=>Date.parse(j.raised)||Date.now())))/864e5):0;
 function vJobs(){
   st.place='jobs';
-  const J=st.J, all=jobsAll(), p=myPos(), fm=isFM(p), nTodo=all.filter(j=>j.state!=='doing').length, nDoing=all.length-nTodo;
-  const inState=J.state==='doing'?nDoing:nTodo, L=jobsShown(), nf=J.groups.length+(J.sort!=='new'?1:0);
-  const oldest=all.length?Math.floor((Date.now()-Math.min(...all.map(j=>Date.parse(j.raised)||Date.now())))/864e5):0;
-  const gNames=fm?'Every group':(p&&(p.groups||[]).length?p.groups.map(GROUP).join(', '):'No groups');
-  let h='<div class="body"><h1 class="ttl">Jobs</h1><div class="zone"><span class="eb">'+esc(gNames)+'</span>'
-    +'<div class="row1"><span class="num n">'+all.length+'</span><span class="eb" style="padding-bottom:8px">'+(all.length===1?'job':'jobs')+'<br>open</span></div>'
-    +'<p>'+(all.length?'The oldest was raised <b class="n">'+oldest+'</b> '+(oldest===1?'day':'days')+' ago.':(p&&!fm&&!(p.groups||[]).length?'No job groups are set for your position on the desk’s Organisation Structure.':'Nothing open in your groups.'))+'</p>'
+  if(st.J.grp) return vGroup();
+  const J=st.J, all=jobsAll(), p=myPos(), fm=isFM(p), my=all.filter(mineJ), nb=all.filter(nobody);
+  const gids=fm?(SITE().groups||[]).map(g=>g.id):(p&&p.groups)||[];
+  const open=gids.filter(g=>all.some(j=>j.group===g)).sort((a,b)=>all.filter(j=>j.group===b).length-all.filter(j=>j.group===a).length), quiet=gids.filter(g=>open.indexOf(g)<0);
+  const oldest=oldestDays(all);
+  let h='<div class="body"><h1 class="ttl">Jobs</h1><div class="zone"><span class="eb">'+(fm?'Every group':'Your groups')+'</span>'
+    +'<div class="row1"><span class="num n">'+all.length+'</span><span class="what">open</span></div>'
+    +'<p>'+(all.length?'<b class="n">'+nb.length+'</b> with nobody on them. The oldest was raised <b class="n">'+oldest+'</b> '+(oldest===1?'day':'days')+' ago.':(p&&!fm&&!gids.length?'No job groups are set for your position on the desk’s Organisation Structure.':'Nothing open in your groups.'))+'</p>'
+    +'<div class="sw" role="tablist">'+[['groups','Groups',open.length],['mine','Mine',my.length]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
+    +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search every group" aria-label="Search jobs in every group" value="'+esc(J.q)+'"></label></div>';
+  const q=J.q.trim().toLowerCase();
+  if(q){ const R=all.filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
+    h+='<div class="act"><span><span class="n">'+R.length+'</span> of <span class="n">'+all.length+'</span> match</span><button class="lnk" data-act="jclear">Clear</button></div>';
+    h+=R.length?lh('Matches',R.length)+jl(jSortL(R),true):'<p class="para">No job matches.</p>';
+    return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
+  if(J.tab==='mine'){
+    h+=lh('Given to you')+(my.length?jl(jSortL(my),true,1):'<p class="para">Nothing is given to you. Jobs nobody has are in Groups.</p>');
+    return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
+  if(open.length) h+='<div class="list">'+open.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, o=oldestDays(L), n=L.filter(nobody).length;
+    return '<button class="r gr" data-act="jgrp" data-id="'+esc(g)+'"><span class="gi">'+GICO(g)+'</span><span class="m"><span class="w">'+esc(GROUP(g))+'</span>'
+      +'<span class="cts"><span>'+SH.todo+'<b>'+(L.length-d)+'</b>To do</span><span>'+SH.doing+'<b>'+d+'</b>In progress</span></span>'
+      +'</span>'+I.chev+'</button>'; }).join('')+'</div>';
+  if(quiet.length) h+='<p class="para">Nothing reported open in '+esc(quiet.map(GROUP).join(', '))+'.</p>';
+  if(!all.length&&!quiet.length) h+='<p class="para">Jobs show here once the desk has open jobs in your position’s groups.</p>';
+  return h+'<div style="height:96px"></div></div>'+navBar('jobs');
+}
+// A group opened: its name and its counts in the zone (21.1), the counts are the filter (DEC-0327 rule 2), its jobs below.
+function vGroup(){
+  const J=st.J, all=jobsAll().filter(j=>j.group===J.grp), nTodo=all.filter(j=>j.state!=='doing').length, nDoing=all.length-nTodo;
+  const inState=J.state==='doing'?nDoing:nTodo, L=jobsShown(), nf=J.sort!=='new'?1:0, o=oldestDays(all), nb=all.filter(nobody).length;
+  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('jgrpBack')+'<span class="eb">Your groups</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO(J.grp)+'</span><h1 style="margin:0">'+esc(GROUP(J.grp))+'</h1></div>'
+    +'<p>'+(all.length?'<b class="n">'+nb+'</b> with nobody on '+(nb===1?'it':'them')+'. The oldest was raised <b class="n">'+o+'</b> '+(o===1?'day':'days')+' ago.':'Nothing open in this group.')+'</p>'
     +'<div class="sw" role="tablist">'+[['todo','To Do',nTodo],['doing','In Progress',nDoing]].map(x=>'<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
-    +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search" aria-label="Search jobs" value="'+esc(J.q)+'"></label>'
-    +'<button class="ib'+(nf?' on':'')+'" data-act="jsheet" aria-label="Sort and filter">'+I.sliders+(nf?'<span class="bd">'+nf+'</span>':'')+'</button>'
-    +'<button class="ib'+(J.view==='list'?' on':'')+'" data-act="jview" data-v="list" aria-label="List" aria-pressed="'+(J.view==='list')+'">'+I.list+'</button><button class="ib'+(J.view==='grid'?' on':'')+'" data-act="jview" data-v="grid" aria-label="Grid" aria-pressed="'+(J.view==='grid')+'">'+I.grid+'</button></div>';
-  if(nf||J.q.trim()) h+='<div class="act"><span><span class="n">'+L.length+'</span> of <span class="n">'+inState+'</span> shown</span><button class="lnk" data-act="jclear">Clear All</button></div>';
-  if(!L.length) h+='<p class="para">'+(all.length?'No job here matches.':'Jobs show here once the desk has open jobs in your position’s groups.')+'</p>';
-  else h+=J.view==='grid'?'<div class="grid">'+L.map(jobCard).join('')+'</div>':'<div class="list">'+L.map(jobRow).join('')+'</div>';
+    +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search" aria-label="Search this group" value="'+esc(J.q)+'"></label>'
+    +'</div>'+lh(J.state==='doing'?'In progress':'To do');
+  if(J.q.trim()) h+='<div class="act"><span><span class="n">'+L.length+'</span> of <span class="n">'+inState+'</span> shown</span><button class="lnk" data-act="jclear">Clear All</button></div>';
+  h+=L.length?jl(L,false):'<p class="para">'+(all.length?'No job here matches.':'Nothing open in this group.')+'</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('jobs');
 }
 // One sheet: sort first, then the filter by group, each with its count; Clear All beside Show (Design 10.2, 9.13).
@@ -1055,7 +1177,7 @@ function jobsSheet(){
   const o=(act,v,t,on,box,rt)=>'<button class="opt'+(on?' on':'')+'" data-act="'+act+'" data-v="'+esc(v)+'" aria-pressed="'+on+'">'+(box?'<span class="ck">'+(on?I.tick:'')+'</span>':'<span class="rad"></span>')+'<span class="m">'+esc(t)+'</span>'+(rt!=null?'<span class="rt n">'+rt+'</span>':'')+'</button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Sort and filter"><div class="sh"><b>Sort and Filter</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<div class="grp">Sort by</div><div class="opts">'+[['new','Newest first'],['old','Oldest first'],['place','Place, by floor']].map(x=>o('jsort',x[0],x[1],J.sort===x[0])).join('')+'</div>'
-    +(gs.length?'<div class="grp">Group</div><div class="opts">'+gs.map(g=>o('jgroup',g,GROUP(g),J.groups.indexOf(g)>=0,true,all.filter(j=>j.group===g).length)).join('')+'</div>':'')
+    +(gs.length&&!J.grp?'<div class="grp">Group</div><div class="opts">'+gs.map(g=>o('jgroup',g,GROUP(g),J.groups.indexOf(g)>=0,true,all.filter(j=>j.group===g).length)).join('')+'</div>':'')
     +'<div class="sfoot"><button class="gh" data-act="jclear" style="flex:1">Clear All</button><button class="btn p" data-act="sheetClose" style="flex:2">Show '+plural(jobsShown().length,'Job')+'</button></div></div>';
 }
 // A line opened: the record's identity and its one action in the zone (21.1); the facts below.
@@ -1945,14 +2067,19 @@ app.addEventListener('click',async e=>{
   if(a==='whoAgain'){ st.form=null; return go('who'); }
   if(a==='sendKept'){ const p=sendKept(); render(); await p; return render(); }
   // Added with the port of round 12: Jobs, a category opening in place, the walk's done list, the theme, the line found by typing.
-  if(a==='jobs'){ st.form=null; st.sheet=false; return go('jobs'); }
+  if(a==='jobs'){ if(st.screen==='jobs'||st.screen!=='job') Object.assign(st.J,{grp:'',q:''}); st.form=null; st.sheet=false; return go('jobs'); }
   if(a==='openCat'){ st.openCat=st.openCat===b.dataset.id?'':b.dataset.id; return render(); }
   if(a==='jstate'){ st.J.state=b.dataset.v; return render(); }
-  if(a==='jview'){ st.J.view=b.dataset.v; return render(); }
+  if(a==='jtab'){ st.J.tab=b.dataset.v; return render(); }
+  if(a==='jsortv'){ st.J.sort=b.dataset.v; ls.set('wl_jsort',b.dataset.v); st.sheet=false; return render(); }
+  if(a==='jsortOpen'){ st.sheet='jsort'; return render(); }
+  if(a==='jgrp'){ Object.assign(st.J,{grp:b.dataset.id,state:'todo',q:'',groups:[]}); return go('jobs'); }
+  if(a==='jgrpBack'){ Object.assign(st.J,{grp:'',q:''}); return go('jobs'); }
+  if(a==='jview'){ st.J.view=b.dataset.v; ls.set('wl_jview',b.dataset.v); return render(); }
   if(a==='jsheet'){ st.sheet='jobs'; render(); const v=app.querySelector('.sheet button'); if(v) v.focus(); return; }
   if(a==='jsort'){ st.J.sort=b.dataset.v; return render(); }
   if(a==='jgroup'){ const g=b.dataset.v, i=st.J.groups.indexOf(g); if(i>=0) st.J.groups.splice(i,1); else st.J.groups.push(g); return render(); }
-  if(a==='jclear'){ st.J.groups=[]; st.J.sort='new'; st.J.q=''; return render(); }
+  if(a==='jclear'){ st.J.groups=[]; st.J.q=''; return render(); }
   if(a==='showDone'){ st.showDone=!st.showDone; return render(); }
   if(a==='theme'){ ls.set('wl_theme',b.dataset.v); return render(); }
   if(a==='pickDuty'){ F.duty=b.dataset.id; F.dq=''; return render(); }
