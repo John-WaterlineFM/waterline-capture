@@ -1072,7 +1072,7 @@ function famTimes(r){ const pts=new Set(r.points||[]); return [...new Set((SITE(
 function nextTime(r,t){ const f=famTimes(r); return f.length?f[(f.indexOf(t)+1)%f.length]:''; }
 function timeToday(t){ const d=new Date(); d.setHours(+t.slice(0,2),+t.slice(3),0,0); return d.getTime(); }
 const walksSent=()=>ls.get('wl_walksSent',[]).filter(x=>Date.now()-Date.parse(x.at)<2*864e5);
-function sentIn(rid,from,to){ return walksSent().find(x=>x.round===rid&&Date.parse(x.at)>=from&&Date.parse(x.at)<to)||null; }
+function sentIn(rid,from,to){ return walksSent().find(x=>x.round===rid&&(x.for?Date.parse(x.for)===from:Date.parse(x.at)>=from&&Date.parse(x.at)<to))||null; }
 
 // ── What is due for this person (DEC-0287, DEC-0289, DEC-0290, DEC-0300) ─────────────────────
 // Read from what the desk published; the phone judges nothing. Walks by their walker, lines by the
@@ -1204,7 +1204,7 @@ function vDue(){
     const r=lead.r;
     h+='<div class="zone"><span class="eb">'+(nowW?'Open now':'Next')+'</span><div class="row1"><span class="num n">'+esc(hm(lead.from))+'</span><span class="what">'+esc(r.name)+'</span></div>'
       +'<p><b class="n">'+(r.points||[]).length+'</b> points, '+(nowW?'open until':'open from <b class="n">'+esc(hm(lead.from))+'</b> to')+' <b class="n">'+esc(hm(lead.to))+'</b>.'+((r.lines||[]).length?' Signed off, it brings <b class="n">'+r.lines.length+'</b> '+((r.lines.length===1)?'line':'lines')+' in date.':'')+'</p>'
-      +(nowW?'<button class="btn" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+'Start the Walk</button>':'')+'</div>';
+      +'<button class="btn" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+'Start the Walk</button></div>';
   } else if(!D.over.length&&!D.today.length&&!D.soon.length&&!D.mine.length&&jobsAll().length){
     h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">0</span><span class="what">jobs given to you</span></div>'
       +'<p>No walk, line or job is yours today. Your groups’ jobs are on Jobs.</p><button class="gh" data-act="jobs">'+I.jobs+'Open Jobs</button></div>';
@@ -2421,7 +2421,7 @@ async function linkRead(sn){
 }
 function vRounds(){
   const rs=SITE().rounds||[];
-  return '<div class="body">'+formZone('home','Capture','Walk a Round','Choose the walk. Its points come in the order set on the desk.')
+  return '<div class="body">'+formZone('home','Capture','Walk a Round','Choose the walk. Scan its points in any order.')
     +'<div class="list" style="border-top:none">'+rs.map(r=>'<button class="r" data-act="roundStart" data-id="'+esc(r.id)+'"><span class="m"><span class="w">'+esc(r.name)+'</span><span class="sub">'+esc(plural((r.points||[]).length,'point'))+(r.walker?' · '+esc(r.walker):'')+((r.times||[]).length?' · '+esc(r.times.join(', ')):'')+'</span></span></button>').join('')+'</div></div>';
 }
 // ── A walk: points are scans (DEC-0294 rule 1), in the order set on the desk (DEC-0300 rule 2). The next point leads,
@@ -2434,16 +2434,17 @@ function vWalk(){
   const uns={}; (W.unscanned||[]).forEach(u=>{ uns[u.point]=u; });
   const n=r.points.filter(id=>seen[id]).length, nu=r.points.filter(id=>uns[id]).length, next=r.points.find(id=>!seen[id]&&!uns[id]), np=next?pointById(next):null;
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walkQuit')+'<span class="eb">'+esc(r.name)+'</span></div>'
-    +(next?'<span class="eb">Next point, <span class="n">'+(r.points.indexOf(next)+1)+'</span> of <span class="n">'+r.points.length+'</span></span><h1>'+esc(np?np.name:next)+'</h1><p>'+esc(ptWhere(np))+'</p>'
+    // Points are scanned in any order, from whichever is nearest (DEC-0293 rule 3; John, 23 Oct 2026).
+    +(next?'<h1>Scan Any Point</h1>'
           :'<h1>Every Point Done</h1><p>Answer the checks once, then sign it off.</p>')
     +'<div class="prog"><i style="width:'+Math.round((n+nu)/Math.max(1,r.points.length)*100)+'%"></i></div>'
-    +'<p><b class="n">'+n+'</b> scanned'+(nu?', <b class="n">'+nu+'</b> would not scan':'')+'. Started <b class="n">'+hm(W.started)+'</b>.</p>'
+    +'<p><b class="n">'+n+'</b> of <b class="n">'+r.points.length+'</b> scanned'+(nu?', <b class="n">'+nu+'</b> would not scan':'')+'. Started <b class="n">'+hm(W.started)+'</b>.</p>'
     +(next?'<button class="btn" data-act="scan" data-for="walk">'+I.scan+'Scan the Point</button>':'<button class="btn" data-act="signoff">Finish and Sign Off</button>')+'</div>'+waitLine();
   if(W.msg) h+='<div class="wait" role="status">'+esc(W.msg)+'</div>';
   h+=next?'<div class="pad row2"><button class="gh" data-act="unscan">The Tag Will Not Scan</button><button class="gh" data-act="signoff">Finish Now</button></div>'
          :'<div class="pad"><button class="gh" data-act="scan" data-for="walk">'+I.scan+'Scan Again</button></div>';
-  const left=r.points.filter(id=>!seen[id]&&!uns[id]&&id!==next), done=r.points.filter(id=>seen[id]||uns[id]);
-  if(left.length) h+=grp('Left, in the order set on the desk')+'<div class="list">'+left.map(id=>{ const p=pointById(id); return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+esc(ptWhere(p))+'</span></span></div>'; }).join('')+'</div>';
+  const left=r.points.filter(id=>!seen[id]&&!uns[id]), done=r.points.filter(id=>seen[id]||uns[id]);
+  if(left.length) h+=grp('Left to scan, in any order')+'<div class="list">'+left.map(id=>{ const p=pointById(id); return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+esc(ptWhere(p))+'</span></span></div>'; }).join('')+'</div>';
   if(done.length) h+='<div class="list" style="margin-top:16px"><div class="r" style="min-height:56px"><span class="m"><button class="lnk" data-act="showDone" aria-expanded="'+!!st.showDone+'">'+(st.showDone?'Hide':'Show')+' the <span class="n">'+done.length+'</span> Done</button></span></div>'
     +(st.showDone?done.map(id=>{ const p=pointById(id), s=seen[id], u=uns[id]; return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+(s?'Scanned at <span class="n">'+hm(s.at)+'</span>':'Would not scan: “'+esc(u.reason)+'”'+(u.photo!=null?', photo taken':''))+'</span></span></div>'; }).join(''):'')+'</div>';
   return h+'<div style="height:24px"></div></div>';
@@ -2819,12 +2820,10 @@ app.addEventListener('click',async e=>{
   if(a==='proofWhat'){ F.what=b.dataset.v; return render(); }
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
-  if(a==='walkStart'){ const pr=String(b.dataset.id).split('|'), from=Number(pr[1]);
-    // A walk is judged in its own window (DEC-0293): one not open yet says when it opens instead of starting.
-    if(from>Date.now()){ st.form={id:pr[0],from:from}; return go('walkinfo'); } }
-  if(a==='walkStart'||a==='roundStart'){ const id=String(b.dataset.id).split('|')[0];
+  if(a==='walkStart'||a==='roundStart'){ const pr=String(b.dataset.id).split('|'), id=pr[0], from=a==='walkStart'?Number(pr[1]):NaN;
     const kept=ls.get('wl_walk',null); if(kept&&kept.round===id){ st.form=kept; return go('walk'); }
-    st.form={kind:'round',round:id,started:new Date().toISOString(),scans:[],unscanned:[],photos:[],ans:{}}; ls.set('wl_walk',walkKeep(st.form)); return go('walk'); }
+    // A walk starts at any time and counts for the walk time pressed (DEC-0347).
+    st.form={kind:'round',round:id,started:new Date().toISOString(),walkFor:isNaN(from)?'':new Date(from).toISOString(),scans:[],unscanned:[],photos:[],ans:{}}; ls.set('wl_walk',walkKeep(st.form)); return go('walk'); }
   if(a==='walkBack'){ return go('walk'); }
   if(a==='unscan'){ const r=roundById(F.round), nx=r.points.find(id=>!F.scans.some(x=>x.point===id)&&!F.unscanned.some(x=>x.point===id));
     if(!nx){ F.msg='Every point is scanned or named.'; F.msgTone=''; return render(); }
@@ -3040,7 +3039,7 @@ async function doSend(){
     // The walk's record (DEC-0294): scans, the points not scanned with their reason and photo, the
     // checklist answered once, and who signed it off when. Photo slots are filled in once named.
     const r=roundById(F.round), seen=F.scans.map(x=>x.point), miss=r.points.filter(id=>seen.indexOf(id)<0);
-    fields={round:F.round,started:F.started,scans:F.scans,complete:F.complete,
+    fields={round:F.round,started:F.started,walkFor:F.walkFor||'',scans:F.scans,complete:F.complete,
       answers:r.lines.map(id=>{ const a=F.ans[id]; return {line:id,ok:a.ok,note:a.ok?'':String(a.note||'').trim(),files:a.ok?[]:(a.photos||[])}; }),
       unscanned:(F.unscanned||[]).map(u=>({point:u.point,reason:u.reason,file:u.photo})),
       signedOff:{by:st.walker,at:new Date().toISOString()},
@@ -3057,7 +3056,7 @@ async function doSend(){
   catch(e){ st.busy=false; F.err='Nothing was sent. Take the photos again and send it again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   const ok=await send(c);
   st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  if(F.kind==='round'){ ls.del('wl_walk'); const w=walksSent(); w.push({round:F.round,at:new Date().toISOString()}); ls.set('wl_walksSent',w); }
+  if(F.kind==='round'){ ls.del('wl_walk'); const w=walksSent(); w.push({round:F.round,at:new Date().toISOString(),for:F.walkFor||''}); ls.set('wl_walksSent',w); }
   F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url));
   st.form=null;
   // Back to where the person was, said once (Design 9.10); a capture that waits says so on the screen (Design 9.11).
