@@ -685,6 +685,10 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-wave{animation:wfmWaveFlow 8s linear infinite;width:200%;height:22px;display:block}
 @media (prefers-reduced-motion:reduce){.c-wave{animation:none}}
 .c-wv{line-height:0;overflow:hidden;margin:8px -16px -16px}
+/* the same wave under every screen's navy block (21.1), a tile slid on the same 8 s loop */
+@keyframes wfmWaveTile{0%{background-position:0 0}100%{background-position:-600px 0}}
+.zone::after{content:'';display:block;height:22px;margin:16px -16px -24px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='w' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%233AABC6' stop-opacity='.22'/%3E%3Cstop offset='1' stop-color='%233AABC6' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0' fill='none' stroke='rgba(255,255,255,.35)' stroke-width='1.4'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0' fill='none' stroke='%233AABC6' stroke-width='1.2' opacity='.8'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0L1200 40L0 40Z' fill='url(%23w)'/%3E%3C/svg%3E") repeat-x 0 0/600px 22px;animation:wfmWaveTile 8s linear infinite}
+@media (prefers-reduced-motion:reduce){.zone::after{animation:none}}
 .c-hd{background:var(--ink);color:#FFFFFF;padding:16px;position:sticky;top:0;z-index:3}
 .c-t{display:flex;align-items:center;gap:12px}
 .c-t>.ib{margin:-8px -4px -8px -12px;color:var(--accentOnInk)}
@@ -696,7 +700,8 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-tn{font:800 17px/1.3 Sora}
 .c-tw .c-s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* a chat's picture: its photo, or its colour and initials (rule 7) */
-.c-av{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;font:800 20px Sora;color:#FFFFFF;background:var(--accentD);overflow:hidden}
+/* a chat is a group, so its picture is the house tile, as the job groups' and the jobs' are (John, 24 Oct 2026) */
+.c-av{width:52px;height:52px;border-radius:8px;flex:none;display:grid;place-items:center;font:800 20px Sora;color:#FFFFFF;background:var(--accentD);overflow:hidden}
 .c-av.df{background:#475569}
 .c-av.mg{background:var(--avMgr)}
 .c-av.ev{background:var(--avAll)}
@@ -705,9 +710,9 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-av img{width:100%;height:100%;object-fit:cover;display:block}
 .c-av.sm{width:40px;height:40px;font-size:15px}
 .c-av.sm svg{width:20px;height:20px}
-.c-av.xs{width:28px;height:28px;font-size:11px}
+.c-av.xs{width:28px;height:28px;font-size:11px;border-radius:6px}
 .c-av.xs svg{width:16px;height:16px}
-.c-av.lg{width:120px;height:120px;font-size:48px;border:3px solid rgba(255,255,255,.2)}
+.c-av.lg{width:120px;height:120px;font-size:48px;border-radius:16px;border:3px solid rgba(255,255,255,.2)}
 .c-av.lg svg{width:48px;height:48px}
 .c-av.sq{width:44px;height:44px;border-radius:8px;font-size:13px}
 /* the chat list: avatar, bold name, the last message with its sender, the time, the count (rule 4) */
@@ -780,6 +785,24 @@ span.pic.c-img{width:240px;height:120px}
 .c-q{max-width:96%}
 .c-qt{border-left:4px solid var(--c);background:var(--chatBg);border-radius:6px;padding:6px 8px;font-size:13px;color:var(--textMid)}
 .c-qt b{display:block;color:var(--c);font:700 12px 'DM Sans'}
+button.c-qt{display:block;width:100%;text-align:left;margin:2px 0 6px;min-height:44px}
+.c-rq{display:flex;align-items:center;gap:8px;padding:8px 0 0 8px;color:var(--accentD)}
+.c-rq>svg{width:20px;height:20px;flex:none}
+.c-rq .c-qt{flex:1;min-width:0;background:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-b.c-hl{box-shadow:0 0 0 3px var(--accent)}
+/* placing a chat's photo in its circle: the picture moves under a round window */
+.cp{position:fixed;inset:0;z-index:26;background:var(--ink);color:#FFFFFF;display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 16px calc(16px + env(safe-area-inset-bottom))}
+.cp-top{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:560px}
+.cp-top b{font:800 20px Sora}
+.cp-top .ib{color:var(--accentOnInk)}
+.cp-st{position:relative;overflow:hidden;touch-action:none;cursor:grab;border-radius:4px;margin-top:8px}
+.cp-st img{position:absolute;max-width:none;user-select:none;-webkit-user-drag:none}
+.cp-st i{position:absolute;inset:0;border-radius:16px;box-shadow:0 0 0 999px rgba(7,19,32,.62);border:2px solid rgba(255,255,255,.8);pointer-events:none}
+.cp-z{display:flex;align-items:center;gap:12px;width:100%;max-width:360px;min-height:44px;font:600 13px Outfit}
+.cp-z input{flex:1;accent-color:var(--accentOnInk);height:44px}
+.cp-say{color:rgba(255,255,255,.72);font-size:14px}
+.cp-foot{width:100%;max-width:360px;margin-top:auto}
+.cp .btn{background:var(--accentOnInk);color:var(--zBtnText)}
 /* writing in place (3-write): the card is the form */
 .c-wr{max-width:96%}
 .c-b.c-wr{background:var(--white)}
@@ -1175,10 +1198,11 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags,msgs:vMsgs,chat:vChat,replies:vReplies,chatinfo:vChatInfo}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet,readers:readersSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
+  if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   if(st.ds){ app.insertAdjacentHTML('beforeend',vDocScan()); dsBind(); }
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
@@ -2982,7 +3006,7 @@ function after(){
   if(st.screen==='tags'&&st.link&&!st.link.started){ const L=st.link; L.started=true; nfcStart(sn=>{ if(st.link===L) linkRead(sn); }).then(r=>{ if(st.link===L&&r!=='on'){ L.state=r; render(); } }); }
   if(!st.scanFor&&!(st.screen==='tags'&&st.link)) nfcStop();
   if(st.screen==='msgs') phLoad(myChats().map(c=>c.photo).filter(Boolean));
-  if((st.screen==='chat'||st.screen==='replies'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='replies'?repliesOf(st.form.replyTo):st.screen==='chat'?chatMsgs(st.form.chat):[];
+  if((st.screen==='chat'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='chat'?chatMsgs(st.form.chat):[];
     phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); }
   if(st.screen==='job'){ const j=st.form&&jobById(st.form.id); if(j) phLoad([].concat(j.photos||[],...(j.thread||[]).map(e=>e.photos||[]))); }
   if(st.screen==='jobs') phLoad(jobsShown().map(j=>(j.photos||[])[0]).filter(Boolean));
@@ -3168,7 +3192,7 @@ app.addEventListener('change',e=>{
   if(k==='t5photo'){ const C=st.form&&st.form.ck; if(C&&C.stop) Array.from(e.target.files||[]).forEach(f=>C.stop.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
   if(k==='cphoto'){ st.sheet=false; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:URL.createObjectURL(f)})); render(); return chatBottom(); }
-  if(k==='chatphoto'){ const f=e.target.files&&e.target.files[0]; if(f) chatPhoto(f); return; }
+  if(k==='chatphoto'){ const f=e.target.files&&e.target.files[0]; if(f) cropOpen(f); return; }
   if(k==='uphoto'){ const f=e.target.files&&e.target.files[0]; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.u.photo=st.form.photos.length-1; } return render(); }
   if(k==='ansphoto'){ const f=e.target.files&&e.target.files[0], key=e.target.dataset.k; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.ans[key].photos.push(st.form.photos.length-1); } return render(); }
   if(e.target.tagName==='SELECT'&&e.target.dataset.in){ if(special(e.target.dataset.in,e.target)) return; st.form[e.target.dataset.in]=e.target.value; render(); }
@@ -3320,14 +3344,21 @@ const daysAgo=t=>Math.round((dayStart()-new Date(t).setHours(0,0,0,0))/864e5);
 // Yesterday, Wednesday, 14 Oct 2026.
 function tList(t){ const d=new Date(t); if(isNaN(d)) return ''; const k=daysAgo(t); return k<=0?hm(d):k===1?'Yesterday':k<7?d.toLocaleDateString('en-GB',{weekday:'short'}):pad(d.getDate())+' '+MON[d.getMonth()]; }
 function tDay(t){ const d=new Date(t), k=daysAgo(t); return k<=0?'Today':k===1?'Yesterday':k<7?d.toLocaleDateString('en-GB',{weekday:'long'}):day(d); }
+// A message is on the screen the moment Send is pressed, with a clock; the clock turns to a tick when the relay has it, as a
+// chat app's does. The sending happens behind it, so nobody presses Send twice (John, 24 Oct 2026). st.sent[id] is the
+// sending's promise, for a caller that must wait for it.
+st.sending=new Set(); st.sent={};
+function msgDraw(){ if(['chat','replies','msgs'].indexOf(st.screen)<0||st.sheet) return; const a=document.activeElement; if(a&&a.id==='ctext') keepRender(); else render(); }
 async function msgSend(kind,fields,files,say){
   if(st.busy) return null; st.busy=true;
   let c; try{ c=await makeCapture(kind,Object.assign({pos:myPosId()},fields),files||[]); }
   catch(e){ st.busy=false; toast('Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'); render(); return null; }
-  msgSentKeep(c.record);
-  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  if(say!==false) toast(ok?say:c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
-  else if(!ok&&c.errCode==='refused') toast('Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.');
+  msgSentKeep(c.record); st.sending.add(c.id); st.busy=false;
+  st.sent[c.id]=send(c).then(async ok=>{
+    st.sending.delete(c.id); st.outbox=await obAll().catch(()=>st.outbox);
+    if(!ok&&c.errCode==='refused') toast('Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.');
+    else if(say!==false) toast(ok?say:'Waiting for signal. It sends by itself.');
+    msgDraw(); return ok; });
   return c.record;
 }
 
@@ -3346,16 +3377,16 @@ const canPost=c=>!!c&&!!meP()&&inChat(c)&&(isMgr()||!!c.membersPost);
 const canPhoto=c=>!!c&&!!meP()&&inChat(c)&&(isMgr()||c.membersPhoto!==false);
 const chatOf=x=>CS.chatOf(x);
 const isTop=x=>x.kind==='msg'||x.kind==='handover'||(x.kind==='notice'&&!x.remind&&!!x.notice);
-// A chat's messages, oldest first, with its photo changes; replies sit under their message.
-function chatMsgs(id){ return msgItems().filter(x=>(isTop(x)||x.kind==='chatphoto')&&chatOf(x)===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken)); }
+// A chat's conversation, oldest first: its messages, the replies among them in time order, and its photo changes. A reply
+// quotes the message it answers (DEC-0358).
+function chatMsgs(id){ return msgItems().filter(x=>(isTop(x)||x.kind==='chatphoto'||x.kind==='reply')&&chatOf(x)===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken)); }
 const repliesOf=id=>msgItems().filter(x=>x.kind==='reply'&&x.ref===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken));
 // What you have not read (DEC-0355 rule 4): a message, notice or handover in your chats that is not yours and that you have
 // not opened, and a reply there that you have not seen. What you see on this phone clears at once.
 const seenSet=()=>new Set(ls.get('wl_seen',[]));
 function seenAdd(ids){ if(!ids.length) return; const s=ls.get('wl_seen',[]); ids.forEach(i=>{ if(s.indexOf(i)<0) s.push(i); }); ls.set('wl_seen',s.slice(-3000)); }
 function unreadIn(id,S0){ S0=S0||seenSet(); const out=[];
-  chatMsgs(id).forEach(x=>{ if(x.kind==='chatphoto') return; if(!byMe(x)&&!S0.has(x.id)&&!myRead(x.id).opened) out.push(x);
-    repliesOf(x.id).forEach(r=>{ if(!byMe(r)&&!S0.has(r.id)) out.push(r); }); });
+  chatMsgs(id).forEach(x=>{ if(x.kind!=='chatphoto'&&!byMe(x)&&!S0.has(x.id)&&!myRead(x.id).opened) out.push(x); });
   return out; }
 function unread(){ const S0=seenSet(); return myChats().reduce((L,c)=>L.concat(unreadIn(c.id,S0)),[]); }
 
@@ -3401,7 +3432,7 @@ function preview(x){
   if(x.kind==='chatphoto') return whoSays(x)+' changed this chat’s photo';
   return whoSays(x)+': '+(x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x));
 }
-function chatLast(c){ let last=null; chatMsgs(c.id).forEach(x=>{ [x].concat(repliesOf(x.id)).forEach(y=>{ if(!last||Date.parse(y.taken)>Date.parse(last.taken)) last=y; }); }); return last; }
+function chatLast(c){ const L=chatMsgs(c.id); return L[L.length-1]||null; }
 // What a chat says about who is in it: its departments' positions; Managers the three kinds of manager.
 function chatSub(c){ if(c.id==='managers') return 'FM, Notice Sender, Management'; if(c.id==='all') return 'Everyone on the site';
   const t=positions().filter(p=>p.department===c.id).map(p=>p.title); return t.length?t.join(', '):c.name; }
@@ -3458,7 +3489,8 @@ function copyFiles(x){
 function readersOf(x){ const R=readsOf(x.id).filter(r=>x.kind==='handover'?r.act==='confirmed':true), seen={};
   return R.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; }).map(r=>r.person); }
 // The ticks on your own message: a clock while it waits for signal, one when sent, two when someone has read it.
-function ticks(x){ if(waiting(x.id)) return '<span class="c-tk w" aria-label="Waiting for signal">'+ICO('clock')+'</span>';
+function ticks(x){ if(st.sending.has(x.id)) return '<span class="c-tk w" aria-label="Sending">'+ICO('clock')+'</span>';
+  if(waiting(x.id)) return '<span class="c-tk w" aria-label="Waiting for signal">'+ICO('clock')+'</span>';
   return readersOf(x).length?'<span class="c-tk r" aria-label="Read">'+ICO('check-check')+'</span>':'<span class="c-tk" aria-label="Sent">'+ICO('check')+'</span>'; }
 // Who a notice reaches, and where each position stands (DEC-0348 rule 3). A position counts only once a phone is set up for
 // someone holding it; Waterline never says a position read what no phone opened.
@@ -3476,11 +3508,18 @@ function ntStats(n){
 const forMe=x=>!byMe(x)&&inChat(chatById(chatOf(x)));
 function faces(L){ const seen={}, U=L.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; }).slice(0,3);
   return '<span class="c-fc" aria-hidden="true">'+U.map(r=>{ const c=deep(deptCol(personDept(r))); return '<span'+(c?' style="background:'+c+'"':'')+'>'+esc(initials(byMe(r)?st.walker:r.person))+'</span>'; }).join('')+'</span>'; }
-function repliesBtn(x){ const R=repliesOf(x.id);
-  return '<button class="c-rp" data-act="replies" data-id="'+esc(x.id)+'">'+(R.length?faces(R)+'<span>'+plural(R.length,'reply','replies')+'</span>':ICO('reply')+'<span>Reply</span>')+ICO('chevron-right')+'</button>'; }
+function repliesBtn(x){ return '<button class="c-rp" data-act="replyTo" data-id="'+esc(x.id)+'">'+ICO('reply')+'<span>Reply</span></button>'; }
+// The message a reply answers, quoted at its top; pressing the quote finds the message in the conversation.
+const msgTitle=x=>x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x);
+function quoteOf(id,act){ const x=msgItems().find(y=>y.id===id);
+  const inner='<b>'+esc(x?whoSays(x):'A message')+'</b>'+esc(x?msgTitle(x):'Not on this phone any more');
+  return act?'<button class="c-qt" style="--c:'+(x?nameCol(x):'var(--textMid)')+'" data-act="jumpTo" data-id="'+esc(id)+'">'+inner+'</button>':'<div class="c-qt" style="--c:'+(x?nameCol(x):'var(--textMid)')+'">'+inner+'</div>'; }
 // One message in the thread. Yours on the right; another's on the left with their name (rule 4).
 function bubble(x){
   if(x.kind==='chatphoto') return '<div class="c-sys">'+esc(whoSays(x))+' changed this chat’s photo</div>';
+  if(x.kind==='reply'){ const mine=byMe(x), t=String((x.msg&&x.msg.text)||'').trim();
+    return '<div class="c-b'+(mine?' c-me':'')+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+'</div>')
+      +quoteOf(x.ref,true)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'')+'<div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div></div>'; }
   const mine=byMe(x), r=myRead(x.id), who='<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+(x.kind==='notice'?' · Notice':'')+'</div>';
   let inner='', cls='c-b'+(mine?' c-me':'');
   if(x.kind==='notice'){ const N=x.notice; cls+=' c-ann';
@@ -3500,7 +3539,7 @@ function bubble(x){
   }
   const rd=mine?readersOf(x):[];
   inner+=repliesBtn(x)+'<div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div>'+(rd.length?'<div class="c-ft c-rb">Read by '+esc(rd.join(', '))+'</div>':'');
-  return '<div class="'+cls+'" data-sw="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+inner+'</div>';
+  return '<div class="'+cls+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+inner+'</div>';
 }
 // Day separators and the bubbles, oldest first.
 function threadHtml(L){ let last='', h='';
@@ -3513,7 +3552,7 @@ function vChat(){
   let th=threadHtml(L);
   if(!L.length&&!F.mode) th+='<div class="c-day">No messages yet</div>';
   if(F.mode==='ho') th+=hoWriteCard(c); else if(F.mode==='nt') th+=ntWriteCard(c);
-  const foot=canPost(c)?composer(c,'Message',true):'<div class="c-only">Managers start messages here. Reply under one above.</div>';
+  const foot=canPost(c)||F.replyTo?composer(c,F.replyTo?'Reply':'Message',canPost(c)&&!F.replyTo):'<div class="c-only">Managers start messages here. Press Reply on one to answer it.</div>';
   return '<div class="body c-bd">'+chatHead(c,chatSub(c))+waitLine()+'<div class="c-th">'+th+'</div></div>'+foot;
 }
 // The bar at the foot (rule 4): attach, the words, the camera, and a microphone that becomes send.
@@ -3526,7 +3565,8 @@ function composer(c,ph,attach){
   const clip=attach?'<button class="ib" data-act="cAttach" aria-label="Attach a handover, a notice or a photo">'+ICO('paperclip')+'</button>'
     :'<label class="ib" aria-label="Add a photo from the phone">'+ICO('paperclip')+'<input type="file" accept="image/*" multiple data-file="cphoto"></label>';
   const go=rec?['Stop recording',I.stop]:has?['Send',ICO('arrow-up')]:['Record a voice note',ICO('mic')];
-  return '<div class="c-foot">'+stg+'<div class="c-cb"><div class="c-fld">'+field+(rec||F.voice?'':clip+'<label class="ib" aria-label="Take a photo">'+ICO('camera')+'<input type="file" accept="image/*" capture="environment" data-file="cphoto"></label>')+'</div>'
+  const rq=F.replyTo?'<div class="c-rq">'+ICO('reply')+quoteOf(F.replyTo,false)+'<button class="ib" data-act="replyOff" aria-label="Do not reply to it">'+I.close+'</button></div>':'';
+  return '<div class="c-foot">'+rq+stg+'<div class="c-cb"><div class="c-fld">'+field+(rec||F.voice?'':clip+'<label class="ib" aria-label="Take a photo">'+ICO('camera')+'<input type="file" accept="image/*" capture="environment" data-file="cphoto"></label>')+'</div>'
     +'<button class="c-go'+(rec?' on':'')+'" data-act="cGo" aria-label="'+go[0]+'"'+(st.busy?' disabled':'')+'>'+go[1]+'</button></div></div>';
 }
 // What Waterline adds to a handover, worked out from the site file as it is written (DEC-0348 rule 4): permits issued and not
@@ -3562,20 +3602,6 @@ function ntWriteCard(c){
     +'<label class="c-nf"><span class="fl">Notice</span><textarea id="nt-text" rows="3" data-in="ntText" placeholder="What everyone needs to know or do">'+esc(F.ntText||'')+'</textarea></label>'
     +'<label class="keep c-nk"><input type="checkbox" data-in="confirm"'+(F.confirm?' checked':'')+'><span>Ask each person to confirm they have read it</span></label>'
     +'<div class="c-ft">'+(why?'<span class="c-err" role="alert">'+esc(why)+'</span>':esc(F.confirm?'Their phones are alerted when you send it':'It is not alerted; it waits in the chat'))+'</div></div>';
-}
-
-// ── The replies under a message (b3) ──
-function vReplies(){
-  const F=st.form, x=msgItems().find(y=>y.id===F.replyTo), c=x&&chatById(chatOf(x));
-  if(!x||!c||!inChat(c)) return '<div class="body">'+formZone('msgs','Messages','No Longer Here','This message is older than the phone keeps.')+'</div>';
-  const kind=x.kind==='handover'?'handover':x.kind==='notice'?'notice':'message', R=repliesOf(x.id), rd=readersOf(x);
-  const words=x.kind==='handover'?hoFirst(x):x.kind==='notice'?x.notice.title:msgWords(x);
-  const q='<div class="c-b c-q"><div class="c-qt" style="--c:'+nameCol(x)+'"><b>'+esc(whoSays(x))+' · '+cap1(kind)+'</b>'+esc(words)+'</div>'+(rd.length?'<div class="c-ft">Read by '+esc(rd.join(', '))+'</div>':'')+'</div>';
-  const body=R.map(r=>{ const mine=byMe(r), t=String((r.msg&&r.msg.text)||'').trim();
-    return '<div class="c-b'+(mine?' c-me':'')+'"'+(mine?' data-rd="'+esc(r.id)+'"':'')+'>'+(mine?'':'<div class="c-who" style="color:'+nameCol(r)+'">'+esc(r.person||'Someone not named')+'</div>')+copyFiles(r)+(t?'<p>'+esc(t)+'</p>':'')
-      +'<div class="c-ft"><span class="n">'+esc(hm(r.taken))+'</span>'+(mine?ticks(r):'')+'</div></div>'; }).join('');
-  const sub='Replies to '+(byMe(x)?'your '+kind:(x.person||'someone')+'’s '+kind);
-  return '<div class="body c-bd">'+chatHead(c,sub,'chatBack')+waitLine()+'<div class="c-th">'+q+'<div class="c-day">'+(R.length?plural(R.length,'reply','replies'):'No replies yet')+'</div>'+body+'</div></div>'+(meP()?composer(c,'Reply',false):'');
 }
 
 // ── A chat's info (b6): its photo with Change, the two switches as the desk set them, who changed the photo, the members ──
@@ -3632,15 +3658,14 @@ function chatForm(id,more){ return Object.assign({chat:id,ctext:'',photos:[],voi
 // notice you had not opened, as a notice's was (DEC-0348). A handover is read with I Have Read It.
 async function chatSeen(){
   const F=st.form; if(!F) return;
-  if(st.screen==='replies'){ seenAdd(repliesOf(F.replyTo).filter(r=>!byMe(r)).map(r=>r.id)); return; }
   if(st.screen!=='chat') return;
   const L=chatMsgs(F.chat).filter(x=>x.kind!=='chatphoto'&&!byMe(x)), S0=seenSet(), fresh=L.filter(x=>!S0.has(x.id)&&!myRead(x.id).opened);
   seenAdd(fresh.map(x=>x.id));
-  const send1=fresh.filter(x=>x.kind!=='handover').slice(-20);
-  for(const x of send1){ if(st.screen!=='chat') break; await msgSend('msgread',{ref:x.id,act:'opened'},[],false); }
+  const send1=fresh.filter(x=>x.kind==='msg'||x.kind==='notice').slice(-20);
+  for(const x of send1){ if(st.screen!=='chat') break; const r=await msgSend('msgread',{ref:x.id,act:'opened'},[],false); if(r) await st.sent[r.id]; }
 }
 function chatBottom(){ requestAnimationFrame(()=>window.scrollTo(0,document.documentElement.scrollHeight)); }
-async function chatAfterSend(){ const F=st.form; F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url)); Object.assign(F,{ctext:'',photos:[],voice:null,mode:'',tried:false,pick:{},adds:null,ntTitle:'',ntText:''}); render(); chatBottom(); }
+async function chatAfterSend(){ const F=st.form; F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url)); Object.assign(F,{ctext:'',photos:[],voice:null,mode:'',tried:false,pick:{},adds:null,ntTitle:'',ntText:'',replyTo:''}); render(); chatBottom(); }
 async function chatSend(){
   const F=st.form, c=chatById(F.chat); if(!c||st.busy) return;
   const text=String(F.ctext||'').trim(), urls=F.photos.map(p=>p.url);
@@ -3662,7 +3687,7 @@ async function chatSend(){
     return chatAfterSend();
   }
   if(!text&&!files.length) return;
-  const r=st.screen==='replies'?await msgSend('reply',{ref:F.replyTo,msg:{chat:c.id,text:text},secs:F.voice?F.voice.secs:null},files,false)
+  const r=F.replyTo?await msgSend('reply',{ref:F.replyTo,msg:{chat:c.id,text:text},secs:F.voice?F.voice.secs:null},files,false)
     :await msgSend('msg',{msg:{chat:c.id,text:text},secs:F.voice?F.voice.secs:null},files,false);
   if(!r) return; keep(r); return chatAfterSend();
 }
@@ -3688,16 +3713,50 @@ async function chatPhoto(file){
   const r=await msgSend('chatphoto',{chat:c.id},[{file:file}],'Photo changed. Everyone in '+c.name+' sees it once the desk has filed it.');
   if(r) _chatPic[c.id]=URL.createObjectURL(file); render();
 }
-const MSG_ACTS=['msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replies','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick'];
+// A chat's new photo is placed before it is sent: drag it and zoom it until the circle shows what you want, as a chat app
+// lets you (John, 24 Oct 2026). Only what is inside the window is sent, 512px square.
+const CROP_OUT=512;
+function cropSize(){ return Math.min(window.innerWidth-32,360); }
+async function cropOpen(file){
+  let bm; try{ bm=await createImageBitmap(file); }catch(e){ return toast('This phone cannot open that picture. Try another one.'); }
+  st.crop={file:file,bm:bm,url:URL.createObjectURL(file),w:bm.width,h:bm.height,z:1,x:0,y:0}; render();
+}
+// Where the picture sits: covering the circle's square at zoom 1, never leaving a gap at its edges.
+function cropFit(C){ const S=cropSize(), k=S/Math.min(C.w,C.h)*C.z, W=C.w*k, H=C.h*k, mx=(W-S)/2, my=(H-S)/2;
+  C.x=Math.max(-mx,Math.min(mx,C.x)); C.y=Math.max(-my,Math.min(my,C.y)); return {S:S,k:k,W:W,H:H,l:(S-W)/2+C.x,t:(S-H)/2+C.y}; }
+function cropPlace(){ const C=st.crop, im=app.querySelector('.cp-st img'); if(!C||!im) return; const f=cropFit(C);
+  im.style.cssText='width:'+f.W+'px;height:'+f.H+'px;left:'+f.l+'px;top:'+f.t+'px'; }
+function vCrop(){ const C=st.crop, f=cropFit(C);
+  return '<div class="cp" role="dialog" aria-modal="true" aria-label="Move and zoom the photo"><div class="cp-top"><button class="ib" data-act="cropOff" aria-label="Do not use this photo">'+I.close+'</button><b>Move and Zoom</b><span style="width:44px"></span></div>'
+    +'<div class="cp-st" style="width:'+f.S+'px;height:'+f.S+'px"><img src="'+C.url+'" alt="The photo, to place in the circle" draggable="false" style="width:'+f.W+'px;height:'+f.H+'px;left:'+f.l+'px;top:'+f.t+'px"><i aria-hidden="true"></i></div>'
+    +'<label class="cp-z"><span>Zoom</span><input type="range" min="1" max="4" step="0.01" value="'+C.z+'" data-cz aria-label="Zoom"></label>'
+    +'<p class="cp-say">Drag the photo to place it in the square.</p><div class="cp-foot"><button class="btn" data-act="cropUse"'+(st.busy?' disabled':'')+'>Use This Photo</button></div></div>'; }
+async function cropUse(){
+  const C=st.crop, f=cropFit(C), cv=document.createElement('canvas'); cv.width=cv.height=CROP_OUT;
+  const s0=CROP_OUT/f.S; cv.getContext('2d').drawImage(C.bm,f.l*s0,f.t*s0,f.W*s0,f.H*s0);
+  const blob=await new Promise(ok=>cv.toBlob(ok,'image/jpeg',.88)); if(!blob) return toast('The photo could not be made. Try again.');
+  URL.revokeObjectURL(C.url); if(C.bm.close) C.bm.close(); st.crop=null;
+  return chatPhoto(new File([blob],'chat.jpg',{type:'image/jpeg'}));
+}
+let _cpd=null;
+app.addEventListener('pointerdown',e=>{ if(!st.crop||!e.target.closest('.cp-st')) return; _cpd={x:e.clientX,y:e.clientY,ox:st.crop.x,oy:st.crop.y}; e.target.closest('.cp-st').setPointerCapture(e.pointerId); e.preventDefault(); });
+app.addEventListener('pointermove',e=>{ if(!_cpd||!st.crop) return; st.crop.x=_cpd.ox+e.clientX-_cpd.x; st.crop.y=_cpd.oy+e.clientY-_cpd.y; cropPlace(); });
+app.addEventListener('pointerup',()=>{ _cpd=null; });
+app.addEventListener('input',e=>{ if(!st.crop||!e.target.hasAttribute('data-cz')) return; st.crop.z=Number(e.target.value)||1; cropPlace(); });
+const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick'];
 async function msgAct(a,b){
   const F=st.form;
+  if(a==='cropOff'){ URL.revokeObjectURL(st.crop.url); st.crop=null; return render(); }
+  if(a==='cropUse') return cropUse();
   if(a==='msgs'){ if(st.hoRec) await hoVoice(); st.form=null; st.sheet=false; return go('msgs'); }
   if(a==='chatOpen'){ st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
   if(a==='chatBack'){ const k=st.chatLast||(F&&F.chat); st.form=chatForm(typeof k==='string'?k:(k&&k.chat)); st.chatLast=null; go('chat'); return chatBottom(); }
   if(a==='chatInfo'){ st.chatLast=F.chat; st.form={chat:F.chat}; return go('chatinfo'); }
   if(a==='chatNew'||a==='chatPick'){ if(F) F.pickFor=a==='chatPick'?b.dataset.for:''; else st.form={pickFor:''}; st.sheet='chatpick'; render(); const v=app.querySelector('.sheet .c-pk'); if(v) v.focus(); return; }
   if(a==='chatPicked'){ st.sheet=false; if(F&&F.pickFor==='ho'&&st.screen==='chat'){ F.chat=b.dataset.id; return render(); } st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
-  if(a==='replies'){ st.chatLast=F.chat; st.form=chatForm(F.chat,{replyTo:b.dataset.id}); go('replies'); chatBottom(); return chatSeen().then(render); }
+  if(a==='replyTo'){ F.replyTo=b.dataset.id; F.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); return; }
+  if(a==='replyOff'){ F.replyTo=''; return render(); }
+  if(a==='jumpTo'){ const el=app.querySelector('.c-b[data-mid="'+CSS.escape(b.dataset.id)+'"]'); if(el){ el.scrollIntoView({block:'center',behavior:'instant'}); el.classList.add('c-hl'); setTimeout(()=>el.classList.remove('c-hl'),1200); } return; }
   if(a==='ntAck'||a==='hoAck'){ await msgSend('msgread',{ref:b.dataset.id,act:'confirmed'},[],a==='ntAck'?'Kept with the notice':'Kept with the handover'); return render(); }
   if(a==='ntRemind'){ await msgSend('notice',{remind:b.dataset.id},[],'Reminder sent to those not confirmed'); return render(); }
   if(a==='cAttach'){ st.sheet='cattach'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
@@ -3714,7 +3773,7 @@ let _sw=null;
 app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]'); _sw=b&&e.touches.length===1?{id:b.dataset.sw,x:e.touches[0].clientX,y:e.touches[0].clientY,el:b}:null; },{passive:true});
 app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
 app.addEventListener('touchend',e=>{ if(!_sw) return; const S0=_sw; _sw=null; S0.el.style.transform=''; const dx=(e.changedTouches[0]||{}).clientX-S0.x;
-  if(dx>64&&st.screen==='chat'){ st.chatLast=st.form.chat; st.form=chatForm(st.form.chat,{replyTo:S0.id}); go('replies'); chatBottom(); chatSeen().then(render); } });
+  if(dx>64&&st.screen==='chat'){ st.form.replyTo=S0.id; st.form.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); } });
 app.addEventListener('contextmenu',e=>{ const b=e.target.closest('[data-rd]'); if(!b||!st.form) return; e.preventDefault(); st.form.rid=b.dataset.rd; st.sheet='readers'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); });
 async function home(){
   st.outbox=await obAll().catch(()=>st.outbox);
