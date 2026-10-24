@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v501.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v502.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -15,14 +15,18 @@ const WFM_CAPTURE_SHAPE={
     // An NFC tag linked to a point by its own serial, read on the phone and never written (DEC-0345).
     tag:        {direction:'setup',       label:'Tag linked'},
     // Messages on the phone (DEC-0288, DEC-0348): a notice from the FM or the Notice Sender, a read of one (opened or
-    // confirmed), and the shift handover. Each is a record: who wrote, who read, when. None is edited after it is sent.
+    // confirmed), and the shift handover. Each is a record: who wrote, who read, when. Only its writer changes one, by a
+    // msgchange, and the original stays in the record (DEC-0353 rule 5).
     notice:     {direction:'message',     label:'Notice'},
     msgread:    {direction:'message',     label:'Read'},
     handover:   {direction:'message',     label:'Shift handover'},
     // The site's chats (DEC-0354): a plain message, a reply under one, and a chat's new photo.
     msg:        {direction:'message',     label:'Message'},
     reply:      {direction:'message',     label:'Reply'},
-    chatphoto:  {direction:'message',     label:'Chat photo'}
+    chatphoto:  {direction:'message',     label:'Chat photo'},
+    // Your own message edited or deleted (DEC-0353 rule 5, DEC-0354 rule 4): the change is its own record, filed onto the
+    // message; the words as sent stay.
+    msgchange:  {direction:'message',     label:'Message changed'}
   },
   // A tag's serial as Waterline keeps it: upper case, two hex digits a pair, colons between (DEC-0345).
   // '' when it is not a serial. Read by the desk and the phone alike.
@@ -174,8 +178,14 @@ const WFM_CAPTURE_SHAPE={
   // carries msg:{chat, text} and its files (photos, or one voice note as a job note has); a reply carries ref (the message
   // it answers) and msg:{chat, text}, with files as a message has; a chat's new photo is a chatphoto carrying chat and one
   // image. A notice and a handover carry their chat inside them (notice.chat, handover.chat), and their to is that chat.
-  // Nothing sent is changed or deleted (DEC-0353). chatOf reads a record's chat; one sent before chats reads from its to.
+  // Nothing sent is erased (DEC-0353). Its writer may change it with a msgchange: ref (the message, reply, notice or
+  // handover), act (one of msgChangeActs), chat, and for an edit msg:{text}, the new words. Only a message's or a reply's
+  // words are edited; a notice or a handover is deleted and sent again, since people confirm what it said. A deleted one
+  // shows "This message was deleted" in its place on every phone. chatOf reads a record's chat; one sent before chats
+  // reads from its to.
   chatIds:{managers:'Managers',all:'Everyone'},
+  msgChangeActs:['edit','delete'],
+  msgDeleted:'This message was deleted',
   chatOf:function(r){ r=r||{}; var x=r.msg||r.notice||r.handover||{}, c=r.chat||x.chat||(Array.isArray(x.to)&&x.to[0])||''; return String(c).trim(); },
   chatName:function(id){ return WFM_CAPTURE_SHAPE.chatIds[id]||String(id||''); }
 };

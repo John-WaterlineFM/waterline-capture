@@ -742,8 +742,8 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-ft{display:flex;justify-content:flex-end;align-items:center;gap:4px;font:500 11px Sora;color:var(--textMid);margin-top:4px}
 .c-ft svg{width:16px;height:16px}
 .c-rb{margin-top:0}
-.c-b.c-del p{display:flex;align-items:center;gap:6px;color:var(--textMid)}
-.c-b.c-del p svg{width:16px;height:16px;flex:none}
+.c-b.c-del p{display:flex;align-items:center;gap:6px;color:var(--text)}
+.c-b.c-del p svg{width:16px;height:16px;flex:none;color:var(--textMid)}
 .c-tk{display:inline-grid;color:var(--textMid)}
 .c-tk.r{color:var(--accentD)}
 .c-ann{border-left:4px solid var(--kWho)}
@@ -3833,11 +3833,13 @@ app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].cli
 app.addEventListener('touchend',e=>{ if(!_sw) return; const S0=_sw; _sw=null; S0.el.style.transform=''; const dx=(e.changedTouches[0]||{}).clientX-S0.x;
   if(dx>64&&st.screen==='chat'){ st.form.replyTo=S0.id; st.form.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); } });
 let _clp=null;
-const cmOpen=id=>{ if(st.sheet||!st.form) return; _lpAt=Date.now(); st.form.rid=id; st.sheet='cmsg'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); };
+let _clpHeld=false;
+// The click a long press ends with is not a click, however long the finger stays down: the window starts again as it lifts.
+const cmOpen=id=>{ if(st.sheet||!st.form) return; _lpAt=Date.now(); _clpHeld=true; st.form.rid=id; st.sheet='cmsg'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); };
 app.addEventListener('pointerdown',e=>{ const b=e.target.closest('.c-b[data-rd]'); if(!b||e.button>0||e.target.closest('button,audio,input,textarea,label')) return; const id=b.dataset.rd;
   _clp={x:e.clientX,y:e.clientY,t:setTimeout(()=>{ _clp=null; cmOpen(id); },500)}; });
 app.addEventListener('pointermove',e=>{ if(_clp&&Math.hypot(e.clientX-_clp.x,e.clientY-_clp.y)>10){ clearTimeout(_clp.t); _clp=null; } });
-['pointerup','pointercancel'].forEach(t=>app.addEventListener(t,()=>{ if(_clp){ clearTimeout(_clp.t); _clp=null; } }));
+['pointerup','pointercancel'].forEach(t=>app.addEventListener(t,()=>{ if(_clp){ clearTimeout(_clp.t); _clp=null; } if(_clpHeld){ _clpHeld=false; _lpAt=Date.now(); } }));
 app.addEventListener('contextmenu',e=>{ const b=e.target.closest('[data-rd]'); if(!b||!st.form) return; e.preventDefault(); if(_clp){ clearTimeout(_clp.t); _clp=null; } cmOpen(b.dataset.rd); });
 async function home(){
   st.outbox=await obAll().catch(()=>st.outbox);
