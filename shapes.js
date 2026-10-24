@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v497.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v501.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -13,13 +13,22 @@ const WFM_CAPTURE_SHAPE={
     // An update to a job from the phone (job 015, P3; DEC-0307, DEC-0308): a note, a flag, Start or Done.
     job:        {direction:'operational', label:'Job update'},
     // An NFC tag linked to a point by its own serial, read on the phone and never written (DEC-0345).
-    tag:        {direction:'setup',       label:'Tag linked'}
+    tag:        {direction:'setup',       label:'Tag linked'},
+    // Messages on the phone (DEC-0288, DEC-0348): a notice from the FM or the Notice Sender, a read of one (opened or
+    // confirmed), and the shift handover. Each is a record: who wrote, who read, when. None is edited after it is sent.
+    notice:     {direction:'message',     label:'Notice'},
+    msgread:    {direction:'message',     label:'Read'},
+    handover:   {direction:'message',     label:'Shift handover'},
+    // The site's chats (DEC-0354): a plain message, a reply under one, and a chat's new photo.
+    msg:        {direction:'message',     label:'Message'},
+    reply:      {direction:'message',     label:'Reply'},
+    chatphoto:  {direction:'message',     label:'Chat photo'}
   },
   // A tag's serial as Waterline keeps it: upper case, two hex digits a pair, colons between (DEC-0345).
   // '' when it is not a serial. Read by the desk and the phone alike.
   serialOf:function(s){ var h=String(s||'').toUpperCase().replace(/[^0-9A-F]/g,''); return (h.length>=8&&h.length%2===0)?h.match(/../g).join(':'):''; },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial'],
+  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat'],
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
   photoSays:'This photo proves who was there, where and when, and nothing else.',
@@ -148,7 +157,27 @@ const WFM_CAPTURE_SHAPE={
   sounds:['audio/mp4','audio/webm'], soundMaxSecs:120, noWords:'Voice note, no words given',
   deskKinds:['Raised','Flagged','Assigned','Started','Paused','Restarted','Done','Safety check','Parts used','Permit','Stopped','Signed off'],
   // A flag's level, in order (DEC-0304): words, never a colour. What each means in time is John's to rule (rule 4).
-  flagLevels:[{id:'urgent',label:'Urgent'},{id:'asap',label:'As soon as possible'},{id:'week',label:'This week'},{id:'able',label:'When able'},{id:'planned',label:'When planned'}]
+  flagLevels:[{id:'urgent',label:'Urgent'},{id:'asap',label:'As soon as possible'},{id:'week',label:'This week'},{id:'able',label:'When able'},{id:'planned',label:'When planned'}],
+  // Messages (DEC-0348, DEC-0351). A notice carries notice:{to:['all'] or department names, title (its first line), text (the
+  // rest), confirm}; a reminder is a notice record carrying remind:<the notice's capture id> and no notice of its own. A read is
+  // a msgread with ref (the notice's or the handover's capture id), act (one of msgActs) and pos, the reader's position. A
+  // handover carries handover:{to:['managers'], ['all'] or department names, dept (the writer's), parts:{who,what,where,why},
+  // adds}, with a photo and a voice note in files as a job note has them. adds is what Waterline added from the site file as the
+  // writer saw it: {permits:[{id,type,job,no,title,by,at}], started:[{id,no,title,where}] (today, not finished), doneToday:[same],
+  // olderInProgress:n}.
+  msgActs:['opened','confirmed'],
+  // The handover's four parts, as a mission order (DEC-0351 rule 4), each optional; and what an empty one says.
+  handoverParts:[{k:'who',l:'Who',hint:'Who is involved, or who should act'},{k:'what',l:'What',hint:'What happened, or what is left to do'},
+    {k:'where',l:'Where',hint:'The room, floor or area'},{k:'why',l:'Why',hint:'Why it matters'}],
+  handoverNone:'Nothing else to hand over.',
+  // The site's chats (DEC-0354): Managers, Everyone, and one per department, whose id is the department's name. A message
+  // carries msg:{chat, text} and its files (photos, or one voice note as a job note has); a reply carries ref (the message
+  // it answers) and msg:{chat, text}, with files as a message has; a chat's new photo is a chatphoto carrying chat and one
+  // image. A notice and a handover carry their chat inside them (notice.chat, handover.chat), and their to is that chat.
+  // Nothing sent is changed or deleted (DEC-0353). chatOf reads a record's chat; one sent before chats reads from its to.
+  chatIds:{managers:'Managers',all:'Everyone'},
+  chatOf:function(r){ r=r||{}; var x=r.msg||r.notice||r.handover||{}, c=r.chat||x.chat||(Array.isArray(x.to)&&x.to[0])||''; return String(c).trim(); },
+  chatName:function(id){ return WFM_CAPTURE_SHAPE.chatIds[id]||String(id||''); }
 };
 const WFM_SITE_SHAPE={
   format:'waterline-site', version:1,
@@ -165,5 +194,9 @@ const WFM_SITE_SHAPE={
   // entry in the thread with its type and length.
   audio:{folder:'audio', ext:'.b64', keepDays:7},
   // A job's thread on the phone: its last entries, oldest first (DEC-0307 rule 2).
-  threadMax:30
+  threadMax:30,
+  // Messages (DEC-0348): the relay keeps an index of notices, reads and handovers beside the Inbox (Messages/index.json),
+  // text only, so they reach phones whether the desk is open or not. Phones are shown the last keepDays days; older ones are
+  // archived beside it (Messages/archive-YYYY-MM.json). A message is a record and is never deleted (DEC-0353).
+  messages:{folder:'Messages', index:'index.json', format:'waterline-messages', keepDays:60}
 };

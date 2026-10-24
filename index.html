@@ -666,11 +666,197 @@ ol.cl li::before{content:counter(c);font:700 13px Sora;color:var(--textMuted);wi
 .sigp canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;color:var(--text);border-radius:10px}
 .sigp .who{position:absolute;left:12px;bottom:6px;font-size:12px;color:var(--textMid);pointer-events:none}
 .sigp .clr{position:absolute;right:4px;top:4px;min-height:44px;padding:0 12px;font:600 13px Outfit;color:var(--accentD)}
+/* Messages, the site's chats (job 015 MS2; DEC-0354), drawn to sandbox/mockups/messages-chat-2026-10-24 (b1 to b6). The
+   chat app's language is copied, not reinvented (rule 4): a navy head with the desk's wave, a list of chats, bubbles on a
+   tinted ground, a bar at the foot. The bar's labels at 1px so five places fit a 360px phone (measured, MS round 1).
+   Unread counts are green, a filled oval with a white number (DEC-0355; Design 21.3 cites it), and nowhere else. */
+body{--unread:#15803D;--unreadText:#15803D;--avMgr:#0D1F2D;--avAll:#0F5E74;--chatBg:#E9EFF3;--bubMe:#D9F0F5;
+  --kWho:#4F46E5;--kWhat:#2563EB;--kWhere:#BE185D;--kWhy:#A0522D}
+body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;--kWho:#A5B4FC;--kWhat:#93C5FD;--kWhere:#F9A8D4;--kWhy:#E3A57A}
+.nv{position:relative;letter-spacing:1px}
+.nv .bd{position:absolute;top:4px;left:calc(50% + 6px);min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--unread);color:#FFFFFF;font:800 11px/20px Sora;letter-spacing:0}
+.ra .ri,.r .ri{width:44px;height:44px;flex:none;display:grid;place-items:center;color:var(--textMuted)}
+.ra .ri svg,.r .ri svg{width:24px;height:24px}
+.ra>.chev{width:20px;height:20px;align-self:center}
+.one{padding:12px 16px;color:var(--textMid);border-bottom:1px solid var(--border);line-height:1.5}
+.one b{color:var(--text);font-weight:500}
+/* the head: navy, the desk's wave under it, moving on the desk's 8 s loop */
+@keyframes wfmWaveFlow{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.c-wave{animation:wfmWaveFlow 8s linear infinite;width:200%;height:22px;display:block}
+@media (prefers-reduced-motion:reduce){.c-wave{animation:none}}
+.c-wv{line-height:0;overflow:hidden;margin:8px -16px -16px}
+.c-hd{background:var(--ink);color:#FFFFFF;padding:16px;position:sticky;top:0;z-index:3}
+.c-t{display:flex;align-items:center;gap:12px}
+.c-t>.ib{margin:-8px -4px -8px -12px;color:var(--accentOnInk)}
+.c-hd h1{font:800 20px/1.3 Sora;flex:1;color:#FFFFFF}
+.c-s{font-size:13px;line-height:1.4;color:rgba(255,255,255,.72)}
+.c-s b{color:#FFFFFF}
+.c-ti{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:44px;color:#FFFFFF}
+.c-tw{flex:1;min-width:0;display:flex;flex-direction:column}
+.c-tn{font:800 17px/1.3 Sora}
+.c-tw .c-s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* a chat's picture: its photo, or its colour and initials (rule 7) */
+.c-av{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;font:800 20px Sora;color:#FFFFFF;background:var(--accentD);overflow:hidden}
+.c-av.df{background:#475569}
+.c-av.mg{background:var(--avMgr)}
+.c-av.ev{background:var(--avAll)}
+.c-av svg{width:24px;height:24px}
+.c-av.ph{background:#FFFFFF;border:1px solid var(--border)}
+.c-av img{width:100%;height:100%;object-fit:cover;display:block}
+.c-av.sm{width:40px;height:40px;font-size:15px}
+.c-av.sm svg{width:20px;height:20px}
+.c-av.xs{width:28px;height:28px;font-size:11px}
+.c-av.xs svg{width:16px;height:16px}
+.c-av.lg{width:120px;height:120px;font-size:48px;border:3px solid rgba(255,255,255,.2)}
+.c-av.lg svg{width:48px;height:48px}
+.c-av.sq{width:44px;height:44px;border-radius:8px;font-size:13px}
+/* the chat list: avatar, bold name, the last message with its sender, the time, the count (rule 4) */
+.c-list{background:var(--white)}
+.c-ch{display:flex;gap:12px;align-items:center;padding:0 16px;background:var(--white);width:100%;text-align:left;min-height:76px}
+.c-ch .c-m{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding:12px 0;align-self:stretch;justify-content:center;border-bottom:1px solid var(--border)}
+.c-ch:last-child .c-m{border-bottom:none}
+.c-r{display:flex;align-items:center;gap:8px}
+.c-nm{flex:1;font:600 16px 'DM Sans';color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-tm{font:500 12px Sora;color:var(--textMuted);flex:none}
+.c-ch.ur .c-tm{color:var(--unreadText);font-weight:700}
+.c-pv{flex:1;min-width:0;font-size:14px;color:var(--textMid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-ch.ur .c-pv{color:var(--text)}
+.c-ub{min-width:22px;height:22px;padding:0 7px;border-radius:11px;background:var(--unread);color:#FFFFFF;font:800 12px/22px Sora;text-align:center;flex:none}
+.c-pk{min-height:64px}
+.c-fab{position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(100px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:18px;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;box-shadow:0 6px 16px rgba(13,31,45,.25);z-index:6}
+.c-fab svg{width:26px;height:26px}
+/* a chat: bubbles on a tinted ground, yours on the right, day separators */
+.c-th{padding:12px 10px 24px;display:flex;flex-direction:column;gap:6px;background:var(--chatBg);min-height:calc(100vh - 180px)}
+.c-day,.c-sys{align-self:center;background:var(--white);color:var(--textMid);font:600 12px Outfit;padding:4px 10px;border-radius:8px;margin:6px 0;text-align:center}
+.c-b{max-width:88%;min-width:0;background:var(--white);border-radius:12px;border-top-left-radius:4px;padding:8px 10px 6px;box-shadow:0 1px 1px rgba(0,0,0,.08);align-self:flex-start;transition:transform .15s}
+.c-b.c-me{align-self:flex-end;background:var(--bubMe);border-top-left-radius:12px;border-top-right-radius:4px}
+.c-b[data-rd]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.c-b p{margin:0;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.c-who{font:700 13px 'DM Sans';margin-bottom:2px}
+.c-ft{display:flex;justify-content:flex-end;align-items:center;gap:4px;font:500 11px Sora;color:var(--textMid);margin-top:4px}
+.c-ft svg{width:16px;height:16px}
+.c-rb{margin-top:0}
+.c-tk{display:inline-grid;color:var(--textMid)}
+.c-tk.r{color:var(--accentD)}
+.c-ann{border-left:4px solid var(--kWho)}
+.c-h{display:flex;align-items:center;gap:8px;font:800 15px/1.35 Sora;margin-bottom:4px}
+.c-h svg{width:20px;height:20px;color:var(--kWho)}
+.c-h span{flex:1;min-width:0}
+.c-ack{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;margin:8px 0 2px;border-radius:8px;background:var(--btnFill);color:var(--btnText);font:600 13px Outfit;width:100%}
+.c-ack svg{width:18px;height:18px}
+.c-ack[disabled]{background:var(--stone);color:var(--textMid)}
+.c-gh{display:flex;align-items:center;justify-content:center;min-height:44px;margin:8px 0 2px;border-radius:8px;border:1px solid var(--accentD);color:var(--accentD);font:600 13px Outfit;width:100%}
+.c-did{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:8px;font-size:13px;color:var(--textMid)}
+.c-did svg{width:16px;height:16px;color:var(--accentD)}
+.c-did b{color:var(--text);font-weight:700}
+.c-ph{display:block;margin:2px 0 6px;border-radius:10px;overflow:hidden}
+.c-img{display:block;width:240px;max-width:100%;height:180px;object-fit:cover;border-radius:10px}
+span.pic.c-img{width:240px;height:120px}
+.c-b .voice{min-width:200px}
+/* the handover card: the four parts as a mission order, then what Waterline added */
+.c-card{border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:4px 0 2px;background:var(--white)}
+.c-cap{display:flex;align-items:center;gap:8px;padding:8px 10px;font:700 11px Outfit;letter-spacing:1.5px;text-transform:uppercase;color:#FFFFFF}
+.c-cap svg{width:16px;height:16px}
+.c-cap span{flex:1}
+.c-card .c-ph{margin:8px 10px}
+.c-pt{display:flex;gap:10px;padding:8px 10px;border-top:1px solid var(--border);align-items:baseline}
+.c-k{width:56px;flex:none;font:700 11px Outfit;letter-spacing:1.2px;text-transform:uppercase}
+.k-who{color:var(--kWho)}.k-what{color:var(--kWhat)}.k-where{color:var(--kWhere)}.k-why{color:var(--kWhy)}
+.c-v{flex:1;min-width:0;line-height:1.4;overflow-wrap:anywhere}
+.c-op{display:flex;gap:10px;align-items:center;padding:8px 10px;border-top:1px solid var(--border);background:var(--cream);width:100%;text-align:left;min-height:56px}
+.c-sq{width:40px;height:40px;border-radius:8px;background:var(--stone);display:grid;place-items:center;font:800 13px Sora;flex:none;color:var(--text)}
+.c-sq svg{width:20px;height:20px;color:var(--kWho)}
+.c-ow{flex:1;min-width:0}
+.c-ow .sub{margin:0}
+.c-w{font-weight:600;font-size:14px;display:block;line-height:1.35}
+.c-st{width:12px;height:12px;display:inline;vertical-align:-1px;margin-right:4px;color:var(--jDoing)}
+/* replies collapsed under a message, as an announcement's are */
+.c-rp{display:flex;align-items:center;gap:8px;min-height:44px;margin-top:6px;padding:0 4px;border-top:1px solid var(--border);color:var(--accentD);font:600 13px Outfit;width:100%}
+.c-rp svg{width:18px;height:18px}
+.c-rp>svg:last-child{margin-left:auto}
+.c-fc{display:flex}
+.c-fc span{width:26px;height:26px;border-radius:50%;border:2px solid var(--white);margin-left:-6px;display:grid;place-items:center;font:800 11px Sora;color:#FFFFFF;background:#475569}
+.c-fc span:first-child{margin-left:0}
+.c-q{max-width:96%}
+.c-qt{border-left:4px solid var(--c);background:var(--chatBg);border-radius:6px;padding:6px 8px;font-size:13px;color:var(--textMid)}
+.c-qt b{display:block;color:var(--c);font:700 12px 'DM Sans'}
+/* writing in place (3-write): the card is the form */
+.c-wr{max-width:96%}
+.c-b.c-wr{background:var(--white)}
+.c-bd{background:var(--chatBg)}
+.c-x{width:44px;height:44px;margin:-12px -10px -12px 0;display:grid;place-items:center;color:#FFFFFF}
+.c-h .c-x{color:var(--accentD)}
+.c-to{display:flex;align-items:center;gap:8px;padding:4px 10px;border-top:1px solid var(--border);color:var(--textMid)}
+.c-to b{flex:1;color:var(--text);font-weight:600}
+.c-pw{cursor:text}
+.c-pw textarea{flex:1;min-height:0;border:none;padding:0;background:transparent;border-radius:0;resize:none;line-height:1.4;font-size:16px}
+.c-pw textarea:focus{outline:none}
+.c-pw:focus-within{background:var(--chatBg)}
+.c-tg{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--accentD);color:var(--accentD);display:grid;place-items:center;flex:none}
+.c-tg.on{background:var(--btnFill);border-color:var(--btnFill);color:var(--btnText)}
+.c-nf{display:block;margin-top:8px}
+.c-nf .fl{display:block;font:600 12px Outfit;margin-bottom:4px}
+.c-nf input,.c-nf textarea{width:100%;font-size:16px;min-height:44px;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:8px 10px;color:var(--text)}
+.c-nf textarea{min-height:88px}
+.c-nk{margin-top:8px}
+.c-err{color:var(--text);font:600 12px 'DM Sans'}
+/* the bar at the foot: attach, the words, the camera, a microphone that becomes send (rule 4) */
+.c-foot{position:sticky;bottom:0;z-index:5;background:var(--chatBg);padding:0 8px calc(8px + env(safe-area-inset-bottom))}
+.c-stg{display:flex;gap:8px;padding:8px 4px 0;flex-wrap:wrap}
+.c-th1{width:56px;height:56px;border-radius:8px;background:var(--stone) center/cover;position:relative}
+.c-th1 .x{position:absolute;top:-10px;right:-10px;width:44px;height:44px;display:grid;place-items:center;color:var(--accentD)}
+.c-th1 .x i{display:grid;place-items:center;width:28px;height:28px;border-radius:14px;background:var(--white);border:1px solid var(--accentD)}
+.c-th1 .x svg{width:16px;height:16px}
+.c-cb{display:flex;align-items:flex-end;gap:8px;padding-top:8px}
+.c-fld{flex:1;min-width:0;min-height:48px;border-radius:24px;background:var(--white);display:flex;align-items:center;gap:0;padding:0 2px 0 16px}
+.c-fld textarea{flex:1;min-width:0;min-height:24px;max-height:120px;border:none;background:transparent;padding:12px 0;font-size:16px;line-height:1.5;resize:none;border-radius:0}
+.c-fld textarea:focus{outline:none}
+.c-fld:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.c-fld .ib{color:var(--textMid)}
+.c-fld .ib input{position:absolute;opacity:0;width:1px;height:1px}
+.c-rec,.c-vo{flex:1;display:flex;align-items:center;gap:8px;min-height:48px;color:var(--textMid);font-size:14px}
+.c-rec svg{color:var(--red)}
+.c-vo .voice{flex:1;min-width:0}
+.c-go{width:48px;height:48px;border-radius:50%;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;flex:none}
+.c-go svg{width:22px;height:22px}
+.c-go.on{background:var(--red);color:#FFFFFF}
+.c-go[disabled]{background:var(--stone);color:var(--textMid)}
+.c-only{position:sticky;bottom:0;z-index:5;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--white);border-top:1px solid var(--border);text-align:center;color:var(--textMid);font-size:14px}
+/* a chat's info (b6) */
+.c-info{background:var(--cream)}
+.c-ih{text-align:center;padding-bottom:16px}
+.c-ih .c-t{min-height:44px}
+.c-big{position:relative;display:inline-block;margin-top:-8px}
+.c-cam{position:absolute;right:-2px;bottom:-2px;width:44px;height:44px;border-radius:50%;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;border:3px solid var(--ink);cursor:pointer}
+.c-cam input{position:absolute;opacity:0;width:1px;height:1px}
+.c-cam svg{width:20px;height:20px}
+.c-ih h1{margin-top:12px}
+.c-ih .c-s{display:block}
+.c-sr{display:flex;gap:12px;align-items:center;padding:12px 16px;min-height:64px;border-bottom:1px solid var(--border);background:var(--white)}
+.c-sr:last-child{border-bottom:none}
+.c-sm{flex:1;min-width:0}
+.c-sl{display:block;font-weight:500}
+.c-sm .sub{margin:2px 0 0}
+.c-sw{width:52px;height:32px;border-radius:16px;flex:none;position:relative;background:#B8C7D3}
+.c-sw.on{background:var(--btnFill)}
+.c-sw i{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.c-sw.on i{left:auto;right:3px}
+/* Night: the small words in a bubble lift to read at 4.5:1 on the darker bubbles (Design 5.10). Light: the head turns white
+   with navy words, as Light's top block does (DEC-0310); the wave keeps its teal line. */
+body.t-ni .c-ft,body.t-ni .c-tk,body.t-ni .c-did{color:#9CC3D6}
+body.t-ni .c-tk.r{color:var(--accentD)}
+body.t-li .c-hd{background:var(--white);color:var(--text);border-bottom:1px solid var(--border)}
+body.t-li .c-hd h1,body.t-li .c-ti{color:var(--text)}
+body.t-li .c-s{color:var(--textMid)}
+body.t-li .c-s b{color:var(--text)}
+body.t-li .c-t>.ib{color:var(--accentD)}
+body.t-li .c-cam{border-color:var(--white)}
+body.t-li .c-av.lg{border-color:var(--border)}
 </style>
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=5a7c9d9e2d"></script>
+<script src="shapes.js?v=ef0c5f2971"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -748,7 +934,11 @@ const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}}
 
 // One icon set on every screen (John, 20 Oct 2026; DEC-0303 rule 8): Lucide (lucide.dev, ISC licence), each
 // icon's own path data on its 24px grid at one stroke. The names on the left are what this page calls them.
-const LUCIDE={'flame':'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>','droplets':'<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>','ban':'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>','bed-double':'<path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/>','spray-can':'<path d="M3 3h.01"/><path d="M7 5h.01"/><path d="M11 7h.01"/><path d="M3 7h.01"/><path d="M7 9h.01"/><path d="M3 11h.01"/><rect width="4" height="4" x="15" y="5"/><path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2"/><path d="m13 14 8-2"/><path d="m13 19 8-2"/>','clipboard-check':'<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>','fire-extinguisher':'<path d="M15 6.5V3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3.5"/><path d="M9 18h8"/><path d="M18 3h-3"/><path d="M11 3a6 6 0 0 0-6 6v11"/><path d="M5 13h4"/><path d="M17 10a4 4 0 0 0-8 0v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2Z"/>','calendar-clock':'<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>','folder':'<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+const LUCIDE={'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
+  'arrow-up':'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
+  'reply':'<polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/>',
+  'image':'<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+  'flame':'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>','droplets':'<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>','ban':'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>','bed-double':'<path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/>','spray-can':'<path d="M3 3h.01"/><path d="M7 5h.01"/><path d="M11 7h.01"/><path d="M3 7h.01"/><path d="M7 9h.01"/><path d="M3 11h.01"/><rect width="4" height="4" x="15" y="5"/><path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2"/><path d="m13 14 8-2"/><path d="m13 19 8-2"/>','clipboard-check':'<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>','fire-extinguisher':'<path d="M15 6.5V3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3.5"/><path d="M9 18h8"/><path d="M18 3h-3"/><path d="M11 3a6 6 0 0 0-6 6v11"/><path d="M5 13h4"/><path d="M17 10a4 4 0 0 0-8 0v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2Z"/>','calendar-clock':'<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>','folder':'<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
   'calendar-check':'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>',
   'camera':'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
   'check':'<path d="M20 6 9 17l-5-5"/>',
@@ -787,7 +977,11 @@ const LUCIDE={'flame':'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.
   'package':'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>',
   'calendar-days':'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>',
   'trash-2':'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
-};
+  // Messages (MS), from lucide.dev on the same grid and stroke (Design 21.7).
+  'message-square':'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  'megaphone':'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  'arrow-right-left':'<path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/>',
+  'square':'<rect width="18" height="18" x="3" y="3" rx="2"/>'};
 // S5's pictures not in the set above: Lucide's, and the height kit in the same stroke (Lucide has no ladder).
 const T5L={'arrow-up-from-line':'<path d="m18 9-6-6-6 6"/><path d="M12 3v14"/><path d="M5 21h14"/>',
   zap:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
@@ -804,7 +998,7 @@ const T5L={'arrow-up-from-line':'<path d="m18 9-6-6-6 6"/><path d="M12 3v14"/><p
   roof:'<path d="M2 12 12 4l10 8"/><path d="M5 10v10h14V10"/>'};
 const T5FROM={stepladder:'stepladder',ladder:'ladder',tower:'tower',scaffold:'tower',mewp:'tower',roof:'roof'};
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check')};
+const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -981,9 +1175,9 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags,msgs:vMsgs,chat:vChat,replies:vReplies,chatinfo:vChatInfo}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet,readers:readersSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   if(st.ds){ app.insertAdjacentHTML('beforeend',vDocScan()); dsBind(); }
@@ -1112,9 +1306,10 @@ function waitLine(){ const n=st.outbox.length; if(!n) return '';
   if(ref) return '<div class="wait" role="alert"><b>'+esc(plural(n,'capture'))+' not sent:</b> '+esc(ref.err||'the site refused it')+' Kept on this phone. Open the latest set-up link from the desk.</div>';
   return '<div class="wait" role="status"><b>'+esc(plural(n,'capture'))+' waiting for signal.</b> '+(n===1?'It sends':'They send')+' by itself.</div>'; }
 function navBar(on){
-  const tab=(id,ic,lab)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+'>'+I[ic]+'<span>'+lab+'</span></button>';
-  // DEC-0301, DEC-0303 rule 2: Capture is the main button, in the middle of the bar. Messages joins when it comes (DEC-0288).
-  return '<nav class="navb"><div class="side">'+tab('due','due','Due')+tab('jobs','jobs','Jobs')+'</div><button class="nv cap" data-act="sheet"><span class="capb">'+I.plus+'</span><span>Capture</span></button><div class="side">'+tab('me','gear','Settings')+'</div></nav>';
+  const tab=(id,ic,lab,bd)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+(bd?' aria-label="'+lab+', '+bd+' to read"':'')+'>'+I[ic]+(bd?'<span class="bd n" aria-hidden="true">'+bd+'</span>':'')+'<span>'+lab+'</span></button>';
+  // DEC-0301, DEC-0303 rule 2: Capture is the main button, in the middle of the bar. Messages sits between it and Settings,
+  // with the count of what this person has not read (DEC-0348 rule 1).
+  return '<nav class="navb"><div class="side">'+tab('due','due','Due')+tab('jobs','jobs','Jobs')+'</div><button class="nv cap" data-act="sheet"><span class="capb">'+I.plus+'</span><span>Capture</span></button><div class="side">'+tab('msgs','msg','Messages',unread().length)+tab('me','gear','Settings')+'</div></nav>';
 }
 function sheet(){
   const v=(act,ic,nm,ln,off)=>'<button class="verb" data-act="'+act+'"'+(off?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
@@ -1293,7 +1488,7 @@ async function phLoad(names){
     else if(gone){ _ph[n]='missing'; got++; }
     else delete _ph[n];   // no signal: tried again on the next screen
   }
-  if(got&&(st.screen==='job'||st.screen==='jobs')) keepRender();
+  if(got&&['job','jobs','msgs','chat','replies','chatinfo'].indexOf(st.screen)>=0) keepRender();
 }
 function phImg(n,cls,alt,j){ const s=_ph[n];
   if(s&&s!=='loading'&&s!=='missing') return '<img class="'+cls+'" src="'+s+'" alt="'+esc(alt||'Photo')+'">';
@@ -2096,8 +2291,9 @@ async function alertsOn(quiet){
     if(!fb.apps.length) fb.initializeApp(c.config);
     const token=await fb.messaging().getToken({vapidKey:c.vapidKey,serviceWorkerRegistration:reg});
     if(!token) throw new Error('The phone gave no alert address. Try again in a minute.');
-    await STORE.ask({op:'pushRegister',token:token,name:st.walker,pid:me.id,role:'phone'});
-    ls.set('wl_alerts',{token:token,pid:me.id,name:st.walker,at:new Date().toISOString()});
+    // The holder's position and department, and whether they are a manager, decide what alerts this phone (DEC-0351).
+    await STORE.ask({op:'pushRegister',token:token,name:st.walker,pid:me.id,role:'phone',pos:myPosId(),dept:myDept(),mgr:isMgr()});
+    ls.set('wl_alerts',{token:token,pid:me.id,name:st.walker,dept:myDept(),mgr:isMgr(),at:new Date().toISOString()});
   }catch(e){ AL.err=String(e&&e.message||e); }
   finally{ AL.busy=false; render(); }
 }
@@ -2105,7 +2301,7 @@ async function alertsOn(quiet){
 function alertsKeep(){
   const a=ls.get('wl_alerts',null), me=meP();
   if(!a||!me||alertsCan()||Notification.permission!=='granted') return;
-  if(a.pid!==me.id||a.name!==st.walker||Date.now()-Date.parse(a.at||0)>7*864e5) alertsOn(true);
+  if(a.pid!==me.id||a.name!==st.walker||(a.dept||'')!==myDept()||!!a.mgr!==isMgr()||Date.now()-Date.parse(a.at||0)>7*864e5) alertsOn(true);
 }
 async function alertsTest(){
   const a=ls.get('wl_alerts',null); if(!a||!STORE||AL.busy) return;
@@ -2118,9 +2314,9 @@ function alertsGroup(){
   const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), on=!!a&&!cant&&Notification.permission==='granted';
   const v=cant?esc(cant)
     :Notification.permission==='denied'?'Blocked in the phone’s settings<span class="sub">Allow notifications for this app there, then come back.</span>'
-    :on?'On, for '+esc(a.name)+'<span class="sub">Since <span class="n">'+esc(when(a.at))+'</span>. They arrive with the app closed. Today the one alert is a permit that waits for you to issue it.</span>'
+    :on?'On, for '+esc(a.name)+'<span class="sub">Since <span class="n">'+esc(when(a.at))+'</span>. They arrive with the app closed: a permit that waits for you, a notice that asks you to confirm, and a handover sent to you.</span>'
     :!me?'Off<span class="sub">Choose your name from the Organisation Structure first: alerts go to a person.</span>'
-    :'Off<span class="sub">A permit that waits for you to issue it cannot reach you while the app is closed.</span>';
+    :'Off<span class="sub">A permit that waits for you, a notice to confirm and a handover sent to you cannot reach you while the app is closed.</span>';
   const btn=cant||Notification.permission==='denied'||(!on&&!me)?'':on?'<button class="btn g" data-act="alertsTest"'+(AL.busy?' disabled':'')+'>'+I.send+'Send Me a Test Alert</button>'
     :'<button class="btn g" data-act="alertsOn"'+(AL.busy?' disabled':'')+'>'+(AL.busy?'Turning On':'Turn On Alerts')+'</button>';
   return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">This phone</span><span class="v">'+v+'</span></div></div>'
@@ -2135,7 +2331,8 @@ function vMe(){
     +'<div class="grp">Theme</div><div class="seg">'+[['wl','Waterline'],['li','Light'],['ni','Night']].map(x=>'<button class="'+(th===x[0]?'on':'')+'" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(th===x[0])+'">'+(th===x[0]?I.tick:'')+x[1]+'</button>').join('')+'</div>'
     +'<div class="grp">You</div><div class="list">'+f('Name',esc(st.walker),'whoAgain')
     +f('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen')
-    +f('This phone',ls.get('wl_who',null)?'Your own: it remembers you':'Asks each time it is opened')+'</div>'
+    +f('This phone',ls.get('wl_who',null)?'Your own: it remembers you':'Asks each time it is opened')
++'</div>'
     +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published)))+'<span class="sub">Published <span class="n">'+esc(when(s.published))+'</span></span>':'Not published yet')
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
     +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
@@ -2784,6 +2981,9 @@ function after(){
   if(st.scanFor&&!st.scanFor.started){ st.scanFor.started=true; scanStart(); }
   if(st.screen==='tags'&&st.link&&!st.link.started){ const L=st.link; L.started=true; nfcStart(sn=>{ if(st.link===L) linkRead(sn); }).then(r=>{ if(st.link===L&&r!=='on'){ L.state=r; render(); } }); }
   if(!st.scanFor&&!(st.screen==='tags'&&st.link)) nfcStop();
+  if(st.screen==='msgs') phLoad(myChats().map(c=>c.photo).filter(Boolean));
+  if((st.screen==='chat'||st.screen==='replies'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='replies'?repliesOf(st.form.replyTo):st.screen==='chat'?chatMsgs(st.form.chat):[];
+    phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); }
   if(st.screen==='job'){ const j=st.form&&jobById(st.form.id); if(j) phLoad([].concat(j.photos||[],...(j.thread||[]).map(e=>e.photos||[]))); }
   if(st.screen==='jobs') phLoad(jobsShown().map(j=>(j.photos||[])[0]).filter(Boolean));
   if(st.screen==='job'){ ['jnote','vwords'].forEach(id=>{ const t=document.getElementById(id); if(t) grow(t); }); vUi(); if(st.rec) recUi(); }
@@ -2818,6 +3018,8 @@ app.addEventListener('click',async e=>{
   if(a.indexOf('ds')===0||a.indexOf('doc')===0){ if(dsAct(a,b)!==false) return; }
   if(a==='proofFor'){ st.form=Object.assign(blank('proof'),{duty:b.dataset.id,what:'certificate'}); return go('proof'); }
   if(a==='proofWhat'){ F.what=b.dataset.v; return render(); }
+  if(a==='openJob'&&(st.screen==='chat'||st.screen==='replies')){ st.chatLast=st.form.chat; st.place='chatBack'; }
+  if(MSG_ACTS.indexOf(a)>=0) return msgAct(a,b);
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
   if(a==='walkStart'||a==='roundStart'){ const pr=String(b.dataset.id).split('|'), id=pr[0], from=a==='walkStart'?Number(pr[1]):NaN;
@@ -2965,6 +3167,8 @@ app.addEventListener('change',e=>{
   if(k==='dphotos'){ Array.from(e.target.files||[]).forEach(f=>st.form.dphotos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='t5photo'){ const C=st.form&&st.form.ck; if(C&&C.stop) Array.from(e.target.files||[]).forEach(f=>C.stop.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
+  if(k==='cphoto'){ st.sheet=false; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:URL.createObjectURL(f)})); render(); return chatBottom(); }
+  if(k==='chatphoto'){ const f=e.target.files&&e.target.files[0]; if(f) chatPhoto(f); return; }
   if(k==='uphoto'){ const f=e.target.files&&e.target.files[0]; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.u.photo=st.form.photos.length-1; } return render(); }
   if(k==='ansphoto'){ const f=e.target.files&&e.target.files[0], key=e.target.dataset.k; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.ans[key].photos.push(st.form.photos.length-1); } return render(); }
   if(e.target.tagName==='SELECT'&&e.target.dataset.in){ if(special(e.target.dataset.in,e.target)) return; st.form[e.target.dataset.in]=e.target.value; render(); }
@@ -2977,6 +3181,9 @@ function special(k,el){
     if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
     return true; }
   if(st.screen==='job'&&k==='etext'){ F.etext=el.value; return true; }
+  if((st.screen==='chat'||st.screen==='replies')&&(k==='ctext'||k==='ntTitle'||k==='ntText'||/^p_/.test(k))){ F[k]=el.value; if(el.tagName==='TEXTAREA') grow(el);
+    const g=app.querySelector('.c-go'); if(k==='ctext'&&g&&!st.hoRec&&!F.voice){ const has=!!(el.value.trim()||F.photos.length||F.mode); g.setAttribute('aria-label',has?'Send':'Record a voice note'); g.innerHTML=has?ICO('arrow-up'):ICO('mic'); }
+    return true; }
   if(st.screen==='job'&&(k==='t5word'||k==='t5found')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='ptext'){ F.ptext=el.value; return true; }
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
@@ -3007,9 +3214,10 @@ async function siteRefresh(){
   if(st.sheet||st.scanFor||st.rec||st.pv||(st.form&&st.form.voice)||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
   const y=window.scrollY; render(); window.scrollTo(0,y);
 }
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ retry(); siteRefresh(); } });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'){ retry(); siteRefresh(); msgRefresh(); } });
 setInterval(retry,60000);
 setInterval(siteRefresh,60000);
+setInterval(msgRefresh,60000);
 
 async function doSend(){
   const F=st.form; if(st.busy) return;
@@ -3064,6 +3272,450 @@ async function doSend(){
   toast(ok?'Sent':c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
 }
 
+// ── Messages: the site's chats (job 015 MS2; DEC-0354, DEC-0355, DEC-0353) ───────────────────
+// Messages is a list of the site's chats, as the site keeps them on WhatsApp today: Managers, one per department, Everyone
+// (rule 1). The relay keeps every message, reply, read, notice and handover in Messages/index.json, text only; this page
+// reads it beside the site file and keeps a copy for no signal. What this phone sent shows at once, before the index
+// carries it. A notice and a handover are messages in a chat (rule 3). The chat app's language is copied, not reinvented
+// (rule 4). Nothing is deleted (DEC-0353). A written handover supports the spoken one and never replaces it.
+const MS=WFM_SITE_SHAPE.messages, CS=WFM_CAPTURE_SHAPE;
+st.msgs=ls.get('wl_msgs',null);
+let _mi=null;
+async function loadMsgs(){
+  if(!STORE) return;
+  try{ const t=await STORE.read(MS.folder+'/'+MS.index); if(t==null) return; const o=JSON.parse(t);
+    if(o&&o.format===MS.format&&Array.isArray(o.items)){ st.msgs=o; _mi=null; ls.set('wl_msgs',o); } }catch(e){}
+}
+async function msgRefresh(){
+  if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup') return;
+  const was=st.msgs&&st.msgs.updated; await loadMsgs(); msgSentPrune();
+  if(!st.msgs||st.msgs.updated===was) return;
+  const a=document.activeElement;
+  if(st.sheet||st.scanFor||st.rec||st.hoRec||st.pv||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
+  const y=window.scrollY; render(); window.scrollTo(0,y);
+  if(st.screen==='chat'||st.screen==='replies') chatSeen();
+}
+const msgSent=()=>ls.get('wl_msgSent',[]).filter(r=>r&&Date.now()-Date.parse(r.taken)<MS.keepDays*864e5);
+function msgSentKeep(rec){ const L=msgSent().filter(r=>r.id!==rec.id); L.push(rec); ls.set('wl_msgSent',L); _mi=null; }
+function msgSentPrune(){ const ids=new Set(((st.msgs&&st.msgs.items)||[]).map(x=>x.id)); ls.set('wl_msgSent',msgSent().filter(r=>!ids.has(r.id))); _mi=null; }
+function msgItems(){ if(_mi) return _mi; const ix=(st.msgs&&st.msgs.items)||[], ids=new Set(ix.map(x=>x.id)); return _mi=ix.concat(msgSent().filter(r=>!ids.has(r.id))); }
+const myPosId=()=>{ const p=myOwnPos()||myPos(); return p&&!p.dept?p.id:''; };
+const myDept=()=>{ const p=myOwnPos()||myPos(); return p?String(p.department||''):''; };
+const byMe=r=>!!(r&&st.walker&&nk(r.person)===nk(st.walker));
+const readsOf=id=>msgItems().filter(x=>x.kind==='msgread'&&x.ref===id);
+function myRead(id){ const r=readsOf(id).filter(byMe); return {opened:r.length>0,confirmed:r.find(x=>x.act==='confirmed')||null}; }
+const waiting=id=>st.outbox.some(c=>c.id===id);
+const isSender=()=>{ const m=meP(), L=(SITE().senders||{}).notice||[]; return !!(m&&L.some(x=>(x.id&&x.id===m.id)||nk(x.name)===nk(m.name))); };
+// Managers (DEC-0351 rule 2): the FM, a Notice Sender and the Management department. They are in every chat.
+const isMgr=()=>{ const p=myOwnPos()||myPos(); return isFM(p)||isSender()||/^management$/i.test(myDept()); };
+const cap1=s=>String(s||'').replace(/^./,c=>c.toUpperCase());
+const toWords=to=>{ to=(to||[]).map(x=>x==='managers'?'Managers':x==='all'?'everyone':x); if(!to.length) return 'everyone'; return to.length===1?to[0]:to.slice(0,-1).join(', ')+' and '+to[to.length-1]; };
+const posTitle=id=>(positions().find(p=>p.id===id)||{}).title||'';
+// A time said short: 16:10 today; 21:12 Wednesday this week; 14 Oct before.
+function tShort(t){ const d=new Date(t); if(isNaN(d)) return ''; const days=Math.floor((new Date().setHours(0,0,0,0)-new Date(t).setHours(0,0,0,0))/864e5);
+  return days<=0?hm(d):days<7?hm(d)+' '+d.toLocaleDateString('en-GB',{weekday:'long'}):pad(d.getDate())+' '+MON[d.getMonth()]; }
+const dayStart=()=>new Date().setHours(0,0,0,0);
+const daysAgo=t=>Math.round((dayStart()-new Date(t).setHours(0,0,0,0))/864e5);
+// The chat list's time, as a chat app's: 19:20 today, Yesterday, Wed this week, 14 Oct before. A day in the thread: Today,
+// Yesterday, Wednesday, 14 Oct 2026.
+function tList(t){ const d=new Date(t); if(isNaN(d)) return ''; const k=daysAgo(t); return k<=0?hm(d):k===1?'Yesterday':k<7?d.toLocaleDateString('en-GB',{weekday:'short'}):pad(d.getDate())+' '+MON[d.getMonth()]; }
+function tDay(t){ const d=new Date(t), k=daysAgo(t); return k<=0?'Today':k===1?'Yesterday':k<7?d.toLocaleDateString('en-GB',{weekday:'long'}):day(d); }
+async function msgSend(kind,fields,files,say){
+  if(st.busy) return null; st.busy=true;
+  let c; try{ c=await makeCapture(kind,Object.assign({pos:myPosId()},fields),files||[]); }
+  catch(e){ st.busy=false; toast('Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'); render(); return null; }
+  msgSentKeep(c.record);
+  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
+  if(say!==false) toast(ok?say:c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
+  else if(!ok&&c.errCode==='refused') toast('Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.');
+  return c.record;
+}
+
+// ── The chats (rule 1) ──
+// As the desk publishes them; a site file from before chats gives Managers, the departments and Everyone.
+function chats(){ const C=SITE().chats; if(Array.isArray(C)&&C.length) return C;
+  return [{id:'managers'}].concat((SITE().departments||[]).filter(d=>!/^management$/i.test(d)).map(d=>({id:d})),[{id:'all'}])
+    .map(c=>Object.assign({name:CS.chatName(c.id),members:[],colour:'',photo:'',membersPost:false,membersPhoto:true},c)); }
+const chatById=id=>chats().find(c=>c.id===id)||null;
+const myPid=()=>{ const p=myOwnPos()||myPos(); return p?p.id:''; };
+// You see your department's chat, Everyone, and Managers if you are one; a manager sees every chat.
+const inChat=c=>!!c&&(isMgr()||c.id==='all'||(c.id!=='managers'&&(c.id===myDept()||(c.members||[]).indexOf(myPid())>=0)));
+const myChats=()=>chats().filter(inChat);
+// Who starts a message (rule 2): in Managers every member; elsewhere the managers, or everyone when the chat's switch says so.
+const canPost=c=>!!c&&!!meP()&&inChat(c)&&(isMgr()||!!c.membersPost);
+const canPhoto=c=>!!c&&!!meP()&&inChat(c)&&(isMgr()||c.membersPhoto!==false);
+const chatOf=x=>CS.chatOf(x);
+const isTop=x=>x.kind==='msg'||x.kind==='handover'||(x.kind==='notice'&&!x.remind&&!!x.notice);
+// A chat's messages, oldest first, with its photo changes; replies sit under their message.
+function chatMsgs(id){ return msgItems().filter(x=>(isTop(x)||x.kind==='chatphoto')&&chatOf(x)===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken)); }
+const repliesOf=id=>msgItems().filter(x=>x.kind==='reply'&&x.ref===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken));
+// What you have not read (DEC-0355 rule 4): a message, notice or handover in your chats that is not yours and that you have
+// not opened, and a reply there that you have not seen. What you see on this phone clears at once.
+const seenSet=()=>new Set(ls.get('wl_seen',[]));
+function seenAdd(ids){ if(!ids.length) return; const s=ls.get('wl_seen',[]); ids.forEach(i=>{ if(s.indexOf(i)<0) s.push(i); }); ls.set('wl_seen',s.slice(-3000)); }
+function unreadIn(id,S0){ S0=S0||seenSet(); const out=[];
+  chatMsgs(id).forEach(x=>{ if(x.kind==='chatphoto') return; if(!byMe(x)&&!S0.has(x.id)&&!myRead(x.id).opened) out.push(x);
+    repliesOf(x.id).forEach(r=>{ if(!byMe(r)&&!S0.has(r.id)) out.push(r); }); });
+  return out; }
+function unread(){ const S0=seenSet(); return myChats().reduce((L,c)=>L.concat(unreadIn(c.id,S0)),[]); }
+
+// ── Colour: the department's own, from the Organisation Structure; never under 4.5:1 for the words on it (Design 5.10) ──
+function rgbOf(h){ const m=/^#?([0-9a-f]{6})$/i.exec(String(h||'')); if(!m) return null; const n=parseInt(m[1],16); return [n>>16&255,n>>8&255,n&255]; }
+function lumOf(c){ return c.map(v=>{ v/=255; return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4); }).reduce((s,v,i)=>s+v*[0.2126,0.7152,0.0722][i],0); }
+const ratio=(a,b)=>{ const x=lumOf(a), y=lumOf(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); };
+const hexOf=c=>'#'+c.map(v=>pad2(Math.round(v).toString(16))).join(''), pad2=s=>s.length<2?'0'+s:s;
+// Darkened in steps until white words on it read at 4.5:1; the colour stays the department's.
+function deep(h,min){ let c=rgbOf(h); if(!c) return ''; for(let i=0;i<16&&ratio(c,[255,255,255])<(min||4.5);i++) c=c.map(v=>v*0.88); return hexOf(c); }
+const deptCol=d=>{ const c=chatById(d); return c&&c.colour?c.colour:''; };
+const personPos=x=>positions().find(p=>p.id===x.pos)||null;
+const personDept=x=>{ const p=personPos(x); return p?String(p.department||''):''; };
+// A writer's name in a bubble, in their department's colour (dark enough for the bubble), as a chat app does.
+// 5.4:1 against white keeps 4.5:1 on your own bubble and the thread's ground, which are a little darker.
+function nameCol(x){ if(theme()==='ni') return 'var(--text)'; return deep(deptCol(personDept(x)),5.4)||'var(--text)'; }
+// A chat's picture (rule 7): its photo, or its colour with its initials; Managers a shield, Everyone people.
+const _chatPic={};
+function initials(s){ return String(s||'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function chatAv(c,cls){
+  const ph=_chatPic[c.id]||(c.photo&&_ph[c.photo]&&_ph[c.photo]!=='loading'&&_ph[c.photo]!=='missing'?_ph[c.photo]:'');
+  if(ph) return '<span class="c-av ph'+(cls?' '+cls:'')+'"><img src="'+ph+'" alt=""></span>';
+  if(c.id==='managers') return '<span class="c-av mg'+(cls?' '+cls:'')+'">'+ICO('shield-check')+'</span>';
+  if(c.id==='all') return '<span class="c-av ev'+(cls?' '+cls:'')+'">'+ICO('users')+'</span>';
+  const bg=deep(c.colour);
+  return '<span class="c-av'+(bg?'':' df')+(cls?' '+cls:'')+'"'+(bg?' style="background:'+bg+'"':'')+'>'+esc(initials(c.name))+'</span>';
+}
+// The desk's wave, moving as it does under every page header on the desk (pageHeader's .wfm-wave-anim, wfmWaveFlow).
+const WAVE='<div class="c-wv" aria-hidden="true"><svg viewBox="0 0 2400 40" preserveAspectRatio="none" fill="none" class="c-wave"><defs><linearGradient id="wlWash" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3AABC6" stop-opacity="0.22"/><stop offset="100%" stop-color="#3AABC6" stop-opacity="0"/></linearGradient></defs>'
+  +'<path d="M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>'
+  +'<path d="M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0" stroke="#3AABC6" stroke-width="1.2" opacity=".8"/>'
+  +'<path d="M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 L2400 40 L0 40 Z" fill="url(#wlWash)"/></svg></div>';
+
+// ── What a message says, short ──
+const auOf=x=>(x.files||[]).find(f=>/^audio\//.test(f.type||''));
+const picsOf=x=>(x.files||[]).filter(f=>/^image\//.test(f.type||''));
+function msgWords(x){ const t=String((x.msg&&x.msg.text)||'').trim(); return t||(auOf(x)?'Voice note':picsOf(x).length?'Photo':''); }
+function hoFirst(x){ const P=(x.handover&&x.handover.parts)||{}; return ['what','who','where','why'].map(k=>String(P[k]||'').trim()).filter(Boolean)[0]||CS.handoverNone; }
+const whoSays=x=>byMe(x)?'You':(x.person||'Someone not named');
+function preview(x){
+  if(!x) return 'No messages yet';
+  if(x.kind==='reply') return whoSays(x)+' replied: '+msgWords(x);
+  if(x.kind==='chatphoto') return whoSays(x)+' changed this chat’s photo';
+  return whoSays(x)+': '+(x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x));
+}
+function chatLast(c){ let last=null; chatMsgs(c.id).forEach(x=>{ [x].concat(repliesOf(x.id)).forEach(y=>{ if(!last||Date.parse(y.taken)>Date.parse(last.taken)) last=y; }); }); return last; }
+// What a chat says about who is in it: its departments' positions; Managers the three kinds of manager.
+function chatSub(c){ if(c.id==='managers') return 'FM, Notice Sender, Management'; if(c.id==='all') return 'Everyone on the site';
+  const t=positions().filter(p=>p.department===c.id).map(p=>p.title); return t.length?t.join(', '):c.name; }
+
+// ── The chat list (b1, b5) ──
+function vMsgs(){
+  st.place='msgs';
+  const S0=seenSet(), L=myChats().map(c=>({c:c,last:chatLast(c),n:unreadIn(c.id,S0).length}));
+  const pinned=L.filter(x=>x.c.id==='managers'), rest=L.filter(x=>x.c.id!=='managers');
+  const withMsg=rest.filter(x=>x.last).sort((a,b)=>Date.parse(b.last.taken)-Date.parse(a.last.taken)), none=rest.filter(x=>!x.last);
+  const all=pinned.concat(withMsg,none), U=all.reduce((s,x)=>s+x.n,0);
+  const rows=all.map(x=>'<button class="c-ch'+(x.n?' ur':'')+'" data-act="chatOpen" data-id="'+esc(x.c.id)+'"'+(x.n?' aria-label="'+esc(x.c.name)+', '+x.n+' unread"':'')+'>'+chatAv(x.c)
+    +'<span class="c-m"><span class="c-r"><span class="c-nm">'+esc(x.c.name)+'</span>'+(x.last?'<span class="c-tm n">'+esc(tList(x.last.taken))+'</span>':'')+'</span>'
+    +'<span class="c-r"><span class="c-pv">'+esc(preview(x.last))+'</span>'+(x.n?'<span class="c-ub n" aria-hidden="true">'+x.n+'</span>':'')+'</span></span></button>').join('');
+  const fab=myChats().some(canPost)?'<button class="c-fab" data-act="chatNew" aria-label="New message">'+ICO('pencil')+'</button>':'';
+  return '<div class="body"><div class="c-hd"><div class="c-t"><h1>Messages</h1>'+(U?'<span class="c-s"><b class="n">'+U+'</b> unread</span>':'')+'</div>'+WAVE+'</div>'
+    +waitLine()+'<div class="c-list">'+(rows||'<div class="one">No chat has been set up for your position yet. The desk sets the chats from the Organisation Structure.</div>')+'</div><div style="height:140px"></div></div>'+fab+navBar('msgs');
+}
+
+// ── A chat (b2, b4) ──
+function chatHead(c,sub,back){
+  return '<div class="c-hd"><div class="c-t">'+backBtn(back||'msgs')+'<button class="c-ti" data-act="chatInfo" aria-label="About '+esc(c.name)+'">'+chatAv(c,'sm')
+    +'<span class="c-tw"><span class="c-tn">'+esc(c.name)+'</span><span class="c-s">'+esc(sub)+'</span></span></button></div>'+WAVE+'</div>';
+}
+const SH_DOING='<svg viewBox="0 0 16 16" aria-hidden="true" class="c-st"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>';
+// The handover card (rule 3; DEC-0351 rule 4): Who, What, Where, Why, then what Waterline added.
+function hoCard(x){
+  const H=x.handover, A=H.adds||{}, P=H.parts||{}, col=deep(deptCol(H.dept)||'#156B87');
+  const parts=CS.handoverParts.filter(p=>String(P[p.k]||'').trim());
+  let h='<div class="c-card"><div class="c-cap" style="background:'+col+'">'+ICO('arrow-right-left')+'Handover'+(H.dept?' from '+esc(H.dept):'')+'</div>'+copyFiles(x)
+    +(parts.length?parts.map(p=>'<div class="c-pt"><span class="c-k k-'+p.k+'">'+esc(p.l)+'</span><span class="c-v">'+esc(P[p.k])+'</span></div>').join(''):'<div class="c-pt"><span class="c-v">'+esc(CS.handoverNone)+'</span></div>');
+  (A.permits||[]).forEach(p=>{ const j=jobById(p.job), in1='<span class="c-sq">'+ICO('shield-check')+'</span><span class="c-ow"><span class="c-w">'+esc(p.type)+' permit open</span><span class="sub">'+esc([p.id,p.no?'Job '+p.no:'',p.title].filter(Boolean).join(' · '))+'</span></span>';
+    h+=j?'<button class="c-op" data-act="openJob" data-id="'+esc(j.id)+'">'+in1+'</button>':'<div class="c-op">'+in1+'</div>'; });
+  (A.started||[]).forEach(s0=>{ const j=jobById(s0.id), in1='<span class="c-sq n">'+esc(s0.no||'')+'</span><span class="c-ow"><span class="c-w">'+esc(s0.title||'Job '+s0.no)+'</span><span class="sub">'+(j?SH_DOING+'In progress':'No longer open')+(s0.where?' · '+esc(s0.where):'')+'</span></span>';
+    h+=j?'<button class="c-op" data-act="openJob" data-id="'+esc(j.id)+'">'+in1+'</button>':'<div class="c-op">'+in1+'</div>'; });
+  const old=Number(A.olderInProgress)||0, dn=A.doneToday||[];
+  if(dn.length) h+='<div class="c-op"><span class="c-ow"><span class="c-w">Done today</span><span class="sub">'+esc(dn.map(j=>j.title||'Job '+j.no).join(', '))+'</span></span></div>';
+  if(old) h+='<div class="c-op"><span class="c-ow"><span class="sub"><b class="n">'+old+'</b> more '+(old===1?'job':'jobs')+' in progress from before today</span></span></div>';
+  return h+'</div>';
+}
+// The photos and voice note sent with a message or a handover: the desk's copies once filed; your own at once.
+const _msgPics={};
+function copyOf(x){ return (x.kind==='handover'?(SITE().handovers||[]):(SITE().msgFiles||[])).find(h=>h.cap===x.id)||null; }
+function copyFiles(x){
+  const cp=copyOf(x)||{}, mine=_msgPics[x.id]||[], n=picsOf(x).length;
+  let h=(cp.photos||[]).map(nm=>'<button class="c-ph" data-act="pvOpen" data-n="'+esc(nm)+'" aria-label="Open the photo">'+phImg(nm,'c-img','Photo from '+whoSays(x))+'</button>').join('');
+  if(!(cp.photos||[]).length&&mine.length) h+=mine.map(u=>'<span class="c-ph"><img class="c-img" src="'+u+'" alt="Your photo"></span>').join('');
+  else if(!(cp.photos||[]).length&&n) h+='<span class="c-ph"><span class="pic c-img"><i>'+(n===1?'Photo':plural(n,'photo'))+' not here yet</i></span></span>';
+  const au=auOf(x);
+  if(au) h+=cp.audio&&cp.audio.name?voiceEl('a:'+cp.audio.name,cp.audio.secs,cp.audio.type):_sentAudio[x.id]?voiceEl('p:'+x.id,x.secs):'<span class="sub">Voice note, not here yet</span>';
+  return h;
+}
+// Who read it (rule 4, rule 6): the people with a read of it, confirmed or opened. A handover counts its confirms.
+function readersOf(x){ const R=readsOf(x.id).filter(r=>x.kind==='handover'?r.act==='confirmed':true), seen={};
+  return R.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; }).map(r=>r.person); }
+// The ticks on your own message: a clock while it waits for signal, one when sent, two when someone has read it.
+function ticks(x){ if(waiting(x.id)) return '<span class="c-tk w" aria-label="Waiting for signal">'+ICO('clock')+'</span>';
+  return readersOf(x).length?'<span class="c-tk r" aria-label="Read">'+ICO('check-check')+'</span>':'<span class="c-tk" aria-label="Sent">'+ICO('check')+'</span>'; }
+// Who a notice reaches, and where each position stands (DEC-0348 rule 3). A position counts only once a phone is set up for
+// someone holding it; Waterline never says a position read what no phone opened.
+function ntStats(n){
+  const to=n.notice.to||[], all=to.indexOf('all')>=0, mg=to.indexOf('managers')>=0, mgPos=(chatById('managers')||{}).members||[];
+  const aud=positions().filter(p=>p.id!==n.pos&&(all||to.indexOf(p.department)>=0||(mg&&mgPos.indexOf(p.id)>=0)));
+  const phones=new Set(((st.msgs&&st.msgs.phones)||[]).map(p=>p.pos)), R=readsOf(n.id), by={};
+  R.forEach(r=>{ const k=nk(r.person); const x=by[k]||(by[k]={person:r.person,pos:r.pos,opened:'',confirmed:''}); if(r.act==='confirmed') x.confirmed=x.confirmed||r.taken; else x.opened=x.opened||r.taken; if(r.pos){ x.pos=r.pos; phones.add(r.pos); } });
+  const ppl=Object.keys(by).map(k=>by[k]), conf=ppl.filter(x=>x.confirmed), seen=new Set(ppl.map(x=>x.pos));
+  return {aud:aud,conf:conf,opened:ppl.filter(x=>!x.confirmed),
+    posConf:aud.filter(p=>conf.some(x=>x.pos===p.id)).length,
+    notOpened:aud.filter(p=>phones.has(p.id)&&!seen.has(p.id)),noPhone:aud.filter(p=>!phones.has(p.id)&&!seen.has(p.id)),
+    reminds:msgItems().filter(x=>x.kind==='notice'&&x.remind===n.id)};
+}
+const forMe=x=>!byMe(x)&&inChat(chatById(chatOf(x)));
+function faces(L){ const seen={}, U=L.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; }).slice(0,3);
+  return '<span class="c-fc" aria-hidden="true">'+U.map(r=>{ const c=deep(deptCol(personDept(r))); return '<span'+(c?' style="background:'+c+'"':'')+'>'+esc(initials(byMe(r)?st.walker:r.person))+'</span>'; }).join('')+'</span>'; }
+function repliesBtn(x){ const R=repliesOf(x.id);
+  return '<button class="c-rp" data-act="replies" data-id="'+esc(x.id)+'">'+(R.length?faces(R)+'<span>'+plural(R.length,'reply','replies')+'</span>':ICO('reply')+'<span>Reply</span>')+ICO('chevron-right')+'</button>'; }
+// One message in the thread. Yours on the right; another's on the left with their name (rule 4).
+function bubble(x){
+  if(x.kind==='chatphoto') return '<div class="c-sys">'+esc(whoSays(x))+' changed this chat’s photo</div>';
+  const mine=byMe(x), r=myRead(x.id), who='<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+(x.kind==='notice'?' · Notice':'')+'</div>';
+  let inner='', cls='c-b'+(mine?' c-me':'');
+  if(x.kind==='notice'){ const N=x.notice; cls+=' c-ann';
+    inner=(mine?'<div class="c-who" style="color:'+nameCol(x)+'">Notice</div>':who)+'<div class="c-h">'+ICO('megaphone')+'<span>'+esc(N.title)+'</span></div>'+(N.text?'<p>'+esc(N.text)+'</p>':'');
+    if(!mine&&N.confirm&&!r.confirmed&&forMe(x)) inner+='<button class="c-ack" data-act="ntAck" data-id="'+esc(x.id)+'"'+(st.busy?' disabled':'')+'>'+ICO('check')+'I Have Read It</button>';
+    else if(!mine&&r.confirmed) inner+='<div class="c-did">'+ICO('check')+'You confirmed it at <span class="n">'+esc(tShort(r.confirmed.taken))+'</span></div>';
+    if(mine&&N.confirm){ const S0=ntStats(x), left=S0.aud.length-S0.posConf, lr=S0.reminds.slice(-1)[0];
+      inner+='<div class="c-did"><span><b class="n">'+S0.posConf+'</b> of <b class="n">'+S0.aud.length+'</b> positions confirmed'+(lr?'. Reminded at <span class="n">'+esc(hm(lr.taken))+'</span>':'')+'</span></div>'
+        +(left&&!waiting(x.id)?'<button class="c-gh" data-act="ntRemind" data-id="'+esc(x.id)+'"'+(st.busy?' disabled':'')+'>Remind Those Not Confirmed</button>':''); }
+  } else if(x.kind==='handover'){
+    inner=(mine?'':who.replace(' · Notice',''))+hoCard(x);
+    if(!mine&&!r.confirmed&&forMe(x)) inner+='<button class="c-ack" data-act="hoAck" data-id="'+esc(x.id)+'"'+(st.busy?' disabled':'')+'>'+ICO('check')+'I Have Read It</button>';
+    else if(!mine&&r.confirmed) inner+='<div class="c-did">'+ICO('check')+'You read it at <span class="n">'+esc(tShort(r.confirmed.taken))+'</span></div>';
+  } else {
+    const t=String((x.msg&&x.msg.text)||'').trim();
+    inner=(mine?'':who)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'');
+  }
+  const rd=mine?readersOf(x):[];
+  inner+=repliesBtn(x)+'<div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div>'+(rd.length?'<div class="c-ft c-rb">Read by '+esc(rd.join(', '))+'</div>':'');
+  return '<div class="'+cls+'" data-sw="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+inner+'</div>';
+}
+// Day separators and the bubbles, oldest first.
+function threadHtml(L){ let last='', h='';
+  L.forEach(x=>{ const d=tDay(x.taken); if(d!==last){ h+='<div class="c-day">'+esc(d)+'</div>'; last=d; } h+=bubble(x); });
+  return h; }
+function vChat(){
+  const F=st.form, c=chatById(F.chat);
+  if(!c||!inChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
+  const L=chatMsgs(c.id);
+  let th=threadHtml(L);
+  if(!L.length&&!F.mode) th+='<div class="c-day">No messages yet</div>';
+  if(F.mode==='ho') th+=hoWriteCard(c); else if(F.mode==='nt') th+=ntWriteCard(c);
+  const foot=canPost(c)?composer(c,'Message',true):'<div class="c-only">Managers start messages here. Reply under one above.</div>';
+  return '<div class="body c-bd">'+chatHead(c,chatSub(c))+waitLine()+'<div class="c-th">'+th+'</div></div>'+foot;
+}
+// The bar at the foot (rule 4): attach, the words, the camera, and a microphone that becomes send.
+function composer(c,ph,attach){
+  const F=st.form, rec=!!st.hoRec, has=!!(String(F.ctext||'').trim()||F.photos.length||F.voice||F.mode);
+  const stg=F.photos.length?'<div class="c-stg">'+F.photos.map((p,i)=>'<span class="c-th1" style="background-image:url('+p.url+')"><button class="x" data-act="cPhotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></span>').join('')+'</div>':'';
+  const field=rec?'<span class="c-rec" role="status">'+ICO('mic')+'Recording. Press the square to stop.</span>'
+    :F.voice?'<span class="c-vo">'+voiceEl('p:cv',F.voice.secs)+'<button class="ib" data-act="cVoiceDel" aria-label="Remove the voice note">'+I.trash+'</button></span>'
+    :'<textarea id="ctext" rows="1" data-in="ctext" placeholder="'+esc(F.mode==='ho'?'Add a message with it':ph)+'" aria-label="'+esc(ph)+'">'+esc(F.ctext||'')+'</textarea>';
+  const clip=attach?'<button class="ib" data-act="cAttach" aria-label="Attach a handover, a notice or a photo">'+ICO('paperclip')+'</button>'
+    :'<label class="ib" aria-label="Add a photo from the phone">'+ICO('paperclip')+'<input type="file" accept="image/*" multiple data-file="cphoto"></label>';
+  const go=rec?['Stop recording',I.stop]:has?['Send',ICO('arrow-up')]:['Record a voice note',ICO('mic')];
+  return '<div class="c-foot">'+stg+'<div class="c-cb"><div class="c-fld">'+field+(rec||F.voice?'':clip+'<label class="ib" aria-label="Take a photo">'+ICO('camera')+'<input type="file" accept="image/*" capture="environment" data-file="cphoto"></label>')+'</div>'
+    +'<button class="c-go'+(rec?' on':'')+'" data-act="cGo" aria-label="'+go[0]+'"'+(st.busy?' disabled':'')+'>'+go[1]+'</button></div></div>';
+}
+// What Waterline adds to a handover, worked out from the site file as it is written (DEC-0348 rule 4): permits issued and not
+// closed on jobs in your groups, jobs started today and not done, jobs done today, and how many were already going.
+function hoAdds(){
+  const p=myOwnPos()||myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]), mine=j=>fm||gs.has(j.group), t0=dayStart();
+  const js=(SITE().jobs||[]).filter(j=>!j.round&&!j.planned&&mine(j)), permits=[];
+  js.forEach(j=>(j.permits||[]).filter(x=>x.state==='Active').forEach(x=>permits.push({id:x.id,type:x.type,job:j.id,no:j.no,title:j.title,by:x.by,at:x.at})));
+  const at=j=>{ const e=(j.thread||[]).filter(x=>x.kind==='Started'||x.kind==='Restarted').pop(); return e?Date.parse(e.at):NaN; };
+  const doing=js.filter(j=>j.state==='doing'), now=doing.filter(j=>at(j)>=t0);
+  return {permits:permits,started:now.map(j=>({id:j.id,no:j.no,title:j.title,where:jWhere(j),at:at(j)})),
+    doneToday:(SITE().doneToday||[]).filter(mine).map(j=>({id:j.id,no:j.no,title:j.title,where:j.place||''})),olderInProgress:doing.length-now.length};
+}
+// Writing a handover is the card filled in place (3-write): To the chat, the four parts, and what is open added with one tap.
+function hoWriteCard(c){
+  const F=st.form, A=F.adds, col=deep(deptCol(myDept())||'#156B87'), why=F.tried?'Write at least one part, or add what is open.':'';
+  const row=(k,i,ic,w,sub)=>{ const on=F.pick[k+i]; return '<div class="c-op"><span class="c-sq'+(ic.charAt(0)==='<'?'':' n')+'">'+ic+'</span><span class="c-ow"><span class="c-w">'+w+'</span><span class="sub">'+sub+'</span></span>'
+    +'<button class="c-tg'+(on?' on':'')+'" data-act="hoPick" data-k="'+k+i+'" aria-pressed="'+!!on+'" aria-label="'+(on?'Take this out of the handover':'Add this to the handover')+'">'+(on?ICO('check'):ICO('plus'))+'</button></div>'; };
+  let h='<div class="c-b c-me c-wr"><div class="c-card"><div class="c-cap" style="background:'+col+'">'+ICO('arrow-right-left')+'<span>Handover'+(myDept()?' from '+esc(myDept()):'')+'</span><button class="c-x" data-act="cModeOff" aria-label="Do not write the handover">'+I.close+'</button></div>'
+    +'<div class="c-to"><span>To</span>'+chatAv(c,'xs')+'<b>'+esc(c.name)+'</b><button class="lnk" data-act="chatPick" data-for="ho">Change</button></div>'
+    +CS.handoverParts.map(p=>'<label class="c-pt c-pw"><span class="c-k k-'+p.k+'">'+esc(p.l)+'</span><textarea id="ho-'+p.k+'" rows="1" data-in="p_'+p.k+'" placeholder="'+esc(p.hint)+'">'+esc(F['p_'+p.k]||'')+'</textarea></label>').join('');
+  A.permits.forEach((p,i)=>{ h+=row('pm',i,ICO('shield-check'),esc(p.type)+' permit open',esc([p.id,p.no?'Job '+p.no:''].filter(Boolean).join(' · '))); });
+  A.started.forEach((s0,i)=>{ h+=row('st',i,esc(s0.no||''),esc(s0.title||'Job '+s0.no),SH_DOING+'In progress'+(isNaN(s0.at)?'':', started <span class="n">'+esc(hm(s0.at))+'</span>')); });
+  if(A.doneToday.length) h+='<div class="c-op"><span class="c-ow"><span class="c-w">Done today</span><span class="sub">'+esc(A.doneToday.map(j=>j.title).join(', '))+'</span></span></div>';
+  if(F.photos.length||F.voice) h+='<div class="c-op"><span class="c-ow"><span class="sub">'+esc([F.photos.length?plural(F.photos.length,'photo'):'',F.voice?'a voice note':''].filter(Boolean).join(' and '))+' with it</span></span></div>';
+  return h+'</div><div class="c-ft">'+(why?'<span class="c-err" role="alert">'+esc(why)+'</span>':esc(c.id==='all'?'Everyone is alerted when you send it':c.name+' is alerted when you send it'))+'</div></div>';
+}
+// A notice is a message that asks to be read (rule 3; DEC-0348 rules 2 and 3), written in place the same way.
+function ntWriteCard(c){
+  const F=st.form, why=F.tried?'Write the notice first.':'';
+  return '<div class="c-b c-me c-wr c-ann"><div class="c-h">'+ICO('megaphone')+'<span>Notice to '+esc(c.name)+'</span><button class="c-x" data-act="cModeOff" aria-label="Do not write the notice">'+I.close+'</button></div>'
+    +'<label class="c-nf"><span class="fl">Title</span><input id="nt-title" data-in="ntTitle" value="'+esc(F.ntTitle||'')+'" placeholder="What it is about"></label>'
+    +'<label class="c-nf"><span class="fl">Notice</span><textarea id="nt-text" rows="3" data-in="ntText" placeholder="What everyone needs to know or do">'+esc(F.ntText||'')+'</textarea></label>'
+    +'<label class="keep c-nk"><input type="checkbox" data-in="confirm"'+(F.confirm?' checked':'')+'><span>Ask each person to confirm they have read it</span></label>'
+    +'<div class="c-ft">'+(why?'<span class="c-err" role="alert">'+esc(why)+'</span>':esc(F.confirm?'Their phones are alerted when you send it':'It is not alerted; it waits in the chat'))+'</div></div>';
+}
+
+// ── The replies under a message (b3) ──
+function vReplies(){
+  const F=st.form, x=msgItems().find(y=>y.id===F.replyTo), c=x&&chatById(chatOf(x));
+  if(!x||!c||!inChat(c)) return '<div class="body">'+formZone('msgs','Messages','No Longer Here','This message is older than the phone keeps.')+'</div>';
+  const kind=x.kind==='handover'?'handover':x.kind==='notice'?'notice':'message', R=repliesOf(x.id), rd=readersOf(x);
+  const words=x.kind==='handover'?hoFirst(x):x.kind==='notice'?x.notice.title:msgWords(x);
+  const q='<div class="c-b c-q"><div class="c-qt" style="--c:'+nameCol(x)+'"><b>'+esc(whoSays(x))+' · '+cap1(kind)+'</b>'+esc(words)+'</div>'+(rd.length?'<div class="c-ft">Read by '+esc(rd.join(', '))+'</div>':'')+'</div>';
+  const body=R.map(r=>{ const mine=byMe(r), t=String((r.msg&&r.msg.text)||'').trim();
+    return '<div class="c-b'+(mine?' c-me':'')+'"'+(mine?' data-rd="'+esc(r.id)+'"':'')+'>'+(mine?'':'<div class="c-who" style="color:'+nameCol(r)+'">'+esc(r.person||'Someone not named')+'</div>')+copyFiles(r)+(t?'<p>'+esc(t)+'</p>':'')
+      +'<div class="c-ft"><span class="n">'+esc(hm(r.taken))+'</span>'+(mine?ticks(r):'')+'</div></div>'; }).join('');
+  const sub='Replies to '+(byMe(x)?'your '+kind:(x.person||'someone')+'’s '+kind);
+  return '<div class="body c-bd">'+chatHead(c,sub,'chatBack')+waitLine()+'<div class="c-th">'+q+'<div class="c-day">'+(R.length?plural(R.length,'reply','replies'):'No replies yet')+'</div>'+body+'</div></div>'+(meP()?composer(c,'Reply',false):'');
+}
+
+// ── A chat's info (b6): its photo with Change, the two switches as the desk set them, who changed the photo, the members ──
+function vChatInfo(){
+  const c=chatById(st.form.chat); if(!c||!inChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
+  const sw=(on,lab,sub)=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(lab)+'</span><span class="sub">'+esc(sub)+'</span></span><span class="c-sw'+(on?' on':'')+'" role="switch" aria-checked="'+on+'" aria-disabled="true" aria-label="'+esc(lab)+'"><i></i></span></div>';
+  const fixed=c.id==='managers';
+  const mem=(c.members||[]).map(id=>positions().find(p=>p.id===id)).filter(Boolean), mg=new Set(((chatById('managers')||{}).members)||[]);
+  mem.sort((a,b)=>(mg.has(b.id)?1:0)-(mg.has(a.id)?1:0));
+  const ppl=mem.map(p=>{ const who=PEOPLE().find(x=>x.position===p.id); return {nm:who?who.name:p.title,sub:who?p.title+(mg.has(p.id)?' · manager':''):(mg.has(p.id)?'Manager':(p.department||''))}; });
+  const chg=msgItems().filter(x=>x.kind==='chatphoto'&&chatOf(x)===c.id).sort((a,b)=>Date.parse(b.taken)-Date.parse(a.taken))[0];
+  const by=chg?{by:whoSays(chg),at:chg.taken}:c.photoBy?{by:c.photoBy,at:c.photoAt}:null;
+  return '<div class="body c-info"><div class="c-hd c-ih"><div class="c-t">'+backBtn('chatBack')+'</div><div class="c-big">'+chatAv(c,'lg')
+    +(canPhoto(c)?'<label class="c-cam" aria-label="Change the photo">'+ICO('camera')+'<input type="file" accept="image/*" data-file="chatphoto"></label>':'')+'</div>'
+    +'<h1>'+esc(c.name)+'</h1><span class="c-s">'+esc(chatSub(c))+'</span>'+WAVE+'</div>'
+    +grp('This chat · set on the desk')+'<div class="list">'
+    +sw(c.membersPhoto!==false,'Members can change the photo',c.membersPhoto!==false?'Anyone in '+c.name+' can choose it':'Only managers can choose it')
+    +sw(fixed||!!c.membersPost,'Members can post',fixed?'Everyone in Managers posts':c.membersPost?'On: everyone starts messages':'Off: managers start messages, everyone replies')+'</div>'
+    +grp('Photo')+'<div class="list"><div class="c-sr"><span class="c-sm"><span class="c-sl">'+(by?'Changed by '+esc(by.by):'No photo yet')+'</span><span class="sub">'+(by?esc(day(by.at))+' at <span class="n">'+esc(hm(by.at))+'</span>. The earlier photo is kept.':'The chat shows its colour and initials.')+'</span></span>'+(by?chatAv(c,'sq'):'')+'</div></div>'
+    +grp('Members',ppl.length)+'<div class="list">'+ppl.map(p=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(p.nm)+'</span><span class="sub">'+esc(p.sub)+'</span></span></div>').join('')+'</div><div style="height:40px"></div></div>';
+}
+
+// ── Sheets: who read it (a long press on your own message), where to post, what to attach ──
+function readersSheet(){
+  const x=msgItems().find(y=>y.id===st.form.rid); if(!x) return '';
+  let b='';
+  if(x.kind==='notice'&&x.notice.confirm){ const S0=ntStats(x);
+    const ppl=(L,lab,f)=>L.map(p=>'<div class="r"><span class="m"><span class="w">'+esc(p.person)+'</span><span class="sub">'+esc(posTitle(p.pos)||'Position not given')+' · '+lab+' <span class="n">'+esc(tShort(p[f]))+'</span></span></span></div>').join('');
+    b=grp('Confirmed',S0.conf.length)+(S0.conf.length?'<div class="list">'+ppl(S0.conf,'confirmed','confirmed')+'</div>':'<div class="one">Nobody yet.</div>')
+      +(S0.opened.length?grp('Opened, not confirmed',S0.opened.length)+'<div class="list">'+ppl(S0.opened,'opened','opened')+'</div>':'')
+      +(S0.notOpened.length?grp('Not opened',S0.notOpened.length)+'<div class="one">'+esc(S0.notOpened.map(p=>p.title).join(', '))+'.</div>':'')
+      +(S0.noPhone.length?grp('No phone set up',S0.noPhone.length)+'<div class="one">'+esc(S0.noPhone.map(p=>p.title).join(', '))+'. They see it once a phone is set up for someone holding the position.</div>':'');
+  } else { const R=readsOf(x.id).filter(r=>x.kind==='handover'?r.act==='confirmed':true), seen={}, U=R.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; });
+    b=grp('Read by',U.length)+(U.length?'<div class="list">'+U.map(r=>'<div class="r"><span class="m"><span class="w">'+esc(r.person)+'</span><span class="sub">'+esc(posTitle(r.pos)||'Position not given')+' · <span class="n">'+esc(tShort(r.taken))+'</span></span></span></div>').join('')+'</div>':'<div class="one">'+(waiting(x.id)?'Waiting for signal to send.':'Nobody yet.')+'</div>'); }
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who read it"><div class="sh"><b>Who Read It</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'+b+'<div style="height:16px"></div></div>';
+}
+function chatPickSheet(){
+  const L=myChats().filter(canPost), why=st.form&&st.form.pickFor==='ho'?'Send the handover to':'New message in';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(why)+'"><div class="sh"><b>'+esc(why)+'</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<div class="list">'+L.map(c=>'<button class="c-ch c-pk" data-act="chatPicked" data-id="'+esc(c.id)+'">'+chatAv(c,'sm')+'<span class="c-m"><span class="c-nm">'+esc(c.name)+'</span></span></button>').join('')+'</div><div style="height:16px"></div></div>';
+}
+function attachSheet(){
+  const c=chatById(st.form.chat), o=(act,ic,w,sub)=>'<button class="verb" data-act="'+act+'">'+ic+'<span class="m"><span class="w">'+w+'</span><span class="sub">'+sub+'</span></span></button>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Attach"><div class="sh"><b>Attach</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +o('cModeHo',ICO('arrow-right-left'),'Handover','Who, what, where, why, and what is open')
+    +(isSender()?o('cModeNt',ICO('megaphone'),'Notice','Asks each person to confirm they have read it'):'')
+    +'<label class="verb">'+ICO('image')+'<span class="m"><span class="w">Photo from the Phone</span><span class="sub">Sent to '+esc(c?c.name:'the chat')+'</span></span><input type="file" accept="image/*" multiple data-file="cphoto" class="hide"></label>'
+    +'</div><div style="height:24px"></div></div>';
+}
+
+// ── Opening, reading, sending ──
+function chatForm(id,more){ return Object.assign({chat:id,ctext:'',photos:[],voice:null,mode:'',pick:{},adds:null,ntTitle:'',ntText:'',confirm:true},more||{}); }
+// What is on the screen is seen: its count clears at once (DEC-0355 rule 4), and a read is sent once for each message or
+// notice you had not opened, as a notice's was (DEC-0348). A handover is read with I Have Read It.
+async function chatSeen(){
+  const F=st.form; if(!F) return;
+  if(st.screen==='replies'){ seenAdd(repliesOf(F.replyTo).filter(r=>!byMe(r)).map(r=>r.id)); return; }
+  if(st.screen!=='chat') return;
+  const L=chatMsgs(F.chat).filter(x=>x.kind!=='chatphoto'&&!byMe(x)), S0=seenSet(), fresh=L.filter(x=>!S0.has(x.id)&&!myRead(x.id).opened);
+  seenAdd(fresh.map(x=>x.id));
+  const send1=fresh.filter(x=>x.kind!=='handover').slice(-20);
+  for(const x of send1){ if(st.screen!=='chat') break; await msgSend('msgread',{ref:x.id,act:'opened'},[],false); }
+}
+function chatBottom(){ requestAnimationFrame(()=>window.scrollTo(0,document.documentElement.scrollHeight)); }
+async function chatAfterSend(){ const F=st.form; F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url)); Object.assign(F,{ctext:'',photos:[],voice:null,mode:'',tried:false,pick:{},adds:null,ntTitle:'',ntText:''}); render(); chatBottom(); }
+async function chatSend(){
+  const F=st.form, c=chatById(F.chat); if(!c||st.busy) return;
+  const text=String(F.ctext||'').trim(), urls=F.photos.map(p=>p.url);
+  const files=F.photos.map(p=>({file:p.file})).concat(F.voice?[{file:new File([F.voice.blob],'voice',{type:F.voice.type})}]:[]);
+  const keep=r=>{ if(r&&urls.length){ _msgPics[r.id]=urls; F.photos=[]; } if(r&&F.voice) _sentAudio[r.id]={url:F.voice.url}; };
+  if(F.mode==='ho'){
+    const parts={}; CS.handoverParts.forEach(p=>{ const v=String(F['p_'+p.k]||'').trim(); if(v) parts[p.k]=v; });
+    const A=F.adds, adds={permits:A.permits.filter((p,i)=>F.pick['pm'+i]),started:A.started.filter((s,i)=>F.pick['st'+i]).map(s=>({id:s.id,no:s.no,title:s.title,where:s.where})),doneToday:A.doneToday,olderInProgress:A.olderInProgress};
+    if(!Object.keys(parts).length&&!adds.permits.length&&!adds.started.length&&!files.length&&!text){ F.tried=true; return render(); }
+    const r=await msgSend('handover',{handover:{chat:c.id,to:[c.id],dept:myDept(),parts:parts,adds:adds},secs:F.voice?F.voice.secs:null},files,false); if(!r) return;
+    keep(r); if(text) await msgSend('msg',{msg:{chat:c.id,text:text}},[],false);
+    return chatAfterSend();
+  }
+  if(F.mode==='nt'){
+    const title=String(F.ntTitle||'').trim(), body=String(F.ntText||'').trim();
+    if(!title&&!body){ F.tried=true; return render(); }
+    const r=await msgSend('notice',{notice:{chat:c.id,to:[c.id],title:title||body.split('\n')[0],text:title?body:body.split('\n').slice(1).join('\n').trim(),confirm:!!F.confirm}},[],false); if(!r) return;
+    if(text) await msgSend('msg',{msg:{chat:c.id,text:text}},[],false);
+    return chatAfterSend();
+  }
+  if(!text&&!files.length) return;
+  const r=st.screen==='replies'?await msgSend('reply',{ref:F.replyTo,msg:{chat:c.id,text:text},secs:F.voice?F.voice.secs:null},files,false)
+    :await msgSend('msg',{msg:{chat:c.id,text:text},secs:F.voice?F.voice.secs:null},files,false);
+  if(!r) return; keep(r); return chatAfterSend();
+}
+// A voice note: press the microphone to record, the square to stop, up to soundMaxSecs; then it waits beside Send.
+async function hoVoice(){
+  const F=st.form;
+  if(st.hoRec){ const R=st.hoRec; st.hoRec=null; clearTimeout(R.cap);
+    R.mr.onstop=()=>{ R.s.getTracks().forEach(t=>t.stop()); const mt=String(R.mr.mimeType||(R.chunks[0]&&R.chunks[0].type)||''), type=/mp4/.test(mt)?'audio/mp4':'audio/webm', blob=new Blob(R.chunks,{type:type});
+      if(F.voice&&F.voice.url) URL.revokeObjectURL(F.voice.url);
+      F.voice={blob:blob,type:type,secs:Math.min(CS.soundMaxSecs,Math.max(1,Math.round((Date.now()-R.t0)/1000))),url:URL.createObjectURL(blob)}; _sentAudio.cv={url:F.voice.url}; keepRender(); };
+    try{ R.mr.stop(); }catch(e){ R.mr.onstop(); } return; }
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder) return toast('This phone cannot record sound on this page. Write it instead.');
+  let s; try{ s=await navigator.mediaDevices.getUserMedia({audio:true}); }catch(e){ return toast('The microphone is not allowed for this page. Allow it in the phone’s settings, or write it.'); }
+  const type=['audio/mp4;codecs=mp4a.40.2','audio/mp4','audio/webm;codecs=opus','audio/webm'].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||'';
+  let mr; try{ mr=new MediaRecorder(s,type?{mimeType:type}:undefined); }catch(e){ s.getTracks().forEach(t=>t.stop()); return toast('This phone would not record sound. Write it instead.'); }
+  const R={mr:mr,s:s,chunks:[],t0:Date.now()}; mr.ondataavailable=ev=>{ if(ev.data&&ev.data.size) R.chunks.push(ev.data); }; mr.start(1000); st.hoRec=R;
+  R.cap=setTimeout(()=>{ if(st.hoRec===R) hoVoice(); },CS.soundMaxSecs*1000);
+  keepRender();
+}
+// A chat's new photo (rule 7): sent as its own record, shown here at once; every change is a line in the chat.
+async function chatPhoto(file){
+  const c=chatById(st.form.chat); if(!c||!file) return;
+  const r=await msgSend('chatphoto',{chat:c.id},[{file:file}],'Photo changed. Everyone in '+c.name+' sees it once the desk has filed it.');
+  if(r) _chatPic[c.id]=URL.createObjectURL(file); render();
+}
+const MSG_ACTS=['msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replies','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick'];
+async function msgAct(a,b){
+  const F=st.form;
+  if(a==='msgs'){ if(st.hoRec) await hoVoice(); st.form=null; st.sheet=false; return go('msgs'); }
+  if(a==='chatOpen'){ st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
+  if(a==='chatBack'){ const k=st.chatLast||(F&&F.chat); st.form=chatForm(typeof k==='string'?k:(k&&k.chat)); st.chatLast=null; go('chat'); return chatBottom(); }
+  if(a==='chatInfo'){ st.chatLast=F.chat; st.form={chat:F.chat}; return go('chatinfo'); }
+  if(a==='chatNew'||a==='chatPick'){ if(F) F.pickFor=a==='chatPick'?b.dataset.for:''; else st.form={pickFor:''}; st.sheet='chatpick'; render(); const v=app.querySelector('.sheet .c-pk'); if(v) v.focus(); return; }
+  if(a==='chatPicked'){ st.sheet=false; if(F&&F.pickFor==='ho'&&st.screen==='chat'){ F.chat=b.dataset.id; return render(); } st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
+  if(a==='replies'){ st.chatLast=F.chat; st.form=chatForm(F.chat,{replyTo:b.dataset.id}); go('replies'); chatBottom(); return chatSeen().then(render); }
+  if(a==='ntAck'||a==='hoAck'){ await msgSend('msgread',{ref:b.dataset.id,act:'confirmed'},[],a==='ntAck'?'Kept with the notice':'Kept with the handover'); return render(); }
+  if(a==='ntRemind'){ await msgSend('notice',{remind:b.dataset.id},[],'Reminder sent to those not confirmed'); return render(); }
+  if(a==='cAttach'){ st.sheet='cattach'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
+  if(a==='cModeHo'){ st.sheet=false; F.mode='ho'; F.adds=hoAdds(); F.pick={}; F.adds.permits.forEach((p,i)=>{ F.pick['pm'+i]=true; }); F.tried=false; render(); const t=document.getElementById('ho-who'); if(t) t.focus(); return; }
+  if(a==='cModeNt'){ st.sheet=false; F.mode='nt'; F.tried=false; render(); const t=document.getElementById('nt-title'); if(t) t.focus(); return; }
+  if(a==='cModeOff'){ F.mode=''; F.tried=false; return render(); }
+  if(a==='hoPick'){ F.pick[b.dataset.k]=!F.pick[b.dataset.k]; return render(); }
+  if(a==='cPhotoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
+  if(a==='cVoiceDel'){ if(F.voice&&F.voice.url) URL.revokeObjectURL(F.voice.url); F.voice=null; return render(); }
+  if(a==='cGo'){ if(st.hoRec) return hoVoice(); if(String(F.ctext||'').trim()||F.photos.length||F.voice||F.mode) return chatSend(); return hoVoice(); }
+}
+// Swipe a message to the right to reply under it (rule 4); a long press on your own shows who read it.
+let _sw=null;
+app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]'); _sw=b&&e.touches.length===1?{id:b.dataset.sw,x:e.touches[0].clientX,y:e.touches[0].clientY,el:b}:null; },{passive:true});
+app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
+app.addEventListener('touchend',e=>{ if(!_sw) return; const S0=_sw; _sw=null; S0.el.style.transform=''; const dx=(e.changedTouches[0]||{}).clientX-S0.x;
+  if(dx>64&&st.screen==='chat'){ st.chatLast=st.form.chat; st.form=chatForm(st.form.chat,{replyTo:S0.id}); go('replies'); chatBottom(); chatSeen().then(render); } });
+app.addEventListener('contextmenu',e=>{ const b=e.target.closest('[data-rd]'); if(!b||!st.form) return; e.preventDefault(); st.form.rid=b.dataset.rd; st.sheet='readers'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); });
 async function home(){
   st.outbox=await obAll().catch(()=>st.outbox);
   if(st.outbox.length&&navigator.onLine!==false) await sendKept();
@@ -3079,7 +3731,7 @@ async function boot(){
   if(!STORE){ st.form={link:''}; return go('setup'); }
   st.account=await STORE.account();
   bootStep(1,'Reading the site details');
-  await loadSite();
+  await Promise.all([loadSite(),loadMsgs()]); msgSentPrune();
   bootStep(2,'Checking what is waiting to send');
   const w=whoGet(); st.walker=w&&w.name||''; st.pos=w&&w.pos||''; st.pid=w&&w.pid||'';
   if(!st.walker||!st.pos) return go('who');
@@ -3087,7 +3739,7 @@ async function boot(){
   alertsKeep();
 }
 // For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
-if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh};
+if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh,msgRefresh:msgRefresh};
 // Keeps the page itself on the phone so it opens with no signal (DEC-0287 rule 3). Not in the check.
 if('serviceWorker' in navigator&&!testStore()&&location.protocol==='https:') navigator.serviceWorker.register('sw.js').catch(()=>{});
 boot();
