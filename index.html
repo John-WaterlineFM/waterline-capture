@@ -687,11 +687,12 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-wv{line-height:0;overflow:hidden;margin:8px -16px -16px}
 /* the same wave under every screen's navy block (21.1), a tile slid on the same 8 s loop */
 @keyframes wfmWaveTile{0%{background-position:0 0}100%{background-position:-600px 0}}
-.zone::after{content:'';display:block;height:22px;margin:16px -16px -24px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='w' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%233AABC6' stop-opacity='.22'/%3E%3Cstop offset='1' stop-color='%233AABC6' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0' fill='none' stroke='rgba(255,255,255,.35)' stroke-width='1.4'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0' fill='none' stroke='%233AABC6' stroke-width='1.2' opacity='.8'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0L1200 40L0 40Z' fill='url(%23w)'/%3E%3C/svg%3E") repeat-x 0 0/600px 22px;animation:wfmWaveTile 8s linear infinite}
-@media (prefers-reduced-motion:reduce){.zone::after{animation:none}}
+.body>.zone:first-child::after{content:'';display:block;height:22px;margin:16px -16px -24px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='w' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%233AABC6' stop-opacity='.22'/%3E%3Cstop offset='1' stop-color='%233AABC6' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0' fill='none' stroke='rgba(255,255,255,.35)' stroke-width='1.4'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0' fill='none' stroke='%233AABC6' stroke-width='1.2' opacity='.8'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0L1200 40L0 40Z' fill='url(%23w)'/%3E%3C/svg%3E") repeat-x 0 0/600px 22px;animation:wfmWaveTile 8s linear infinite}
+@media (prefers-reduced-motion:reduce){.body>.zone:first-child::after{animation:none}}
 .c-hd{background:var(--ink);color:#FFFFFF;padding:16px;position:sticky;top:0;z-index:3}
 .c-t{display:flex;align-items:center;gap:12px}
-.c-t>.ib{margin:-8px -4px -8px -12px;color:var(--accentOnInk)}
+.c-t>.ib{margin:-8px -8px -8px 0;color:var(--accentOnInk)}
+.c-t>.ib:first-child{margin:-8px -4px -8px -12px}
 .c-hd h1{font:800 20px/1.3 Sora;flex:1;color:#FFFFFF}
 .c-s{font-size:13px;line-height:1.4;color:rgba(255,255,255,.72)}
 .c-s b{color:#FFFFFF}
@@ -741,6 +742,8 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-ft{display:flex;justify-content:flex-end;align-items:center;gap:4px;font:500 11px Sora;color:var(--textMid);margin-top:4px}
 .c-ft svg{width:16px;height:16px}
 .c-rb{margin-top:0}
+.c-b.c-del p{display:flex;align-items:center;gap:6px;color:var(--textMid)}
+.c-b.c-del p svg{width:16px;height:16px;flex:none}
 .c-tk{display:inline-grid;color:var(--textMid)}
 .c-tk.r{color:var(--accentD)}
 .c-ann{border-left:4px solid var(--kWho)}
@@ -803,6 +806,9 @@ button.c-qt{display:block;width:100%;text-align:left;margin:2px 0 6px;min-height
 .cp-say{color:rgba(255,255,255,.72);font-size:14px}
 .cp-foot{width:100%;max-width:360px;margin-top:auto}
 .cp .btn{background:var(--accentOnInk);color:var(--zBtnText)}
+.qh{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.qh label{display:flex;align-items:center;gap:8px;font:600 12px Outfit}
+.qh input{width:auto;min-height:44px}
 /* writing in place (3-write): the card is the form */
 .c-wr{max-width:96%}
 .c-b.c-wr{background:var(--white)}
@@ -879,7 +885,7 @@ body.t-li .c-av.lg{border-color:var(--border)}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=ef0c5f2971"></script>
+<script src="shapes.js?v=8bd2704fe2"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1200,7 +1206,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet,readers:readersSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
@@ -1209,6 +1215,8 @@ function render(){
   after();
   if(st.sheet==='jdone') t5SigBind();
 }
+// A page's head: its title on navy with the desk's wave under it, as Messages has (DEC-0354 rule 4; John, 24 Oct 2026).
+function pageHead(title,right){ return '<div class="c-hd"><div class="c-t"><h1>'+esc(title)+'</h1>'+(right||'')+'</div>'+WAVE+'</div>'; }
 function head(eb,title,sub){ return '<div class="head"><div class="eb">'+esc(eb)+'</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</div>'; }
 // The start-up screen (DEC-0301; DEC-0303 rule 1): the site's logo large, where it is the brand; the Waterline mark as
 // its PNG (Design 3.1.2); the navy zone carries the progress, which moves as each real step finishes (Design 9.11, 12.1).
@@ -1277,8 +1285,7 @@ function vWho(){
         +'</select>'
       :'<div class="help" style="margin-top:0">The desk has not published its positions yet. Choose one once it has.</div>')
     +'</div><div style="height:24px"></div></div>'
-    +'<div class="foot"><label class="keep"><input type="checkbox" data-in="keep"'+(F.keep?' checked':'')+'><span>This is my own phone: remember me</span></label>'
-    +'<button class="btn p" data-act="whoSet">Continue</button>'
+    +'<div class="foot"><button class="btn p" data-act="whoSet">Continue</button>'
     +(F.tried&&!ok?'<div class="help err" role="alert" style="margin:0">Not yet: '+(String(F.name||'').trim()?'choose your position.':typed?'type your name.':'choose your name.')+'</div>':'')+'</div>';
 }
 // ── Time ─────────────────────────────────────────────────────────────────────────────────────
@@ -1410,7 +1417,7 @@ function whoSheet(){
 // categories, each with its count, opening in place the desk's way (DEC-0303 rule 6; DEC-0140).
 function vDue(){
   st.place='due';
-  let h='<div class="body"><div class="ttlr"><h1 class="ttl">Due</h1>'+whoBtn()+'</div>';
+  let h='<div class="body">'+pageHead('Due',whoBtn());
   if(!st.site) return h+'<div class="zone"><span class="eb">Nothing from the desk yet</span><p>Due shows once the desk has published the site details. You can still capture from the button below.</p></div>'+waitLine()+siteNote()+'<div style="height:96px"></div></div>'+navBar('due');
   const D=dueFor(), s=SITE(), H=s.health||{};
   const nowW=D.fm?null:D.today.find(x=>x.t==='walk'&&x.now&&!sentIn(x.r.id,x.from,x.to)), nextW=D.fm||nowW?null:D.today.find(x=>x.t==='walk'&&!x.now);
@@ -1578,7 +1585,7 @@ function vJobs(){
   const gids=fm?(SITE().groups||[]).map(g=>g.id):(p&&p.groups)||[];
   const open=gids.filter(g=>all.some(j=>j.group===g)).sort((a,b)=>all.filter(j=>j.group===b).length-all.filter(j=>j.group===a).length), quiet=gids.filter(g=>open.indexOf(g)<0);
   const oldest=oldestDays(all);
-  let h='<div class="body"><h1 class="ttl">Jobs</h1><div class="zone"><span class="eb">'+(fm?'Every group':'Your groups')+'</span>'
+  let h='<div class="body">'+pageHead('Jobs')+'<div class="zone"><span class="eb">'+(fm?'Every group':'Your groups')+'</span>'
     +'<div class="row1"><span class="num n">'+all.length+'</span><span class="what">open</span></div>'
     +'<p>'+(all.length?'<b class="n">'+nb.length+'</b> with nobody on them. The oldest was raised <b class="n">'+oldest+'</b> '+(oldest===1?'day':'days')+' ago.':(p&&!fm&&!gids.length?'No job groups are set for your position on the desk’s Organisation Structure.':'Nothing open in your groups.'))+'</p>'
     +'<div class="sw" role="tablist">'+[['groups','Groups',open.length],['mine','Mine',my.length]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
@@ -2334,6 +2341,9 @@ async function alertsTest(){
   catch(e){ AL.err=String(e&&e.message||e); if(e&&(e.code==='gone'||e.code==='bad')) ls.del('wl_alerts'); }
   finally{ AL.busy=false; render(); }
 }
+const QUIET0={on:false,from:'22:00',to:'07:00'};
+const quiet=()=>Object.assign({},QUIET0,ls.get('wl_quiet',null)||{});
+function quietSave(q){ ls.set('wl_quiet',q); if(window.caches) caches.open('waterline-settings').then(c=>c.put('quiet',new Response(JSON.stringify(q)))).catch(()=>{}); }
 function alertsGroup(){
   const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), on=!!a&&!cant&&Notification.permission==='granted';
   const v=cant?esc(cant)
@@ -2343,19 +2353,20 @@ function alertsGroup(){
     :'Off<span class="sub">A permit that waits for you, a notice to confirm and a handover sent to you cannot reach you while the app is closed.</span>';
   const btn=cant||Notification.permission==='denied'||(!on&&!me)?'':on?'<button class="btn g" data-act="alertsTest"'+(AL.busy?' disabled':'')+'>'+I.send+'Send Me a Test Alert</button>'
     :'<button class="btn g" data-act="alertsOn"'+(AL.busy?' disabled':'')+'>'+(AL.busy?'Turning On':'Turn On Alerts')+'</button>';
-  return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">This phone</span><span class="v">'+v+'</span></div></div>'
+  const q=quiet(), qr=on?'<div class="f"><span class="k">Out of hours</span><span class="v"><label class="keep"><input type="checkbox" data-in="quietOn"'+(q.on?' checked':'')+'><span>Quiet: no sound or vibration</span></label>'
+      +(q.on?'<span class="qh"><label>From <input type="time" data-in="quietFrom" value="'+esc(q.from)+'"></label><label>To <input type="time" data-in="quietTo" value="'+esc(q.to)+'"></label></span><span class="sub">Alerts still arrive and wait on the lock screen.</span>':'')+'</span></div>':'';
+  return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">Alerts</span><span class="v">'+v+'</span></div>'+qr+'</div>'
     +(btn||AL.err||AL.said?'<div style="padding:12px 16px 0">'+btn+(AL.err?'<div class="help err" role="alert">'+esc(AL.err)+'</div>':'')+(AL.said?'<div class="help" role="status">'+esc(AL.said)+'</div>':'')+'</div>':'');
 }
 // Settings: the site's logo large (DEC-0303 rule 1), the theme for everyone (rule 4), and who you are, here only (DEC-0302).
 function vMe(){
-  st.place='me';
+  st.place='me'; st.form=st.form||{};
   const p=myPos(), s=SITE(), th=theme();
   const f=(k,v,act)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+(act?'<button class="lnk" data-act="'+act+'">Change</button>':'')+'</div>';
-  return '<div class="body"><h1 class="ttl">Settings</h1><div class="zone logo"><span class="tile"><img src="push/icon-512.png" alt="'+esc(s.site||'The site')+'"></span></div>'
+  return '<div class="body">'+pageHead('Settings')+'<div class="zone logo"><span class="tile"><img src="push/icon-512.png" alt="'+esc(s.site||'The site')+'"></span></div>'
     +'<div class="grp">Theme</div><div class="seg">'+[['wl','Waterline'],['li','Light'],['ni','Night']].map(x=>'<button class="'+(th===x[0]?'on':'')+'" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(th===x[0])+'">'+(th===x[0]?I.tick:'')+x[1]+'</button>').join('')+'</div>'
     +'<div class="grp">You</div><div class="list">'+f('Name',esc(st.walker),'whoAgain')
     +f('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen')
-    +f('This phone',ls.get('wl_who',null)?'Your own: it remembers you':'Asks each time it is opened')
 +'</div>'
     +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published)))+'<span class="sub">Published <span class="n">'+esc(when(s.published))+'</span></span>':'Not published yet')
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
@@ -3079,7 +3090,9 @@ app.addEventListener('click',async e=>{
   if(a==='photoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
   if(a==='setupLink'){ const l=String(F.link||'').trim(); if(!l){ F.bad='empty'; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; } if(takeSetupLink(l)) return location.reload(); F.bad=true; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; }
   if(a==='whoSet'){ const nm=String(F.name||'').trim(); if(!nm||!F.pos){ F.tried=true; return render(); }
-    st.walker=nm; st.pos=F.pos; st.pid=F.pid&&F.pid!=='__other'?F.pid:''; whoPut({name:nm,pos:F.pos,pid:st.pid,keep:!!F.keep}); st.form=null; home(); return alertsKeep(); }
+    st.walker=nm; st.pos=F.pos; st.pid=F.pid&&F.pid!=='__other'?F.pid:''; whoPut({name:nm,pos:F.pos,pid:st.pid,keep:true}); st.form=null;
+    const ask=!alertsCan()&&window.Notification&&Notification.permission==='default'&&meP();
+    if(ask) alertsOn(); home(); return ask?null:alertsKeep(); }
   if(a==='whoAgain'){ st.form=null; return go('who'); }
   if(a==='linkTags'){ st.link=null; return go('tags'); }
   if(a==='linkPick'){ st.link={point:b.dataset.id}; return render(); }
@@ -3213,6 +3226,7 @@ function special(k,el){
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
   if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
+  if(k==='quietOn'||k==='quietFrom'||k==='quietTo'){ const q=quiet(); if(k==='quietOn') q.on=el.checked; else if(/^\d\d:\d\d$/.test(el.value)) q[k==='quietFrom'?'from':'to']=el.value; quietSave(q); if(k==='quietOn') render(); return true; }
   if(k==='pid'){ F.pid=el.value; const p=PEOPLE().find(x=>x.id===el.value);
     if(p){ F.name=p.name; if(positions().some(x=>x.id===p.position)) F.pos=p.position; } else if(el.value==='__other'||!el.value) F.name='';
     render(); return true; }
@@ -3322,7 +3336,18 @@ async function msgRefresh(){
 const msgSent=()=>ls.get('wl_msgSent',[]).filter(r=>r&&Date.now()-Date.parse(r.taken)<MS.keepDays*864e5);
 function msgSentKeep(rec){ const L=msgSent().filter(r=>r.id!==rec.id); L.push(rec); ls.set('wl_msgSent',L); _mi=null; }
 function msgSentPrune(){ const ids=new Set(((st.msgs&&st.msgs.items)||[]).map(x=>x.id)); ls.set('wl_msgSent',msgSent().filter(r=>!ids.has(r.id))); _mi=null; }
-function msgItems(){ if(_mi) return _mi; const ix=(st.msgs&&st.msgs.items)||[], ids=new Set(ix.map(x=>x.id)); return _mi=ix.concat(msgSent().filter(r=>!ids.has(r.id))); }
+function msgItems(){ if(_mi) return _mi; const ix=(st.msgs&&st.msgs.items)||[], ids=new Set(ix.map(x=>x.id)); return _mi=msgApply(ix.concat(msgSent().filter(r=>!ids.has(r.id)))); }
+// A writer's edit or delete of their own message (DEC-0353 rule 5, DEC-0354 rule 4): the newest edit's words show, marked
+// Edited; a delete leaves "This message was deleted" in its place, for everyone. A change by anyone else is ignored, as the
+// desk refuses it. The original stays in the record; only what this page shows changes.
+function msgApply(L){ const ch={};
+  L.forEach(x=>{ if(x.kind==='msgchange'&&x.ref) (ch[x.ref]=ch[x.ref]||[]).push(x); });
+  if(!Object.keys(ch).length) return L;
+  return L.map(x=>{ const C=(ch[x.id]||[]).filter(c=>nk(c.person)===nk(x.person)).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken)); if(!C.length) return x;
+    const del=C.find(c=>c.act==='delete'), ed=C.filter(c=>c.act==='edit'&&c.msg&&(x.kind==='msg'||x.kind==='reply')).pop(), y=Object.assign({},x);
+    if(ed){ y.msg=Object.assign({},x.msg,{text:String(ed.msg.text||'')}); y.edited=ed.taken; }
+    if(del) y.deleted=del.taken;
+    return y; }); }
 const myPosId=()=>{ const p=myOwnPos()||myPos(); return p&&!p.dept?p.id:''; };
 const myDept=()=>{ const p=myOwnPos()||myPos(); return p?String(p.department||''):''; };
 const byMe=r=>!!(r&&st.walker&&nk(r.person)===nk(st.walker));
@@ -3386,7 +3411,7 @@ const repliesOf=id=>msgItems().filter(x=>x.kind==='reply'&&x.ref===id).sort((a,b
 const seenSet=()=>new Set(ls.get('wl_seen',[]));
 function seenAdd(ids){ if(!ids.length) return; const s=ls.get('wl_seen',[]); ids.forEach(i=>{ if(s.indexOf(i)<0) s.push(i); }); ls.set('wl_seen',s.slice(-3000)); }
 function unreadIn(id,S0){ S0=S0||seenSet(); const out=[];
-  chatMsgs(id).forEach(x=>{ if(x.kind!=='chatphoto'&&!byMe(x)&&!S0.has(x.id)&&!myRead(x.id).opened) out.push(x); });
+  chatMsgs(id).forEach(x=>{ if(x.kind!=='chatphoto'&&!x.deleted&&!byMe(x)&&!S0.has(x.id)&&!myRead(x.id).opened) out.push(x); });
   return out; }
 function unread(){ const S0=seenSet(); return myChats().reduce((L,c)=>L.concat(unreadIn(c.id,S0)),[]); }
 
@@ -3430,6 +3455,7 @@ function preview(x){
   if(!x) return 'No messages yet';
   if(x.kind==='reply') return whoSays(x)+' replied: '+msgWords(x);
   if(x.kind==='chatphoto') return whoSays(x)+' changed this chat’s photo';
+  if(x.deleted) return whoSays(x)+': '+CS.msgDeleted;
   return whoSays(x)+': '+(x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x));
 }
 function chatLast(c){ const L=chatMsgs(c.id); return L[L.length-1]||null; }
@@ -3510,16 +3536,19 @@ function faces(L){ const seen={}, U=L.filter(r=>{ const k=nk(r.person); if(seen[
   return '<span class="c-fc" aria-hidden="true">'+U.map(r=>{ const c=deep(deptCol(personDept(r))); return '<span'+(c?' style="background:'+c+'"':'')+'>'+esc(initials(byMe(r)?st.walker:r.person))+'</span>'; }).join('')+'</span>'; }
 function repliesBtn(x){ return '<button class="c-rp" data-act="replyTo" data-id="'+esc(x.id)+'">'+ICO('reply')+'<span>Reply</span></button>'; }
 // The message a reply answers, quoted at its top; pressing the quote finds the message in the conversation.
-const msgTitle=x=>x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x);
+const msgTitle=x=>x.deleted?CS.msgDeleted:x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x);
 function quoteOf(id,act){ const x=msgItems().find(y=>y.id===id);
   const inner='<b>'+esc(x?whoSays(x):'A message')+'</b>'+esc(x?msgTitle(x):'Not on this phone any more');
   return act?'<button class="c-qt" style="--c:'+(x?nameCol(x):'var(--textMid)')+'" data-act="jumpTo" data-id="'+esc(id)+'">'+inner+'</button>':'<div class="c-qt" style="--c:'+(x?nameCol(x):'var(--textMid)')+'">'+inner+'</div>'; }
 // One message in the thread. Yours on the right; another's on the left with their name (rule 4).
 function bubble(x){
   if(x.kind==='chatphoto') return '<div class="c-sys">'+esc(whoSays(x))+' changed this chat’s photo</div>';
+  if(x.deleted){ const mine=byMe(x);
+    return '<div class="c-b c-del'+(mine?' c-me':'')+'" data-mid="'+esc(x.id)+'">'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+'</div>')
+      +'<p>'+ICO('ban')+esc(CS.msgDeleted)+'</p><div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span></div></div>'; }
   if(x.kind==='reply'){ const mine=byMe(x), t=String((x.msg&&x.msg.text)||'').trim();
     return '<div class="c-b'+(mine?' c-me':'')+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+'</div>')
-      +quoteOf(x.ref,true)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'')+'<div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div></div>'; }
+      +quoteOf(x.ref,true)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'')+'<div class="c-ft">'+(x.edited?'<span>Edited</span>':'')+'<span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div></div>'; }
   const mine=byMe(x), r=myRead(x.id), who='<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+(x.kind==='notice'?' · Notice':'')+'</div>';
   let inner='', cls='c-b'+(mine?' c-me':'');
   if(x.kind==='notice'){ const N=x.notice; cls+=' c-ann';
@@ -3538,7 +3567,7 @@ function bubble(x){
     inner=(mine?'':who)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'');
   }
   const rd=mine?readersOf(x):[];
-  inner+=repliesBtn(x)+'<div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div>'+(rd.length?'<div class="c-ft c-rb">Read by '+esc(rd.join(', '))+'</div>':'');
+  inner+=repliesBtn(x)+'<div class="c-ft">'+(x.edited?'<span>Edited</span>':'')+'<span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div>'+(rd.length?'<div class="c-ft c-rb">Read by '+esc(rd.join(', '))+'</div>':'');
   return '<div class="'+cls+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+inner+'</div>';
 }
 // Day separators and the bubbles, oldest first.
@@ -3638,6 +3667,27 @@ function readersSheet(){
     b=grp('Read by',U.length)+(U.length?'<div class="list">'+U.map(r=>'<div class="r"><span class="m"><span class="w">'+esc(r.person)+'</span><span class="sub">'+esc(posTitle(r.pos)||'Position not given')+' · <span class="n">'+esc(tShort(r.taken))+'</span></span></span></div>').join('')+'</div>':'<div class="one">'+(waiting(x.id)?'Waiting for signal to send.':'Nobody yet.')+'</div>'); }
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who read it"><div class="sh"><b>Who Read It</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'+b+'<div style="height:16px"></div></div>';
 }
+// A long press on your own message (John, 24 Oct 2026): Edit, Delete and Who Read It. Only a message's or a reply's words
+// are edited, and not a voice note's; a notice or a handover is deleted and sent again. Sent to the wrong chat: delete it
+// and send it in the right one.
+const cMine=()=>{ const x=msgItems().find(y=>y.id===(st.form&&st.form.rid)); return x&&byMe(x)&&!x.deleted?x:null; };
+const cWords=x=>(x.kind==='msg'||x.kind==='reply')&&!auOf(x);
+function cMsgSheet(){
+  const x=cMine(); if(!x) return '';
+  const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'">'+ic+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Your message"><div class="sh"><b>Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +(cWords(x)?v('cEdit',I.edit,'Edit','Change its words'):'')
+    +v('cDel',I.trash,'Delete',x.kind==='msg'||x.kind==='reply'?'Sent to the wrong chat? Delete it, then send it in the right one':'To change it, delete it and send it again')
+    +v('cReaders',ICO('check-check'),'Who Read It','')+'</div><div style="height:24px"></div></div>'; }
+function cEditSheet(){ const F=st.form;
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Edit your message"><div class="sh"><b>Edit Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<div class="field"><label for="etext">Its words</label><textarea id="etext" data-in="etext">'+esc(F.etext||'')+'</textarea><div class="help">The chat shows it as edited. The desk keeps what it said before.</div></div>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="cEditSend"'+(st.busy?' disabled':'')+'>'+I.send+'Save the Change</button>'
+    +(F.eerr?'<div class="help err" role="alert" style="margin:0">'+esc(F.eerr)+'</div>':'')+'</div></div>'; }
+function cDelSheet(){ const x=cMine(), ask=x&&(x.kind==='notice'||x.kind==='handover');
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Delete your message"><div class="sh"><b>Delete Your Message?</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<p class="para" style="padding-top:8px">Everyone in the chat sees “'+esc(CS.msgDeleted)+'” in its place'+(ask?', and nobody is asked to confirm it any more':'')+'. The desk keeps what it said, who deleted it and when.</p>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="cDelSend"'+(st.busy?' disabled':'')+'>'+I.trash+'Delete the Message</button><button class="btn g" data-act="sheetClose">Keep It</button></div></div>'; }
 function chatPickSheet(){
   const L=myChats().filter(canPost), why=st.form&&st.form.pickFor==='ho'?'Send the handover to':'New message in';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(why)+'"><div class="sh"><b>'+esc(why)+'</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
@@ -3659,7 +3709,7 @@ function chatForm(id,more){ return Object.assign({chat:id,ctext:'',photos:[],voi
 async function chatSeen(){
   const F=st.form; if(!F) return;
   if(st.screen!=='chat') return;
-  const L=chatMsgs(F.chat).filter(x=>x.kind!=='chatphoto'&&!byMe(x)), S0=seenSet(), fresh=L.filter(x=>!S0.has(x.id)&&!myRead(x.id).opened);
+  const L=chatMsgs(F.chat).filter(x=>x.kind!=='chatphoto'&&!x.deleted&&!byMe(x)), S0=seenSet(), fresh=L.filter(x=>!S0.has(x.id)&&!myRead(x.id).opened);
   seenAdd(fresh.map(x=>x.id));
   const send1=fresh.filter(x=>x.kind==='msg'||x.kind==='notice').slice(-20);
   for(const x of send1){ if(st.screen!=='chat') break; const r=await msgSend('msgread',{ref:x.id,act:'opened'},[],false); if(r) await st.sent[r.id]; }
@@ -3743,7 +3793,7 @@ app.addEventListener('pointerdown',e=>{ if(!st.crop||!e.target.closest('.cp-st')
 app.addEventListener('pointermove',e=>{ if(!_cpd||!st.crop) return; st.crop.x=_cpd.ox+e.clientX-_cpd.x; st.crop.y=_cpd.oy+e.clientY-_cpd.y; cropPlace(); });
 app.addEventListener('pointerup',()=>{ _cpd=null; });
 app.addEventListener('input',e=>{ if(!st.crop||!e.target.hasAttribute('data-cz')) return; st.crop.z=Number(e.target.value)||1; cropPlace(); });
-const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick'];
+const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick','cEdit','cEditSend','cDel','cDelSend','cReaders'];
 async function msgAct(a,b){
   const F=st.form;
   if(a==='cropOff'){ URL.revokeObjectURL(st.crop.url); st.crop=null; return render(); }
@@ -3766,15 +3816,29 @@ async function msgAct(a,b){
   if(a==='hoPick'){ F.pick[b.dataset.k]=!F.pick[b.dataset.k]; return render(); }
   if(a==='cPhotoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
   if(a==='cVoiceDel'){ if(F.voice&&F.voice.url) URL.revokeObjectURL(F.voice.url); F.voice=null; return render(); }
+  if(a==='cReaders'){ st.sheet='readers'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); return; }
+  if(a==='cEdit'){ const x=cMine(); if(!x) return; F.etext=String((x.msg&&x.msg.text)||''); F.eerr=''; st.sheet='cedit'; render(); const t=document.getElementById('etext'); if(t) t.focus(); return; }
+  if(a==='cEditSend'){ const x=cMine(); if(!x) return; const t=String(F.etext||'').trim();
+    if(!t&&!picsOf(x).length){ F.eerr='Write something, or delete the message instead.'; return render(); }
+    st.sheet=false; if(t===String((x.msg&&x.msg.text)||'').trim()) return render();
+    await msgSend('msgchange',{ref:x.id,act:'edit',chat:chatOf(x),msg:{text:t}},[],'Edited. The desk keeps what it said before.'); return render(); }
+  if(a==='cDel'){ st.sheet='cdel'; render(); const v=app.querySelector('.sheet .btn.p'); if(v) v.focus(); return; }
+  if(a==='cDelSend'){ const x=cMine(); if(!x) return; st.sheet=false; await msgSend('msgchange',{ref:x.id,act:'delete',chat:chatOf(x)},[],'Deleted. The desk keeps what it said.'); return render(); }
   if(a==='cGo'){ if(st.hoRec) return hoVoice(); if(String(F.ctext||'').trim()||F.photos.length||F.voice||F.mode) return chatSend(); return hoVoice(); }
 }
-// Swipe a message to the right to reply under it (rule 4); a long press on your own shows who read it.
+// Swipe a message to the right to reply under it (rule 4); a long press on your own opens Edit, Delete and Who Read It.
 let _sw=null;
 app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]'); _sw=b&&e.touches.length===1?{id:b.dataset.sw,x:e.touches[0].clientX,y:e.touches[0].clientY,el:b}:null; },{passive:true});
 app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
 app.addEventListener('touchend',e=>{ if(!_sw) return; const S0=_sw; _sw=null; S0.el.style.transform=''; const dx=(e.changedTouches[0]||{}).clientX-S0.x;
   if(dx>64&&st.screen==='chat'){ st.form.replyTo=S0.id; st.form.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); } });
-app.addEventListener('contextmenu',e=>{ const b=e.target.closest('[data-rd]'); if(!b||!st.form) return; e.preventDefault(); st.form.rid=b.dataset.rd; st.sheet='readers'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); });
+let _clp=null;
+const cmOpen=id=>{ if(st.sheet||!st.form) return; _lpAt=Date.now(); st.form.rid=id; st.sheet='cmsg'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); };
+app.addEventListener('pointerdown',e=>{ const b=e.target.closest('.c-b[data-rd]'); if(!b||e.button>0||e.target.closest('button,audio,input,textarea,label')) return; const id=b.dataset.rd;
+  _clp={x:e.clientX,y:e.clientY,t:setTimeout(()=>{ _clp=null; cmOpen(id); },500)}; });
+app.addEventListener('pointermove',e=>{ if(_clp&&Math.hypot(e.clientX-_clp.x,e.clientY-_clp.y)>10){ clearTimeout(_clp.t); _clp=null; } });
+['pointerup','pointercancel'].forEach(t=>app.addEventListener(t,()=>{ if(_clp){ clearTimeout(_clp.t); _clp=null; } }));
+app.addEventListener('contextmenu',e=>{ const b=e.target.closest('[data-rd]'); if(!b||!st.form) return; e.preventDefault(); if(_clp){ clearTimeout(_clp.t); _clp=null; } cmOpen(b.dataset.rd); });
 async function home(){
   st.outbox=await obAll().catch(()=>st.outbox);
   if(st.outbox.length&&navigator.onLine!==false) await sendKept();
