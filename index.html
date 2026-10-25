@@ -262,7 +262,6 @@ img.pl{object-fit:cover;padding:0}
 .gr .w{font:700 15px/1.4 Sora}
 .gr .cts{display:flex;gap:16px;margin-top:4px;font-size:12px;color:var(--textMid)}
 .gr .cts span{display:inline-flex;align-items:center;gap:4px}
-.pl.q span{font:600 12px/1.25 'DM Sans';display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .tp.q span{font:600 15px/1.3 'DM Sans';color:var(--text);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .gcs{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 16px}
 .gc{display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left;padding:14px;border-radius:12px;background:var(--white);border:1px solid var(--border);min-height:132px;min-width:0}
@@ -845,9 +844,21 @@ button.c-qt{display:block;width:100%;text-align:left;margin:2px 0 6px;min-height
 .cp-say{color:rgba(255,255,255,.72);font-size:14px}
 .cp-foot{width:100%;max-width:360px;margin-top:auto}
 .cp .btn{background:var(--accentOnInk);color:var(--zBtnText)}
-.qh{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
-.qh label{display:flex;align-items:center;gap:8px;font:600 12px Outfit}
-.qh input{width:auto;min-height:44px}
+/* Quiet hours (DEC-0371): a switch, From and To with minus and plus, a strip of the day with the quiet span shaded. */
+.qx-row{display:flex;align-items:center;gap:12px;min-height:64px;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--white);width:100%;text-align:left}
+.qx-k{flex:1;font:500 15px 'DM Sans',sans-serif;color:var(--text)}
+.qx-k .sub{display:block;font-size:13px;color:var(--textMid)}
+.qx-st{display:flex;align-items:center;gap:4px}
+.qx-st button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--accentD);color:var(--accentD);display:grid;place-items:center}
+.qx-st button svg{width:20px;height:20px}
+.qx-st b{font:800 20px Sora;color:var(--text);min-width:72px;text-align:center}
+.qx-strip{padding:12px 16px 14px;background:var(--white);border-bottom:1px solid var(--border)}
+.qx-bar{position:relative;height:28px;border-radius:8px;background:var(--stone);overflow:hidden}
+.qx-bar i{position:absolute;top:0;bottom:0;background:var(--ink)}
+body.t-ni .qx-bar i{background:var(--textMid)}
+.qx-ax{display:flex;justify-content:space-between;font:500 12px Sora;color:var(--textMid);margin-top:4px}
+.qx-say{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--textMid);margin-top:8px}
+.qx-say svg{width:18px;height:18px}
 /* writing in place (3-write): the card is the form */
 .c-wr{max-width:96%}
 .c-b.c-wr{background:var(--white)}
@@ -1030,7 +1041,7 @@ const LUCIDE={'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L
   'clock':'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
   'file-check':'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/>',
   'gauge':'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
-  'plus':'<path d="M5 12h14"/><path d="M12 5v14"/>',
+  'plus':'<path d="M5 12h14"/><path d="M12 5v14"/>','minus':'<path d="M5 12h14"/>','moon':'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
   'route':'<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
   'scan-line':'<path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
   'settings':'<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
@@ -1627,7 +1638,8 @@ function jSquare(j){
   if(l&&/^\d+$/.test(l.name)) return '<span class="pl" aria-hidden="true"><b class="n">'+esc(l.name)+'</b></span>';
   if(l) return '<span class="pl" aria-hidden="true"><span>'+esc(l.name)+'</span></span>';
   if(j.place) return '<span class="pl" aria-hidden="true"><span>'+esc(j.place)+'</span></span>';
-  return '<span class="pl q" aria-hidden="true"><span>“'+esc(j.title||'Job')+'”</span></span>';
+  // No photo and no place: the title beside the square is the job's words, so the square is not filled twice (Design 4.11).
+  return '<span class="pl" aria-hidden="true"></span>';
 }
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
@@ -1659,7 +1671,7 @@ function jobTile(j,showGroup){ const l=LOC(j.loc), ag=jAgeN(j); let top;
   if((j.photos||[]).length&&_ph[j.photos[0]]&&!/^(loading|missing)$/.test(_ph[j.photos[0]])) top='<img class="tp" src="'+_ph[j.photos[0]]+'" alt="Photo of '+esc(j.title||'the job')+'">';
   else if(l&&/^\d+$/.test(l.name)) top='<span class="tp"><b class="n">'+esc(l.name)+'</b></span>';
   else top='<span class="tp'+(l||j.place?'':' q')+'">'+(l?'<span>'+esc(l.name)+'</span>':j.place?'<span>'+esc(j.place)+'</span>':'<span>“'+esc(j.title||'Job')+'”</span>')+'</span>';
-  return '<button class="cb tl'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
+  return '<button class="cb tl'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+(top.indexOf(' q"')>0?'':'<span class="w">'+esc(j.title||'Job')+'</span>')+'<span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
 function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="list">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
 function jobRow(j){ const a=jLate(j);
   return '<button class="ra'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'sm')+'<span class="m">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+' · raised '+esc(jAge(j))+'</span>'+(holders(j).length?'<span class="sub">'+esc(holdersSay(j))+'</span>':'')
@@ -1700,7 +1712,7 @@ function vJobs(){
         +'<span class="cs" aria-hidden="true"><span>'+SMK('todo')+(L.length-d)+'</span><span>'+SMK('doing')+d+'</span><span>'+SMK('done')+dn+'</span></span></button>'; }).join('')+'</div>'
       :'<p class="para">Jobs show here once the desk has job groups for your position.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
-  h+=all.length?lh('Every job',all.length)+jl(jSortL(all),true):'<p class="para">Jobs show here once the desk has open jobs in your position’s groups.</p>';
+  h+=all.length?lh('Every job')+jl(jSortL(all),true):'<p class="para">Jobs show here once the desk has open jobs in your position’s groups.</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('jobs');
 }
 // A group opened: its name and its counts in the zone (21.1), the counts are the filter (DEC-0327 rule 2), its jobs below.
@@ -2504,6 +2516,13 @@ async function alertsTest(){
 const QUIET0={on:false,from:'22:00',to:'07:00'};
 const quiet=()=>Object.assign({},QUIET0,ls.get('wl_quiet',null)||{});
 function quietSave(q){ ls.set('wl_quiet',q); if(window.caches) caches.open('waterline-settings').then(c=>c.put('quiet',new Response(JSON.stringify(q)))).catch(()=>{}); }
+// Quiet hours (DEC-0371): From and To move 30 minutes a press, round the clock; the strip shows the span over the day.
+const hmMin=t=>{ const m=/^(\d\d):(\d\d)$/.exec(t||''); return m?(+m[1])*60+(+m[2]):0; }, minHm=n=>pad2(String(Math.floor(n/60)))+':'+pad2(String(n%60));
+function quietStepRow(k,lab,t){ return '<div class="qx-row"><span class="qx-k">'+lab+'</span><span class="qx-st"><button data-act="quietStep" data-k="'+k+'" data-d="-30" aria-label="'+lab+' 30 minutes earlier">'+ICO('minus')+'</button><b class="n" aria-live="polite">'+esc(t)+'</b><button data-act="quietStep" data-k="'+k+'" data-d="30" aria-label="'+lab+' 30 minutes later">'+ICO('plus')+'</button></span></div>'; }
+function quietStrip(q){ const A=hmMin(q.from), B=hmMin(q.to), len=(B-A+1440)%1440, segs=A<B?[[A,B]]:A>B?[[A,1440],[0,B]]:[];
+  const h=Math.floor(len/60), m=len%60, say=len?'Quiet for '+(h?plural(h,'hour'):'')+(h&&m?' ':'')+(m?m+' minutes':'')+(A>B?', overnight':', during the day'):'From and To are the same, so it is never quiet';
+  return '<div class="qx-strip"><div class="qx-bar" aria-hidden="true">'+segs.map(s0=>'<i style="left:'+(s0[0]/14.4).toFixed(2)+'%;width:'+((s0[1]-s0[0])/14.4).toFixed(2)+'%"></i>').join('')+'</div>'
+    +'<div class="qx-ax" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div><div class="qx-say">'+ICO('moon')+esc(say)+'</div></div>'; }
 function alertsGroup(){
   const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), perm=cant?'':Notification.permission, on=!!(a&&me&&a.pid===me.id)&&perm==='granted';
   const v=cant==='ios'?'Off<span class="sub">Add to Home Screen first</span>':cant?'Not on this browser'
@@ -2511,8 +2530,8 @@ function alertsGroup(){
     :!me?'Off<span class="sub">Choose your name from the list</span>'
     :on?'On':AL.busy?'Turning on':'Off';
   const act=cant||perm==='denied'||!me||AL.busy?'':on?'<button class="lnk act" data-act="alertsTest">Send a Test</button>':'<button class="lnk act" data-act="alertsOn">Turn On</button>';
-  const q=quiet(), qr=on?'<div class="f"><span class="k">Quiet hours</span><span class="v"><label class="keep"><input type="checkbox" data-in="quietOn"'+(q.on?' checked':'')+'><span>Silent between these times</span></label>'
-      +'<span class="qh"><label>From <input type="time" data-in="quietFrom" value="'+esc(q.from)+'"></label><label>To <input type="time" data-in="quietTo" value="'+esc(q.to)+'"></label></span></span></div>':'';
+  const q=quiet(), qr=on?'<button class="qx-row" data-act="quietOn" role="switch" aria-checked="'+q.on+'"><span class="qx-k">Quiet hours<span class="sub">No sound or vibration</span></span><span class="c-sw'+(q.on?' on':'')+'"><i></i></span></button>'
+      +(q.on?quietStepRow('from','From',q.from)+quietStepRow('to','To',q.to)+quietStrip(q):''):'';
   return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">Alerts</span><span class="v">'+v
     +(AL.err?'<span class="help err" role="alert">'+esc(AL.err)+'</span>':'')+(AL.said?'<span class="sub" role="status">'+esc(AL.said)+'</span>':'')+'</span>'+act+'</div>'+qr+'</div>';
 }
@@ -2843,7 +2862,8 @@ const dayWord=ms=>{ const d=new Date(ms), t=new Date(); t.setHours(0,0,0,0); con
 function walksFoot(){ const r=walksRow(); return r?grp('Walks, last '+doneDays()+' days')+r:''; }
 function walksRow(){ const W=walkSplit(); if(!W.any) return '';
   return '<div class="list"><button class="r gr" data-act="walks"><span class="gi">'+GICO('fire-walks')+'</span><span class="m"><span class="w">'+esc(GROUP('fire-walks'))+'</span>'
-    +'<span class="cts"><span>'+SMK('due')+'<b>'+W.due.length+'</b>Due</span><span>'+SMK('done')+'<b>'+(W.done.length+W.sent.length)+'</b>Done</span><span>'+SMK('miss')+'<b>'+W.missed.length+'</b>Missed</span></span>'
+    // Today's walks are listed on Due above this row, so it counts only what was done and missed (Design 4.11).
+    +'<span class="cts"><span>'+SMK('done')+'<b>'+(W.done.length+W.sent.length)+'</b>Done</span><span>'+SMK('miss')+'<b>'+W.missed.length+'</b>Missed</span></span>'
     +'</span>'+I.chev+'</button></div>'; }
 // What a walk's lines came to, in words: "10 lines OK", "9 lines OK, 1 not OK".
 function walkSays(w){ const no=(w.lines||[]).filter(x=>!x.ok).length, okN=(w.lines||[]).length-no, gone=Math.max(0,(w.of||0)-(w.scanned||0)-(w.unscanned||0));
@@ -3398,6 +3418,10 @@ app.addEventListener('click',async e=>{
   if(a==='theme'){ ls.set('wl_theme',b.dataset.v); return render(); }
   if(a==='alertsOn') return alertsOn(false);
   if(a==='alertsTest') return alertsTest();
+  if(a==='quietOn'){ const q=quiet(); q.on=!q.on; quietSave(q); return render(); }
+  if(a==='quietStep'){ const q=quiet(), k=b.dataset.k; q[k]=minHm((hmMin(q[k])+(+b.dataset.d)+1440)%1440); quietSave(q); return render(); }
+  // Everyone's alerts, the person's own (DEC-0364 rule 1), from the Everyone chat's info: sent with the alert registration.
+  if(a==='evAlert'){ ls.set('wl_evAlert',!ls.get('wl_evAlert',false)); render(); if(ls.get('wl_alerts',null)) alertsOn(true); return; }
   if(a==='pickDuty'){ F.duty=b.dataset.id; F.dq=''; return render(); }
   if(a==='dutyClear'){ F.duty=''; return render(); }
   // A job's actions (P4): each is a capture of kind job, filed on the desk by wfmCapApplyJobUpdate.
@@ -3502,7 +3526,6 @@ function special(k,el){
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
   if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
-  if(k==='quietOn'||k==='quietFrom'||k==='quietTo'){ const q=quiet(); if(k==='quietOn') q.on=el.checked; else if(/^\d\d:\d\d$/.test(el.value)) q[k==='quietFrom'?'from':'to']=el.value; quietSave(q); if(k==='quietOn') render(); return true; }
   if(k==='upt'||k==='ureason'){ F.u[k==='upt'?'point':'reason']=el.value; if(k==='upt') return true; softKeep(el); return true; }
   // Narrows the point picker in place, so the field keeps the keyboard.
   if(k==='ptq'){ const v=el.value.trim().toLowerCase(); let n=0; app.querySelectorAll('#pt-list [data-q]').forEach(b=>{ const hit=!v||b.dataset.q.indexOf(v)>=0; b.hidden=!hit; if(hit) n++; }); const no=document.getElementById('pt-none'); if(no) no.hidden=n>0; return true; }
@@ -4158,7 +4181,6 @@ async function msgAct(a,b){
   if(a==='grpBack'){ st.form={chat:F.gid}; return go('chatinfo'); }
   if(a==='grpClose'||a==='grpCloseOff'){ F.closing=a==='grpClose'; return render(); }
   if(a==='grpSend'||a==='grpCloseSend') return grpSend(a==='grpCloseSend');
-  if(a==='evAlert'){ ls.set('wl_evAlert',!ls.get('wl_evAlert',false)); render(); if(ls.get('wl_alerts',null)) alertsOn(true); return; }
   if(a==='chatNew'||a==='chatPick'){ if(F) F.pickFor=a==='chatPick'?b.dataset.for:''; else st.form={pickFor:''}; st.sheet='chatpick'; render(); const v=app.querySelector('.sheet .c-pk'); if(v) v.focus(); return; }
   if(a==='chatPicked'){ st.sheet=false; if(F&&F.pickFor==='ho'&&st.screen==='chat'){ F.chat=b.dataset.id; return render(); } st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
   if(a==='replyTo'){ st.sheet=false; F.replyTo=b.dataset.id; F.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); return; }
