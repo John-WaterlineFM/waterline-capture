@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v505.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v508.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -24,6 +24,8 @@ const WFM_CAPTURE_SHAPE={
     msg:        {direction:'message',     label:'Message'},
     reply:      {direction:'message',     label:'Reply'},
     chatphoto:  {direction:'message',     label:'Chat photo'},
+    // A chat group the FM makes, edits or closes (DEC-0365): a set of roles, never a department.
+    chatgroup:  {direction:'message',     label:'Chat group'},
     // Your own message edited or deleted (DEC-0353 rule 5, DEC-0354 rule 4): the change is its own record, filed onto the
     // message; the words as sent stay.
     msgchange:  {direction:'message',     label:'Message changed'}
@@ -32,7 +34,7 @@ const WFM_CAPTURE_SHAPE={
   // '' when it is not a serial. Read by the desk and the phone alike.
   serialOf:function(s){ var h=String(s||'').toUpperCase().replace(/[^0-9A-F]/g,''); return (h.length>=8&&h.length%2===0)?h.match(/../g).join(':'):''; },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','pauses','early','allOk'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
+  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','chatGroup','pauses','early','allOk'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
   earlyWhy:[{id:'incident',label:'Called to an incident'},{id:'time',label:'Out of time'},{id:'access',label:'Area not accessible'},{id:'other',label:'Something else'}],
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
@@ -190,6 +192,10 @@ const WFM_CAPTURE_SHAPE={
   // reads from its to.
   chatIds:{managers:'Managers',all:'Everyone'},
   msgChangeActs:['edit','delete'],
+  // A chat group (DEC-0365) carries act (one of groupActs) and chatGroup:{name, roles}, roles being the titles of positions on
+  // the Organisation Structure; whoever holds one is in it. An edit or a close names its group in chat. A made group's id is
+  // the capture that made it. Only the FM's are applied; nothing about a group is erased (DEC-0353).
+  groupActs:['make','edit','close'],
   msgDeleted:'This message was deleted',
   chatOf:function(r){ r=r||{}; var x=r.msg||r.notice||r.handover||{}, c=r.chat||x.chat||(Array.isArray(x.to)&&x.to[0])||''; return String(c).trim(); },
   chatName:function(id){ return WFM_CAPTURE_SHAPE.chatIds[id]||String(id||''); }

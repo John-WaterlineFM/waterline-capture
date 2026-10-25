@@ -625,7 +625,12 @@ body.t-li .tf .zone{--onInkMid:#4A6E8C}
 .lr .w{font-weight:500;line-height:1.4;color:var(--text)}.lr.lrno{background:var(--stone);border-bottom:none}
 .ring{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--accentD);color:var(--accentD);display:grid;place-items:center}
 .ring svg{width:16px;height:16px;stroke-width:2.5}.ring.ring-ok{background:var(--accentD);color:var(--btnText)}
-.lopen{background:var(--stone);padding:0 0 16px;border-bottom:1px solid var(--border)}.lopen .field{padding-top:0}.lopen .thumbs,.lopen .unans{margin:8px 16px 0}
+.lopen{background:var(--stone);padding:0 0 16px;border-bottom:1px solid var(--border)}
+.lopen .say{display:flex;gap:8px;align-items:flex-start;margin:12px 16px 0;color:var(--textMid);font-size:15px;line-height:1.5}.lopen .say svg{flex:none;width:18px;height:18px;margin-top:2px;color:var(--textMuted)}
+.lopen .sugg{margin:8px 16px 0;background:var(--white)}.lopen .field .chosen .lnk{padding:0 12px;min-height:44px}
+.s-due{color:var(--textMid)}.s-miss{color:var(--jTodo)}.zone .s-due{color:var(--onInk)}.sw .s-miss{color:var(--sTodo)}.gr .cts .s-done{color:var(--jDone)}.ra .gi .sm{width:22px;height:22px}
+.wrl{display:flex;align-items:flex-start;gap:12px;min-height:56px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--white)}.wrl .m{flex:1}.wrl .w{font-weight:500;line-height:1.4;color:var(--text)}.wrl .mk{flex:none;width:24px;height:24px;display:grid;place-items:center}.wrl .mk svg{width:20px;height:20px}
+.wjob{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-height:56px;padding:10px 16px 12px 52px;background:var(--stone);border-bottom:1px solid var(--border)}.wjob .m{flex:1}.wjob .w{font-weight:500;color:var(--text)}.wjob .gl{display:flex;align-items:center;gap:6px;color:var(--textMid)}.wjob .sub{color:var(--textMS)}.wjob .gl svg{width:14px;height:14px}.lopen .field{padding-top:0}.lopen .thumbs,.lopen .unans{margin:8px 16px 0}
 .zone .lnk{color:var(--accentOnInk)}.lopen .thumbs{margin-top:8px}
 .okz{list-style:none;background:rgba(255,255,255,.06);border-radius:12px;margin:0 16px 16px;overflow:hidden}
 .okr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--inkTrack);line-height:1.35}
@@ -677,9 +682,9 @@ ol.cl li::before{content:counter(c);font:700 13px Sora;color:var(--textMuted);wi
    chat app's language is copied, not reinvented (rule 4): a navy head with the desk's wave, a list of chats, bubbles on a
    tinted ground, a bar at the foot. The bar's labels at 1px so five places fit a 360px phone (measured, MS round 1).
    Unread counts are green, a filled oval with a white number (DEC-0355; Design 21.3 cites it), and nowhere else. */
-body{--unread:#15803D;--unreadText:#15803D;--avMgr:#0D1F2D;--avAll:#0F5E74;--chatBg:#E9EFF3;--bubMe:#D9F0F5;
+body{--sendFill:#156B87;--unread:#15803D;--unreadText:#15803D;--avMgr:#0D1F2D;--avAll:#0F5E74;--chatBg:#E9EFF3;--bubMe:#D9F0F5;
   --kWho:#4F46E5;--kWhat:#2563EB;--kWhere:#BE185D;--kWhy:#A0522D}
-body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;--kWho:#A5B4FC;--kWhat:#93C5FD;--kWhere:#F9A8D4;--kWhy:#E3A57A}
+body.t-ni{--sendFill:#1E7D9B;--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;--kWho:#A5B4FC;--kWhat:#93C5FD;--kWhere:#F9A8D4;--kWhy:#E3A57A}
 .nv{position:relative;letter-spacing:1px}
 .nv .bd{position:absolute;top:4px;left:calc(50% + 6px);min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--unread);color:#FFFFFF;font:800 11px/20px Sora;letter-spacing:0}
 .ra .ri,.r .ri{width:44px;height:44px;flex:none;display:grid;place-items:center;color:var(--textMuted)}
@@ -736,8 +741,15 @@ body.t-ni{--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#091624;--bubMe:#123A4F;
 .c-ch.ur .c-pv{color:var(--text)}
 .c-ub{min-width:22px;height:22px;padding:0 7px;border-radius:11px;background:var(--unread);color:#FFFFFF;font:800 12px/22px Sora;text-align:center;flex:none}
 .c-pk{min-height:64px}
-.c-fab{position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(100px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:18px;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;box-shadow:0 6px 16px rgba(13,31,45,.25);z-index:6}
-.c-fab svg{width:26px;height:26px}
+.c-ng .c-nm{color:var(--accentD)}.c-ng .c-av{background:var(--stone);color:var(--accentD)}.c-ng .c-av svg{width:24px;height:24px}
+.c-edg{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;margin-top:12px;border-radius:8px;border:1px solid var(--accentOnInk);color:var(--accentOnInk);font:600 13px Outfit}
+.c-edg svg{width:20px;height:20px}
+body.t-li .c-edg{color:var(--accentD);border-color:var(--accentD)}
+.g-rk{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 16px;margin:0;border-bottom:1px solid var(--border);background:var(--white);font:400 15px/1.4 'DM Sans',sans-serif;color:var(--text);cursor:pointer}
+.g-rk input{width:24px;height:24px;flex:none;margin:0;accent-color:var(--accentD)}
+.c-new{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;margin:-8px -8px -8px 0;border-radius:22px;color:var(--accentOnInk);font:600 13px Outfit;flex:none}
+.c-new svg{width:20px;height:20px}
+body.t-li .c-new{color:var(--accentD)}
 /* a chat: bubbles on a tinted ground, yours on the right, day separators */
 .c-th{padding:12px 10px 24px;display:flex;flex-direction:column;gap:6px;background:var(--chatBg);min-height:calc(100vh - 180px)}
 .c-day,.c-sys{align-self:center;background:var(--white);color:var(--textMid);font:600 12px Outfit;padding:4px 10px;border-radius:8px;margin:6px 0;text-align:center}
@@ -853,8 +865,19 @@ button.c-qt{display:block;width:100%;text-align:left;margin:2px 0 6px;min-height
 .c-rec,.c-vo{flex:1;display:flex;align-items:center;gap:8px;min-height:48px;color:var(--textMid);font-size:14px}
 .c-rec svg{color:var(--red)}
 .c-vo .voice{flex:1;min-width:0}
-.c-go{width:48px;height:48px;border-radius:50%;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;flex:none}
+/* The send control (John, 25 Oct 2026: "send message is black - nothing in this is black"): teal with a white mark in every
+   theme (Design 21.2), Night's teal one step deeper so the white reads at 3:1 (Design 5.10). Sent, the arrow lifts off
+   and one ring goes out from it (a small send, John's words); still when the phone asks for less motion. */
+.c-go{position:relative;width:48px;height:48px;border-radius:50%;background:var(--sendFill);color:#FFFFFF;display:grid;place-items:center;flex:none}
 .c-go svg{width:22px;height:22px}
+.c-go .c-fly{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;animation:cFly .5s ease-in forwards}
+.c-go::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--sendFill);opacity:0;pointer-events:none}
+.c-go.fx::after{animation:cRing .6s ease-out}
+.c-go.fx>svg{animation:cBack .5s ease-out}
+@keyframes cFly{0%{transform:translateY(0);opacity:1;color:#FFFFFF}45%{color:var(--sendFill)}100%{transform:translateY(-34px);opacity:0;color:var(--sendFill)}}
+@keyframes cRing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+@keyframes cBack{0%,40%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.c-go .c-fly{display:none}.c-go.fx::after,.c-go.fx>svg{animation:none}}
 .c-go.on{background:var(--red);color:#FFFFFF}
 .c-go[disabled]{background:var(--stone);color:var(--textMid)}
 .c-only{position:sticky;bottom:0;z-index:5;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--white);border-top:1px solid var(--border);text-align:center;color:var(--textMid);font-size:14px}
@@ -888,11 +911,15 @@ body.t-li .c-s b{color:var(--text)}
 body.t-li .c-t>.ib{color:var(--accentD)}
 body.t-li .c-cam{border-color:var(--white)}
 body.t-li .c-av.lg{border-color:var(--border)}
+.f.go{width:100%;text-align:left;align-items:center;cursor:pointer;background:none}
+.f.go .chev{margin-left:auto;color:var(--accentD)}
+.r.pk{min-height:56px;align-items:center}.r.pk .w{color:var(--text)}.r.pk>svg{color:var(--accentD);flex:none}
+.f .act{margin-left:auto}
 </style>
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=babe8c4bb8"></script>
+<script src="shapes.js?v=bc90b5b479"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1219,7 +1246,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,group:vGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -1250,11 +1277,11 @@ function bootStep(n,say){ st.boot={n:n,of:3,say:say}; if(st.screen!=='start') re
 // The set-up screen: one sentence of what is needed, the link field and one primary. A link that is missing or not
 // Waterline's is said where it is (Design 9.6), and the button stays pressable so it can say why (Design 9.1).
 function vSetup(){
-  const F=st.form||{}, again=!!STORE;
+  const F=st.form||{};
   const why=F.bad==='empty'?'Paste the set-up link first.':F.bad?'That is not a Waterline set-up link. Ask the desk for it again.':'';
-  return '<div class="body"><div class="zone">'+(again?'<div class="ztop">'+backBtn('me')+'<span class="eb">Settings</span></div>':'<span class="eb">Set up</span>')
-    +'<h1>'+(again?'Change the Set-Up Link':'Connect This Phone to the Site')+'</h1>'
-    +'<p>'+(again?'Paste the new link the desk gave you. What is waiting on this phone is kept and sent with the new link.':'Open the set-up link the desk gave you on this phone, or paste it below. You do this once.')+'</p></div>'
+  return '<div class="body"><div class="zone">'+'<span class="eb">Set up</span>'
+    +'<h1>Connect This Phone to the Site</h1>'
+    +'<p>Open the set-up link the desk gave you on this phone, or paste it below. You do this once.</p></div>'
     +'<div class="field"><label for="setup">Set-up link</label><input id="setup" type="url" autocomplete="off" placeholder="Paste the link from the desk" value="'+esc(F.link||'')+'" data-in="link"'+(why?' aria-invalid="true" aria-describedby="setup-err"':'')+'>'
     +(why?'<div class="help err" id="setup-err" role="alert">'+esc(why)+'</div>':'')+'</div>'
     +'<p class="para">What you capture goes only to the site’s own Inbox folder. This phone keeps a copy only until it has been sent.</p></div>'
@@ -1281,27 +1308,38 @@ const PEOPLE=()=>SITE().people||[];
 const nk=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();   // as the desk's wfmPersonKey
 const meP=()=>PEOPLE().find(p=>st.pid&&p.id===st.pid)||(st.walker?PEOPLE().find(p=>nk(p.name)===nk(st.walker)):null)||null;
 function vWho(){
-  const pp=PEOPLE(), m=meP();
-  const F=st.form||(st.form={name:st.walker||'',pos:st.pos||'',pid:m?m.id:(st.walker&&pp.length?'__other':''),keep:!!ls.get('wl_who',null)});
-  const ps=positions(), ds=SITE().departments||[], typed=!pp.length||F.pid==='__other';
-  const ok=String(F.name||'').trim()&&F.pos, posT=id=>(ps.find(p=>p.id===id)||{}).title||'';
-  return '<div class="body"><div class="zone">'+(st.walker&&st.pos?'<div class="ztop">'+backBtn('me')+'<span class="eb">Settings</span></div>':'<span class="eb">Set up</span>')
-    +'<h1>Who Are You?</h1><p>Your name goes on what you send. Due shows what your position does.</p></div>'
-    +(pp.length?'<div class="field"><label for="whop">Your name</label><select id="whop" data-in="pid"><option value="">Choose your name</option>'
-      +pp.map(p=>'<option value="'+esc(p.id)+'"'+(F.pid===p.id?' selected':'')+'>'+esc(p.name)+(posT(p.position)?', '+esc(posT(p.position)):'')+'</option>').join('')
-      +'<option value="__other"'+(F.pid==='__other'?' selected':'')+'>My name is not on the list</option></select></div>':'')
-    +(typed?'<div class="field"><label for="who">'+(pp.length?'Type your name':'Your name')+'</label><input id="who" type="text" autocomplete="name" value="'+esc(F.name||'')+'" data-in="name">'
-      +(pp.length?'<div class="help">The desk files what you send under this name. Starting or finishing a job needs your name on the Organisation Structure.</div>':'')+'</div>':'')
-    +'<div class="field"><label for="pos">Your position</label>'
-    +(ps.length||ds.length
-      ?'<select id="pos" data-in="pos"><option value="">Choose your position</option>'
-        +(ps.length?'<optgroup label="Positions">'+ps.map(p=>'<option value="'+esc(p.id)+'"'+(F.pos===p.id?' selected':'')+'>'+esc(p.title)+(p.department?' ('+esc(p.department)+')':'')+'</option>').join('')+'</optgroup>':'')
-        +(ds.length?'<optgroup label="Or a department">'+ds.map(d=>'<option value="dept:'+esc(d)+'"'+(F.pos==='dept:'+d?' selected':'')+'>'+esc(d)+'</option>').join('')+'</optgroup>':'')
-        +'</select>'
-      :'<div class="help" style="margin-top:0">The desk has not published its positions yet. Choose one once it has.</div>')
-    +'</div><div style="height:24px"></div></div>'
-    +'<div class="foot"><button class="btn p" data-act="whoSet">Continue</button>'
-    +(F.tried&&!ok?'<div class="help err" role="alert" style="margin:0">Not yet: '+(String(F.name||'').trim()?'choose your position.':typed?'type your name.':'choose your name.')+'</div>':'')+'</div>';
+  const pp=PEOPLE(), m=meP(), ps=positions(), posT=id=>(ps.find(p=>p.id===id)||{}).title||'';
+  if(!pp.length) return vWhoType();
+  return '<div class="body"><div class="zone">'+(st.whoBack?'<div class="ztop">'+backBtn('me')+'<span class="eb">Settings</span></div>':'<span class="eb">Set up</span>')
+    +'<h1>'+(st.whoBack?'Your Name':'Who Are You?')+'</h1></div><div class="list" style="border-top:none">'
+    +pp.map(p=>'<button class="r pk" data-act="whoPick" data-id="'+esc(p.id)+'"><span class="m"><span class="w">'+esc(p.name)+'</span>'+(posT(p.position)?'<span class="sub">'+esc(posT(p.position))+'</span>':'')+'</span>'+(m&&m.id===p.id?I.tick:'')+'</button>').join('')
+    +'<button class="r pk" data-act="whoTypeGo"><span class="m"><span class="w">Type a Name Not on the List</span></span>'+I.chev+'</button></div><div style="height:24px"></div></div>';
+}
+function vWhoType(){
+  const F=st.form||(st.form={name:meP()?'':st.walker||''}), back=st.whoBack||PEOPLE().length;
+  return '<div class="body"><div class="zone">'+(back?'<div class="ztop">'+backBtn(PEOPLE().length?'whoList':'me')+'<span class="eb">'+(st.whoBack?'Settings':'Set up')+'</span></div>':'<span class="eb">Set up</span>')
+    +'<h1>Your Name</h1></div><div class="field"><label for="who">Your name</label><input id="who" type="text" autocomplete="name" value="'+esc(F.name||'')+'" data-in="name"'+(F.tried?' aria-invalid="true" aria-describedby="who-err"':'')+'>'
+    +(F.tried?'<div class="help err" id="who-err" role="alert">Type your name.</div>':'')+'</div><div style="height:24px"></div></div>'
+    +'<div class="foot"><button class="btn p" data-act="whoTypeSet">Save My Name</button></div>';
+}
+function vWhoPos(){
+  const ps=positions(), ds=SITE().departments||[], cur=st.pos, row=(id,t)=>'<button class="r pk" data-act="posPick" data-id="'+esc(id)+'"><span class="m"><span class="w">'+esc(t)+'</span></span>'+(cur===id?I.tick:'')+'</button>';
+  const deps=ds.concat([...new Set(ps.map(p=>p.department||''))].filter(d=>ds.indexOf(d)<0));
+  return '<div class="body"><div class="zone"><div class="ztop">'+backBtn(st.whoBack&&st.pos?'me':'whoList')+'<span class="eb">'+(st.whoBack?'Settings':'Set up')+'</span></div><h1>Your Position</h1></div>'
+    +(ps.length||ds.length?deps.map(d=>{ const L=ps.filter(p=>(p.department||'')===d); return L.length?'<div class="grp">'+esc(d||'Other')+'</div><div class="list">'+L.map(p=>row(p.id,p.title)).join('')+'</div>':''; }).join('')
+      +(ds.length?'<div class="grp">Or a whole department</div><div class="list">'+ds.map(d=>row('dept:'+d,d)).join('')+'</div>':'')
+      :'<p class="para">The desk has not published its positions yet.</p>')
+    +'<div style="height:24px"></div></div>';
+}
+// Who is now on the phone: kept on it, alerts follow the person with no question once the phone allows them
+// (DEC-0367 rule 3), and back to where it was opened from.
+function whoDone(){
+  whoPut({name:st.walker,pos:st.pos,pid:st.pid,keep:true}); st.form=null;
+  if(!st.pos) return go('whopos');
+  const ask=!alertsCan()&&window.Notification&&Notification.permission==='default'&&meP();
+  if(ask) alertsOn(); else alertsKeep();
+  if(st.whoBack){ st.whoBack=''; return go('me'); }
+  home();
 }
 // ── Time ─────────────────────────────────────────────────────────────────────────────────────
 // Design 7.5: days over in days under three months, in years and months beyond; hours under a day.
@@ -1553,6 +1591,7 @@ const SH={todo:'<svg viewBox="0 0 16 16" aria-hidden="true" style="color:var(--j
   doing:'<svg viewBox="0 0 16 16" aria-hidden="true" style="color:var(--jDoing)"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>'};
 // A group's three counts carry their state's mark in its colour (DEC-0337 rule 2); the number and word keep the tab's ink.
 const SMK=k=>'<svg class="sm s-'+k+'" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/>'
+  +(k==='miss'?'<path d="M5.8 5.8l4.4 4.4M10.2 5.8l-4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>':'')
   +(k==='doing'?'<path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/>':k==='done'?'<path d="M5.5 8.2l1.8 1.8 3.2-3.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>':'')+'</svg>';
 // The square beside a job: its photo, or its place (a room's number and floor, or the place's name), as the desk's
 // card square (DEC-0327 rule 2). The title is never repeated in it.
@@ -1631,6 +1670,7 @@ function vJobs(){
     h+=lh('Given to you')+(my.length?jl(jSortL(my),true,1):'<p class="para">Nothing is given to you. Jobs nobody has are in Groups.</p>');
     h+=lh('Done by you, last '+doneDays()+' days',dm.length,1)+(dm.length?jl(dm,true,1):'<p class="para">Nothing done by you in the last '+doneDays()+' days.</p>');
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
+  h+=walksRow();
   if(open.length) h+='<div class="list">'+open.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, o=oldestDays(L), n=L.filter(nobody).length;
     return '<button class="r gr" data-act="jgrp" data-id="'+esc(g)+'"><span class="gi">'+GICO(g)+'</span><span class="m"><span class="w">'+esc(GROUP(g))+'</span>'
       +'<span class="cts"><span>'+SH.todo+'<b>'+(L.length-d)+'</b>To do</span><span>'+SH.doing+'<b>'+d+'</b>In progress</span></span>'
@@ -2400,7 +2440,7 @@ const FB='https://www.gstatic.com/firebasejs/10.12.2/';
 function alertsCan(){
   if('serviceWorker' in navigator&&'Notification' in window&&'PushManager' in window&&location.protocol==='https:') return '';
   const iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  return iOS&&!(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)?'On an iPhone, alerts work only once the app is on the home screen: Share, then Add to Home Screen.':'This browser cannot take alerts. Use Chrome on Android, or the app on an iPhone’s home screen.';
+  return iOS&&!(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)?'ios':'no';
 }
 function fbLoad(){
   if(window.firebase&&firebase.messaging) return Promise.resolve(firebase);
@@ -2419,7 +2459,7 @@ async function alertsOn(quiet){
     const token=await fb.messaging().getToken({vapidKey:c.vapidKey,serviceWorkerRegistration:reg});
     if(!token) throw new Error('The phone gave no alert address. Try again in a minute.');
     // The holder's position and department, and whether they are a manager, decide what alerts this phone (DEC-0351).
-    await STORE.ask({op:'pushRegister',token:token,name:st.walker,pid:me.id,role:'phone',pos:myPosId(),dept:myDept(),mgr:isMgr()});
+    await STORE.ask({op:'pushRegister',token:token,name:st.walker,pid:me.id,role:'phone',pos:myPosId(),dept:myDept(),mgr:isMgr(),ev:!!ls.get('wl_evAlert',false)});
     ls.set('wl_alerts',{token:token,pid:me.id,name:st.walker,dept:myDept(),mgr:isMgr(),at:new Date().toISOString()});
   }catch(e){ AL.err=String(e&&e.message||e); }
   finally{ AL.busy=false; render(); }
@@ -2427,13 +2467,13 @@ async function alertsOn(quiet){
 // On open: registered again when the person on this phone changed, or a week has passed (alert addresses can change).
 function alertsKeep(){
   const a=ls.get('wl_alerts',null), me=meP();
-  if(!a||!me||alertsCan()||Notification.permission!=='granted') return;
-  if(a.pid!==me.id||a.name!==st.walker||(a.dept||'')!==myDept()||!!a.mgr!==isMgr()||Date.now()-Date.parse(a.at||0)>7*864e5) alertsOn(true);
+  if(!me||alertsCan()||Notification.permission!=='granted') return;
+  if(!a||a.pid!==me.id||a.name!==st.walker||(a.dept||'')!==myDept()||!!a.mgr!==isMgr()||Date.now()-Date.parse(a.at||0)>7*864e5) alertsOn(true);
 }
 async function alertsTest(){
   const a=ls.get('wl_alerts',null); if(!a||!STORE||AL.busy) return;
   AL.busy=true; AL.err=''; AL.said=''; render();
-  try{ await STORE.ask({op:'pushTest',token:a.token}); AL.said='Test sent at '+hm(Date.now())+'. Lock the phone: it arrives within a minute.'; }
+  try{ await STORE.ask({op:'pushTest',token:a.token}); AL.said='Test sent at '+hm(Date.now())+'.'; }
   catch(e){ AL.err=String(e&&e.message||e); if(e&&(e.code==='gone'||e.code==='bad')) ls.del('wl_alerts'); }
   finally{ AL.busy=false; render(); }
 }
@@ -2441,34 +2481,31 @@ const QUIET0={on:false,from:'22:00',to:'07:00'};
 const quiet=()=>Object.assign({},QUIET0,ls.get('wl_quiet',null)||{});
 function quietSave(q){ ls.set('wl_quiet',q); if(window.caches) caches.open('waterline-settings').then(c=>c.put('quiet',new Response(JSON.stringify(q)))).catch(()=>{}); }
 function alertsGroup(){
-  const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), on=!!a&&!cant&&Notification.permission==='granted';
-  const v=cant?esc(cant)
-    :Notification.permission==='denied'?'Blocked in the phone’s settings<span class="sub">Allow notifications for this app there, then come back.</span>'
-    :on?'On, for '+esc(a.name)+'<span class="sub">Since <span class="n">'+esc(when(a.at))+'</span>. They arrive with the app closed: a permit that waits for you, a notice that asks you to confirm, and a handover sent to you.</span>'
-    :!me?'Off<span class="sub">Choose your name from the Organisation Structure first: alerts go to a person.</span>'
-    :'Off<span class="sub">A permit that waits for you, a notice to confirm and a handover sent to you cannot reach you while the app is closed.</span>';
-  const btn=cant||Notification.permission==='denied'||(!on&&!me)?'':on?'<button class="btn g" data-act="alertsTest"'+(AL.busy?' disabled':'')+'>'+I.send+'Send Me a Test Alert</button>'
-    :'<button class="btn g" data-act="alertsOn"'+(AL.busy?' disabled':'')+'>'+(AL.busy?'Turning On':'Turn On Alerts')+'</button>';
-  const q=quiet(), qr=on?'<div class="f"><span class="k">Out of hours</span><span class="v"><label class="keep"><input type="checkbox" data-in="quietOn"'+(q.on?' checked':'')+'><span>Quiet: no sound or vibration</span></label>'
-      +(q.on?'<span class="qh"><label>From <input type="time" data-in="quietFrom" value="'+esc(q.from)+'"></label><label>To <input type="time" data-in="quietTo" value="'+esc(q.to)+'"></label></span><span class="sub">Alerts still arrive and wait on the lock screen.</span>':'')+'</span></div>':'';
-  return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">Alerts</span><span class="v">'+v+'</span></div>'+qr+'</div>'
-    +(btn||AL.err||AL.said?'<div style="padding:12px 16px 0">'+btn+(AL.err?'<div class="help err" role="alert">'+esc(AL.err)+'</div>':'')+(AL.said?'<div class="help" role="status">'+esc(AL.said)+'</div>':'')+'</div>':'');
+  const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), perm=cant?'':Notification.permission, on=!!(a&&me&&a.pid===me.id)&&perm==='granted';
+  const v=cant==='ios'?'Off<span class="sub">Add to Home Screen first</span>':cant?'Not on this browser'
+    :perm==='denied'?'Blocked<span class="sub">Allow notifications for Waterline in the phone’s settings</span>'
+    :!me?'Off<span class="sub">Choose your name from the list</span>'
+    :on?'On':AL.busy?'Turning on':'Off';
+  const act=cant||perm==='denied'||!me||AL.busy?'':on?'<button class="lnk act" data-act="alertsTest">Send a Test</button>':'<button class="lnk act" data-act="alertsOn">Turn On</button>';
+  const q=quiet(), qr=on?'<div class="f"><span class="k">Quiet hours</span><span class="v"><label class="keep"><input type="checkbox" data-in="quietOn"'+(q.on?' checked':'')+'><span>Silent between these times</span></label>'
+      +'<span class="qh"><label>From <input type="time" data-in="quietFrom" value="'+esc(q.from)+'"></label><label>To <input type="time" data-in="quietTo" value="'+esc(q.to)+'"></label></span></span></div>':'';
+  return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">Alerts</span><span class="v">'+v
+    +(AL.err?'<span class="help err" role="alert">'+esc(AL.err)+'</span>':'')+(AL.said?'<span class="sub" role="status">'+esc(AL.said)+'</span>':'')+'</span>'+act+'</div>'+qr+'</div>';
 }
-// Settings: the site's logo large (DEC-0303 rule 1), the theme for everyone (rule 4), and who you are, here only (DEC-0302).
+// Settings: the site's logo large (DEC-0303 rule 1), the theme for everyone (rule 4), who you are, here only (DEC-0302),
+// each changed on its own, and values with no paragraphs (DEC-0367).
 function vMe(){
   st.place='me'; st.form=st.form||{};
   const p=myPos(), s=SITE(), th=theme();
-  const f=(k,v,act)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+(act?'<button class="lnk" data-act="'+act+'">Change</button>':'')+'</div>';
+  const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
+  const o=(k,v,act)=>'<button class="f go" data-act="'+act+'"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+I.chev+'</button>';
   return '<div class="body">'+pageHead('Settings')+'<div class="zone logo"><span class="tile"><img src="push/icon-512.png" alt="'+esc(s.site||'The site')+'"></span></div>'
     +'<div class="grp">Theme</div><div class="seg">'+[['wl','Waterline'],['li','Light'],['ni','Night']].map(x=>'<button class="'+(th===x[0]?'on':'')+'" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(th===x[0])+'">'+(th===x[0]?I.tick:'')+x[1]+'</button>').join('')+'</div>'
-    +'<div class="grp">You</div><div class="list">'+f('Name',esc(st.walker),'whoAgain')
-    +f('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen')
-+'</div>'
-    +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published)))+'<span class="sub">Published <span class="n">'+esc(when(s.published))+'</span></span>':'Not published yet')
-    +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
-    +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
+    +'<div class="grp">You</div><div class="list">'+o('Name',esc(st.walker),'whoAgain')
+    +o('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen','whoPosAgain')+'</div>'
     +alertsGroup()
-    +'<p class="para">Walks come from your department, lines from the duties your position holds, jobs from the groups it belongs to, all set on the desk’s Organisation Structure.</p>'
+    +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published))):'Not published yet')
+    +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent when there is signal':'Nothing')+'</div>'
     +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
 // ── Send Proof: photo first, then what it is (DEC-0286 rule 3) ───────────────────────────────
@@ -2755,6 +2792,84 @@ function vUnscan(){
     +'<label class="th add" aria-label="Take the photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="uphoto"></label></div></div><div style="height:24px"></div></div>'
     +sendBtnAct('unscanSave','Save',String(U.reason||'').trim()&&U.photo!=null,!String(U.reason||'').trim()?'Say why it will not scan.':'Take the photo first.');
 }
+// ── Fire Walks on the phone (DEC-0366 rule 5; mockup sandbox/mockups/walk-jobs-2026-10-25, A). The site's walks, as each
+// falls due, are the desk's Fire Walks job group: a slot done carries its walk; a slot whose window has closed with no walk
+// is missed. Later today's walks are said from the round's own times. Shown to whoever sees the walks' group.
+function walkSlots(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.round&&j.planned&&(fm||gs.has(j.group))); }
+function walkSplit(){
+  const now=Date.now(), S=walkSlots(), shut=j=>j.end&&Date.parse(j.end)<=now;
+  const done=S.filter(j=>j.state==='done').sort((a,b)=>doneAt(b)-doneAt(a));
+  const cut=now-doneDays()*864e5, missAll=S.filter(j=>j.state!=='done'&&shut(j)).sort((a,b)=>Date.parse(b.due)-Date.parse(a.due));
+  const missed=missAll.filter(j=>Date.parse(j.due)>=cut), older=missAll.length-missed.length;
+  const due=S.filter(j=>j.state!=='done'&&!shut(j)).map(j=>({slot:j,at:Date.parse(j.due),round:j.round,title:j.title}));
+  // The clock time itself, so a clock change that day cannot move it.
+  if(S.length){ const d0=new Date(); d0.setHours(0,0,0,0);
+    (SITE().rounds||[]).filter(r=>r.every==='Daily').forEach(r=>(r.times||[]).forEach(t=>{ const m=/^(\d\d):(\d\d)$/.exec(t); if(!m) return;
+      const at=new Date(d0).setHours(+m[1],+m[2],0,0); if(at>now&&!S.some(j=>j.round===r.id&&Date.parse(j.due)===at)) due.push({at:at,round:r.id,title:r.name+' '+t,later:true}); })); }
+  due.sort((a,b)=>a.at-b.at);
+  // A walk sent from this phone and not yet on a done slot reads as sent (Design 9.11).
+  const sent=walksSent().filter(x=>!done.some(j=>j.round===x.round&&j.walk&&Math.abs(Date.parse(j.walk.at)-Date.parse(x.at))<15*6e4));
+  return {due:due,done:done,missed:missed,older:older,sent:sent,any:S.length>0};
+}
+// Missed walks, one row per day, newest first (Design 15.5: a week of five walks a day is too many rows to read).
+function walkMissDays(L){ const by=[]; L.forEach(j=>{ const at=Date.parse(j.due), k=new Date(at).toDateString(), d=by.find(x=>x.k===k); if(d) d.L.push(j); else by.push({k:k,at:at,L:[j]}); }); by.forEach(d=>d.L.sort((a,b)=>Date.parse(a.due)-Date.parse(b.due))); return by; }
+const dowDay=ms=>{ const d=new Date(ms); return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()]; };
+const dayWord=ms=>{ const d=new Date(ms), t=new Date(); t.setHours(0,0,0,0); const k=Math.round((new Date(d).setHours(0,0,0,0)-t)/864e5); return k===0?'Today':k===-1?'Yesterday':dowDay(ms); };
+function walksRow(){ const W=walkSplit(); if(!W.any) return '';
+  return '<div class="list"><button class="r gr" data-act="walks"><span class="gi">'+GICO('fire-walks')+'</span><span class="m"><span class="w">'+esc(GROUP('fire-walks'))+'</span>'
+    +'<span class="cts"><span>'+SMK('due')+'<b>'+W.due.length+'</b>Due</span><span>'+SMK('done')+'<b>'+(W.done.length+W.sent.length)+'</b>Done</span><span>'+SMK('miss')+'<b>'+W.missed.length+'</b>Missed</span></span>'
+    +'</span>'+I.chev+'</button></div>'; }
+// What a walk's lines came to, in words: "10 lines OK", "9 lines OK, 1 not OK".
+function walkSays(w){ const no=(w.lines||[]).filter(x=>!x.ok).length, okN=(w.lines||[]).length-no, gone=Math.max(0,(w.of||0)-(w.scanned||0)-(w.unscanned||0));
+  return '<span class="n">'+(w.scanned||0)+'</span> of <span class="n">'+(w.of||0)+'</span> points'+(gone?', stopped early':'')+' · <span class="n">'+okN+'</span> '+(okN===1?'line':'lines')+' OK'+(no?', <span class="n">'+no+'</span> not OK':''); }
+function walkRowP(x,kind){
+  if(kind==='done'){ const j=x, w=j.walk, d=j.done||{};
+    return '<button class="ra c jx" data-act="walkRec" data-id="'+esc(j.id)+'"><span class="gi">'+SMK('done')+'</span><span class="m"><span class="w">'+esc(j.title)+'</span>'
+      +'<span class="sub">'+esc(dayWord(Date.parse(j.due)))+' · signed by '+esc(youOr(w?w.by:d.by))+' at <span class="n">'+hm(w?w.at:d.at)+'</span></span>'
+      +(w?'<span class="sub">'+walkSays(w)+'</span>':'')+'</span>'+I.chev+'</button>'; }
+  if(kind==='sent'){ const r=roundById(x.round);
+    return '<div class="ra c"><span class="gi">'+I.wait+'</span><span class="m"><span class="w">'+esc(r?r.name:'Walk')+'</span><span class="sub">Sent from this phone at <span class="n">'+hm(x.at)+'</span>. Waiting for the desk to file it.</span></span></div>'; }
+  if(kind==='missed') return '<div class="ra c jt"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(x.title)+'</span><span class="sub">'+esc(dayWord(Date.parse(x.due)))+' · no walk filed</span></span></div>';
+  // Due: the row starts the walk.
+  return '<button class="ra c" data-act="roundStart" data-id="'+esc(x.round)+'"><span class="gi">'+SMK('due')+'</span><span class="m"><span class="w">'+esc(x.title)+'</span>'
+    +'<span class="sub">'+(x.later?'Later today, at <span class="n">'+hm(x.at)+'</span>':'Due now'+(x.slot&&x.slot.end?', until <span class="n">'+hm(x.slot.end)+'</span>':''))+'</span></span>'+I.chev+'</button>';
+}
+function vWalks(){
+  st.place='jobs';
+  const W=walkSplit(), t=st.walksTab||'due', last=W.done[0], lw=last&&last.walk;
+  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('jobs')+'<span class="eb">Your groups</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO('fire-walks')+'</span><h1 style="margin:0">'+esc(GROUP('fire-walks'))+'</h1></div>'
+    +'<p>'+(last?'The last walk filed: '+esc(last.title)+', '+esc(dayWord(Date.parse(last.due)).toLowerCase().replace(/^(mon|tue|wed|thu|fri|sat|sun)/,s=>s[0].toUpperCase()+s.slice(1)))+', signed by '+esc(youOr(lw?lw.by:(last.done||{}).by))+' at <b class="n">'+hm(lw?lw.at:(last.done||{}).at)+'</b>.':'No walk filed in the last <b class="n">'+doneDays()+'</b> days.')+'</p>'
+    +'<div class="sw" role="tablist">'+[['due','Due Today',W.due.length],['done','Done',W.done.length+W.sent.length],['missed','Missed',W.missed.length]].map(x=>'<button role="tab" class="'+(t===x[0]?'on':'')+'" data-act="walksTab" data-v="'+x[0]+'" aria-selected="'+(t===x[0])+'"><span class="n">'+SMK(x[0]==='missed'?'miss':x[0])+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>';
+  if(t==='done'){ h+=grp('Done, last '+doneDays()+' days')+((W.sent.length||W.done.length)?'<div class="list">'+W.sent.map(x=>walkRowP(x,'sent')).join('')+W.done.map(j=>walkRowP(j,'done')).join('')+'</div>':'<p class="para">No walk filed in the last '+doneDays()+' days. Older walks are on the desk’s Walk Checklists.</p>'); }
+  else if(t==='missed') h+=grp('Missed, last '+doneDays()+' days')+(W.missed.length?'<div class="list">'+walkMissDays(W.missed).map(d=>'<div class="ra c jt"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(dayWord(d.at))+': <span class="n">'+d.L.length+'</span> missed</span><span class="sub">'+esc(d.L.map(j=>j.title).join(', '))+'</span></span></div>').join('')+'</div>':'<p class="para">No walk missed in the last '+doneDays()+' days.</p>')
+    +(W.older?'<p class="para"><span class="n">'+W.older+'</span> older '+(W.older===1?'walk':'walks')+' with no walk filed are on the desk’s Plan.</p>':'');
+  else h+=grp('Due today')+(W.due.length?'<div class="list">'+W.due.map(x=>walkRowP(x,'due')).join('')+'</div>':'<p class="para">Nothing more is due today.</p>');
+  return h+'<div style="height:96px"></div></div>'+navBar('jobs');
+}
+// A done walk opened: its record (DEC-0366 rule 5). The zone carries who, when and the points (Design 21.1); then why it
+// stopped early; then the lines, a Not OK line carrying its job and where it stands, which opens the job (rule 4).
+function vWalkRec(){
+  st.place='walkrec';
+  const j=(SITE().jobs||[]).find(x=>x.id===st.wrec), w=j&&j.walk;
+  if(!j||!w) return '<div class="body">'+formZone('walks','Fire Walks','No Longer on the Phone','This walk is no longer in the site details from the desk. Walks stay '+doneDays()+' days; older ones are on the desk’s Walk Checklists.')+'</div>'+navBar('jobs');
+  const r=roundById(j.round), nu=w.unscanned||0, gone=Math.max(0,(w.of||0)-(w.scanned||0)-nu), no=(w.lines||[]).filter(x=>!x.ok).length, slotT=(/(\d\d:\d\d)$/.exec(j.title)||[])[1];
+  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walks')+'<span class="eb">'+esc(GROUP('fire-walks'))+'</span></div><h1>'+esc(r?r.name:j.title)+'</h1>'
+    +'<p>'+esc(dayWord(Date.parse(j.due)))+(slotT?', the <b class="n">'+slotT+'</b> walk':'')+'. Signed off by '+esc(youOr(w.by))+' at <b class="n">'+hm(w.at)+'</b>.</p>'
+    +'<p><b class="n">'+(w.scanned||0)+'</b> of <b class="n">'+(w.of||0)+'</b> points.'+(nu?' <b class="n">'+nu+'</b> would not scan.':'')+(gone?' <b class="n">'+gone+'</b> not scanned.':'')+'</p></div>';
+  if(gone) h+=grp('Why it stopped early')+'<div class="wait">'+(w.early?esc(w.early.label)+(w.early.note?': “'+esc(w.early.note)+'”':'')+'.':'Not said. This walk was signed before the phone asked why.')+'</div>';
+  h+=grp('The '+plural((w.lines||[]).length,'line')+' it proves')+(w.allOk?'<div class="wait">All OK pressed at <b class="n">'+hm(w.allOk)+'</b>.</div>':'')+'<div class="list">';
+  (w.lines||[]).forEach(x=>{ const l=lineById(x.line), what=l?l.what:x.line;
+    h+='<div class="wrl"><span class="mk" role="img" aria-label="'+(x.ok?'OK':'Not OK')+'" style="color:'+(x.ok?'var(--jDone)':'var(--redText)')+'">'+(x.ok?I.tick:I.close)+'</span><span class="m"><span class="w">'+esc(what)+'</span>'
+      +(x.ok?'':'<span class="sub">Not OK'+(x.note?': “'+esc(x.note)+'”':'')+'</span>')+'</span></div>';
+    (x.jobs||[]).forEach(id=>{ const jb=jobById(id);
+      h+=jb?'<button class="wjob" data-act="openJob" data-id="'+esc(id)+'"><span class="m"><span class="gl sub">'+GICO(jb.group)+esc(GROUP(jb.group))+'</span><span class="w">Job '+(jb.no?'<span class="n">'+esc(jb.no)+'</span>, ':'')+esc(jb.state==='done'?'Done':jb.state==='doing'?'In progress':'To do')+'</span>'
+          +(holders(jb).length||jb.state!=='done'?'<span class="sub">'+esc(holders(jb).length?holdersSay(jb):'Nobody on it yet')+'</span>':'')+'</span>'+I.chev+'</button>'
+        :'<div class="wjob"><span class="m"><span class="sub">Made a job on the desk; it is no longer on the phone.</span></span></div>'; });
+  });
+  return h+'</div><div style="height:96px"></div></div>'+navBar('jobs');
+}
+// Where a Not OK line is: the last point scanned, else none yet (DEC-0366 rule 2).
+function walkLastPoint(W){ const s=(W.scans||[]).slice().sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)); return s.length?s[s.length-1]:null; }
 // The sign-off (DEC-0294 rule 2): was the walk complete, then one Yes or No per line the walk proves.
 // A No is a sentence and a photo, and becomes a job that holds its line out of date (DEC-0292 rule 1).
 function signMissing(W,r){
@@ -2762,6 +2877,14 @@ function signMissing(W,r){
   if(walkMissing(W,r).length){ const e=W.early||{}; if(!e.why) m.push('why it stopped early'); else if(e.why==='other'&&!String(e.note||'').trim()) m.push('what stopped it'); }
   r.lines.forEach(id=>{ const a=W.ans[id]; if(!a||typeof a.ok!=='boolean') m.push(id); else if(!a.ok&&!String(a.note||'').trim()) m.push('what is wrong on '+id); else if(!a.ok&&!(a.photos||[]).length) m.push('a photo for '+id); });
   return m;
+}
+// Where, on a Not OK line: the point named, said how it was chosen, with Change listing the walk's points (DEC-0366 rule 2).
+function ansWhere(W,r,id,a){
+  const p=a.point?pointById(a.point):null;
+  if(W.pickFor===id) return '<div class="field"><span class="fl">Where</span><div class="sugg">'+r.points.map(pid=>{ const q=pointById(pid), s=(W.scans||[]).find(x=>x.point===pid);
+      return '<button class="opt" data-act="ansWherePick" data-k="'+esc(id)+'" data-id="'+esc(pid)+'"><span class="m">'+esc(q?q.name:pid)+'<span class="sub">'+(s?'Scanned at <span class="n">'+hm(s.at)+'</span>':esc(ptWhere(q)))+'</span></span></button>'; }).join('')+'</div></div>';
+  return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+(p?esc(p.name):'Not said')+'<span class="sub">'+(p?(a.pointHow==='last'?'The last point scanned, at <span class="n">'+hm(a.pointAt)+'</span>':'Picked from the walk’s points'):'No point scanned yet. Pick one.')+'</span></span>'
+    +'<button class="lnk" data-act="ansWhere" data-k="'+esc(id)+'">'+(p?'Change':'Pick')+'</button></div></div>';
 }
 // The sign-off (DEC-0362, DEC-0294 rule 2): the points as a count, why a walk stopped early, and the lines answered by one
 // All OK or Not OK on a line. A Not OK is a sentence and a photo, and becomes a job that holds its line (DEC-0292 rule 1).
@@ -2788,11 +2911,13 @@ function vSignoff(){
     +'<div class="list">';
   r.lines.forEach(id=>{ const l=lineById(id), a=ans(id), what=l?l.what:id, s=a.ok===true?'ok':a.ok===false?'no':'';
     h+='<button class="lr'+(s==='no'?' lrno':'')+'" data-act="lineTap" data-k="'+esc(id)+'" aria-label="'+esc(what)+(s==='ok'?', OK':s==='no'?', not OK':'')+'"><span class="ring'+(s?' ring-'+s:'')+'">'+(s==='ok'?I.tick:s==='no'?I.close:'')+'</span><span class="w">'+esc(what)+'</span></button>';
-    if(a.ok===false){ const ph=(a.photos||[]).map(k=>W.photos[k]).filter(Boolean);
+    if(a.ok===false){ const ph=(a.photos||[]).map(k=>W.photos[k]).filter(Boolean), ng=(r.noGroup||{})[id]||'';
       h+='<div class="lopen"><div class="field"><label for="n-'+esc(id)+'">What is wrong</label><input type="text" id="n-'+esc(id)+'" data-in="ansnote" data-k="'+esc(id)+'" value="'+esc(a.note||'')+'"></div>'
         +(T&&!String(a.note||'').trim()?'<div class="unans">Say what is wrong</div>':'')
+        +ansWhere(W,r,id,a)
         +'<div class="thumbs">'+ph.map(p=>'<div class="th" style="background-image:url('+p.url+')"></div>').join('')+'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="ansphoto" data-k="'+esc(id)+'"></label></div>'
-        +(T&&!ph.length?'<div class="unans">Take a photo</div>':'')+'</div>'; }
+        +(T&&!ph.length?'<div class="unans">Take a photo</div>':'')
+        +'<p class="say">'+(ng?GICO(ng):I.jobs)+'<span>Sign off makes this a job'+(ng?' in <b>'+esc(GROUP(ng))+'</b>':'')+', with what you wrote and the photo. The line stays out of date until the job is done.</span></p></div>'; }
   });
   // One primary (Design 9.1): All OK while lines are open, then Sign Off and Send.
   h+='</div><div style="height:24px"></div></div><div class="foot">'
@@ -3174,12 +3299,20 @@ app.addEventListener('click',async e=>{
     if(v&&!F.allOk) delete F.ans[k]; else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=v; }
     ls.set('wl_walk',walkKeep(F)); return render(); }
   if(a==='lineTap'){ const k=b.dataset.k, cur=(F.ans[k]||{}).ok;
-    if(cur===false){ if(F.allOk) F.ans[k].ok=true; else delete F.ans[k]; } else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=false; }
+    if(cur===false){ if(F.allOk) F.ans[k].ok=true; else delete F.ans[k]; if(F.pickFor===k) F.pickFor=''; }
+    else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=false; if(!F.ans[k].point){ const lp=walkLastPoint(F); if(lp){ F.ans[k].point=lp.point; F.ans[k].pointHow='last'; F.ans[k].pointAt=lp.at; } } }
     ls.set('wl_walk',walkKeep(F)); render(); if(F.ans[k]&&F.ans[k].ok===false){ const i=document.getElementById('n-'+k); if(i) i.focus(); } return; }
   if(a==='allOk'){ const r=roundById(F.round); r.lines.forEach(id=>{ if(typeof (F.ans[id]||{}).ok!=='boolean') F.ans[id]={ok:true,note:'',photos:[],byAll:true}; });
     F.allOk=new Date().toISOString(); ls.set('wl_walk',walkKeep(F)); return render(); }
   if(a==='allOkUndo'){ Object.keys(F.ans).forEach(k=>{ if(F.ans[k].ok===true) delete F.ans[k]; }); F.allOk=''; ls.set('wl_walk',walkKeep(F)); return render(); }
-  if(a==='earlyWhy'){ F.early={why:b.dataset.v,note:(F.early||{}).note||''}; ls.set('wl_walk',walkKeep(F)); render(); const i=document.getElementById('early-note'); if(i) i.focus(); return; }
+  // A reason tapped again is cleared (John, 25 Oct: "if i wrongly select a reason ... i cant uncheck that line").
+  if(a==='earlyWhy'){ const was=(F.early||{}).why===b.dataset.v; F.early={why:was?'':b.dataset.v,note:(F.early||{}).note||''}; ls.set('wl_walk',walkKeep(F)); render(); const i=!was&&document.getElementById('early-note'); if(i) i.focus(); return; }
+  if(a==='ansWhere'){ F.pickFor=b.dataset.k; return render(); }
+  if(a==='ansWherePick'){ const x=F.ans[b.dataset.k]; if(x){ x.point=b.dataset.id; x.pointHow='picked'; x.pointAt=''; } F.pickFor=''; ls.set('wl_walk',walkKeep(F)); return render(); }
+  if(a==='walks'){ st.walksTab=st.walksTab||'due'; return go('walks'); }
+  if(a==='walksTab'){ st.walksTab=b.dataset.v; return render(); }
+  if(a==='walkRec'){ st.wrec=b.dataset.id; return go('walkrec'); }
+  if(a==='walkrec') return go('walkrec');
   if(a==='showMiss'){ F.showMiss=!F.showMiss; return render(); }
   if(a==='walkPause'){ walkPause(F); F.msg=''; return render(); }
   if(a==='walkResume'){ walkResume(F); F.msg=''; return render(); }
@@ -3188,7 +3321,6 @@ app.addEventListener('click',async e=>{
     return doSend(); }
   if(a==='walkQuit'){ walkPause(F); ls.set('wl_walk',walkKeep(F)); st.form=null; go('due'); return toast('Paused. Start the same walk again to carry on.'); }
   if(a==='pickLoc'){ const l=LOC(b.dataset.id); if(l){ F.loc=l.id; F.place=l.name; F.picked=true; } return render(); }
-  if(a==='setupAgain'){ st.form={link:''}; return go('setup'); }
   if(a==='pickMeter'){ F.meter=b.dataset.id; F.point=''; F.scanErr=''; return render(); }
   if(a==='scan'){ if(F&&F.kind==='round'&&F.paused) walkResume(F); _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
   if(a==='scanClose') return scanClose();
@@ -3200,11 +3332,16 @@ app.addEventListener('click',async e=>{
   if(a==='whereClear'){ F.point=''; F.via=''; return render(); }
   if(a==='photoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
   if(a==='setupLink'){ const l=String(F.link||'').trim(); if(!l){ F.bad='empty'; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; } if(takeSetupLink(l)) return location.reload(); F.bad=true; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; }
-  if(a==='whoSet'){ const nm=String(F.name||'').trim(); if(!nm||!F.pos){ F.tried=true; return render(); }
-    st.walker=nm; st.pos=F.pos; st.pid=F.pid&&F.pid!=='__other'?F.pid:''; whoPut({name:nm,pos:F.pos,pid:st.pid,keep:true}); st.form=null;
-    const ask=!alertsCan()&&window.Notification&&Notification.permission==='default'&&meP();
-    if(ask) alertsOn(); home(); return ask?null:alertsKeep(); }
-  if(a==='whoAgain'){ st.form=null; return go('who'); }
+  if(a==='whoPick'){ const p=PEOPLE().find(x=>x.id===b.dataset.id); if(!p) return;
+    st.walker=p.name; st.pid=p.id; st.pos=positions().some(x=>x.id===p.position)?p.position:'';
+    return whoDone(); }
+  if(a==='whoTypeGo'){ st.form=null; return go('whotype'); }
+  if(a==='whoList'){ st.form=null; return go('who'); }
+  if(a==='whoTypeSet'){ const nm=String(F.name||'').trim(); if(!nm){ F.tried=true; render(); const i=document.getElementById('who'); if(i) i.focus(); return; }
+    st.walker=nm; st.pid=''; if(!st.whoBack) st.pos=''; return whoDone(); }
+  if(a==='posPick'){ st.pos=b.dataset.id; return whoDone(); }
+  if(a==='whoAgain'){ st.form=null; st.whoBack='me'; return go('who'); }
+  if(a==='whoPosAgain'){ st.form=null; st.whoBack='me'; return go('whopos'); }
   if(a==='walkLink'){ const S=st.scanFor, p=pointById(b.dataset.id); if(!S||!S.offer||!p) return;
     const s=S.offer.serial, o=pointBySerial(s);
     if(o){ S.offer=null; S.offerList=false; S.err='This tag is already linked to '+o.name+'.'; S.started=false; return render(); }
@@ -3323,6 +3460,8 @@ app.addEventListener('change',e=>{
 // Fields that live inside the form's parts: the tag that will not scan, a No's sentence.
 function special(k,el){
   const F=st.form;
+  if(st.screen==='group'&&k==='gName'){ F.gName=el.value; return true; }
+  if(st.screen==='group'&&k==='gRole'){ const t=el.value, i=F.roles.indexOf(t); if(el.checked&&i<0) F.roles.push(t); if(!el.checked&&i>=0) F.roles.splice(i,1); render(); return true; }
   if(st.screen==='job'&&(k==='note'||k==='why'||k==='dnote')){ F[k]=el.value;
     // The microphone becomes send once something is written, and the kind moves above the field (P6).
     if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
@@ -3338,9 +3477,6 @@ function special(k,el){
   if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
   if(k==='quietOn'||k==='quietFrom'||k==='quietTo'){ const q=quiet(); if(k==='quietOn') q.on=el.checked; else if(/^\d\d:\d\d$/.test(el.value)) q[k==='quietFrom'?'from':'to']=el.value; quietSave(q); if(k==='quietOn') render(); return true; }
-  if(k==='pid'){ F.pid=el.value; const p=PEOPLE().find(x=>x.id===el.value);
-    if(p){ F.name=p.name; if(positions().some(x=>x.id===p.position)) F.pos=p.position; } else if(el.value==='__other'||!el.value) F.name='';
-    render(); return true; }
   if(k==='upt'||k==='ureason'){ F.u[k==='upt'?'point':'reason']=el.value; if(k==='upt') return true; softKeep(el); return true; }
   // Narrows the point picker in place, so the field keeps the keyboard.
   if(k==='ptq'){ const v=el.value.trim().toLowerCase(); let n=0; app.querySelectorAll('#pt-list [data-q]').forEach(b=>{ const hit=!v||b.dataset.q.indexOf(v)>=0; b.hidden=!hit; if(hit) n++; }); const no=document.getElementById('pt-none'); if(no) no.hidden=n>0; return true; }
@@ -3403,7 +3539,7 @@ async function doSend(){
     fields={round:F.round,started:F.started,walkFor:F.walkFor||'',scans:F.scans,complete:wm.length===0,
       early:wm.length&&F.early&&F.early.why?{why:F.early.why,note:String(F.early.note||'').trim()}:null,
       pauses:(F.pauses||[]).map(x=>({at:x.at,until:x.until||now0})),allOk:F.allOk||'',
-      answers:r.lines.map(id=>{ const a=F.ans[id]; return {line:id,ok:a.ok,note:a.ok?'':String(a.note||'').trim(),files:a.ok?[]:(a.photos||[])}; }),
+      answers:r.lines.map(id=>{ const a=F.ans[id]; return {line:id,ok:a.ok,note:a.ok?'':String(a.note||'').trim(),point:a.ok?'':String(a.point||''),files:a.ok?[]:(a.photos||[])}; }),
       unscanned:(F.unscanned||[]).map(u=>({point:u.point,reason:u.reason,file:u.photo})),
       signedOff:{by:st.walker,at:new Date().toISOString()},
       outcome:miss.length?'Done, gap named':'Done',
@@ -3506,22 +3642,37 @@ async function msgSend(kind,fields,files,say){
 
 // ── The chats (rule 1) ──
 // As the desk publishes them; a site file from before chats gives Managers, the departments and Everyone.
-function chats(){ const C=SITE().chats; if(Array.isArray(C)&&C.length) return C;
-  return [{id:'managers'}].concat((SITE().departments||[]).filter(d=>!/^management$/i.test(d)).map(d=>({id:d})),[{id:'all'}])
-    .map(c=>Object.assign({name:CS.chatName(c.id),members:[],colour:'',photo:'',membersPost:false,membersPhoto:true},c)); }
+// Managers is Management to anyone else: it is how they reach the managers (DEC-0363 rule 4).
+function chats(){ const C=SITE().chats, L=Array.isArray(C)&&C.length?C:[{id:'managers'}].concat((SITE().departments||[]).filter(d=>!/^management$/i.test(d)).map(d=>({id:d})),[{id:'all'}])
+    .map(c=>Object.assign({name:CS.chatName(c.id),members:[],colour:'',photo:'',membersPhoto:true},c));
+  return isMgr()?L:L.map(c=>c.id==='managers'?Object.assign({},c,{name:'Management'}):c); }
 const chatById=id=>chats().find(c=>c.id===id)||null;
 const myPid=()=>{ const p=myOwnPos()||myPos(); return p?p.id:''; };
-// You see your department's chat, Everyone, and Managers if you are one; a manager sees every chat.
+// You are in Everyone, your department's chat, and Managers if you are one; a manager is in every chat (DEC-0363 rule 5).
+// Worked out from the Organisation Structure: nobody is set up by hand.
 const inChat=c=>!!c&&(isMgr()||c.id==='all'||(c.id!=='managers'&&(c.id===myDept()||(c.members||[]).indexOf(myPid())>=0)));
-const myChats=()=>chats().filter(inChat);
-// Who starts a message (rule 2): in Managers every member; elsewhere the managers, or everyone when the chat's switch says so.
-const canPost=c=>!!c&&!!meP()&&inChat(c)&&(isMgr()||!!c.membersPost);
+// Anyone else may write to a department, Management included, and sees only their own thread there, always (rule 4).
+// A group the FM made is for its members only: nobody writes to it from outside (DEC-0365).
+const outChat=c=>!!c&&!!meP()&&!inChat(c)&&c.id!=='all'&&!c.made;
+const seesChat=c=>inChat(c)||outChat(c);
+// Your list: your chats, and each department you have written to.
+const myChats=()=>chats().filter(c=>inChat(c)||(outChat(c)&&chatMsgs(c.id).length));
+// Everyone in a chat posts in it, and anyone may write to a department (rules 2 to 4). A notice is still the senders' (DEC-0348).
+const canPost=c=>!!c&&!!meP()&&seesChat(c);
 const canPhoto=c=>!!c&&!!meP()&&inChat(c)&&(isMgr()||c.membersPhoto!==false);
 const chatOf=x=>CS.chatOf(x);
 const isTop=x=>x.kind==='msg'||x.kind==='handover'||(x.kind==='notice'&&!x.remind&&!!x.notice);
 // A chat's conversation, oldest first: its messages, the replies among them in time order, and its photo changes. A reply
 // quotes the message it answers (DEC-0358).
-function chatMsgs(id){ return msgItems().filter(x=>(isTop(x)||x.kind==='chatphoto'||x.kind==='reply')&&chatOf(x)===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken)); }
+// Writing to a department you are not in, you see what you sent and the replies to it, and nothing else of theirs (rule 4).
+function chatMsgs(id){ const L=msgItems().filter(x=>(isTop(x)||x.kind==='chatphoto'||x.kind==='reply')&&chatOf(x)===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken));
+  if(inChat(chatById(id))) return L;
+  const mine=new Set(L.filter(byMe).map(x=>x.id)); let n=-1;
+  while(n!==mine.size){ n=mine.size; L.forEach(x=>{ if(x.kind==='reply'&&mine.has(x.ref)) mine.add(x.id); }); }
+  return L.filter(x=>mine.has(x.id)); }
+// A message from someone outside the chat, as its members see it: labelled with the writer's department (rule 4).
+const fromOut=x=>{ const c=chatById(chatOf(x)); return !!c&&c.id!=='all'&&!!x.pos&&(c.members||[]).indexOf(x.pos)<0; };
+const whoLine=x=>(x.person||'Someone not named')+(fromOut(x)?' · '+(personDept(x)||'No department'):'');
 const repliesOf=id=>msgItems().filter(x=>x.kind==='reply'&&x.ref===id).sort((a,b)=>Date.parse(a.taken)-Date.parse(b.taken));
 // What you have not read (DEC-0355 rule 4): a message, notice or handover in your chats that is not yours and that you have
 // not opened, and a reply there that you have not seen. What you see on this phone clears at once.
@@ -3577,7 +3728,9 @@ function preview(x){
 }
 function chatLast(c){ const L=chatMsgs(c.id); return L[L.length-1]||null; }
 // What a chat says about who is in it: its departments' positions; Managers the three kinds of manager.
-function chatSub(c){ if(c.id==='managers') return 'FM, Notice Sender, Management'; if(c.id==='all') return 'Everyone on the site';
+function chatSub(c){ if(outChat(c)) return 'Only you and '+(c.id==='managers'?'the managers':c.name)+' see this';
+  if(c.made) return (c.roles||[]).join(', ');
+  if(c.id==='managers') return 'FM, Notice Sender, Management'; if(c.id==='all') return 'Everyone on the site';
   const t=positions().filter(p=>p.department===c.id).map(p=>p.title); return t.length?t.join(', '):c.name; }
 
 // ── The chat list (b1, b5) ──
@@ -3590,9 +3743,10 @@ function vMsgs(){
   const rows=all.map(x=>'<button class="c-ch'+(x.n?' ur':'')+'" data-act="chatOpen" data-id="'+esc(x.c.id)+'"'+(x.n?' aria-label="'+esc(x.c.name)+', '+x.n+' unread"':'')+'>'+chatAv(x.c)
     +'<span class="c-m"><span class="c-r"><span class="c-nm">'+esc(x.c.name)+'</span>'+(x.last?'<span class="c-tm n">'+esc(tList(x.last.taken))+'</span>':'')+'</span>'
     +'<span class="c-r"><span class="c-pv">'+esc(preview(x.last))+'</span>'+(x.n?'<span class="c-ub n" aria-hidden="true">'+x.n+'</span>':'')+'</span></span></button>').join('');
-  const fab=myChats().some(canPost)?'<button class="c-fab" data-act="chatNew" aria-label="New message">'+ICO('pencil')+'</button>':'';
-  return '<div class="body"><div class="c-hd"><div class="c-t"><h1>Messages</h1>'+(U?'<span class="c-s"><b class="n">'+U+'</b> unread</span>':'')+'</div>'+WAVE+'</div>'
-    +waitLine()+'<div class="c-list">'+(rows||'<div class="one">No chat has been set up for your position yet. The desk sets the chats from the Organisation Structure.</div>')+'</div><div style="height:140px"></div></div>'+fab+navBar('msgs');
+  const nw=meP()&&chats().some(canPost)?'<button class="c-new" data-act="chatNew">'+ICO('pencil')+'New</button>':'';
+  return '<div class="body"><div class="c-hd"><div class="c-t"><h1>Messages</h1>'+(U?'<span class="c-s"><b class="n">'+U+'</b> unread</span>':'')+nw+'</div>'+WAVE+'</div>'
+    +waitLine()+'<div class="c-list">'+(rows||'<div class="one">No chat has been set up for your position yet. The desk sets the chats from the Organisation Structure.</div>')
+    +(fmMe()?'<button class="c-ch c-ng" data-act="grpNew"><span class="c-av">'+ICO('plus')+'</span><span class="c-m"><span class="c-nm">New Group</span></span></button>':'')+'</div><div style="height:40px"></div></div>'+navBar('msgs');
 }
 
 // ── A chat (b2, b4) ──
@@ -3651,7 +3805,6 @@ function ntStats(n){
 const forMe=x=>!byMe(x)&&inChat(chatById(chatOf(x)));
 function faces(L){ const seen={}, U=L.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; }).slice(0,3);
   return '<span class="c-fc" aria-hidden="true">'+U.map(r=>{ const c=deep(deptCol(personDept(r))); return '<span'+(c?' style="background:'+c+'"':'')+'>'+esc(initials(byMe(r)?st.walker:r.person))+'</span>'; }).join('')+'</span>'; }
-function repliesBtn(x){ return '<button class="c-rp" data-act="replyTo" data-id="'+esc(x.id)+'">'+ICO('reply')+'<span>Reply</span></button>'; }
 // The message a reply answers, quoted at its top; pressing the quote finds the message in the conversation.
 const msgTitle=x=>x.deleted?CS.msgDeleted:x.kind==='handover'?'Handover · '+hoFirst(x):x.kind==='notice'?'Notice · '+x.notice.title:msgWords(x);
 function quoteOf(id,act){ const x=msgItems().find(y=>y.id===id);
@@ -3661,12 +3814,12 @@ function quoteOf(id,act){ const x=msgItems().find(y=>y.id===id);
 function bubble(x){
   if(x.kind==='chatphoto') return '<div class="c-sys">'+esc(whoSays(x))+' changed this chat’s photo</div>';
   if(x.deleted){ const mine=byMe(x);
-    return '<div class="c-b c-del'+(mine?' c-me':'')+'" data-mid="'+esc(x.id)+'">'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+'</div>')
+    return '<div class="c-b c-del'+(mine?' c-me':'')+'" data-mid="'+esc(x.id)+'">'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(whoLine(x))+'</div>')
       +'<p>'+ICO('ban')+esc(CS.msgDeleted)+'</p><div class="c-ft"><span class="n">'+esc(hm(x.taken))+'</span></div></div>'; }
   if(x.kind==='reply'){ const mine=byMe(x), t=String((x.msg&&x.msg.text)||'').trim();
-    return '<div class="c-b'+(mine?' c-me':'')+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+'</div>')
+    return '<div class="c-b'+(mine?' c-me':'')+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+(mine?'':'<div class="c-who" style="color:'+nameCol(x)+'">'+esc(whoLine(x))+'</div>')
       +quoteOf(x.ref,true)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'')+'<div class="c-ft">'+(x.edited?'<span>Edited</span>':'')+'<span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div></div>'; }
-  const mine=byMe(x), r=myRead(x.id), who='<div class="c-who" style="color:'+nameCol(x)+'">'+esc(x.person||'Someone not named')+(x.kind==='notice'?' · Notice':'')+'</div>';
+  const mine=byMe(x), r=myRead(x.id), who='<div class="c-who" style="color:'+nameCol(x)+'">'+esc(whoLine(x))+(x.kind==='notice'?' · Notice':'')+'</div>';
   let inner='', cls='c-b'+(mine?' c-me':'');
   if(x.kind==='notice'){ const N=x.notice; cls+=' c-ann';
     inner=(mine?'<div class="c-who" style="color:'+nameCol(x)+'">Notice</div>':who)+'<div class="c-h">'+ICO('megaphone')+'<span>'+esc(N.title)+'</span></div>'+(N.text?'<p>'+esc(N.text)+'</p>':'');
@@ -3684,7 +3837,7 @@ function bubble(x){
     inner=(mine?'':who)+copyFiles(x)+(t?'<p>'+esc(t)+'</p>':'');
   }
   const rd=mine?readersOf(x):[];
-  inner+=repliesBtn(x)+'<div class="c-ft">'+(x.edited?'<span>Edited</span>':'')+'<span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div>'+(rd.length?'<div class="c-ft c-rb">Read by '+esc(rd.join(', '))+'</div>':'');
+  inner+='<div class="c-ft">'+(x.edited?'<span>Edited</span>':'')+'<span class="n">'+esc(hm(x.taken))+'</span>'+(mine?ticks(x):'')+'</div>'+(rd.length?'<div class="c-ft c-rb">Read by '+esc(rd.join(', '))+'</div>':'');
   return '<div class="'+cls+'" data-sw="'+esc(x.id)+'" data-mid="'+esc(x.id)+'"'+(mine?' data-rd="'+esc(x.id)+'"':'')+'>'+inner+'</div>';
 }
 // Day separators and the bubbles, oldest first.
@@ -3693,12 +3846,12 @@ function threadHtml(L){ let last='', h='';
   return h; }
 function vChat(){
   const F=st.form, c=chatById(F.chat);
-  if(!c||!inChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
-  const L=chatMsgs(c.id);
+  if(!c||!seesChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
+  const L=chatMsgs(c.id), out=outChat(c);
   let th=threadHtml(L);
-  if(!L.length&&!F.mode) th+='<div class="c-day">No messages yet</div>';
+  if(!L.length&&!F.mode) th+='<div class="c-day">'+(out?'Write to '+esc(c.name)+'. They reply to you here. You do not see their chat.':'No messages yet')+'</div>';
   if(F.mode==='ho') th+=hoWriteCard(c); else if(F.mode==='nt') th+=ntWriteCard(c);
-  const foot=canPost(c)||F.replyTo?composer(c,F.replyTo?'Reply':'Message',canPost(c)&&!F.replyTo):'<div class="c-only">Managers start messages here. Press Reply on one to answer it.</div>';
+  const foot=composer(c,F.replyTo?'Reply':out?'Message '+c.name:'Message',!out&&!F.replyTo);
   return '<div class="body c-bd">'+chatHead(c,chatSub(c))+waitLine()+'<div class="c-th">'+th+'</div></div>'+foot;
 }
 // The bar at the foot (rule 4): attach, the words, the camera, and a microphone that becomes send.
@@ -3710,10 +3863,10 @@ function composer(c,ph,attach){
     :'<textarea id="ctext" rows="1" data-in="ctext" placeholder="'+esc(F.mode==='ho'?'Add a message with it':ph)+'" aria-label="'+esc(ph)+'">'+esc(F.ctext||'')+'</textarea>';
   const clip=attach?'<button class="ib" data-act="cAttach" aria-label="Attach a handover, a notice or a photo">'+ICO('paperclip')+'</button>'
     :'<label class="ib" aria-label="Add a photo from the phone">'+ICO('paperclip')+'<input type="file" accept="image/*" multiple data-file="cphoto"></label>';
-  const go=rec?['Stop recording',I.stop]:has?['Send',ICO('arrow-up')]:['Record a voice note',ICO('mic')];
+  const go=rec?['Stop recording',I.stop]:has?['Send',ICO('arrow-up')]:['Record a voice note',ICO('mic')], fx=Date.now()-(st.sentFx||0)<600;
   const rq=F.replyTo?'<div class="c-rq">'+ICO('reply')+quoteOf(F.replyTo,false)+'<button class="ib" data-act="replyOff" aria-label="Do not reply to it">'+I.close+'</button></div>':'';
   return '<div class="c-foot">'+rq+stg+'<div class="c-cb"><div class="c-fld">'+field+(rec||F.voice?'':clip+'<label class="ib" aria-label="Take a photo">'+ICO('camera')+'<input type="file" accept="image/*" capture="environment" data-file="cphoto"></label>')+'</div>'
-    +'<button class="c-go'+(rec?' on':'')+'" data-act="cGo" aria-label="'+go[0]+'"'+(st.busy?' disabled':'')+'>'+go[1]+'</button></div></div>';
+    +'<button class="c-go'+(rec?' on':'')+(fx?' fx':'')+'" data-act="cGo" aria-label="'+go[0]+'"'+(st.busy?' disabled':'')+'>'+(fx?'<i class="c-fly" aria-hidden="true">'+ICO('arrow-up')+'</i>':'')+go[1]+'</button></div></div>';
 }
 // What Waterline adds to a handover, worked out from the site file as it is written (DEC-0348 rule 4): permits issued and not
 // closed on jobs in your groups, jobs started today and not done, jobs done today, and how many were already going.
@@ -3752,9 +3905,12 @@ function ntWriteCard(c){
 
 // ── A chat's info (b6): its photo with Change, the two switches as the desk set them, who changed the photo, the members ──
 function vChatInfo(){
-  const c=chatById(st.form.chat); if(!c||!inChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
+  const c=chatById(st.form.chat); if(!c||!seesChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
   const sw=(on,lab,sub)=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(lab)+'</span><span class="sub">'+esc(sub)+'</span></span><span class="c-sw'+(on?' on':'')+'" role="switch" aria-checked="'+on+'" aria-disabled="true" aria-label="'+esc(lab)+'"><i></i></span></div>';
-  const fixed=c.id==='managers';
+  const ev=!!ls.get('wl_evAlert',false), out=outChat(c);
+  const posts=c.made?'Only the people holding its roles see and post here. Nobody writes to it from outside.':c.id==='all'?'Everyone on the site posts here. Notices come from the FM and the Notice Sender.'
+    :c.id==='managers'?(out?'Only managers see this chat. They see what you send them and reply to you here.':'Only managers see and post here. Anyone else writes to Management and sees only their own messages and the replies.')
+    :out?'Only '+c.name+' sees this chat. They see what you send them and reply to you here.':'Everyone in '+c.name+' posts here. Anyone else can write to '+c.name+'; they see only their own messages and the replies.';
   const mem=(c.members||[]).map(id=>positions().find(p=>p.id===id)).filter(Boolean), mg=new Set(((chatById('managers')||{}).members)||[]);
   mem.sort((a,b)=>(mg.has(b.id)?1:0)-(mg.has(a.id)?1:0));
   const ppl=mem.map(p=>{ const who=PEOPLE().find(x=>x.position===p.id); return {nm:who?who.name:p.title,sub:who?p.title+(mg.has(p.id)?' · manager':''):(mg.has(p.id)?'Manager':(p.department||''))}; });
@@ -3762,12 +3918,55 @@ function vChatInfo(){
   const by=chg?{by:whoSays(chg),at:chg.taken}:c.photoBy?{by:c.photoBy,at:c.photoAt}:null;
   return '<div class="body c-info"><div class="c-hd c-ih"><div class="c-t">'+backBtn('chatBack')+'</div><div class="c-big">'+chatAv(c,'lg')
     +(canPhoto(c)?'<label class="c-cam" aria-label="Change the photo">'+ICO('camera')+'<input type="file" accept="image/*" data-file="chatphoto"></label>':'')+'</div>'
-    +'<h1>'+esc(c.name)+'</h1><span class="c-s">'+esc(chatSub(c))+'</span>'+WAVE+'</div>'
-    +grp('This chat · set on the desk')+'<div class="list">'
-    +sw(c.membersPhoto!==false,'Members can change the photo',c.membersPhoto!==false?'Anyone in '+c.name+' can choose it':'Only managers can choose it')
-    +sw(fixed||!!c.membersPost,'Members can post',fixed?'Everyone in Managers posts':c.membersPost?'On: everyone starts messages':'Off: managers start messages, everyone replies')+'</div>'
-    +grp('Photo')+'<div class="list"><div class="c-sr"><span class="c-sm"><span class="c-sl">'+(by?'Changed by '+esc(by.by):'No photo yet')+'</span><span class="sub">'+(by?esc(day(by.at))+' at <span class="n">'+esc(hm(by.at))+'</span>. The earlier photo is kept.':'The chat shows its colour and initials.')+'</span></span>'+(by?chatAv(c,'sq'):'')+'</div></div>'
-    +grp('Members',ppl.length)+'<div class="list">'+ppl.map(p=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(p.nm)+'</span><span class="sub">'+esc(p.sub)+'</span></span></div>').join('')+'</div><div style="height:40px"></div></div>';
+    +'<h1>'+esc(c.name)+'</h1><span class="c-s">'+esc(chatSub(c))+'</span>'+(c.made&&fmMe()?'<button class="c-edg" data-act="grpEdit">'+ICO('pencil')+'Edit Group</button>':'')+WAVE+'</div>'
+    +grp('Who posts')+'<div class="one">'+esc(posts)+'</div>'
+    +(c.id==='all'?grp('Alerts')+'<div class="list"><button class="c-sr" data-act="evAlert" role="switch" aria-checked="'+ev+'"><span class="c-sm"><span class="c-sl">Alert Me for Everyone</span><span class="sub">'+(ev?'On: this phone sounds for every message here':'Off: messages here add to your count, without a sound')+'</span></span><span class="c-sw'+(ev?' on':'')+'"><i></i></span></button></div>':'')
+    +(out?'':grp('This chat · set on the desk')+'<div class="list">'+sw(c.membersPhoto!==false,'Members can change the photo',c.membersPhoto!==false?'Anyone in '+c.name+' can choose it':'Only managers can choose it')+'</div>'
+    +grp('Photo')+'<div class="list"><div class="c-sr"><span class="c-sm"><span class="c-sl">'+(by?'Changed by '+esc(by.by):'No photo yet')+'</span><span class="sub">'+(by?esc(day(by.at))+' at <span class="n">'+esc(hm(by.at))+'</span>. The earlier photo is kept.':(c.made?'The chat shows its initials.':'The chat shows its colour and initials.'))+'</span></span>'+(by?chatAv(c,'sq'):'')+'</div></div>'
+    )+(c.made?grpInfo(c):'')+grp('Members',ppl.length)+'<div class="list">'+ppl.map(p=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(p.nm)+'</span><span class="sub">'+esc(p.sub)+'</span></span></div>').join('')+'</div>'
+    +grp('Kept')+'<div class="one">Every message is kept as a record, with who sent it and when. Managers can read every chat.</div><div style="height:40px"></div></div>';
+}
+
+// ── A chat group the FM makes from roles (DEC-0365) ──
+// Only the FM makes, edits and closes one (DEC-0363 rule 7). It is a set of roles: whoever holds one is in it, so nobody is
+// set up by hand. The phone sends it as a capture; the group is on the phones once the desk has filed it.
+const fmMe=()=>isFM(myOwnPos()||myPos());
+// Every role on the Organisation Structure, once, under its department, in the structure's order.
+function grpRoles(){ const P=positions(), D=(SITE().departments||[]).slice();
+  P.forEach(p=>{ const d=p.department||''; if(D.indexOf(d)<0) D.push(d); });
+  return D.map(d=>({dept:d,titles:P.filter(p=>(p.department||'')===d).map(p=>p.title).filter((t,i,l)=>t&&l.indexOf(t)===i)})).filter(x=>x.titles.length); }
+function vGroup(){
+  const F=st.form||{}, g=F.gid?chatById(F.gid):null;
+  if(!fmMe()) return '<div class="body">'+formZone('msgs','Messages','Not Yours to Change','Only the FM makes and edits chat groups.')+'</div>';
+  const R=grpRoles(), known=new Set([].concat(...R.map(x=>x.titles))), gone=F.roles.filter(t=>!known.has(t));
+  const why=F.tried?(!String(F.gName||'').trim()?'Name the group.':!F.roles.length?'Tick at least one role.':''):'';
+  const tick=t=>'<label class="g-rk"><input type="checkbox" data-in="gRole" value="'+esc(t)+'"'+(F.roles.indexOf(t)>=0?' checked':'')+'><span>'+esc(t)+'</span></label>';
+  const nm=String(F.gName||'').trim()||(g&&g.name)||'the group';
+  const foot=F.closing
+    ?'<div class="foot"><span class="c-err">Close '+esc(nm)+'? It leaves every list and nobody can post in it. Its messages are kept.</span><button class="btn p" data-act="grpCloseSend">Close the Group</button><button class="gh" data-act="grpCloseOff" style="margin-top:16px">Keep the Group</button></div>'
+    :'<div class="foot">'+(why?'<span class="c-err" role="alert">'+esc(why)+'</span>':'')+'<button class="btn p" data-act="grpSend">'+(g?'Save Changes':'Make Group')+'</button>'
+      +(g?'<button class="gh" data-act="grpClose">Close Group</button>':'')+'<span class="sub">The desk files it. Everyone in it sees the change once it has.</span></div>';
+  return '<div class="body" style="min-height:100vh;display:flex;flex-direction:column"><div class="c-hd"><div class="c-t">'+backBtn(g?'grpBack':'msgs')+'<h1>'+(g?'Edit Group':'New Group')+'</h1></div>'+WAVE+'</div>'
+    +'<div class="pad" style="padding-bottom:12px"><label class="c-nf"><span class="fl">Name</span><input id="g-name" data-in="gName" maxlength="60" value="'+esc(F.gName||'')+'" placeholder="What the group is for"></label></div>'
+    +grp('Roles in it',F.roles.length)
+    +R.map(x=>grp(x.dept||'No department')+'<div class="list">'+x.titles.map(tick).join('')+'</div>').join('')
+    +(gone.length?grp('No longer on the Organisation Structure')+'<div class="list">'+gone.map(tick).join('')+'</div>':'')
+    +'<div style="flex:1"></div>'+foot+'</div>';
+}
+async function grpSend(close){
+  const F=st.form; F.tried=true;
+  const name=String(F.gName||'').trim(), roles=F.roles.slice();
+  if(!close&&(!name||!roles.length)) return render();
+  const g=F.gid?chatById(F.gid):null, nm=g?g.name:name;
+  const fields=close?{act:'close',chat:F.gid}:{act:g?'edit':'make',chat:F.gid||'',chatGroup:{name:name,roles:roles}};
+  const say=close?'Close sent to the desk.':g?'Changes sent to the desk.':'Group sent to the desk.';
+  const r=await msgSend('chatgroup',fields,[],say); if(!r) return;
+  st.form=null; return go('msgs');
+}
+// A made group's history, on its info (DEC-0365 rule 9). Its roles are under its name.
+function grpInfo(c){
+  const h=[{l:'Made by '+(c.by||'the FM'),at:c.at,s:''}].concat((c.changed||[]).map(x=>({l:'Changed by '+(x.by||'the FM'),at:x.at,s:'Was '+x.name+'.'}))).reverse();
+  return grp('History')+'<div class="list">'+h.map(x=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(x.l)+'</span><span class="sub">'+(x.at?esc(day(x.at))+' at <span class="n">'+esc(hm(x.at))+'</span>. ':'')+esc(x.s)+'</span></span></div>').join('')+'</div>';
 }
 
 // ── Sheets: who read it (a long press on your own message), where to post, what to attach ──
@@ -3790,9 +3989,13 @@ function readersSheet(){
 const cMine=()=>{ const x=msgItems().find(y=>y.id===(st.form&&st.form.rid)); return x&&byMe(x)&&!x.deleted?x:null; };
 const cWords=x=>(x.kind==='msg'||x.kind==='reply')&&!auOf(x);
 function cMsgSheet(){
-  const x=cMine(); if(!x) return '';
+  const x=cMine(), y=msgItems().find(z=>z.id===(st.form&&st.form.rid));
+  if(!x){ if(!y||y.deleted) return '';
+    return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="The message"><div class="sh"><b>'+esc(whoSays(y))+'’s Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+      +'<button class="verb" data-act="replyTo" data-id="'+esc(y.id)+'">'+ICO('reply')+'<span class="m"><span class="w">Reply</span><span class="sub">Or swipe the message to the right</span></span></button></div><div style="height:24px"></div></div>'; }
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'">'+ic+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Your message"><div class="sh"><b>Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +'<button class="verb" data-act="replyTo" data-id="'+esc(x.id)+'">'+ICO('reply')+'<span class="m"><span class="w">Reply</span><span class="sub">Or swipe the message to the right</span></span></button>'
     +(cWords(x)?v('cEdit',I.edit,'Edit','Change its words'):'')
     +v('cDel',I.trash,'Delete',x.kind==='msg'||x.kind==='reply'?'Sent to the wrong chat? Delete it, then send it in the right one':'To change it, delete it and send it again')
     +v('cReaders',ICO('check-check'),'Who Read It','')+'</div><div style="height:24px"></div></div>'; }
@@ -3806,9 +4009,12 @@ function cDelSheet(){ const x=cMine(), ask=x&&(x.kind==='notice'||x.kind==='hand
     +'<p class="para" style="padding-top:8px">Everyone in the chat sees “'+esc(CS.msgDeleted)+'” in its place'+(ask?', and nobody is asked to confirm it any more':'')+'. The desk keeps what it said, who deleted it and when.</p>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="cDelSend"'+(st.busy?' disabled':'')+'>'+I.trash+'Delete the Message</button><button class="btn g" data-act="sheetClose">Keep It</button></div></div>'; }
 function chatPickSheet(){
-  const L=myChats().filter(canPost), why=st.form&&st.form.pickFor==='ho'?'Send the handover to':'New message in';
+  const ho=st.form&&st.form.pickFor==='ho', why=ho?'Send the handover to':'New Message';
+  const row=c=>'<button class="c-ch c-pk" data-act="chatPicked" data-id="'+esc(c.id)+'">'+chatAv(c,'sm')+'<span class="c-m"><span class="c-nm">'+esc(c.name)+'</span></span></button>';
+  const L=chats().filter(c=>inChat(c)&&canPost(c)), O=ho?[]:chats().filter(c=>outChat(c));
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(why)+'"><div class="sh"><b>'+esc(why)+'</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +'<div class="list">'+L.map(c=>'<button class="c-ch c-pk" data-act="chatPicked" data-id="'+esc(c.id)+'">'+chatAv(c,'sm')+'<span class="c-m"><span class="c-nm">'+esc(c.name)+'</span></span></button>').join('')+'</div><div style="height:16px"></div></div>';
+    +(O.length?grp('Your chats'):'')+'<div class="list">'+L.map(row).join('')+'</div>'
+    +(O.length?grp('Write to a department')+'<div class="one">Only you and they see what you send and their replies. You do not see their chat.</div><div class="list">'+O.map(row).join('')+'</div>':'')+'<div style="height:16px"></div></div>';
 }
 function attachSheet(){
   const c=chatById(st.form.chat), o=(act,ic,w,sub)=>'<button class="verb" data-act="'+act+'">'+ic+'<span class="m"><span class="w">'+w+'</span><span class="sub">'+sub+'</span></span></button>';
@@ -3832,7 +4038,7 @@ async function chatSeen(){
   for(const x of send1){ if(st.screen!=='chat') break; const r=await msgSend('msgread',{ref:x.id,act:'opened'},[],false); if(r) await st.sent[r.id]; }
 }
 function chatBottom(){ requestAnimationFrame(()=>window.scrollTo(0,document.documentElement.scrollHeight)); }
-async function chatAfterSend(){ const F=st.form; F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url)); Object.assign(F,{ctext:'',photos:[],voice:null,mode:'',tried:false,pick:{},adds:null,ntTitle:'',ntText:'',replyTo:''}); render(); chatBottom(); }
+async function chatAfterSend(){ st.sentFx=Date.now(); const F=st.form; F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url)); Object.assign(F,{ctext:'',photos:[],voice:null,mode:'',tried:false,pick:{},adds:null,ntTitle:'',ntText:'',replyTo:''}); render(); chatBottom(); }
 async function chatSend(){
   const F=st.form, c=chatById(F.chat); if(!c||st.busy) return;
   const text=String(F.ctext||'').trim(), urls=F.photos.map(p=>p.url);
@@ -3910,7 +4116,7 @@ app.addEventListener('pointerdown',e=>{ if(!st.crop||!e.target.closest('.cp-st')
 app.addEventListener('pointermove',e=>{ if(!_cpd||!st.crop) return; st.crop.x=_cpd.ox+e.clientX-_cpd.x; st.crop.y=_cpd.oy+e.clientY-_cpd.y; cropPlace(); });
 app.addEventListener('pointerup',()=>{ _cpd=null; });
 app.addEventListener('input',e=>{ if(!st.crop||!e.target.hasAttribute('data-cz')) return; st.crop.z=Number(e.target.value)||1; cropPlace(); });
-const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick','cEdit','cEditSend','cDel','cDelSend','cReaders'];
+const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick','cEdit','cEditSend','cDel','cDelSend','cReaders','grpNew','grpEdit','grpBack','grpSend','grpClose','grpCloseOff','grpCloseSend'];
 async function msgAct(a,b){
   const F=st.form;
   if(a==='cropOff'){ URL.revokeObjectURL(st.crop.url); st.crop=null; return render(); }
@@ -3919,9 +4125,16 @@ async function msgAct(a,b){
   if(a==='chatOpen'){ st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
   if(a==='chatBack'){ const k=st.chatLast||(F&&F.chat); st.form=chatForm(typeof k==='string'?k:(k&&k.chat)); st.chatLast=null; go('chat'); return chatBottom(); }
   if(a==='chatInfo'){ st.chatLast=F.chat; st.form={chat:F.chat}; return go('chatinfo'); }
+  // A chat group (DEC-0365): made, changed or closed by the FM, filed by the desk.
+  if(a==='grpNew'){ st.form={gid:'',gName:'',roles:[],tried:false,closing:false}; return go('group'); }
+  if(a==='grpEdit'){ const c=chatById(F.chat); if(!c||!c.made) return; st.form={gid:c.id,gName:c.name,roles:(c.roles||[]).slice(),tried:false,closing:false}; return go('group'); }
+  if(a==='grpBack'){ st.form={chat:F.gid}; return go('chatinfo'); }
+  if(a==='grpClose'||a==='grpCloseOff'){ F.closing=a==='grpClose'; return render(); }
+  if(a==='grpSend'||a==='grpCloseSend') return grpSend(a==='grpCloseSend');
+  if(a==='evAlert'){ ls.set('wl_evAlert',!ls.get('wl_evAlert',false)); render(); if(ls.get('wl_alerts',null)) alertsOn(true); return; }
   if(a==='chatNew'||a==='chatPick'){ if(F) F.pickFor=a==='chatPick'?b.dataset.for:''; else st.form={pickFor:''}; st.sheet='chatpick'; render(); const v=app.querySelector('.sheet .c-pk'); if(v) v.focus(); return; }
   if(a==='chatPicked'){ st.sheet=false; if(F&&F.pickFor==='ho'&&st.screen==='chat'){ F.chat=b.dataset.id; return render(); } st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
-  if(a==='replyTo'){ F.replyTo=b.dataset.id; F.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); return; }
+  if(a==='replyTo'){ st.sheet=false; F.replyTo=b.dataset.id; F.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); return; }
   if(a==='replyOff'){ F.replyTo=''; return render(); }
   if(a==='jumpTo'){ const el=app.querySelector('.c-b[data-mid="'+CSS.escape(b.dataset.id)+'"]'); if(el){ el.scrollIntoView({block:'center',behavior:'instant'}); el.classList.add('c-hl'); setTimeout(()=>el.classList.remove('c-hl'),1200); } return; }
   if(a==='ntAck'||a==='hoAck'){ await msgSend('msgread',{ref:b.dataset.id,act:'confirmed'},[],a==='ntAck'?'Kept with the notice':'Kept with the handover'); return render(); }
@@ -3943,7 +4156,8 @@ async function msgAct(a,b){
   if(a==='cDelSend'){ const x=cMine(); if(!x) return; st.sheet=false; await msgSend('msgchange',{ref:x.id,act:'delete',chat:chatOf(x)},[],'Deleted. The desk keeps what it said.'); return render(); }
   if(a==='cGo'){ if(st.hoRec) return hoVoice(); if(String(F.ctext||'').trim()||F.photos.length||F.voice||F.mode) return chatSend(); return hoVoice(); }
 }
-// Swipe a message to the right to reply under it (rule 4); a long press on your own opens Edit, Delete and Who Read It.
+// Swipe a message to the right to reply to it (DEC-0358 rule 2); a long press on any message opens Reply, and on your own
+// Edit, Delete and Who Read It too. No message carries a Reply line (John, 25 Oct 2026).
 let _sw=null;
 app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]'); _sw=b&&e.touches.length===1?{id:b.dataset.sw,x:e.touches[0].clientX,y:e.touches[0].clientY,el:b}:null; },{passive:true});
 app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
@@ -3953,11 +4167,11 @@ let _clp=null;
 let _clpHeld=false;
 // The click a long press ends with is not a click, however long the finger stays down: the window starts again as it lifts.
 const cmOpen=id=>{ if(st.sheet||!st.form) return; _lpAt=Date.now(); _clpHeld=true; st.form.rid=id; st.sheet='cmsg'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); };
-app.addEventListener('pointerdown',e=>{ const b=e.target.closest('.c-b[data-rd]'); if(!b||e.button>0||e.target.closest('button,audio,input,textarea,label')) return; const id=b.dataset.rd;
+app.addEventListener('pointerdown',e=>{ const b=e.target.closest('.c-b[data-sw]'); if(!b||e.button>0||e.target.closest('button,audio,input,textarea,label')) return; const id=b.dataset.sw;
   _clp={x:e.clientX,y:e.clientY,t:setTimeout(()=>{ _clp=null; cmOpen(id); },500)}; });
 app.addEventListener('pointermove',e=>{ if(_clp&&Math.hypot(e.clientX-_clp.x,e.clientY-_clp.y)>10){ clearTimeout(_clp.t); _clp=null; } });
 ['pointerup','pointercancel'].forEach(t=>app.addEventListener(t,()=>{ if(_clp){ clearTimeout(_clp.t); _clp=null; } if(_clpHeld){ _clpHeld=false; _lpAt=Date.now(); } }));
-app.addEventListener('contextmenu',e=>{ const b=e.target.closest('[data-rd]'); if(!b||!st.form) return; e.preventDefault(); if(_clp){ clearTimeout(_clp.t); _clp=null; } cmOpen(b.dataset.rd); });
+app.addEventListener('contextmenu',e=>{ const b=e.target.closest('.c-b[data-sw]'); if(!b||!st.form) return; e.preventDefault(); if(_clp){ clearTimeout(_clp.t); _clp=null; } cmOpen(b.dataset.sw); });
 async function home(){
   st.outbox=await obAll().catch(()=>st.outbox);
   if(st.outbox.length&&navigator.onLine!==false) await sendKept();
@@ -3976,7 +4190,8 @@ async function boot(){
   await Promise.all([loadSite(),loadMsgs(),loadPerms()]); msgSentPrune();
   bootStep(2,'Checking what is waiting to send');
   const w=whoGet(); st.walker=w&&w.name||''; st.pos=w&&w.pos||''; st.pid=w&&w.pid||'';
-  if(!st.walker||!st.pos) return go('who');
+  if(!st.walker) return go('who');
+  if(!st.pos) return go('whopos');
   await home();
   if(LINK_JOB) jobFromLink(LINK_JOB);
   alertsKeep();
@@ -3986,7 +4201,7 @@ const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
 // page's own, so a reload opens Due.
 function jobFromLink(id){
   try{ if(/[?&]job=/.test(location.search)) history.replaceState(null,'',location.pathname); }catch(e){}
-  if(['start','setup','who'].indexOf(st.screen)>=0) return;
+  if(['start','setup','who','whopos','whotype'].indexOf(st.screen)>=0) return;
   const j=jobById(id); if(!j) return toast('That job is no longer on the phone.');
   st.form={id:j.id,prwhy:''}; st.place='due'; st.sheet=canIssue()&&permAsk(j)?'jreview':false; go('job');
 }

@@ -92,7 +92,7 @@ function doPost(e){
         // The phone's position and department, and whether its holder is a manager, decide which notices and handovers
         // alert it (DEC-0348 rule 6, DEC-0351). No shift is kept.
         const d = devices(); d[t] = {name:String(b.name || '').slice(0, 80), role:String(b.role || '').slice(0, 40), pid:String(b.pid || '').slice(0, 80),
-          pos:String(b.pos || '').slice(0, 80), dept:String(b.dept || '').slice(0, 80), mgr:b.mgr === true, at:new Date().toISOString()};
+          pos:String(b.pos || '').slice(0, 80), dept:String(b.dept || '').slice(0, 80), mgr:b.mgr === true, ev:b.ev === true, at:new Date().toISOString()};
         PROPS.setProperty('DEVICES', JSON.stringify(d));
       } finally { lock.releaseLock(); }
       return out({ok:true});
@@ -318,24 +318,31 @@ function messageAlert(rec, ix, ws){
   }
   if(rec.kind === 'chatphoto') return;                            // a chat's new photo alerts no one (DEC-0354 rule 7)
   if(rec.kind === 'msgchange') return;                            // an edit or a delete alerts no one
-  if(rec.kind === 'msg' || rec.kind === 'reply'){ chatAlert(rec, ix); return; }
+  if(rec.kind === 'msg' || rec.kind === 'reply'){ chatAlert(rec, ix, ws); return; }
   // A handover alerts the phones it is sent to when it is sent, as a message in a chat does (DEC-0351 rule 3).
   handoverAlert(rec);
 }
-// A message alerts its chat's phones, the managers' among them (they are in every chat); a reply alerts the message's author and the managers (who are in every chat). Never the
-// writer's own phone.
-function chatAlert(rec, ix){
+// Who a message alerts (DEC-0364 rule 1): the department's phones for a message in its chat, the managers' for one in
+// Managers, and in Everyone only the phones that asked for it (`ev`); everyone else counts it unread. A reply alerts the
+// writer of the message it answers, and the chat's phones the same way. Never the writer's own phone.
+// A group the FM made (DEC-0365) alerts the phones of the positions in it, as the desk published them; it is named by its name.
+function chatAlert(rec, ix, ws){
   const d = devices(), chat = chatOf(rec), m = rec.msg || {}, text = String(m.text || '').trim();
   const say = text ? (text.length > 120 ? text.slice(0, 117) + '…' : text) : ((rec.files || []).some(f => /^audio\//.test(f.type || '')) ? 'A voice note.' : 'A photo.');
+  const made = ((ws && siteFile(ws)) || {}).chats, grp = Array.isArray(made) ? made.find(c => c && c.made && c.id === chat) : null;
+  const inChat = grp ? Object.keys(d).filter(t => d[t].role !== 'test' && !sameAs(d[t], rec.person, rec.pos) && (grp.members || []).indexOf(d[t].pos) >= 0)
+    : audiencePhones([chat], rec).filter(t => chat !== 'all' || d[t].ev);
+  const cname = grp ? String(grp.name || chat) : chatName(chat);
   let ts, title;
   if(rec.kind === 'reply'){
     const p = ix.items.find(x => x.id === rec.ref) || {};
-    ts = Object.keys(d).filter(t => d[t].role !== 'test' && !sameAs(d[t], rec.person, rec.pos) && (d[t].mgr || ((p.person || p.pos) && sameAs(d[t], p.person, p.pos))));
-    title = (rec.person || 'Someone') + ' replied in ' + chatName(chat);
+    const to = (p.person || p.pos) ? Object.keys(d).filter(t => d[t].role !== 'test' && !sameAs(d[t], rec.person, rec.pos) && sameAs(d[t], p.person, p.pos)) : [];
+    ts = to.concat(inChat.filter(t => to.indexOf(t) < 0));
+    title = (rec.person || 'Someone') + ' replied in ' + cname;
   } else {
-    ts = audiencePhones([chat, 'managers'], rec); title = (rec.person || 'Someone') + ' in ' + chatName(chat);
+    ts = inChat; title = (rec.person || 'Someone') + ' in ' + cname;
   }
-  if(!ts.length) Logger.log('Message, no alert: no phone in ' + chatName(chat) + ' has turned alerts on.');
+  if(!ts.length) Logger.log('Message, no alert: no phone in ' + cname + ' has turned alerts on.');
   ts.forEach(t => Logger.log('Message alert to ' + d[t].name + ': ' + JSON.stringify(pushSend(t, title, say))));
 }
 function toWords(to){ to = (to || []).map(x => x === 'managers' ? 'Managers' : x === 'all' ? 'everyone' : x); return to.length < 2 ? (to[0] || 'everyone') : to.slice(0, -1).join(', ') + ' and ' + to[to.length - 1]; }
