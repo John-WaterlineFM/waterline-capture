@@ -262,6 +262,13 @@ img.pl{object-fit:cover;padding:0}
 .gr .w{font:700 15px/1.4 Sora}
 .gr .cts{display:flex;gap:16px;margin-top:4px;font-size:12px;color:var(--textMid)}
 .gr .cts span{display:inline-flex;align-items:center;gap:4px}
+.pl.q span{font:600 12px/1.25 'DM Sans';display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tp.q span{font:600 15px/1.3 'DM Sans';color:var(--text);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.gcs{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 16px}
+.gc{display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left;padding:14px;border-radius:12px;background:var(--white);border:1px solid var(--border);min-height:132px;min-width:0}
+.gc .w{font:700 15px/1.3 Sora;color:var(--text);overflow-wrap:anywhere}
+.gc .cs{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}.gc .cs span{display:inline-flex;align-items:center;gap:4px;font:800 15px Sora;color:var(--text)}
+.gc .cs .sm{width:16px;height:16px;flex:none}.gc .cs .s-todo{color:var(--sTodo)}.gc .cs .s-doing{color:var(--sDoing)}.gc .cs .s-done{color:var(--sDone)}
 .gr .cts b{font:800 15px Sora;color:var(--text)}
 .gr .chev,.ra .chev{color:var(--accentD);flex:none}
 .zone .what.sm{font:800 20px/1.3 Sora}
@@ -337,8 +344,21 @@ body.t-ni .brand{background:#FFFFFF;border-radius:8px;padding:8px}
 .scan .pick{position:absolute;inset:0;background:var(--cream);color:var(--text);overflow:auto}
 /* A short word from the page (John, 21 Oct 2026: not an ill-fitting block): a small pill, centred over the page, in the
    page's own text colour on its cream, so it reads as a passing note in every theme. */
-.toast{position:fixed;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);bottom:calc(96px + env(safe-area-inset-bottom));z-index:30;background:var(--text);color:var(--cream);border-radius:22px;padding:8px 16px;font-size:12px;line-height:1.4;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s}
-.toast.on{opacity:1}
+/* A pop-up (DEC-0369 rule 2; Design 9.10): the white sheet with the theme's words, bottom-left, its foot clear of Capture's
+   top (the bar is 80 and Capture rises 24 above it), or 16 above a screen's own foot bar. Never black, never over Capture. */
+.toast{position:fixed;left:16px;transform:translateY(8px);width:max-content;max-width:calc(100% - 32px);bottom:calc(120px + env(safe-area-inset-bottom));z-index:30;background:var(--white);color:var(--text);border:1px solid var(--border);box-shadow:0 6px 18px rgba(13,31,45,.22);border-radius:16px;min-height:44px;padding:10px 16px;display:flex;align-items:center;font:500 15px/1.4 'DM Sans',sans-serif;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translateY(0)}
+/* Sending on Capture (DEC-0369 rule 1): a turning spiral while it sends, then the arrow lifts off with one ring. */
+.nv.cap .capb{position:relative}
+.nv.cap .capb .sp{width:30px;height:30px;animation:spR 1.1s linear infinite}
+.nv.cap .capb .sp path{stroke-width:2;stroke-dasharray:100;stroke-dashoffset:100;animation:spD 1.1s ease-in-out infinite}
+.nv.cap.sent .capb svg{animation:capLift .7s ease-in forwards}
+.nv.cap.sent .capb::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--btnFill);opacity:0;pointer-events:none;animation:capRing .7s ease-out}
+@keyframes spR{to{transform:rotate(360deg)}}
+@keyframes spD{0%{stroke-dashoffset:100}55%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+@keyframes capLift{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-18px);opacity:0}}
+@keyframes capRing{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.nv.cap .capb .sp,.nv.cap .capb .sp path,.nv.cap.sent .capb svg,.nv.cap.sent .capb::after{animation:none}.nv.cap .capb .sp path{stroke-dashoffset:0}}
 /* jobs (P4): a photo where the desk sent one (DEC-0305); a flag as a mark and words, never a colour (DEC-0304; 21.3) */
 img.wide{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 img.sm{width:88px;height:88px;object-fit:cover;border-radius:8px;flex:none}
@@ -1246,7 +1266,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,group:vGroup}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -1389,11 +1409,16 @@ function waitLine(){ const n=st.outbox.length; if(!n) return '';
   const ref=st.outbox.find(c=>c.errCode==='refused');
   if(ref) return '<div class="wait" role="alert"><b>'+esc(plural(n,'capture'))+' not sent:</b> '+esc(ref.err||'the site refused it')+' Kept on this phone. Open the latest set-up link from the desk.</div>';
   return '<div class="wait" role="status"><b>'+esc(plural(n,'capture'))+' waiting for signal.</b> '+(n===1?'It sends':'They send')+' by itself.</div>'; }
+// Capture, or the send under way on it (DEC-0369 rule 1): Sending with the spiral, then Sent as the arrow lifts off.
+const SPIRAL='<svg class="sp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path pathLength="100" d="M13.00 12.00 L13.06 12.11 L13.11 12.24 L13.14 12.37 L13.16 12.52 L13.15 12.67 L13.13 12.82 L13.09 12.98 L13.03 13.14 L12.94 13.29 L12.83 13.44 L12.71 13.58 L12.56 13.71 L12.39 13.83 L12.20 13.92 L12.00 14.00 L11.78 14.06 L11.56 14.09 L11.32 14.09 L11.08 14.07 L10.83 14.02 L10.59 13.94 L10.35 13.83 L10.12 13.70 L9.90 13.53 L9.69 13.33 L9.50 13.11 L9.34 12.87 L9.20 12.60 L9.08 12.31 L9.00 12.00 L8.95 11.68 L8.94 11.35 L8.96 11.01 L9.02 10.67 L9.11 10.33 L9.25 10.00 L9.42 9.68 L9.64 9.37 L9.88 9.09 L10.17 8.82 L10.48 8.59 L10.83 8.39 L11.20 8.22 L11.59 8.09 L12.00 8.00 L12.43 7.96 L12.86 7.96 L13.30 8.01 L13.74 8.10 L14.17 8.25 L14.59 8.44 L14.99 8.68 L15.37 8.97 L15.72 9.30 L16.04 9.67 L16.32 10.07 L16.57 10.52 L16.76 10.99 L16.91 11.48 L17.00 12.00 L17.04 12.53 L17.02 13.07 L16.95 13.61 L16.81 14.14 L16.62 14.67 L16.37 15.17 L16.06 15.66 L15.70 16.11 L15.29 16.53 L14.83 16.91 L14.33 17.24 L13.79 17.52 L13.22 17.74 L12.62 17.90 L12.00 18.00 L11.37 18.03 L10.72 18.00 L10.08 17.90 L9.45 17.72 L8.83 17.48 L8.24 17.18 L7.67 16.81 L7.14 16.37 L6.66 15.88 L6.23 15.33 L5.85 14.74 L5.53 14.10 L5.28 13.43 L5.10 12.72 L5.00 12.00 L4.97 11.26 L5.02 10.52 L5.15 9.78 L5.36 9.04 L5.65 8.33 L6.01 7.65 L6.45 7.00 L6.96 6.40 L7.53 5.85 L8.17 5.36 L8.85 4.94 L9.59 4.58 L10.36 4.31 L11.17 4.11 L12.00 4.00 L12.84 3.98 L13.69 4.04 L14.53 4.20 L15.36 4.45 L16.17 4.78 L16.94 5.20 L17.67 5.71 L18.34 6.29 L18.96 6.95 L19.51 7.67 L19.98 8.45 L20.37 9.28 L20.67 10.16 L20.88 11.07 L21.00 12.00"/></svg>';
+function capBtn(){ const k=st.capSend&&st.capSend.state;
+  return '<button class="nv cap'+(k==='sent'?' sent':'')+'" data-act="sheet"'+(k==='sending'?' aria-busy="true"':'')+'><span class="capb">'+(k==='sending'?SPIRAL:k==='sent'?ICO('arrow-up'):I.plus)+'</span><span role="status">'+(k==='sending'?'Sending':k==='sent'?'Sent':'Capture')+'</span></button>'; }
+function capDraw(){ const b=app.querySelector('.navb .nv.cap[data-act="sheet"]'); if(b) b.outerHTML=capBtn(); }
 function navBar(on){
   const tab=(id,ic,lab,bd)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+(bd?' aria-label="'+lab+', '+bd+' to read"':'')+'>'+I[ic]+(bd?'<span class="bd n" aria-hidden="true">'+bd+'</span>':'')+'<span>'+lab+'</span></button>';
   // DEC-0301, DEC-0303 rule 2: Capture is the main button, in the middle of the bar. Messages sits between it and Settings,
   // with the count of what this person has not read (DEC-0348 rule 1).
-  return '<nav class="navb"><div class="side">'+tab('due','due','Due')+tab('jobs','jobs','Jobs')+'</div><button class="nv cap" data-act="sheet"><span class="capb">'+I.plus+'</span><span>Capture</span></button><div class="side">'+tab('msgs','msg','Messages',unread().length)+tab('me','gear','Settings')+'</div></nav>';
+  return '<nav class="navb"><div class="side">'+tab('due','due','Due')+tab('jobs','jobs','Jobs')+'</div>'+capBtn()+'<div class="side">'+tab('msgs','msg','Messages',unread().length)+tab('me','gear','Settings')+'</div></nav>';
 }
 function sheet(){
   const v=(act,ic,nm,ln,off)=>'<button class="verb" data-act="'+act+'"'+(off?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
@@ -1487,7 +1512,7 @@ function vDue(){
   } else if(!D.over.length&&!D.today.length&&!D.soon.length&&!D.mine.length&&jobsAll().length){
     h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">0</span><span class="what">jobs given to you</span></div>'
       +'<p>No walk, line or job is yours today. Your groups’ jobs are on Jobs.</p><button class="gh" data-act="jobs">'+I.jobs+'Open Jobs</button></div>';
-    return h+waitLine()+'<div style="height:96px"></div></div>'+navBar('due');
+    return h+waitLine()+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
   } else {
     const n=D.over.length, all=n+D.today.length+D.soon.length+D.mine.length;
     if(!n&&D.mine.length){
@@ -1503,7 +1528,7 @@ function vDue(){
   if(!any){
     const p=D.p;
     h+='<p class="para">'+(p?'Nothing else is due for '+esc(p.title)+' today or in the next '+(s.outlook||7)+' days. ':'')+'Due holds the walks your department does, the lines your position’s duties cover and the jobs given to you, all set on the desk. The rest of your groups’ jobs are on Jobs.</p>';
-    return h+'<div style="height:96px"></div></div>'+navBar('due');
+    return h+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
   }
   const firstOver=D.over.filter(x=>x.t!=='line'), lines=D.over.filter(x=>x.t==='line'&&x.i.kind!=='look'), look=D.over.filter(x=>x.t==='line'&&x.i.kind==='look');
   if(firstOver.length) h+=grp('Overdue')+'<div class="list">'+firstOver.map(dueRow).join('')+'</div>';
@@ -1513,7 +1538,7 @@ function vDue(){
   if(D.mine.length) h+=lh('Your jobs')+jl(jSortL(D.mine),true,1);
   if(D.soon.length) h+=grp('Next '+(s.outlook||7)+' days')+'<div class="list">'+D.soon.map(dueRow).join('')+'</div>';
   else h+='<p class="para">Nothing else falls due in the next '+(s.outlook||7)+' days.</p>';
-  return h+'<div style="height:96px"></div></div>'+navBar('due');
+  return h+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
 }
 // Lines in their categories: one row each with its count and its oldest, red count first (DEC-0252 rule 3, DEC-0254
 // words); the open one is a stone band with each line's own tier dashed down its edge (DEC-0140). Evidence state and
@@ -1535,7 +1560,8 @@ function cats(xs){
 // Walk jobs stay on Due. The site file carries open jobs only, so the switch holds To Do and In Progress. A flagged job
 // sits on top in level order, its level and reason in words, never a colour (DEC-0304; 21.3). Its photo leads it
 // (DEC-0305; 21.6). Each job says who holds it, every name (DEC-0309 rule 6).
-st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:'groups',grp:''};
+st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:ls.get('wl_jtab','feed'),grp:''};
+if(['feed','groups'].indexOf(st.J.tab)<0) st.J.tab='feed';
 // Jobs is work that was reported: an occurrence of a planned job (a walk, a flush, a test) stays on Due (DEC-0312 rule 4).
 function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state!=='done'&&!j.round&&!j.planned&&(fm||gs.has(j.group))); }
 // Jobs done in the last WFM_SITE_SHAPE.doneDays, as the desk publishes them (DEC-0349 rule 1): the same groups as open jobs.
@@ -1600,7 +1626,8 @@ function jSquare(j){
   let l=LOC(j.loc); if(!l&&typeof jPlace==='function'){ const q=jPlace(j); if(q) l=q.l; }
   if(l&&/^\d+$/.test(l.name)) return '<span class="pl" aria-hidden="true"><b class="n">'+esc(l.name)+'</b></span>';
   if(l) return '<span class="pl" aria-hidden="true"><span>'+esc(l.name)+'</span></span>';
-  return '<span class="pl" aria-hidden="true"><i>'+(j.place?esc(j.place):'Place not said')+'</i></span>';
+  if(j.place) return '<span class="pl" aria-hidden="true"><span>'+esc(j.place)+'</span></span>';
+  return '<span class="pl q" aria-hidden="true"><span>“'+esc(j.title||'Job')+'”</span></span>';
 }
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
@@ -1631,7 +1658,7 @@ const jAgeN=j=>{ const d=Math.floor((Date.now()-Date.parse(j.raised))/864e5); re
 function jobTile(j,showGroup){ const l=LOC(j.loc), ag=jAgeN(j); let top;
   if((j.photos||[]).length&&_ph[j.photos[0]]&&!/^(loading|missing)$/.test(_ph[j.photos[0]])) top='<img class="tp" src="'+_ph[j.photos[0]]+'" alt="Photo of '+esc(j.title||'the job')+'">';
   else if(l&&/^\d+$/.test(l.name)) top='<span class="tp"><b class="n">'+esc(l.name)+'</b></span>';
-  else top='<span class="tp">'+(l?'<span>'+esc(l.name)+'</span>':'<i>'+(j.place?esc(j.place):'Place not said')+'</i>')+'</span>';
+  else top='<span class="tp'+(l||j.place?'':' q')+'">'+(l?'<span>'+esc(l.name)+'</span>':j.place?'<span>'+esc(j.place)+'</span>':'<span>“'+esc(j.title||'Job')+'”</span>')+'</span>';
   return '<button class="cb tl'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
 function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="list">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
 function jobRow(j){ const a=jLate(j);
@@ -1648,35 +1675,32 @@ function jobsShown(){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code);
   return L.sort((a,b)=>flagRank(a)-flagRank(b)||(J.sort==='old'?t(a)-t(b):J.sort==='place'?fl(a)-fl(b)||jWhere(a).localeCompare(jWhere(b)):t(b)-t(a))); }
 const nobody=j=>!holders(j).length, mineJ=j=>holders(j).some(isMe);
 const oldestDays=L=>L.length?Math.floor((Date.now()-Math.min(...L.map(j=>Date.parse(j.raised)||Date.now())))/864e5):0;
+// Jobs is Snapfix's Fix (DEC-0370): Feed, every open job; Groups, a card per group with its three counts, opening the
+// group's page. A job given to you is on Due, once (Design 4.11); the walks are scheduled work and are on Due too.
 function vJobs(){
   st.place='jobs';
   if(st.J.grp) return vGroup();
-  const J=st.J, all=jobsAll(), p=myPos(), fm=isFM(p), my=all.filter(mineJ), nb=all.filter(nobody);
-  const gids=fm?(SITE().groups||[]).map(g=>g.id):(p&&p.groups)||[];
-  const open=gids.filter(g=>all.some(j=>j.group===g)).sort((a,b)=>all.filter(j=>j.group===b).length-all.filter(j=>j.group===a).length), quiet=gids.filter(g=>open.indexOf(g)<0);
+  const J=st.J, all=jobsAll(), done=jobsDone(), p=myPos(), fm=isFM(p), nb=all.filter(nobody);
+  const gids=(fm?(SITE().groups||[]).map(g=>g.id):(p&&p.groups)||[]).filter(g=>!(SITE().jobs||[]).some(j=>j.group===g&&j.round));
+  const cnt=g=>all.filter(j=>j.group===g).length, G=gids.slice().sort((a,b)=>cnt(b)-cnt(a)||GROUP(a).localeCompare(GROUP(b)));
   const oldest=oldestDays(all);
   let h='<div class="body">'+pageHead('Jobs')+'<div class="zone"><span class="eb">'+(fm?'Every group':'Your groups')+'</span>'
     +'<div class="row1"><span class="num n">'+all.length+'</span><span class="what">open</span></div>'
     +'<p>'+(all.length?'<b class="n">'+nb.length+'</b> with nobody on them. The oldest was raised <b class="n">'+oldest+'</b> '+(oldest===1?'day':'days')+' ago.':(p&&!fm&&!gids.length?'No job groups are set for your position on the desk’s Organisation Structure.':'Nothing open in your groups.'))+'</p>'
-    +'<div class="sw" role="tablist">'+[['groups','Groups',open.length],['mine','Mine',my.length]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
+    +'<div class="sw" role="tablist">'+[['feed','Feed',I.list],['groups','Groups',I.grid]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
     +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search every group" aria-label="Search jobs in every group" value="'+esc(J.q)+'"></label></div>';
   const q=J.q.trim().toLowerCase();
-  if(q){ const R=all.concat(jobsDone()).filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
-    h+='<div class="act"><span><span class="n">'+R.length+'</span> of <span class="n">'+all.length+'</span> match</span><button class="lnk" data-act="jclear">Clear</button></div>';
+  if(q){ const R=all.concat(done).filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
+    h+='<div class="act"><span><span class="n">'+R.length+'</span> of <span class="n">'+(all.length+done.length)+'</span> match</span><button class="lnk" data-act="jclear">Clear</button></div>';
     h+=R.length?lh('Matches',R.length)+jl(jSortL(R),true):'<p class="para">No job matches.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
-  if(J.tab==='mine'){
-    const dm=jobsDone().filter(doneMine);
-    h+=lh('Given to you')+(my.length?jl(jSortL(my),true,1):'<p class="para">Nothing is given to you. Jobs nobody has are in Groups.</p>');
-    h+=lh('Done by you, last '+doneDays()+' days',dm.length,1)+(dm.length?jl(dm,true,1):'<p class="para">Nothing done by you in the last '+doneDays()+' days.</p>');
+  if(J.tab==='groups'){
+    h+=G.length?'<div class="gcs">'+G.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, dn=done.filter(j=>j.group===g).length;
+      return '<button class="gc" data-act="jgrp" data-id="'+esc(g)+'" aria-label="'+esc(GROUP(g))+': '+(L.length-d)+' to do, '+d+' in progress, '+dn+' done"><span class="gi">'+GICO(g)+'</span><span class="w">'+esc(GROUP(g))+'</span>'
+        +'<span class="cs" aria-hidden="true"><span>'+SMK('todo')+(L.length-d)+'</span><span>'+SMK('doing')+d+'</span><span>'+SMK('done')+dn+'</span></span></button>'; }).join('')+'</div>'
+      :'<p class="para">Jobs show here once the desk has job groups for your position.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
-  h+=walksRow();
-  if(open.length) h+='<div class="list">'+open.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, o=oldestDays(L), n=L.filter(nobody).length;
-    return '<button class="r gr" data-act="jgrp" data-id="'+esc(g)+'"><span class="gi">'+GICO(g)+'</span><span class="m"><span class="w">'+esc(GROUP(g))+'</span>'
-      +'<span class="cts"><span>'+SH.todo+'<b>'+(L.length-d)+'</b>To do</span><span>'+SH.doing+'<b>'+d+'</b>In progress</span></span>'
-      +'</span>'+I.chev+'</button>'; }).join('')+'</div>';
-  if(quiet.length) h+='<p class="para">Nothing reported open in '+esc(quiet.map(GROUP).join(', '))+'.</p>';
-  if(!all.length&&!quiet.length) h+='<p class="para">Jobs show here once the desk has open jobs in your position’s groups.</p>';
+  h+=all.length?lh('Every job',all.length)+jl(jSortL(all),true):'<p class="para">Jobs show here once the desk has open jobs in your position’s groups.</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('jobs');
 }
 // A group opened: its name and its counts in the zone (21.1), the counts are the filter (DEC-0327 rule 2), its jobs below.
@@ -2815,6 +2839,8 @@ function walkSplit(){
 function walkMissDays(L){ const by=[]; L.forEach(j=>{ const at=Date.parse(j.due), k=new Date(at).toDateString(), d=by.find(x=>x.k===k); if(d) d.L.push(j); else by.push({k:k,at:at,L:[j]}); }); by.forEach(d=>d.L.sort((a,b)=>Date.parse(a.due)-Date.parse(b.due))); return by; }
 const dowDay=ms=>{ const d=new Date(ms); return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()]; };
 const dayWord=ms=>{ const d=new Date(ms), t=new Date(); t.setHours(0,0,0,0); const k=Math.round((new Date(d).setHours(0,0,0,0)-t)/864e5); return k===0?'Today':k===-1?'Yesterday':dowDay(ms); };
+// The walks done and missed are scheduled work, so they sit at the foot of Due (DEC-0370 rule 3).
+function walksFoot(){ const r=walksRow(); return r?grp('Walks, last '+doneDays()+' days')+r:''; }
 function walksRow(){ const W=walkSplit(); if(!W.any) return '';
   return '<div class="list"><button class="r gr" data-act="walks"><span class="gi">'+GICO('fire-walks')+'</span><span class="m"><span class="w">'+esc(GROUP('fire-walks'))+'</span>'
     +'<span class="cts"><span>'+SMK('due')+'<b>'+W.due.length+'</b>Due</span><span>'+SMK('done')+'<b>'+(W.done.length+W.sent.length)+'</b>Done</span><span>'+SMK('miss')+'<b>'+W.missed.length+'</b>Missed</span></span>'
@@ -2835,23 +2861,23 @@ function walkRowP(x,kind){
     +'<span class="sub">'+(x.later?'Later today, at <span class="n">'+hm(x.at)+'</span>':'Due now'+(x.slot&&x.slot.end?', until <span class="n">'+hm(x.slot.end)+'</span>':''))+'</span></span>'+I.chev+'</button>';
 }
 function vWalks(){
-  st.place='jobs';
+  st.place='due';
   const W=walkSplit(), t=st.walksTab||'due', last=W.done[0], lw=last&&last.walk;
-  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('jobs')+'<span class="eb">Your groups</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO('fire-walks')+'</span><h1 style="margin:0">'+esc(GROUP('fire-walks'))+'</h1></div>'
+  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('due')+'<span class="eb">Due</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO('fire-walks')+'</span><h1 style="margin:0">'+esc(GROUP('fire-walks'))+'</h1></div>'
     +'<p>'+(last?'The last walk filed: '+esc(last.title)+', '+esc(dayWord(Date.parse(last.due)).toLowerCase().replace(/^(mon|tue|wed|thu|fri|sat|sun)/,s=>s[0].toUpperCase()+s.slice(1)))+', signed by '+esc(youOr(lw?lw.by:(last.done||{}).by))+' at <b class="n">'+hm(lw?lw.at:(last.done||{}).at)+'</b>.':'No walk filed in the last <b class="n">'+doneDays()+'</b> days.')+'</p>'
     +'<div class="sw" role="tablist">'+[['due','Due Today',W.due.length],['done','Done',W.done.length+W.sent.length],['missed','Missed',W.missed.length]].map(x=>'<button role="tab" class="'+(t===x[0]?'on':'')+'" data-act="walksTab" data-v="'+x[0]+'" aria-selected="'+(t===x[0])+'"><span class="n">'+SMK(x[0]==='missed'?'miss':x[0])+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>';
   if(t==='done'){ h+=grp('Done, last '+doneDays()+' days')+((W.sent.length||W.done.length)?'<div class="list">'+W.sent.map(x=>walkRowP(x,'sent')).join('')+W.done.map(j=>walkRowP(j,'done')).join('')+'</div>':'<p class="para">No walk filed in the last '+doneDays()+' days. Older walks are on the desk’s Walk Checklists.</p>'); }
   else if(t==='missed') h+=grp('Missed, last '+doneDays()+' days')+(W.missed.length?'<div class="list">'+walkMissDays(W.missed).map(d=>'<div class="ra c jt"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(dayWord(d.at))+': <span class="n">'+d.L.length+'</span> missed</span><span class="sub">'+esc(d.L.map(j=>j.title).join(', '))+'</span></span></div>').join('')+'</div>':'<p class="para">No walk missed in the last '+doneDays()+' days.</p>')
     +(W.older?'<p class="para"><span class="n">'+W.older+'</span> older '+(W.older===1?'walk':'walks')+' with no walk filed are on the desk’s Plan.</p>':'');
   else h+=grp('Due today')+(W.due.length?'<div class="list">'+W.due.map(x=>walkRowP(x,'due')).join('')+'</div>':'<p class="para">Nothing more is due today.</p>');
-  return h+'<div style="height:96px"></div></div>'+navBar('jobs');
+  return h+'<div style="height:96px"></div></div>'+navBar('due');
 }
 // A done walk opened: its record (DEC-0366 rule 5). The zone carries who, when and the points (Design 21.1); then why it
 // stopped early; then the lines, a Not OK line carrying its job and where it stands, which opens the job (rule 4).
 function vWalkRec(){
   st.place='walkrec';
   const j=(SITE().jobs||[]).find(x=>x.id===st.wrec), w=j&&j.walk;
-  if(!j||!w) return '<div class="body">'+formZone('walks','Fire Walks','No Longer on the Phone','This walk is no longer in the site details from the desk. Walks stay '+doneDays()+' days; older ones are on the desk’s Walk Checklists.')+'</div>'+navBar('jobs');
+  if(!j||!w) return '<div class="body">'+formZone('walks','Fire Walks','No Longer on the Phone','This walk is no longer in the site details from the desk. Walks stay '+doneDays()+' days; older ones are on the desk’s Walk Checklists.')+'</div>'+navBar('due');
   const r=roundById(j.round), nu=w.unscanned||0, gone=Math.max(0,(w.of||0)-(w.scanned||0)-nu), no=(w.lines||[]).filter(x=>!x.ok).length, slotT=(/(\d\d:\d\d)$/.exec(j.title)||[])[1];
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walks')+'<span class="eb">'+esc(GROUP('fire-walks'))+'</span></div><h1>'+esc(r?r.name:j.title)+'</h1>'
     +'<p>'+esc(dayWord(Date.parse(j.due)))+(slotT?', the <b class="n">'+slotT+'</b> walk':'')+'. Signed off by '+esc(youOr(w.by))+' at <b class="n">'+hm(w.at)+'</b>.</p>'
@@ -2866,7 +2892,7 @@ function vWalkRec(){
           +(holders(jb).length||jb.state!=='done'?'<span class="sub">'+esc(holders(jb).length?holdersSay(jb):'Nobody on it yet')+'</span>':'')+'</span>'+I.chev+'</button>'
         :'<div class="wjob"><span class="m"><span class="sub">Made a job on the desk; it is no longer on the phone.</span></span></div>'; });
   });
-  return h+'</div><div style="height:96px"></div></div>'+navBar('jobs');
+  return h+'</div><div style="height:96px"></div></div>'+navBar('due');
 }
 // Where a Not OK line is: the last point scanned, else none yet (DEC-0366 rule 2).
 function walkLastPoint(W){ const s=(W.scans||[]).slice().sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)); return s.length?s[s.length-1]:null; }
@@ -3246,7 +3272,7 @@ function after(){
   if((st.screen==='chat'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='chat'?chatMsgs(st.form.chat):[];
     phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); }
   if(st.screen==='job'){ const j=st.form&&jobById(st.form.id); if(j) phLoad([].concat(j.photos||[],...(j.thread||[]).map(e=>e.photos||[]))); }
-  if(st.screen==='jobs') phLoad(jobsShown().map(j=>(j.photos||[])[0]).filter(Boolean));
+  if(st.screen==='jobs') phLoad((st.J.grp?jobsShown():jobsAll()).map(j=>(j.photos||[])[0]).filter(Boolean));
   if(st.screen==='job'){ ['jnote','vwords'].forEach(id=>{ const t=document.getElementById(id); if(t) grow(t); }); vUi(); if(st.rec) recUi(); }
 }
 function scanClose(){ scanStop(); st.scanFor=null; render(); }
@@ -3359,7 +3385,7 @@ app.addEventListener('click',async e=>{
   if(a==='jobs'){ if(st.screen==='jobs'||st.screen!=='job') Object.assign(st.J,{grp:'',q:''}); st.form=null; st.sheet=false; return go('jobs'); }
   if(a==='openCat'){ st.openCat=st.openCat===b.dataset.id?'':b.dataset.id; return render(); }
   if(a==='jstate'){ st.J.state=b.dataset.v; return render(); }
-  if(a==='jtab'){ st.J.tab=b.dataset.v; return render(); }
+  if(a==='jtab'){ st.J.tab=b.dataset.v; ls.set('wl_jtab',b.dataset.v); return render(); }
   if(a==='jsortv'){ st.J.sort=b.dataset.v; ls.set('wl_jsort',b.dataset.v); st.sheet=false; return render(); }
   if(a==='jsortOpen'){ st.sheet='jsort'; return render(); }
   if(a==='jgrp'){ Object.assign(st.J,{grp:b.dataset.id,state:'todo',q:'',groups:[]}); return go('jobs'); }
@@ -3460,8 +3486,8 @@ app.addEventListener('change',e=>{
 // Fields that live inside the form's parts: the tag that will not scan, a No's sentence.
 function special(k,el){
   const F=st.form;
-  if(st.screen==='group'&&k==='gName'){ F.gName=el.value; return true; }
-  if(st.screen==='group'&&k==='gRole'){ const t=el.value, i=F.roles.indexOf(t); if(el.checked&&i<0) F.roles.push(t); if(!el.checked&&i>=0) F.roles.splice(i,1); render(); return true; }
+  if(st.screen==='chatgroup'&&k==='gName'){ F.gName=el.value; return true; }
+  if(st.screen==='chatgroup'&&k==='gRole'){ const t=el.value, i=F.roles.indexOf(t); if(el.checked&&i<0) F.roles.push(t); if(!el.checked&&i>=0) F.roles.splice(i,1); render(); return true; }
   if(st.screen==='job'&&(k==='note'||k==='why'||k==='dnote')){ F[k]=el.value;
     // The microphone becomes send once something is written, and the kind moves above the field (P6).
     if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
@@ -3553,14 +3579,15 @@ async function doSend(){
       (c.record.unscanned||[]).forEach(u=>{ u.file=nm(u.file); }); }
   }
   catch(e){ st.busy=false; F.err='Nothing was sent. Take the photos again and send it again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
+  // Back to Due at once; Capture shows the sending, then Sent (DEC-0369 rule 1). A capture that waits says so (Design 9.11).
+  st.form=null; st.capSend={state:'sending'}; go('due');
   const ok=await send(c);
   st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
   if(F.kind==='round'){ ls.del('wl_walk'); const w=walksSent(); w.push({round:F.round,at:new Date().toISOString(),for:F.walkFor||''}); ls.set('wl_walksSent',w); }
   F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url));
-  st.form=null;
-  // Back to where the person was, said once (Design 9.10); a capture that waits says so on the screen (Design 9.11).
-  go('due');
-  toast(ok?'Sent':c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
+  const me=st.capSend={state:ok?'sent':''}; capDraw();
+  if(ok) setTimeout(()=>{ if(st.capSend===me){ st.capSend=null; capDraw(); } },1800);
+  else toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
 }
 
 // ── Messages: the site's chats (job 015 MS2; DEC-0354, DEC-0355, DEC-0353) ───────────────────
@@ -3935,7 +3962,7 @@ const fmMe=()=>isFM(myOwnPos()||myPos());
 function grpRoles(){ const P=positions(), D=(SITE().departments||[]).slice();
   P.forEach(p=>{ const d=p.department||''; if(D.indexOf(d)<0) D.push(d); });
   return D.map(d=>({dept:d,titles:P.filter(p=>(p.department||'')===d).map(p=>p.title).filter((t,i,l)=>t&&l.indexOf(t)===i)})).filter(x=>x.titles.length); }
-function vGroup(){
+function vChatGroup(){
   const F=st.form||{}, g=F.gid?chatById(F.gid):null;
   if(!fmMe()) return '<div class="body">'+formZone('msgs','Messages','Not Yours to Change','Only the FM makes and edits chat groups.')+'</div>';
   const R=grpRoles(), known=new Set([].concat(...R.map(x=>x.titles))), gone=F.roles.filter(t=>!known.has(t));
@@ -4126,8 +4153,8 @@ async function msgAct(a,b){
   if(a==='chatBack'){ const k=st.chatLast||(F&&F.chat); st.form=chatForm(typeof k==='string'?k:(k&&k.chat)); st.chatLast=null; go('chat'); return chatBottom(); }
   if(a==='chatInfo'){ st.chatLast=F.chat; st.form={chat:F.chat}; return go('chatinfo'); }
   // A chat group (DEC-0365): made, changed or closed by the FM, filed by the desk.
-  if(a==='grpNew'){ st.form={gid:'',gName:'',roles:[],tried:false,closing:false}; return go('group'); }
-  if(a==='grpEdit'){ const c=chatById(F.chat); if(!c||!c.made) return; st.form={gid:c.id,gName:c.name,roles:(c.roles||[]).slice(),tried:false,closing:false}; return go('group'); }
+  if(a==='grpNew'){ st.form={gid:'',gName:'',roles:[],tried:false,closing:false}; return go('chatgroup'); }
+  if(a==='grpEdit'){ const c=chatById(F.chat); if(!c||!c.made) return; st.form={gid:c.id,gName:c.name,roles:(c.roles||[]).slice(),tried:false,closing:false}; return go('chatgroup'); }
   if(a==='grpBack'){ st.form={chat:F.gid}; return go('chatinfo'); }
   if(a==='grpClose'||a==='grpCloseOff'){ F.closing=a==='grpClose'; return render(); }
   if(a==='grpSend'||a==='grpCloseSend') return grpSend(a==='grpCloseSend');
