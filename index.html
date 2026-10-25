@@ -729,7 +729,7 @@ body.t-ni{--sendFill:#1E7D9B;--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#0916
 .c-s b{color:#FFFFFF}
 .c-ti{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:44px;color:#FFFFFF}
 .c-tw{flex:1;min-width:0;display:flex;flex-direction:column}
-.c-tn{font:800 17px/1.3 Sora}
+.c-tn{font:800 20px/1.3 Sora}
 .c-tw .c-s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* a chat's picture: its photo, or its colour and initials (rule 7) */
 /* a chat is a group, so its picture is the house tile, as the job groups' and the jobs' are (John, 24 Oct 2026) */
@@ -753,7 +753,7 @@ body.t-ni{--sendFill:#1E7D9B;--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#0916
 .c-ch .c-m{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding:12px 0;align-self:stretch;justify-content:center;border-bottom:1px solid var(--border)}
 .c-ch:last-child .c-m{border-bottom:none}
 .c-r{display:flex;align-items:center;gap:8px}
-.c-nm{flex:1;font:600 16px 'DM Sans';color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-nm{flex:1;font:700 15px Sora;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c-tm{font:500 12px Sora;color:var(--textMuted);flex:none}
 .c-ch.ur .c-tm{color:var(--unreadText);font-weight:700}
 .c-pv{flex:1;min-width:0;font-size:14px;color:var(--textMid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -950,7 +950,7 @@ body.t-li .c-av.lg{border-color:var(--border)}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=bc90b5b479"></script>
+<script src="shapes.js?v=db6f3ac0f1"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1599,7 +1599,7 @@ function holdersSay(j){ const h=holders(j); if(!h.length) return ''; const o=h.f
   return h.some(isMe)?'Assigned to you'+(o.length?' and '+o.join(', '):''):'Assigned to '+o.join(', '); }
 // Start and Mark Done are for anyone whose position is in the job's group (DEC-0308 rule 3). The desk checks the
 // person's own position, not the one this phone is showing, so that is the one asked here.
-const myOwnPos=()=>{ const m=meP(); return m?positions().find(p=>p.id===m.position)||null:null; };
+const myOwnPos=()=>{ const m=meP(), id=m?m.position:st.pos; return id?positions().find(p=>p.id===id)||null:null; };
 const inGroup=j=>{ const p=myOwnPos(); return !!(p&&(p.groups||[]).indexOf(j.group)>=0); };
 // Small copies of a job's photos, base64 JPEG text the desk writes to Phone/photos/ (DEC-0305, DEC-0308 rule 4), read
 // through the relay when a job is shown and kept on this phone.
@@ -1817,7 +1817,7 @@ function jState(j){
   const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart').sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act==='pause':!!j.paused;
   // Pausing is for the job's group; assigning for the group and the FM (DEC-0314 rule 3).
   if(j.state==='done') return {pend:pend,pS:null,pD:null,fl:null,doing:false,pPR:null,paused:false,canPause:false,canAsg:false,done:true};
-  return {pend:pend,pS:pS,pD:pD,fl:fl,doing:doing,pPR:pPR,paused:paused,canPause:!pD&&!!meP()&&inGroup(j)&&doing&&!paused,canAsg:!pD&&!!meP()&&(inGroup(j)||isFM(myOwnPos()))};
+  return {pend:pend,pS:pS,pD:pD,fl:fl,doing:doing,pPR:pPR,paused:paused,canPause:!pD&&!!st.walker&&inGroup(j)&&doing&&!paused,canAsg:!pD&&!!st.walker&&(inGroup(j)||isFM(myOwnPos()))};
 }
 // What the desk wrote as a job changed, as one small line across the middle (DEC-0307 rule 2): "Started by you".
 const EVK={Started:'play',Restarted:'play',Paused:'pause',Assigned:'users',Flagged:'flag',Done:'check','Safety check':'shield-check','Parts used':'package',Permit:'file-check'};
@@ -1906,7 +1906,7 @@ function vJob(){
   else if(!pD){
     const pa=canIssue()?permAsk(j):null;
     if(pa){ btn=['jpermitReview','permit','Review the Permit']; why=(pa.by?youOr(pa.by).replace(/^you$/,'You'):'Someone')+' applied for a permit to work: '+pa.types.join(', ')+(pa.at&&!isNaN(Date.parse(pa.at))?', at '+at2(pa.at):'')+'. The job cannot start until it is issued.'; }
-    else if(!meP()) why='Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.';
+    else if(!st.walker) why='Starting and finishing a job need your name on this phone. Add it in Settings.';
     else if(!inGroup(j)) why=(paused?'Restart':'Start, Pause')+' and Mark Done are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
     else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' '+issuerSay()+' '+(paused?'Restart':'Start the Job')+' comes back here once it is issued.';
     else btn=paused?['jobRestart','play','Restart']:doing?['jobDone','tick','Mark Done']:['jobStart','play','Start the Job'];
@@ -1925,7 +1925,7 @@ function vJob(){
   const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
   const sp=(j.photos||[]).filter(n=>!inThr.has(n)), inStrip=new Set(sp);
   const strip=sp.length?'<div class="strip">'+sp.map((n,i)=>'<button class="ph" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+sp.length+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'))+'</button>').join('')+'</div>':'';
-  const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+' on the desk only. The desk copies photos for the phone each time it publishes.</div>':'';
+  const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+(j.photosNotCopied===1?' is':' are')+' on the desk.</div>':'';
   const hs=holders(j), pA=pend.filter(x=>x.act==='assign');
   // Who is on it shows only when someone is; with nobody, only the control that assigns, for whoever may (DEC-0334).
   const people=(hs.length||pA.length||S0.canAsg)?'<div class="people">'+(hs.length||pA.length?'<span class="lab">On it</span>':'')+'<span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'')
@@ -1939,7 +1939,7 @@ function jMoreSheet(){
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +(S0.canPause?v('jobPause','pause','Pause the Job','Reason optional'):'')
-    +(!S0.pD&&meP()?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
+    +(!S0.pD&&st.walker?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
     +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
     +(S0.canAsg?v('jobAssign','users','Change Who Is on It',n?n+' on it':'No one on it yet'):'')
@@ -2301,6 +2301,7 @@ function t5Act(a,b){
   if(a==='t5Fin'){ F.fin.ans[b.dataset.k]=v; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const n=t.querySelector('[data-act="t5Fin"][data-k="'+b.dataset.k+'"][data-v="'+v+'"]'); if(n) n.focus({preventScroll:true}); return; }
   if(a==='t5SigClear'){ F.fin.strokes=[]; F.fin.at=''; const y=app.querySelector('.tf').scrollTop; render(); app.querySelector('.tf').scrollTop=y; return; }
   if(a==='t5DoneSend'){ if(t5FinWhy(j)){ F.fin.tried=true; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const e=t.querySelector('[role=alert]'); if(e) e.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
+  if(a==='t5Back'&&st.sheet==='jdone'){ st.sheet=false; render(); const f=app.querySelector('[data-act="jobDone"]'); if(f) f.focus(); return; }
   if(!C) return;
   const cards=()=>t5Cards(C), cur=()=>cards()[C.qi];
   const next=()=>{ C.qi++; if(C.qi>=cards().length) C.step='go'; t5Draw(); };
@@ -2404,7 +2405,8 @@ function jAssignSheet(){
 async function jobSend(act){
   const F=st.form, j=F&&jobById(F.id); if(!j||st.busy) return;
   const V=act==='voice'?F.voice:null; if(act==='voice'&&!V) return;
-  const fields={job:j.id,act:V?'note':act}; let photos=[]; F.pa=null;
+  // The position goes with it, so the desk can judge a role with no named person on the Organisation Structure (DEC-0373).
+  const fields={job:j.id,act:V?'note':act,pos:st.pos||''}; let photos=[]; F.pa=null;
   if(act==='note'){ fields.msgKind=F.kind||'Note'; fields.note=String(F.note||'').trim(); photos=F.photos; }
   if(act==='edit'){ fields.entry=F.mid; fields.note=String(F.etext||'').trim(); }
   if(act==='delete') fields.entry=F.mid;
@@ -2920,7 +2922,8 @@ function walkLastPoint(W){ const s=(W.scans||[]).slice().sort((a,b)=>Date.parse(
 // A No is a sentence and a photo, and becomes a job that holds its line out of date (DEC-0292 rule 1).
 function signMissing(W,r){
   const m=[];
-  if(walkMissing(W,r).length){ const e=W.early||{}; if(!e.why) m.push('why it stopped early'); else if(e.why==='other'&&!String(e.note||'').trim()) m.push('what stopped it'); }
+  if(!(W.scans||[]).length){ const e=W.noScan||{}; if(!e.why) m.push('why no point was scanned'); else if(e.why==='other'&&!String(e.note||'').trim()) m.push('why nothing was scanned'); }
+  else if(walkMissing(W,r).length){ const e=W.early||{}; if(!e.why) m.push('why it stopped early'); else if(e.why==='other'&&!String(e.note||'').trim()) m.push('what stopped it'); }
   r.lines.forEach(id=>{ const a=W.ans[id]; if(!a||typeof a.ok!=='boolean') m.push(id); else if(!a.ok&&!String(a.note||'').trim()) m.push('what is wrong on '+id); else if(!a.ok&&!(a.photos||[]).length) m.push('a photo for '+id); });
   return m;
 }
@@ -2942,7 +2945,16 @@ function vSignoff(){
     +(nu?' <b class="n">'+nu+'</b> would not scan.':'')+(miss.length?' <b class="n">'+miss.length+'</b> not scanned.':'')+'</p>'
     +(miss.length?'<button class="lnk" data-act="showMiss" aria-expanded="'+!!W.showMiss+'">'+(W.showMiss?'Hide Them':'Show Them')+'</button>':'')+'</div>'+waitLine();
   if(miss.length&&W.showMiss) h+='<div class="list">'+miss.map(id=>{ const p=pointById(id); return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+esc(ptWhere(p))+'</span></span></div>'; }).join('')+'</div>';
-  if(miss.length){ const e=W.early||{};
+  // No point scanned (DEC-0372): the question is why, not why it stopped, and the lines go in date as claimed.
+  if(!seen.size){ const e=W.noScan||{};
+    h+=grp('Why no point was scanned')+'<div class="list" role="radiogroup" aria-label="Why no point was scanned">'+WFM_CAPTURE_SHAPE.noScanWhy.map(x=>{ const on=e.why===x.id;
+      return '<button class="lr'+(on&&x.id==='other'?' lrno':'')+'" role="radio" aria-checked="'+on+'" data-act="noScanWhy" data-v="'+esc(x.id)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(x.label)+'</span></button>'
+        +(on&&x.id==='other'?'<div class="lopen"><div class="field"><label for="noscan-note">Why nothing was scanned</label><input type="text" id="noscan-note" data-in="noscannote" value="'+esc(e.note||'')+'"></div>'
+          +(T&&!String(e.note||'').trim()?'<div class="unans">Say why nothing was scanned</div>':'')+'</div>':''); }).join('')+'</div>'
+      +(T&&!e.why?'<div class="unans" style="margin:8px 16px 0">Say why no point was scanned</div>':'')
+      +'<p class="say" style="margin:12px 16px 0"><span>With no point scanned, its <b class="n">'+r.lines.length+'</b> lines go in date as claimed, not evidenced.</span></p>';
+  }
+  else if(miss.length){ const e=W.early||{};
     // The reasons are ring rows, as the lines are (John, 25 Oct: "i hate these pills"); Something else opens in place
     // with its labelled field (Design 10.5).
     h+=grp('Why it stopped early')+'<div class="list" role="radiogroup" aria-label="Why it stopped early">'+WFM_CAPTURE_SHAPE.earlyWhy.map(x=>{ const on=e.why===x.id;
@@ -3028,7 +3040,8 @@ function lineSelect(opt){
   return h+'</div>';
 }
 function sendBtn(label,ok,why){
-  return '<div class="foot" role="status"><button class="btn p" data-act="send"'+(ok&&!st.busy?'':' disabled')+'>'+(st.busy?'Sending…':I.send+esc(label))+'</button>'+(ok||!why?'':'<span class="sub">'+esc(why)+'</span>')+(st.form&&st.form.err?'<div class="note" role="alert"><span class="eb">Not made</span>'+esc(st.form.err)+'</div>':'')+'</div>';
+  const tried=st.form&&st.form.sendTried&&!ok&&why;
+  return '<div class="foot" role="status"><button class="btn p" data-act="send" data-ok="'+(ok?1:0)+'"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':I.send+esc(label))+'</button>'+(tried?'<div class="unans" role="alert" style="margin:0">'+esc(why)+'</div>':'')+(st.form&&st.form.err?'<div class="note" role="alert"><span class="eb">Not made</span>'+esc(st.form.err)+'</div>':'')+'</div>';
 }
 // Report a Fault: the sentence first, the place from the site's list with its floor, the photo optional and last
 // (DEC-0303 rule 7: a fault reported at reception has none). The group stays as P2 asked it (audit G3, open).
@@ -3352,6 +3365,7 @@ app.addEventListener('click',async e=>{
     F.allOk=new Date().toISOString(); ls.set('wl_walk',walkKeep(F)); return render(); }
   if(a==='allOkUndo'){ Object.keys(F.ans).forEach(k=>{ if(F.ans[k].ok===true) delete F.ans[k]; }); F.allOk=''; ls.set('wl_walk',walkKeep(F)); return render(); }
   // A reason tapped again is cleared (John, 25 Oct: "if i wrongly select a reason ... i cant uncheck that line").
+  if(a==='noScanWhy'){ const was=(F.noScan||{}).why===b.dataset.v; F.noScan={why:was?'':b.dataset.v,note:(F.noScan||{}).note||''}; ls.set('wl_walk',walkKeep(F)); render(); const i=!was&&document.getElementById('noscan-note'); if(i) i.focus(); return; }
   if(a==='earlyWhy'){ const was=(F.early||{}).why===b.dataset.v; F.early={why:was?'':b.dataset.v,note:(F.early||{}).note||''}; ls.set('wl_walk',walkKeep(F)); render(); const i=!was&&document.getElementById('early-note'); if(i) i.focus(); return; }
   if(a==='ansWhere'){ F.pickFor=b.dataset.k; return render(); }
   if(a==='ansWherePick'){ const x=F.ans[b.dataset.k]; if(x){ x.point=b.dataset.id; x.pointHow='picked'; x.pointAt=''; } F.pickFor=''; ls.set('wl_walk',walkKeep(F)); return render(); }
@@ -3468,7 +3482,7 @@ app.addEventListener('click',async e=>{
   if(a==='jlevel'){ F.level=b.dataset.v; render(); const v=app.querySelector('.sheet .opt.on'); if(v) v.focus(); return; }
   if(a==='jobFlagSend'){ if(!F.level){ F.ftried=true; render(); const t=app.querySelector('.sheet .opt'); if(t) t.focus(); return; } return jobSend('flag'); }
   if(a==='dphotoDel'){ const p=F.dphotos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
-  if(a==='send') return doSend();
+  if(a==='send'){ if(b.dataset.ok!=='1'){ F.sendTried=true; render(); const e=[...app.querySelectorAll('textarea[data-in],input[type=text][data-in],input[inputmode][data-in]')].find(x=>!String(x.value||'').trim()); if(e) e.focus(); return; } return doSend(); }
 });
 app.addEventListener('input',e=>{
   const k=e.target.dataset.in; if(!k||!st.form) return;
@@ -3529,6 +3543,7 @@ function special(k,el){
   if(k==='upt'||k==='ureason'){ F.u[k==='upt'?'point':'reason']=el.value; if(k==='upt') return true; softKeep(el); return true; }
   // Narrows the point picker in place, so the field keeps the keyboard.
   if(k==='ptq'){ const v=el.value.trim().toLowerCase(); let n=0; app.querySelectorAll('#pt-list [data-q]').forEach(b=>{ const hit=!v||b.dataset.q.indexOf(v)>=0; b.hidden=!hit; if(hit) n++; }); const no=document.getElementById('pt-none'); if(no) no.hidden=n>0; return true; }
+  if(k==='noscannote'){ F.noScan=F.noScan||{why:'other'}; F.noScan.note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   if(k==='earlynote'){ F.early=F.early||{why:'other'}; F.early.note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   if(k==='ansnote'){ const key=el.dataset.k; F.ans[key]=F.ans[key]||{note:'',photos:[]}; F.ans[key].note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   return false;
@@ -3586,7 +3601,8 @@ async function doSend(){
     const r=roundById(F.round), seen=F.scans.map(x=>x.point), miss=r.points.filter(id=>seen.indexOf(id)<0);
     const wm=walkMissing(F,r), now0=new Date().toISOString();
     fields={round:F.round,started:F.started,walkFor:F.walkFor||'',scans:F.scans,complete:wm.length===0,
-      early:wm.length&&F.early&&F.early.why?{why:F.early.why,note:String(F.early.note||'').trim()}:null,
+      early:F.scans.length&&wm.length&&F.early&&F.early.why?{why:F.early.why,note:String(F.early.note||'').trim()}:null,
+      noScan:!F.scans.length&&F.noScan&&F.noScan.why?{why:F.noScan.why,note:String(F.noScan.note||'').trim()}:null,
       pauses:(F.pauses||[]).map(x=>({at:x.at,until:x.until||now0})),allOk:F.allOk||'',
       answers:r.lines.map(id=>{ const a=F.ans[id]; return {line:id,ok:a.ok,note:a.ok?'':String(a.note||'').trim(),point:a.ok?'':String(a.point||''),files:a.ok?[]:(a.photos||[])}; }),
       unscanned:(F.unscanned||[]).map(u=>({point:u.point,reason:u.reason,file:u.photo})),
