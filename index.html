@@ -620,6 +620,13 @@ body.t-li .tf .zone{--onInkMid:#4A6E8C}
 .sgs .sg{display:flex;flex-direction:column;align-items:center;gap:6px;width:84px;text-align:center}
 .sgs .sg img{width:64px;height:64px}
 .sgs .sg b{font:600 13px/1.25 'DM Sans'}
+.ptok{flex:none;display:grid;place-items:center;width:24px;height:24px;color:var(--jDone)}
+.lr{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:10px 16px;border-bottom:1px solid var(--border);text-align:left;background:var(--white)}
+.lr .w{font-weight:500;line-height:1.4;color:var(--text)}.lr.lrno{background:var(--stone);border-bottom:none}
+.ring{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--accentD);color:var(--accentD);display:grid;place-items:center}
+.ring svg{width:16px;height:16px;stroke-width:2.5}.ring.ring-ok{background:var(--accentD);color:var(--btnText)}
+.lopen{background:var(--stone);padding:0 0 16px;border-bottom:1px solid var(--border)}.lopen .field{padding-top:0}.lopen .thumbs,.lopen .unans{margin:8px 16px 0}
+.zone .lnk{color:var(--accentOnInk)}.lopen .thumbs{margin-top:8px}
 .okz{list-style:none;background:rgba(255,255,255,.06);border-radius:12px;margin:0 16px 16px;overflow:hidden}
 .okr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--inkTrack);line-height:1.35}
 .okr:first-child{border-top:0}
@@ -885,7 +892,7 @@ body.t-li .c-av.lg{border-color:var(--border)}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=d160194039"></script>
+<script src="shapes.js?v=babe8c4bb8"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -2702,26 +2709,40 @@ function vWalk(){
   if(!r) return '<div class="body">'+formZone('home','Walk','Walk Not Found','This walk is no longer in the site details from the desk. Go back and choose another, or ask the desk to publish again.')+'</div>';
   const seen={}; W.scans.forEach(x=>{ if(!seen[x.point]) seen[x.point]=x; });
   const uns={}; (W.unscanned||[]).forEach(u=>{ uns[u.point]=u; });
-  const n=r.points.filter(id=>seen[id]).length, nu=r.points.filter(id=>uns[id]).length, next=r.points.find(id=>!seen[id]&&!uns[id]), np=next?pointById(next):null;
+  const n=r.points.filter(id=>seen[id]).length, nu=r.points.filter(id=>uns[id]).length, next=r.points.find(id=>!seen[id]&&!uns[id]), paused=!!W.paused;
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walkQuit')+'<span class="eb">'+esc(r.name)+'</span></div>'
-    // Points are scanned in any order, from whichever is nearest (DEC-0293 rule 3; John, 23 Oct 2026).
-    +(next?'<h1>'+(walkTapOn()?'Touch Any Tag':'Scan Any Point')+'</h1>'
-          :'<h1>Every Point Done</h1><p>Answer the checks once, then sign it off.</p>')
+    // Points are scanned in any order (DEC-0293 rule 3); a walk is touch and go (DEC-0361) and can be paused (DEC-0362).
+    +(paused?'<h1>Paused at <span class="n">'+hm(W.paused)+'</span></h1>'
+      :next?'<h1>'+(walkTapOn()?'Touch Any Tag':'Scan Any Point')+'</h1>':'<h1>Every Point Done</h1>')
     +'<div class="prog"><i style="width:'+Math.round((n+nu)/Math.max(1,r.points.length)*100)+'%"></i></div>'
-    +'<p><b class="n">'+n+'</b> of <b class="n">'+r.points.length+'</b> scanned'+(nu?', <b class="n">'+nu+'</b> would not scan':'')+'. Started <b class="n">'+hm(W.started)+'</b>.</p>'
-    +(next&&NFC_OK&&(st.walkNfc==='off'||st.walkNfc==='denied')?'<p>'+(st.walkNfc==='off'?'NFC is turned off on this phone. Turn it on in the phone’s settings to touch tags, or scan their QR codes.':'This page is not allowed to read tags. Turn it on, or scan the QR codes.')+'</p>':'')
-    +(!next?'<button class="btn" data-act="signoff">Finish and Sign Off</button>'
-      :st.walkNfc==='denied'?'<button class="btn" data-act="walkNfcOn">Turn On Tap to Scan</button>'
-      :'<button class="btn" data-act="scan" data-for="walk">'+I.scan+(walkTapOn()?'Scan a QR Code':'Scan the Point')+'</button>')+'</div>'+waitLine();
+    +'<p><b class="n">'+n+'</b> of <b class="n">'+r.points.length+'</b> scanned'+(nu?', <b class="n">'+nu+'</b> would not scan':'')
+    +(paused?', <b class="n">'+walkMins(W)+'</b> minutes walked. It waits on this phone until you come back.':'. Started <b class="n">'+hm(W.started)+'</b>.')+'</p>'
+    +(!paused&&next&&NFC_OK&&(st.walkNfc==='off'||st.walkNfc==='denied')?'<p>'+(st.walkNfc==='off'?'NFC is turned off on this phone. Turn it on in the phone’s settings to touch tags, or scan their QR codes.':'This page is not allowed to read tags. Turn it on, or scan the QR codes.')+'</p>':'')
+    +(!paused&&!next?'<button class="btn" data-act="signoff">Finish and Sign Off</button>'
+      :!paused&&st.walkNfc==='denied'?'<button class="btn" data-act="walkNfcOn">Turn On Tap to Scan</button>':'')+'</div>'+waitLine();
   if(W.msg) h+='<div class="wait" role="status">'+esc(W.msg)+'</div>';
-  h+=next?'<div class="pad row2"><button class="gh" data-act="unscan">The Tag Will Not Scan</button><button class="gh" data-act="signoff">Finish Now</button></div>'
-         :'<div class="pad"><button class="gh" data-act="scan" data-for="walk">'+I.scan+'Scan Again</button></div>';
-  const left=r.points.filter(id=>!seen[id]&&!uns[id]), done=r.points.filter(id=>seen[id]||uns[id]);
-  if(left.length) h+=grp('Left to scan, in any order')+'<div class="list">'+left.map(id=>{ const p=pointById(id); return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+esc(ptWhere(p))+'</span></span></div>'; }).join('')+'</div>';
-  if(done.length) h+='<div class="list" style="margin-top:16px"><div class="r" style="min-height:56px"><span class="m"><button class="lnk" data-act="showDone" aria-expanded="'+!!st.showDone+'">'+(st.showDone?'Hide':'Show')+' the <span class="n">'+done.length+'</span> Done</button></span></div>'
-    +(st.showDone?done.map(id=>{ const p=pointById(id), s=seen[id], u=uns[id]; return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+(s?'Scanned at <span class="n">'+hm(s.at)+'</span>':'Would not scan: “'+esc(u.reason)+'”'+(u.photo!=null?', photo taken':''))+'</span></span></div>'; }).join(''):'')+'</div>';
-  return h+'<div style="height:24px"></div></div>';
+  if(next&&!paused) h+='<div class="pad"><button class="gh" data-act="unscan">'+I.photo+'The Tag Will Not Scan</button></div>';
+  // One list, in walking order; a point done is ticked where it stands (Design 4.11; DEC-0362 rule 5).
+  h+=grp(next?'Points, in any order':'Points')+'<div class="list">'+r.points.map(id=>{ const p=pointById(id), s=seen[id], u=uns[id];
+    const sub=s?'Scanned at <span class="n">'+hm(s.at)+'</span>':u?'Would not scan: “'+esc(u.reason)+'”'+(u.photo!=null?', photo taken':''):esc(ptWhere(p));
+    return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+sub+'</span></span>'+(s?'<span class="ptok" role="img" aria-label="Done">'+I.tick+'</span>':'')+'</div>'; }).join('')+'</div>';
+  return h+'<div style="height:24px"></div></div>'+walkBar(paused);
 }
+// The walk's foot is the main screen's own bar (DEC-0362 rule 1): Pause where Capture sits, Resume when paused.
+function walkBar(paused){
+  return '<nav class="navb" aria-label="Walk"><div class="side"><button class="nv" data-act="scan" data-for="walk">'+I.scan+'<span>QR Code</span></button></div>'
+    +'<button class="nv cap" data-act="'+(paused?'walkResume':'walkPause')+'"><span class="capb">'+(paused?I.play:I.pause)+'</span><span>'+(paused?'Resume':'Pause')+'</span></button>'
+    +'<div class="side"><button class="nv" data-act="signoff">'+I.stop+'<span>Finish</span></button></div></nav>';
+}
+// Minutes walked: since it started, less its pauses.
+function walkMins(W){
+  const now=Date.now(), off=(W.pauses||[]).reduce((s,x)=>s+((x.until?Date.parse(x.until):now)-Date.parse(x.at)),0);
+  return Math.max(0,Math.round((now-Date.parse(W.started)-off)/60000));
+}
+function walkPause(F){ if(F.paused) return; const at=new Date().toISOString(); F.pauses=(F.pauses||[]).concat([{at:at,until:''}]); F.paused=at; nfcStop(); ls.set('wl_walk',walkKeep(F)); }
+function walkResume(F){ if(!F.paused) return; const ps=F.pauses||[], last=ps[ps.length-1]; if(last&&!last.until) last.until=new Date().toISOString(); F.paused=''; ls.set('wl_walk',walkKeep(F)); }
+// The points neither scanned nor named as not scanning: a walk with any is stopped early and says why (DEC-0362 rule 2).
+function walkMissing(W,r){ const s=new Set(W.scans.map(x=>x.point)), u=new Set((W.unscanned||[]).map(x=>x.point)); return r.points.filter(id=>!s.has(id)&&!u.has(id)); }
 // A tag that will not scan: which point, why, and a photo (research §4; DEC-0293).
 function vUnscan(){
   const W=st.form, r=roundById(W.round), U=W.u;
@@ -2737,32 +2758,47 @@ function vUnscan(){
 // The sign-off (DEC-0294 rule 2): was the walk complete, then one Yes or No per line the walk proves.
 // A No is a sentence and a photo, and becomes a job that holds its line out of date (DEC-0292 rule 1).
 function signMissing(W,r){
-  const m=[]; if(typeof W.complete!=='boolean') m.push('whether the walk was complete');
+  const m=[];
+  if(walkMissing(W,r).length){ const e=W.early||{}; if(!e.why) m.push('why it stopped early'); else if(e.why==='other'&&!String(e.note||'').trim()) m.push('what stopped it'); }
   r.lines.forEach(id=>{ const a=W.ans[id]; if(!a||typeof a.ok!=='boolean') m.push(id); else if(!a.ok&&!String(a.note||'').trim()) m.push('what is wrong on '+id); else if(!a.ok&&!(a.photos||[]).length) m.push('a photo for '+id); });
   return m;
 }
-// The sign-off (DEC-0294 rule 2): was the walk complete, then one Yes or No per line the walk proves. A No is a sentence
-// and a photo, and becomes a job that holds its line out of date (DEC-0292 rule 1). Yes and No are both teal (21.2);
-// the chosen one is a heavier edge with a check, never a colour.
+// The sign-off (DEC-0362, DEC-0294 rule 2): the points as a count, why a walk stopped early, and the lines answered by one
+// All OK or Not OK on a line. A Not OK is a sentence and a photo, and becomes a job that holds its line (DEC-0292 rule 1).
 function vSignoff(){
-  const W=st.form, r=roundById(W.round), seen=new Set(W.scans.map(x=>x.point));
-  const miss=r.points.filter(id=>!seen.has(id)), m=signMissing(W,r), T=W.tried;
-  const yn=(key,val)=>'<div class="yn"><button class="'+(val===true?'on':'')+'" data-act="ans" data-k="'+esc(key)+'" data-v="1" aria-pressed="'+(val===true)+'">'+(val===true?I.tick:'')+'Yes</button><button class="'+(val===false?'on':'')+'" data-act="ans" data-k="'+esc(key)+'" data-v="0" aria-pressed="'+(val===false)+'">'+(val===false?I.tick:'')+'No</button></div>'+(T&&typeof val!=='boolean'?'<div class="unans">Not answered</div>':'');
+  const W=st.form, r=roundById(W.round), seen=new Set(W.scans.map(x=>x.point)), miss=walkMissing(W,r), nu=(W.unscanned||[]).length, m=signMissing(W,r), T=W.tried;
+  const ans=id=>W.ans[id]||{}, nos=r.lines.filter(id=>ans(id).ok===false).length, open=r.lines.filter(id=>typeof ans(id).ok!=='boolean').length;
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walkBack')+'<span class="eb">Sign off</span></div><h1>'+esc(r.name)+'</h1>'
-    +'<p><b class="n">'+seen.size+'</b> of <b class="n">'+r.points.length+'</b> points scanned, started <b class="n">'+hm(W.started)+'</b>.'
-    +(miss.length?' Not scanned: '+esc(miss.map(id=>{ const p=pointById(id), u=(W.unscanned||[]).find(x=>x.point===id); return (p?p.name:id)+(u?' (“'+u.reason+'”, photo taken)':''); }).join('; '))+'. Named on the record; '+(miss.length===1?'it does':'they do')+' not stop the sign-off.':'')+'</p></div>'+waitLine();
-  h+=grp('The walk')+'<div class="list"><div class="q"><div class="w">Was the walk complete?</div>'+yn('complete',W.complete)+'</div></div>';
-  h+=grp('The '+plural(r.lines.length,'line')+' it proves')+'<div class="list">';
-  r.lines.forEach(id=>{ const l=lineById(id), a=W.ans[id]||{};
-    h+='<div class="q"><div class="w">'+esc(l?l.what:id)+'</div><span class="mono">'+esc(id)+'</span>'+yn(id,a.ok);
+    +'<p><b class="n">'+seen.size+'</b> of <b class="n">'+r.points.length+'</b> points, <b class="n">'+hm(W.started)+'</b> to <b class="n">'+hm(new Date().toISOString())+'</b>.'
+    +(nu?' <b class="n">'+nu+'</b> would not scan.':'')+(miss.length?' <b class="n">'+miss.length+'</b> not scanned.':'')+'</p>'
+    +(miss.length?'<button class="lnk" data-act="showMiss" aria-expanded="'+!!W.showMiss+'">'+(W.showMiss?'Hide Them':'Show Them')+'</button>':'')+'</div>'+waitLine();
+  if(miss.length&&W.showMiss) h+='<div class="list">'+miss.map(id=>{ const p=pointById(id); return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+esc(ptWhere(p))+'</span></span></div>'; }).join('')+'</div>';
+  if(miss.length){ const e=W.early||{};
+    // The reasons are ring rows, as the lines are (John, 25 Oct: "i hate these pills"); Something else opens in place
+    // with its labelled field (Design 10.5).
+    h+=grp('Why it stopped early')+'<div class="list" role="radiogroup" aria-label="Why it stopped early">'+WFM_CAPTURE_SHAPE.earlyWhy.map(x=>{ const on=e.why===x.id;
+      return '<button class="lr'+(on&&x.id==='other'?' lrno':'')+'" role="radio" aria-checked="'+on+'" data-act="earlyWhy" data-v="'+esc(x.id)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(x.label)+'</span></button>'
+        +(on&&x.id==='other'?'<div class="lopen"><div class="field"><label for="early-note">What stopped the walk</label><input type="text" id="early-note" data-in="earlynote" value="'+esc(e.note||'')+'"></div>'
+          +(T&&!String(e.note||'').trim()?'<div class="unans">Say what stopped it</div>':'')+'</div>':''); }).join('')+'</div>'
+      +(T&&!e.why?'<div class="unans" style="margin:8px 16px 0">Say why it stopped early</div>':'');
+  }
+  // Each line is one row: a teal ring, ticked by All OK, crossed by a tap (Design 21.2: pressable is teal, and only that).
+  h+=grp('The '+plural(r.lines.length,'line')+' it proves')
+    +(W.allOk&&!open?'<div class="wait" role="status">'+(nos?'All OK except <b class="n">'+nos+'</b>':'All OK')+', pressed at <b class="n">'+hm(W.allOk)+'</b>. <button class="lnk" data-act="allOkUndo">Undo</button></div>':'')
+    +'<div class="list">';
+  r.lines.forEach(id=>{ const l=lineById(id), a=ans(id), what=l?l.what:id, s=a.ok===true?'ok':a.ok===false?'no':'';
+    h+='<button class="lr'+(s==='no'?' lrno':'')+'" data-act="lineTap" data-k="'+esc(id)+'" aria-label="'+esc(what)+(s==='ok'?', OK':s==='no'?', not OK':'')+'"><span class="ring'+(s?' ring-'+s:'')+'">'+(s==='ok'?I.tick:s==='no'?I.close:'')+'</span><span class="w">'+esc(what)+'</span></button>';
     if(a.ok===false){ const ph=(a.photos||[]).map(k=>W.photos[k]).filter(Boolean);
-      h+='<div class="no"><span class="sub">A No becomes a job on the desk. '+esc(id)+' stays out of date until it is done. Say what is wrong and take a photo.</span>'
-        +'<input type="text" id="n-'+esc(id)+'" data-in="ansnote" data-k="'+esc(id)+'" value="'+esc(a.note||'')+'" placeholder="What is wrong, and where" aria-label="What is wrong on '+esc(id)+'">'
-        +(T&&!String(a.note||'').trim()?'<div class="unans">Say what is wrong</div>':'')+(T&&!ph.length?'<div class="unans">Take a photo</div>':'')
-        +'<div class="thumbs">'+ph.map(p=>'<div class="th" style="background-image:url('+p.url+')"></div>').join('')+'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="ansphoto" data-k="'+esc(id)+'"></label></div></div>'; }
-    h+='</div>'; });
-  h+='</div><div style="height:24px"></div></div><div class="foot"><span class="sub">'+(T&&m.length?'<b role="alert" style="color:var(--text);font-weight:400">Not yet: '+esc(m.length===1?m[0]:m.length+' answers missing')+'.</b> ':'')+'Signed by you, at the time you press it.</span>'
-    +'<button class="btn p" data-act="signSend"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':'Sign Off and Send')+'</button>'
+      h+='<div class="lopen"><div class="field"><label for="n-'+esc(id)+'">What is wrong</label><input type="text" id="n-'+esc(id)+'" data-in="ansnote" data-k="'+esc(id)+'" value="'+esc(a.note||'')+'"></div>'
+        +(T&&!String(a.note||'').trim()?'<div class="unans">Say what is wrong</div>':'')
+        +'<div class="thumbs">'+ph.map(p=>'<div class="th" style="background-image:url('+p.url+')"></div>').join('')+'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="ansphoto" data-k="'+esc(id)+'"></label></div>'
+        +(T&&!ph.length?'<div class="unans">Take a photo</div>':'')+'</div>'; }
+  });
+  // One primary (Design 9.1): All OK while lines are open, then Sign Off and Send.
+  h+='</div><div style="height:24px"></div></div><div class="foot">'
+    +(T&&m.length?'<div class="unans" role="alert" style="margin:0">Not yet: '+esc(m.length===1?m[0]:m.length+' answers missing')+'.</div>':'')
+    +(open?'<button class="btn p" data-act="allOk">'+I.tick+(nos?'All Other Lines OK':'All '+r.lines.length+' Lines OK')+'</button>'
+      :'<button class="btn p" data-act="signSend"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':'Sign Off and Send')+'</button>')
     +(W.err?'<div class="note" role="alert"><span class="eb">Not sent</span>'+esc(W.err)+'</div>':'')+'</div>';
   return h;
 }
@@ -2917,7 +2953,10 @@ function vWalkLink(S){
     +'<div class="foot">'+(nx?'<button class="btn p" data-act="walkLink" data-id="'+esc(nx.id)+'">Link to '+esc(nx.name)+'</button>':'')
     +'<button class="btn g" data-act="walkLinkList">'+(nx?'Another Point':'Pick the Point')+'</button>'
     +'<button class="btn g" data-act="walkLinkNo">Not Now</button></div>'
-    +(S.offerList?'<div class="pick">'+bar('Pick the Point','walkLinkListClose')+'<div class="list">'+cs.map(p=>'<button class="verb" data-act="walkLink" data-id="'+esc(p.id)+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||ptPlace(p))+'</span></span>'+I.chev+'</button>').join('')+'</div></div>':'');
+    // Typing narrows the points (John, 25 Oct 2026: "having to scroll through a list of 40 tags is too much").
+    +(S.offerList?'<div class="pick">'+bar('Pick the Point','walkLinkListClose')
+      +'<div class="pad"><input type="text" inputmode="search" id="pt-q" data-in="ptq" autocomplete="off" placeholder="Type part of the point’s name" aria-label="Find the point"></div>'
+      +'<div class="list" id="pt-list">'+cs.map(p=>'<button class="verb" data-act="walkLink" data-id="'+esc(p.id)+'" data-q="'+esc((p.name+' '+(p.where||'')).toLowerCase())+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||ptPlace(p))+'</span></span>'+I.chev+'</button>').join('')+'</div><p class="sub" id="pt-none" hidden style="padding:12px 16px">No point on this walk without a tag matches that.</p></div>':'');
 }
 function vScan(){
   const S=st.scanFor;
@@ -3074,9 +3113,10 @@ function after(){
   // A walk listens for tags while it is open (DEC-0361): touch and go, no button. It starts again after each tap,
   // and stays off once the phone has said no, until Turn On Tap to Scan is pressed.
   const walking=st.screen==='walk'&&st.form&&st.form.kind==='round';
-  if(walking&&!st.scanFor&&NFC_OK&&!_nfc&&(!st.walkNfc||st.walkNfc==='on')){ st.walkNfc=st.walkNfc||'starting';
+  if(walking&&!st.form.paused&&!st.scanFor&&NFC_OK&&!_nfc&&(!st.walkNfc||st.walkNfc==='on')){ st.walkNfc=st.walkNfc||'starting';
     nfcStart(walkTap).then(r=>{ const was=st.walkNfc; st.walkNfc=r; if(st.screen==='walk'&&!st.scanFor&&was!==r) render(); }); }
   if(!st.scanFor&&!walking){ nfcStop(); st.walkNfc=''; }
+  if(walking&&st.form.paused&&!st.scanFor) nfcStop();
   if(st.screen==='msgs') phLoad(myChats().map(c=>c.photo).filter(Boolean));
   if((st.screen==='chat'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='chat'?chatMsgs(st.form.chat):[];
     phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); }
@@ -3129,18 +3169,28 @@ app.addEventListener('click',async e=>{
   if(a==='unscanSave'){ F.unscanned.push({point:F.u.point,reason:String(F.u.reason).trim(),photo:F.u.photo}); const p=pointById(F.u.point);
     F.msg=(p?p.name:F.u.point)+' named as not scanned.'; F.msgTone='amber'; F.u=null; ls.set('wl_walk',walkKeep(F)); return go('walk'); }
   if(a==='signoff'){ F.tried=false; return go('signoff'); }
-  if(a==='ans'){ const v=b.dataset.v==='1', k=b.dataset.k; if(k==='complete') F.complete=v; else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=v; } ls.set('wl_walk',walkKeep(F)); return render(); }
+  // Not OK on a line, or back: before All OK a line taken back is unanswered again, never OK by itself (Law 1).
+  if(a==='ans'){ const v=b.dataset.v==='1', k=b.dataset.k;
+    if(v&&!F.allOk) delete F.ans[k]; else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=v; }
+    ls.set('wl_walk',walkKeep(F)); return render(); }
+  if(a==='lineTap'){ const k=b.dataset.k, cur=(F.ans[k]||{}).ok;
+    if(cur===false){ if(F.allOk) F.ans[k].ok=true; else delete F.ans[k]; } else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=false; }
+    ls.set('wl_walk',walkKeep(F)); render(); if(F.ans[k]&&F.ans[k].ok===false){ const i=document.getElementById('n-'+k); if(i) i.focus(); } return; }
+  if(a==='allOk'){ const r=roundById(F.round); r.lines.forEach(id=>{ if(typeof (F.ans[id]||{}).ok!=='boolean') F.ans[id]={ok:true,note:'',photos:[],byAll:true}; });
+    F.allOk=new Date().toISOString(); ls.set('wl_walk',walkKeep(F)); return render(); }
+  if(a==='allOkUndo'){ Object.keys(F.ans).forEach(k=>{ if(F.ans[k].ok===true) delete F.ans[k]; }); F.allOk=''; ls.set('wl_walk',walkKeep(F)); return render(); }
+  if(a==='earlyWhy'){ F.early={why:b.dataset.v,note:(F.early||{}).note||''}; ls.set('wl_walk',walkKeep(F)); render(); const i=document.getElementById('early-note'); if(i) i.focus(); return; }
+  if(a==='showMiss'){ F.showMiss=!F.showMiss; return render(); }
+  if(a==='walkPause'){ walkPause(F); F.msg=''; return render(); }
+  if(a==='walkResume'){ walkResume(F); F.msg=''; return render(); }
   if(a==='signSend'){ const r=roundById(F.round), m=signMissing(F,r);
     if(m.length){ F.tried=true; render(); const u=app.querySelector('.unans'); if(u) u.scrollIntoView({block:'center'}); return; }
     return doSend(); }
-  if(a==='walkQuit'){
-    if(F.scans.length&&!confirm('Stop this walk? The '+plural(F.scans.length,'scan')+' so far are not sent.')) return;
-    ls.del('wl_walk'); st.form=null; return go('due');
-  }
+  if(a==='walkQuit'){ walkPause(F); ls.set('wl_walk',walkKeep(F)); st.form=null; go('due'); return toast('Paused. Start the same walk again to carry on.'); }
   if(a==='pickLoc'){ const l=LOC(b.dataset.id); if(l){ F.loc=l.id; F.place=l.name; F.picked=true; } return render(); }
   if(a==='setupAgain'){ st.form={link:''}; return go('setup'); }
   if(a==='pickMeter'){ F.meter=b.dataset.id; F.point=''; F.scanErr=''; return render(); }
-  if(a==='scan'){ _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
+  if(a==='scan'){ if(F&&F.kind==='round'&&F.paused) walkResume(F); _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
   if(a==='scanClose') return scanClose();
   if(a==='scanList'){ st.scanFor.list=true; return render(); }
   if(a==='scanListClose'){ st.scanFor.list=false; return render(); }
@@ -3163,7 +3213,7 @@ app.addEventListener('click',async e=>{
     let ok=false; try{ ok=await linkSend(p,s); }catch(e){ return toast('The point was scanned, but the link was not sent. Touch the tag again on your next walk to link it.'); }
     if(st.form&&st.form.kind==='round'){ st.form.msg=p.name+' linked and scanned at '+hm(new Date().toISOString())+'.'; st.form.msgTone='green'; render(); }
     return toast(ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.'); }
-  if(a==='walkLinkList'){ if(st.scanFor){ st.scanFor.offerList=true; render(); } return; }
+  if(a==='walkLinkList'){ if(st.scanFor){ st.scanFor.offerList=true; render(); const i=document.getElementById('pt-q'); if(i) i.focus(); } return; }
   if(a==='walkLinkListClose'){ if(st.scanFor){ st.scanFor.offerList=false; render(); } return; }
   if(a==='walkLinkNo'){ const S=st.scanFor; if(S&&S.fromWalk) return scanClose(); if(S){ S.offer=null; S.offerList=false; S.started=false; render(); } return; }
   if(a==='walkNfcOn'){ st.walkNfc=''; return render(); }
@@ -3182,7 +3232,6 @@ app.addEventListener('click',async e=>{
   if(a==='jsort'){ st.J.sort=b.dataset.v; return render(); }
   if(a==='jgroup'){ const g=b.dataset.v, i=st.J.groups.indexOf(g); if(i>=0) st.J.groups.splice(i,1); else st.J.groups.push(g); return render(); }
   if(a==='jclear'){ st.J.groups=[]; st.J.q=''; return render(); }
-  if(a==='showDone'){ st.showDone=!st.showDone; return render(); }
   if(a==='theme'){ ls.set('wl_theme',b.dataset.v); return render(); }
   if(a==='alertsOn') return alertsOn(false);
   if(a==='alertsTest') return alertsTest();
@@ -3293,6 +3342,9 @@ function special(k,el){
     if(p){ F.name=p.name; if(positions().some(x=>x.id===p.position)) F.pos=p.position; } else if(el.value==='__other'||!el.value) F.name='';
     render(); return true; }
   if(k==='upt'||k==='ureason'){ F.u[k==='upt'?'point':'reason']=el.value; if(k==='upt') return true; softKeep(el); return true; }
+  // Narrows the point picker in place, so the field keeps the keyboard.
+  if(k==='ptq'){ const v=el.value.trim().toLowerCase(); let n=0; app.querySelectorAll('#pt-list [data-q]').forEach(b=>{ const hit=!v||b.dataset.q.indexOf(v)>=0; b.hidden=!hit; if(hit) n++; }); const no=document.getElementById('pt-none'); if(no) no.hidden=n>0; return true; }
+  if(k==='earlynote'){ F.early=F.early||{why:'other'}; F.early.note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   if(k==='ansnote'){ const key=el.dataset.k; F.ans[key]=F.ans[key]||{note:'',photos:[]}; F.ans[key].note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   return false;
 }
@@ -3347,7 +3399,10 @@ async function doSend(){
     // The walk's record (DEC-0294): scans, the points not scanned with their reason and photo, the
     // checklist answered once, and who signed it off when. Photo slots are filled in once named.
     const r=roundById(F.round), seen=F.scans.map(x=>x.point), miss=r.points.filter(id=>seen.indexOf(id)<0);
-    fields={round:F.round,started:F.started,walkFor:F.walkFor||'',scans:F.scans,complete:F.complete,
+    const wm=walkMissing(F,r), now0=new Date().toISOString();
+    fields={round:F.round,started:F.started,walkFor:F.walkFor||'',scans:F.scans,complete:wm.length===0,
+      early:wm.length&&F.early&&F.early.why?{why:F.early.why,note:String(F.early.note||'').trim()}:null,
+      pauses:(F.pauses||[]).map(x=>({at:x.at,until:x.until||now0})),allOk:F.allOk||'',
       answers:r.lines.map(id=>{ const a=F.ans[id]; return {line:id,ok:a.ok,note:a.ok?'':String(a.note||'').trim(),files:a.ok?[]:(a.photos||[])}; }),
       unscanned:(F.unscanned||[]).map(u=>({point:u.point,reason:u.reason,file:u.photo})),
       signedOff:{by:st.walker,at:new Date().toISOString()},

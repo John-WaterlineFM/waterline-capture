@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v504.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v505.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -32,7 +32,8 @@ const WFM_CAPTURE_SHAPE={
   // '' when it is not a serial. Read by the desk and the phone alike.
   serialOf:function(s){ var h=String(s||'').toUpperCase().replace(/[^0-9A-F]/g,''); return (h.length>=8&&h.length%2===0)?h.match(/../g).join(':'):''; },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat'],
+  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','pauses','early','allOk'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
+  earlyWhy:[{id:'incident',label:'Called to an incident'},{id:'time',label:'Out of time'},{id:'access',label:'Area not accessible'},{id:'other',label:'Something else'}],
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
   photoSays:'This photo proves who was there, where and when, and nothing else.',
