@@ -92,10 +92,9 @@ svg{width:24px;height:24px;flex:none;display:block}
 /* a category opened the desk's way (DEC-0140): one stone band; each line's own tier dashed down its edge (DEC-0252) */
 .cat .w{font:700 15px/1.4 Sora}
 .cat.open{background:var(--stone);border-bottom:none}
-.r[aria-current="true"]{background:var(--stone)}
 .inner{background:var(--stone);border-bottom:1px solid var(--border)}
 .inner .r{border-bottom:none;border-top:1px solid var(--border);align-items:flex-start}
-.inner .sub,.cat.open .sub,.no .sub,.r[aria-current="true"] .sub{color:var(--textMS)}
+.inner .sub,.cat.open .sub,.no .sub{color:var(--textMS)}
 .badge{display:inline-block;font:700 11px/20px Outfit;padding:0 8px;border-radius:4px;border:1px solid var(--border);color:var(--textMid);background:var(--white)}
 .wait{padding:12px 16px;background:var(--white);border-bottom:1px solid var(--border);color:var(--textMid);line-height:1.6}
 .wait b{color:var(--text);font-weight:500}
@@ -1213,7 +1212,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -2462,8 +2461,6 @@ function vMe(){
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent by itself when there is signal':'Nothing')
     +f('Set-up link','Kept on this phone','setupAgain')+'</div>'
     +alertsGroup()
-    +'<div class="grp">Tags</div><div class="list"><button class="r" data-act="linkTags"><span class="m"><span class="w">Link NFC Tags</span><span class="sub">'
-      +(NFC_OK?'Tap a tag at its point, so a tap names the point':'Needs Chrome on an Android phone')+'</span></span>'+I.chev+'</button></div>'
     +'<p class="para">Walks come from your department, lines from the duties your position holds, jobs from the groups it belongs to, all set on the desk’s Organisation Structure.</p>'
     +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
@@ -2686,60 +2683,11 @@ function dsBind(){
 
 // ── A walk: points are scans (DEC-0294 rule 1), in the order set on the desk (DEC-0300 rule 2) ──
 function ptPlace(p){ const l=p&&p.loc?LOC(p.loc):null; return l?l.level+' · '+l.name:(p&&p.where)||'Place not set'; }
-// ── Link NFC Tags (DEC-0345): pick the point, hold the phone to its tag. The serial goes to the desk as a capture.
-function linkedOf(p,k){ return p.nfc&&!k[p.id]?'desk':k[p.id]?'kept':''; }
-// A link made here says where it is, read from the outbox (Design 9.11): waiting for signal, or sent and waiting for the desk.
-function linkSays(p,k){
-  const s=linkedOf(p,k); if(s==='desk') return 'Linked · <span class="n">'+esc(p.nfc)+'</span>';
-  const q=st.outbox.some(c=>c.id===k[p.id].cap);
-  return (q?'Waiting for signal to send':'Sent, waiting for the desk')+' · <span class="n">'+esc(k[p.id].serial)+'</span>';
-}
-function vTags(){
-  const ps=points(), k=linksKept(), todo=ps.filter(p=>!linkedOf(p,k)), done=ps.filter(p=>linkedOf(p,k)), L=st.link;
-  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('me')+'<span class="eb">Link NFC Tags</span></div>'
-    +'<div class="row1"><span class="num n">'+todo.length+'</span><span class="what">'+(todo.length===1?'point still to link':'points still to link')+'</span></div></div>';
-  if(!NFC_OK) return h+'<div class="note">This phone cannot read NFC tags from a web page. Linking needs Chrome on an Android phone. The QR code on the same sticker works on every phone.</div></div>';
-  if(!ps.length) return h+'<div class="note">There are no points in the site details yet. Points are set on the desk, in Walk Checklists and Tags.</div></div>';
-  if(L){
-    const p=pointById(L.point);
-    h+='<div class="note" role="'+(L.err?'alert':'status')+'">'+(L.err?esc(L.err):L.state==='off'?'NFC is turned off on this phone. Turn it on in the phone’s settings, then pick the point again.'
-      :L.state==='denied'?'This page is not allowed to use NFC. Allow it in Chrome’s site settings, then pick the point again.'
-      :'Hold the phone to the tag on <b>'+esc(p?p.name:L.point)+'</b>. Nothing is written to the tag.')+'</div>'
-      +'<div style="padding:12px 16px 0"><button class="btn g" data-act="linkCancel">Cancel</button></div>';
-  }
-  const row=(p,sub)=>'<button class="r" data-act="linkPick" data-id="'+esc(p.id)+'"'+(L&&L.point===p.id?' aria-current="true"':'')+'><span class="m"><span class="w">'+esc(p.name)+'</span>'+(sub?'<span class="sub">'+sub+'</span>':'')+'</span>'+I.chev+'</button>';
-  // Still to link, by level in the site's walking order (Design 15.5: chunked); the place only, the state is the group's.
-  const lv=p=>{ const l=p.loc?LOC(p.loc):null; return l?l.level:''; }, order=(SITE().levels||[]).map(l=>l.code), groups=[];
-  todo.forEach(p=>{ const c=lv(p); let g=groups.find(x=>x.c===c); if(!g) groups.push(g={c:c,ps:[]}); g.ps.push(p); });
-  groups.sort((x,y)=>(x.c===''?1e3:order.indexOf(x.c))-(y.c===''?1e3:order.indexOf(y.c)));
-  groups.forEach(g=>{ h+='<div class="grp">'+esc(g.c?(lvName(g.c)?g.c+' · '+lvName(g.c):g.c):'Place not set')+'</div><div class="list">'
-    +g.ps.map(p=>{ const l=p.loc?LOC(p.loc):null; return row(p,esc(l?l.name:(p.where||''))); }).join('')+'</div>'; });
-  if(done.length) h+='<div class="list" style="margin-top:16px"><div class="r" style="min-height:56px"><span class="m"><button class="lnk" data-act="linkShowDone" aria-expanded="'+!!st.linkShowDone+'">'+(st.linkShowDone?'Hide':'Show')+' the <span class="n">'+done.length+'</span> Linked</button></span></div>'
-    +(st.linkShowDone?done.map(p=>row(p,linkSays(p,k))).join(''):'')+'</div>';
-  return h+'</div>';
-}
 // Sends one link (DEC-0345) and keeps it on this phone until the desk publishes it. True when it went.
 async function linkSend(p,s){
   const c=await makeCapture('tag',{point:p.id,serial:s,place:pointLabel(p)},[]);
   const k=ls.get('wl_links',{}); k[p.id]={serial:s,at:new Date().toISOString(),cap:c.id}; ls.set('wl_links',k);
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); return ok;
-}
-async function linkRead(sn){
-  const L=st.link; if(!L||L.busy) return;
-  const p=pointById(L.point); if(!p){ st.link=null; return render(); }
-  if(sn===null){ L.err='The tag could not be read. Hold the phone still against it and try again.'; return render(); }
-  const s=WFM_CAPTURE_SHAPE.serialOf(sn);
-  if(!s){ L.err='This phone did not give the tag’s serial number, so it cannot be linked. Use the QR code on the sticker.'; return render(); }
-  const o=pointBySerial(s);
-  if(o&&o.id!==p.id){ L.err='This tag is already linked to '+o.name+'. One tag names one point. Use a different tag.'; return render(); }
-  if(o&&o.id===p.id){ nfcStop(); st.link=null; render(); return toast('This tag is already linked to '+p.name+'.'); }
-  L.busy=true; nfcStop();
-  if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
-  let ok;
-  try{ ok=await linkSend(p,s); }
-  catch(e){ L.busy=false; L.err='Nothing was sent. Pick the point and try again. ('+(e.message||e)+')'; return render(); }
-  st.link=null; render();
-  toast((ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.')+(p.nfc&&p.nfc!==s?' It takes the place of the old tag.':''));
 }
 function vRounds(){
   const rs=SITE().rounds||[];
@@ -2757,11 +2705,14 @@ function vWalk(){
   const n=r.points.filter(id=>seen[id]).length, nu=r.points.filter(id=>uns[id]).length, next=r.points.find(id=>!seen[id]&&!uns[id]), np=next?pointById(next):null;
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walkQuit')+'<span class="eb">'+esc(r.name)+'</span></div>'
     // Points are scanned in any order, from whichever is nearest (DEC-0293 rule 3; John, 23 Oct 2026).
-    +(next?'<h1>Scan Any Point</h1>'
+    +(next?'<h1>'+(walkTapOn()?'Touch Any Tag':'Scan Any Point')+'</h1>'
           :'<h1>Every Point Done</h1><p>Answer the checks once, then sign it off.</p>')
     +'<div class="prog"><i style="width:'+Math.round((n+nu)/Math.max(1,r.points.length)*100)+'%"></i></div>'
     +'<p><b class="n">'+n+'</b> of <b class="n">'+r.points.length+'</b> scanned'+(nu?', <b class="n">'+nu+'</b> would not scan':'')+'. Started <b class="n">'+hm(W.started)+'</b>.</p>'
-    +(next?'<button class="btn" data-act="scan" data-for="walk">'+I.scan+'Scan the Point</button>':'<button class="btn" data-act="signoff">Finish and Sign Off</button>')+'</div>'+waitLine();
+    +(next&&NFC_OK&&(st.walkNfc==='off'||st.walkNfc==='denied')?'<p>'+(st.walkNfc==='off'?'NFC is turned off on this phone. Turn it on in the phone’s settings to touch tags, or scan their QR codes.':'This page is not allowed to read tags. Turn it on, or scan the QR codes.')+'</p>':'')
+    +(!next?'<button class="btn" data-act="signoff">Finish and Sign Off</button>'
+      :st.walkNfc==='denied'?'<button class="btn" data-act="walkNfcOn">Turn On Tap to Scan</button>'
+      :'<button class="btn" data-act="scan" data-for="walk">'+I.scan+(walkTapOn()?'Scan a QR Code':'Scan the Point')+'</button>')+'</div>'+waitLine();
   if(W.msg) h+='<div class="wait" role="status">'+esc(W.msg)+'</div>';
   h+=next?'<div class="pad row2"><button class="gh" data-act="unscan">The Tag Will Not Scan</button><button class="gh" data-act="signoff">Finish Now</button></div>'
          :'<div class="pad"><button class="gh" data-act="scan" data-for="walk">'+I.scan+'Scan Again</button></div>';
@@ -2933,6 +2884,22 @@ function vMeterReading(F,p,r){
 // A tag holds WATERLINE:PT:<id> (slice C). Read with the camera: the browser's own barcode reader
 // where there is one, else jsQR. Where the camera cannot run live (no HTTPS, no permission) a photo
 // of the tag is read instead. For a fault, a tag can also be picked from the list.
+// A tag touched on the walk screen (DEC-0361 rule 2): a linked tag ticks its point, in any order; an unlinked one offers
+// the link; one that cannot be read points to The Tag Will Not Scan, which takes a photo.
+// The walk is listening, or about to (Design 9.11: the words never swap as the reader starts); only off, not allowed
+// or no NFC change them.
+function walkTapOn(){ return NFC_OK&&['off','denied','none'].indexOf(st.walkNfc)<0; }
+function walkTap(sn){
+  if(st.screen!=='walk'||st.scanFor) return;
+  const F=st.form;
+  if(sn===null){ F.msg='The tag could not be read. Hold the phone still against it, or use The Tag Will Not Scan.'; F.msgTone='amber'; return render(); }
+  const p=pointBySerial(sn);
+  if(p){ st.scanFor={for:'walk',started:true,live:false}; return scanned('WATERLINE:PT:'+p.id,'nfc'); }
+  const s=WFM_CAPTURE_SHAPE.serialOf(sn);
+  if(s&&walkLinkable().length){ st.scanFor={for:'walk',offer:{serial:s},started:true,live:false,fromWalk:true}; return render(); }
+  F.msg=s?'This tag is not linked, and every point left on this walk already has a tag. Use The Tag Will Not Scan for this point.'
+    :'This phone did not give the tag’s serial number. Use The Tag Will Not Scan for this point.'; F.msgTone='amber'; render();
+}
 // The walk's points that are still to scan and have no tag linked, in walking order.
 function walkLinkable(){
   const F=st.form, r=F&&roundById(F.round); if(!r) return [];
@@ -3017,7 +2984,7 @@ async function scanStart(){
     const s=WFM_CAPTURE_SHAPE.serialOf(sn);
     if(S.for==='walk'&&s&&walkLinkable().length){ scanStop(); S.offer={serial:s}; S.err=''; return render(); }
     S.err=S.for==='walk'&&!s?'This phone did not give the tag’s serial number, so it cannot be linked. Scan its QR code.'
-      :'This NFC tag is not linked to a point. Scan its QR code, or link it in Settings, Link NFC Tags.'; scanSay();
+      :'This NFC tag is not linked to a point. Scan its QR code, or touch it on a walk to link it.'; scanSay();
   }).then(r=>{ S.nfc=r; if(st.scanFor===S&&!S.err&&!S.say) scanSay(); });
   if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ S.live=false; S.say='The camera cannot run live on this connection. Take a photo of the tag instead.'; render(); return; }
   try{
@@ -3104,8 +3071,12 @@ function after(){
   if(dlg&&!dlg.contains(document.activeElement)){ const c=dlg.querySelector('button,label.btn'); if(c) c.focus(); }
   if(!dlg&&_scanFrom){ const t=app.querySelector('[data-act="scan"][data-for="'+_scanFrom+'"]'); _scanFrom=''; if(t) t.focus(); }
   if(st.scanFor&&!st.scanFor.started){ st.scanFor.started=true; scanStart(); }
-  if(st.screen==='tags'&&st.link&&!st.link.started){ const L=st.link; L.started=true; nfcStart(sn=>{ if(st.link===L) linkRead(sn); }).then(r=>{ if(st.link===L&&r!=='on'){ L.state=r; render(); } }); }
-  if(!st.scanFor&&!(st.screen==='tags'&&st.link)) nfcStop();
+  // A walk listens for tags while it is open (DEC-0361): touch and go, no button. It starts again after each tap,
+  // and stays off once the phone has said no, until Turn On Tap to Scan is pressed.
+  const walking=st.screen==='walk'&&st.form&&st.form.kind==='round';
+  if(walking&&!st.scanFor&&NFC_OK&&!_nfc&&(!st.walkNfc||st.walkNfc==='on')){ st.walkNfc=st.walkNfc||'starting';
+    nfcStart(walkTap).then(r=>{ const was=st.walkNfc; st.walkNfc=r; if(st.screen==='walk'&&!st.scanFor&&was!==r) render(); }); }
+  if(!st.scanFor&&!walking){ nfcStop(); st.walkNfc=''; }
   if(st.screen==='msgs') phLoad(myChats().map(c=>c.photo).filter(Boolean));
   if((st.screen==='chat'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='chat'?chatMsgs(st.form.chat):[];
     phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); }
@@ -3184,21 +3155,18 @@ app.addEventListener('click',async e=>{
     const ask=!alertsCan()&&window.Notification&&Notification.permission==='default'&&meP();
     if(ask) alertsOn(); home(); return ask?null:alertsKeep(); }
   if(a==='whoAgain'){ st.form=null; return go('who'); }
-  if(a==='linkTags'){ st.link=null; return go('tags'); }
-  if(a==='linkPick'){ st.link={point:b.dataset.id}; return render(); }
-  if(a==='linkCancel'){ nfcStop(); st.link=null; return render(); }
   if(a==='walkLink'){ const S=st.scanFor, p=pointById(b.dataset.id); if(!S||!S.offer||!p) return;
     const s=S.offer.serial, o=pointBySerial(s);
     if(o){ S.offer=null; S.offerList=false; S.err='This tag is already linked to '+o.name+'.'; S.started=false; return render(); }
     if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
     S.offer=null; scanned('WATERLINE:PT:'+p.id,'nfc');
-    let ok=false; try{ ok=await linkSend(p,s); }catch(e){ return toast('The tag was scanned, but the link was not sent. Link it again in Settings, Link NFC Tags.'); }
+    let ok=false; try{ ok=await linkSend(p,s); }catch(e){ return toast('The point was scanned, but the link was not sent. Touch the tag again on your next walk to link it.'); }
     if(st.form&&st.form.kind==='round'){ st.form.msg=p.name+' linked and scanned at '+hm(new Date().toISOString())+'.'; st.form.msgTone='green'; render(); }
     return toast(ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.'); }
   if(a==='walkLinkList'){ if(st.scanFor){ st.scanFor.offerList=true; render(); } return; }
   if(a==='walkLinkListClose'){ if(st.scanFor){ st.scanFor.offerList=false; render(); } return; }
-  if(a==='walkLinkNo'){ const S=st.scanFor; if(S){ S.offer=null; S.offerList=false; S.started=false; render(); } return; }
-  if(a==='linkShowDone'){ st.linkShowDone=!st.linkShowDone; return render(); }
+  if(a==='walkLinkNo'){ const S=st.scanFor; if(S&&S.fromWalk) return scanClose(); if(S){ S.offer=null; S.offerList=false; S.started=false; render(); } return; }
+  if(a==='walkNfcOn'){ st.walkNfc=''; return render(); }
   if(a==='sendKept'){ const p=sendKept(); render(); await p; return render(); }
   // Added with the port of round 12: Jobs, a category opening in place, the walk's done list, the theme, the line found by typing.
   if(a==='jobs'){ if(st.screen==='jobs'||st.screen!=='job') Object.assign(st.J,{grp:'',q:''}); st.form=null; st.sheet=false; return go('jobs'); }
