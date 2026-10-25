@@ -1,7 +1,7 @@
 // Waterline capture relay (DEC-0279). A Google Apps Script web app in the site's own Google account.
 // It adds a capture's files to Inbox/ in the Waterline Workspace,
 // never over a file already there (DEC-0265 rule 2), and reads Phone/site.json, which the desk
-// publishes (DEC-0271), with the job photos and voice notes the desk copies to Phone/photos/ and Phone/audio/ (DEC-0308 rule 4; P6); and, once set up, registers phones for alerts and sends them (DEC-0288). It keeps an index of notices, reads and handovers in Messages/index.json, so they reach phones whether the desk is open or not (DEC-0348). Every request carries the site code; a wrong code writes nothing.
+// publishes (DEC-0271), with the job photos and voice notes the desk copies to Phone/photos/ and Phone/audio/ (DEC-0308 rule 4; P6); and, once set up, registers phones for alerts and sends them (DEC-0288). It keeps an index of notices, reads and handovers in Messages/index.json, so they reach phones whether the desk is open or not (DEC-0348), and of permits applied for from a phone with their answers, in Permits/index.json (DEC-0359). Every request carries the site code; a wrong code writes nothing.
 //
 // Set up once:
 //   1. script.google.com > New project. Paste this file over Code.gs. Save.
@@ -47,17 +47,22 @@ function doPost(e){
     if(b.op === 'add'){
       const m = /^Inbox\/([A-Za-z0-9._-]{1,120})$/.exec(String(b.path || ''));
       if(!m) return out({ok:false, code:'bad', why:'Only a file in the Inbox folder can be added.'});
+      // An issue or a refusal of a permit from someone who cannot issue it is never kept (DEC-0359 rule 2).
+      let rec = null;
+      if(/\.json$/.test(m[1])){ try{ rec = JSON.parse(Utilities.newBlob(Utilities.base64Decode(String(b.data || ''))).getDataAsString('UTF-8')); }catch(x){} }
+      const no = permitGate(rec, ws); if(no) return out(no);
       const lock = LockService.getScriptLock(); lock.waitLock(20000);
       try{
         const inbox = folder(ws, 'Inbox', true);
         if(inbox.getFilesByName(m[1]).hasNext()) return out({ok:false, code:'exists', why:'That file is already in the Inbox.'});
         inbox.createFile(Utilities.newBlob(Utilities.base64Decode(String(b.data || '')), String(b.type || 'application/octet-stream'), m[1]));
       } finally { lock.releaseLock(); }
-      // A capture's record arrives last (slice A); a permit applied for alerts whoever can issue it (DEC-0344).
-      // Only after the file is kept, and a failure here never fails the add.
-      if(/\.json$/.test(m[1])){
-        let rec = null; try{ rec = JSON.parse(Utilities.newBlob(Utilities.base64Decode(String(b.data || ''))).getDataAsString('UTF-8')); }catch(x){}
+      // A capture's record arrives last (slice A); a permit applied for alerts whoever can issue it (DEC-0344), and its
+      // answer the person who applied (DEC-0359). Only after the file is kept, and a failure here never fails the add.
+      if(rec){
+        let pi = null; try{ pi = permitKeep(rec, ws); }catch(x){ Logger.log('Permit not kept in the index: ' + (x && x.message || x)); }
         try{ alertFor(rec, ws); }catch(x){ Logger.log('Alert not sent: ' + (x && x.message || x)); }
+        try{ if(pi) answerAlert(rec, pi, ws); }catch(x){ Logger.log('Answer alert not sent: ' + (x && x.message || x)); }
         try{ messageFor(rec, ws); }catch(x){ Logger.log('Message not kept in the index: ' + (x && x.message || x)); }
       }
       return out({ok:true});
@@ -65,8 +70,9 @@ function doPost(e){
     if(b.op === 'read'){
       // The site details, and the copies of open jobs' photos and voice notes the desk writes beside them (DEC-0305, DEC-0308 rule 4; P6).
       const p = String(b.path || ''), pm = /^Phone\/(photos|audio)\/([A-Za-z0-9._-]{1,120}\.b64)$/.exec(p);
+      if(p === PERMIT_PATH){ const pf = permitFile(ws, false); return pf ? out({ok:true, text:pf.getBlob().getDataAsString('UTF-8')}) : out({ok:false, code:'missing', why:'No permit has been applied for from a phone yet.'}); }
       if(p === MSG_PATH){ const mf = msgFile(ws, false); return mf ? out({ok:true, text:mf.getBlob().getDataAsString('UTF-8')}) : out({ok:false, code:'missing', why:'No message has been sent yet.'}); }
-      if(p !== 'Phone/site.json' && !pm) return out({ok:false, code:'bad', why:'Only the site details, messages, job photos and voice notes can be read.'});
+      if(p !== 'Phone/site.json' && !pm) return out({ok:false, code:'bad', why:'Only the site details, messages, permits, job photos and voice notes can be read.'});
       const ph = folder(ws, 'Phone', false), dir = pm ? (ph && folder(ph, pm[1], false)) : ph, it = dir && dir.getFilesByName(pm ? pm[2] : 'site.json');
       if(!it || !it.hasNext()) return out({ok:false, code:'missing', why: pm ? 'That file is not in Phone/' + pm[1] + '.' : 'The desk has not published the site details yet.'});
       return out({ok:true, text:it.next().getBlob().getDataAsString('UTF-8')});
@@ -128,12 +134,13 @@ function fcmToken(){
   cache.put('FCM_TOKEN', j.access_token, 3000);
   return j.access_token;
 }
-// One alert to one phone. A phone that has gone (uninstalled, alerts turned off) is dropped.
-function pushSend(token, title, body){
+// One alert to one phone, opening the page at link (the home page when none). A phone that has gone (uninstalled,
+// alerts turned off) is dropped.
+function pushSend(token, title, body, link){
   const sa = JSON.parse(PROPS.getProperty('SERVICE_ACCOUNT') || '{}');
   const res = UrlFetchApp.fetch('https://fcm.googleapis.com/v1/projects/' + sa.project_id + '/messages:send', {
     method:'post', contentType:'application/json', muteHttpExceptions:true, headers:{Authorization:'Bearer ' + fcmToken()},
-    payload:JSON.stringify({message:{token:token, webpush:{notification:{title:title, body:body}, fcm_options:{link:PAGE}}}})});
+    payload:JSON.stringify({message:{token:token, webpush:{notification:{title:title, body:body}, data:{link:link || PAGE}, fcm_options:{link:link || PAGE}}}})});
   const code = res.getResponseCode();
   if(code === 200) return {ok:true};
   if(code === 404 || /UNREGISTERED/.test(res.getContentText())){
@@ -163,19 +170,84 @@ function alertFor(rec, ws){
   const title = (ty.length === 1 ? ty[0] + ' permit' : 'Permit to work') + ' applied for';
   const body = [(j.no ? 'Job ' + j.no : 'A job') + (j.place ? ', ' + j.place : (j.title ? ', ' + j.title : '')) + '.',
     (rec.person || 'Someone') + ' applied at ' + at + (ty.length > 1 ? ' for ' + ty.join(' and ') : '') + '.',
-    'The job cannot start until the permit is issued on the desk’s Permit to Work page.',
+    'The job cannot start until the permit is issued. Open this to issue or refuse it.',
     /^\d\d:\d\d$/.test(String(pm.from || '')) ? 'Work planned from ' + pm.from + '.' : ''].filter(Boolean).join(' ');
   const ts = phonesOf(to);
   if(!ts.length) Logger.log('Permit applied for, no alert: none of ' + to.map(p => p.name).join(', ') + ' has turned alerts on.');
-  ts.forEach(t => Logger.log('Permit alert to ' + devices()[t].name + ': ' + JSON.stringify(pushSend(t, title, body))));
+  ts.forEach(t => Logger.log('Permit alert to ' + devices()[t].name + ': ' + JSON.stringify(pushSend(t, title, body, jobLink(rec.job)))));
+}
+function jobLink(id){ return PAGE + '?job=' + encodeURIComponent(String(id || '')); }
+// ── Permits answered on the phone (DEC-0359) ───────────────────────────────────────────────────
+// Each permit applied for from a phone is kept in Permits/index.json with its answer, so the applicant's phone can start
+// the job as soon as it is issued, with the desk shut (rule 3). The files stay in the Inbox for the desk to file onto
+// Permit to Work, which is the record (rule 4). Kept PERMIT_DAYS, as the desk's WFM_SITE_SHAPE.permits.
+const PERMIT_PATH = 'Permits/index.json', PERMIT_ACTS = ['permitissue', 'permitrefuse'], PERMIT_DAYS = 30;
+function permitFile(ws, create){
+  const dir = folder(ws, 'Permits', create); if(!dir) return null;
+  const it = dir.getFilesByName('index.json');
+  return it.hasNext() ? it.next() : (create ? dir.createFile('index.json', JSON.stringify({format:'waterline-permits', version:1, items:[]}), 'application/json') : null);
+}
+function permitIndex(f){ try{ const o = JSON.parse(f.getBlob().getDataAsString('UTF-8')); if(o && Array.isArray(o.items)) return o; }catch(e){} return {format:'waterline-permits', version:1, items:[]}; }
+// The application an answer is for: by its capture id, or (applied for on the desk) by the register ids it names.
+function permitKey(rec){ const ids = ((rec.permit || {}).ids || []).map(String).filter(Boolean).sort(); return String(rec.ref || '') || (ids.length ? 'ptw:' + ids.join('+') : ''); }
+function isAnswer(rec){ return !!(rec && rec.kind === 'job' && PERMIT_ACTS.indexOf(rec.act) >= 0); }
+// Only the people the desk publishes as able to issue may answer (rule 2), as the desk's wfmPermitIssuers decides.
+function permitGate(rec, ws){
+  if(!isAnswer(rec)) return null;
+  const site = siteFile(ws), to = (site && site.alerts && site.alerts.permit) || [];
+  if(!to.some(p => nameKey(p.name) && nameKey(p.name) === nameKey(rec.person)))
+    return {ok:false, code:'notissuer', why:(rec.person || 'This phone’s holder') + ' cannot issue or refuse a permit. Only ' + (to.map(p => p.name).join(' or ') || 'the FM and the Permit to Work Issuer') + ' can.'};
+  if(!permitKey(rec)) return {ok:false, code:'bad', why:'The answer does not say which permit it is for.'};
+  return null;
+}
+// Keeps an application or an answer. Returns the application an answer was kept against, for its alert; null otherwise,
+// and null for a second answer: the first stands, and the second waits in the Inbox for the desk to say so on the job.
+function permitKeep(rec, ws){
+  const ask = rec && rec.kind === 'job' && rec.act === 'permit' && rec.id;
+  if(!ask && !isAnswer(rec)) return null;
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try{
+    const f = permitFile(ws, true), ix = permitIndex(f), cut = Date.now() - PERMIT_DAYS * 864e5, pm = rec.permit || {};
+    ix.items = ix.items.filter(x => Date.parse((x.answer && x.answer.taken) || x.taken) > cut);
+    let it = null;
+    if(ask){
+      if(ix.items.some(x => x.id === rec.id)) return null;
+      const ck = rec.check || {};
+      ix.items.push({id:rec.id, job:String(rec.job || ''), types:(pm.types || []).filter(Boolean), person:String(rec.person || ''), pos:String(rec.pos || ''), taken:rec.taken,
+        from:String(pm.from || ''), to:String(pm.to || ''), fields:pm.fields || {}, check:{none:ck.none === true, hazards:ck.hazards || [], note:String(ck.note || ''), from:String(ck.from || ''), answers:ck.answers || []}});
+    } else {
+      const k = permitKey(rec);
+      it = ix.items.find(x => x.id === k);
+      if(!it){ it = {id:k, job:String(rec.job || ''), types:(pm.types || []).filter(Boolean), ids:(pm.ids || []).map(String), person:'', pos:'', taken:rec.taken}; ix.items.push(it); }
+      if(it.answer){ Logger.log('Permit already answered by ' + it.answer.person + '; ' + rec.person + '’s ' + rec.act + ' waits in the Inbox for the desk.'); it = null; }
+      else it.answer = {id:rec.id, act:rec.act, person:String(rec.person || ''), pos:String(rec.pos || ''), taken:rec.taken, why:String(pm.why || '').slice(0, 400)};
+    }
+    ix.updated = new Date().toISOString();
+    f.setContent(JSON.stringify(ix));
+    return it;
+  } finally { lock.releaseLock(); }
+}
+// The person who applied is told either way, on every phone of theirs but the answerer's.
+function answerAlert(rec, it, ws){
+  if(!isAnswer(rec) || !(it.person || it.pos)) return;
+  const site = siteFile(ws) || {}, j = (site.jobs || []).find(x => x.id === it.job) || {}, d = devices(), ty = it.types || [], a = it.answer;
+  const at = Utilities.formatDate(new Date(a.taken || Date.now()), 'Europe/Dublin', 'HH:mm'), ok = a.act === 'permitissue';
+  const title = (ty.length === 1 ? ty[0] + ' permit' : 'Permit to work') + (ok ? ' issued' : ' refused');
+  const why = String(a.why || '').trim();
+  const body = [(j.no ? 'Job ' + j.no : 'Your job') + (j.place ? ', ' + j.place : (j.title ? ', ' + j.title : '')) + '.',
+    (ok ? 'Issued by ' : 'Refused by ') + (a.person || 'someone') + ' at ' + at + (!ok && why ? ': ' + why.replace(/[.!?]$/, '') : '') + '.',
+    ok ? 'You can start the job.' : 'The job cannot start on this permit.'].join(' ');
+  const ts = Object.keys(d).filter(t => d[t].role !== 'test' && sameAs(d[t], it.person, it.pos) && !sameAs(d[t], a.person, a.pos));
+  if(!ts.length) Logger.log('Permit answered, no alert: ' + (it.person || 'the applicant') + ' has no phone with alerts on, or answered it themselves.');
+  ts.forEach(t => Logger.log('Permit answer alert to ' + d[t].name + ': ' + JSON.stringify(pushSend(t, title, body, jobLink(it.job)))));
 }
 // ── Messages (DEC-0348) ──────────────────────────────────────────────────────────────────────
 // A notice, a read and a handover are kept, text only, in Messages/index.json as they arrive: each record once. Phones are
 // shown the last KEEP_DAYS days (WFM_SITE_SHAPE.messages on the desk); older ones move to a monthly archive beside it,
 // Messages/archive-YYYY-MM.json, which is only ever added to. A message is a record and is never deleted (DEC-0353). The
-// files stay in the Inbox for the desk to file. Messages, replies and chat photos are kept the same way (DEC-0354). The index also says which positions have a phone set up, so a sender is
+// files stay in the Inbox for the desk to file. Messages, replies and chat photos are kept the same way (DEC-0354), and so is a writer's edit or delete of their own (DEC-0353 rule 5): the phones apply it, the original stays. The index also says which positions have a phone set up, so a sender is
 // never told a position read what no phone opened (rule 3).
-const MSG_PATH = 'Messages/index.json', MSG_KINDS = ['notice', 'msgread', 'handover', 'msg', 'reply', 'chatphoto'], KEEP_DAYS = 60;
+const MSG_PATH = 'Messages/index.json', MSG_KINDS = ['notice', 'msgread', 'handover', 'msg', 'reply', 'chatphoto', 'msgchange'], KEEP_DAYS = 60;
 // The chat a record is in (DEC-0354), as the desk's WFM_CAPTURE_SHAPE.chatOf reads it: its own chat, the chat inside its
 // message, notice or handover, or (sent before chats) the first place it was sent to. A read has none.
 function chatOf(r){ const x = r.msg || r.notice || r.handover || {}; return String(r.chat || x.chat || (Array.isArray(x.to) && x.to[0]) || '').trim(); }
@@ -245,6 +317,7 @@ function messageAlert(rec, ix, ws){
     return;
   }
   if(rec.kind === 'chatphoto') return;                            // a chat's new photo alerts no one (DEC-0354 rule 7)
+  if(rec.kind === 'msgchange') return;                            // an edit or a delete alerts no one
   if(rec.kind === 'msg' || rec.kind === 'reply'){ chatAlert(rec, ix); return; }
   // A handover alerts the phones it is sent to when it is sent, as a message in a chat does (DEC-0351 rule 3).
   handoverAlert(rec);

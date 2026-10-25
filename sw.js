@@ -36,14 +36,15 @@ self.addEventListener('push', e => {
   const n = d.notification || {};
   // Quiet out of hours (Settings): the alert still comes, without sound or vibration.
   e.waitUntil(quietNow().then(silent => self.registration.showNotification(n.title || 'Waterline', {
-    body: n.body || '', icon: 'push/icon-192.png', badge: 'badge-96.png', silent: silent, data: {link: (d.fcmOptions && d.fcmOptions.link) || './'}
+    body: n.body || '', icon: 'push/icon-192.png', badge: 'badge-96.png', silent: silent, data: {link: (d.data && d.data.link) || (d.fcmOptions && d.fcmOptions.link) || './'}
   })));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   const link = new URL((e.notification.data && e.notification.data.link) || './', self.registration.scope).href;
   e.waitUntil(self.clients.matchAll({type: 'window', includeUncontrolled: true}).then(ws => {
-    for (const w of ws) if (w.url.split('?')[0].split('#')[0] === link.split('?')[0].split('#')[0] && 'focus' in w) return w.focus();
+    // An open page is brought forward and told which job the alert is about (DEC-0359 rule 1).
+    for (const w of ws) if (w.url.split('?')[0].split('#')[0] === link.split('?')[0].split('#')[0] && 'focus' in w) { w.postMessage({open: link}); return w.focus(); }
     return self.clients.openWindow(link);
   }));
 });

@@ -21,10 +21,10 @@
    Themes: the desk's THEMES (Design 5.2), Waterline, Light and Night, switched in Settings by anyone (DEC-0303 rule 4). */
 body.t-wl{--cream:#F5F7F9;--white:#FFFFFF;--stone:#E4EEF4;--ink:#0D1F2D;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#0D1F2D;--textMid:#3A5A72;--textMuted:#4A6E8C;--textMS:#4A6E8C;--border:#D4E3EC;--accent:#1E87A8;--accentD:#156B87;--accentOnInk:#3AABC6;--btnFill:#156B87;--btnText:#FFFFFF;--zBtnText:#071320;
-  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A}
+  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A;--sTodo:#F87171;--sDoing:#FACC15;--sDone:#34D399}
 body.t-li{--cream:#F5F7F9;--white:#FFFFFF;--stone:#E4EEF4;--ink:#0D1F2D;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#0D1F2D;--textMid:#3A5A72;--textMuted:#4A6E8C;--textMS:#4A6E8C;--border:#D4E3EC;--accent:#1E87A8;--accentD:#156B87;--accentOnInk:#3995B2;--btnFill:#156B87;--btnText:#FFFFFF;--zBtnText:#071320;
-  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A}
+  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A;--sTodo:var(--jTodo);--sDoing:var(--jDoing);--sDone:var(--jDone)}
 /* Light on the phone (John, 21 Oct 2026, DEC-0310): the desk's Light differs from Waterline only in its sidebar, which the
    phone has not got, so on the phone Light turns the top block white with navy words. Its words, teal and state colours
    take the light-surface tokens; the block keeps its place, its one action and its hairline under it. */
@@ -32,7 +32,7 @@ body.t-li .zone{background:var(--white);border-bottom:1px solid var(--border);--
 body.t-li .zone .prog i,body.t-li .zone .fill,body.t-li .zone .steps span.d{background:var(--text)}
 body.t-ni{--cream:#091624;--white:#0D2035;--stone:#122840;--ink:#071320;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#C8E5F2;--textMid:#6A9BB5;--textMuted:#5490AB;--textMS:#6A9BB5;--border:#1C3A52;--accent:#3AABC6;--accentD:#7ECFE0;--accentOnInk:#5BBDD4;--btnFill:#3AABC6;--btnText:#071320;--zBtnText:#071320;
-  --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#F87171;--jDoing:#FACC15;--jDone:#34D399}
+  --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#F87171;--jDoing:#FACC15;--jDone:#34D399;--sTodo:var(--jTodo);--sDoing:var(--jDoing);--sDone:var(--jDone)}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;min-height:100vh}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -173,6 +173,7 @@ textarea{min-height:96px;resize:vertical}
 .pl .q{width:96px;flex:none}
 .pl .fl{display:block;font:600 12px Outfit;color:var(--text);margin-bottom:8px}
 .sheet .para{padding:0 16px}
+.pr dl{margin:0;padding:0 16px 8px}.pr dt{font:600 12px Outfit;color:var(--text);margin-top:16px}.pr dd{margin:4px 0 0;color:var(--text)}.pr dd .sub{display:block;font-size:12px;color:var(--textMuted)}.pr dd .mono{font-size:15px;color:var(--text)}.pr dd ul{margin:8px 0 0;padding-left:20px}.pr dd li{margin-top:4px}
 .help.err{color:var(--text)}
 .inrow{display:flex;gap:8px}
 .inrow input{flex:1;min-width:0}
@@ -242,7 +243,7 @@ textarea{min-height:96px;resize:vertical}
 .sw{display:flex;margin:16px -16px -24px;border-top:1px solid var(--inkTrack)}
 .sw button{flex:1;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 13px Outfit;color:var(--accentOnInk);border-bottom:4px solid transparent}
 .sw button.on{border-bottom-color:var(--accentOnInk)}
-.sw .n{font:800 15px Sora}
+.sw .n{font:800 15px Sora;display:inline-flex;align-items:center;gap:6px}.sw .sm{width:14px;height:14px;flex:none}.sw .s-todo{color:var(--sTodo)}.sw .s-doing{color:var(--sDoing)}.sw .s-done{color:var(--sDone)}
 .tools{display:flex;align-items:center;gap:4px;padding:12px 16px}
 .search{flex:1;min-width:0;height:48px;border:1.5px solid var(--accentD);border-radius:8px;background:var(--white);display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--accentD)}
 .search input{border:none;background:none;padding:0;min-height:44px;min-width:0;flex:1}
@@ -278,7 +279,7 @@ img.pl{object-fit:cover;padding:0}
 .srt svg{width:16px;height:16px}
 .ra.c{align-items:center;padding:10px 16px;gap:12px}
 /* A job's state is a line on its right: red To do, yellow In progress, green Done (DEC-0337). */
-.ra.jt,.cb.jt{border-right:5px solid var(--jTodo)}.ra.jd,.cb.jd{border-right:5px solid var(--jDoing)}.ra.jx,.cb.jx{border-right:5px solid var(--jDone)}
+.ra.jt,.cb.jt{border-right:5px solid var(--jTodo)}.ra.jd,.cb.jd{border-right:5px solid var(--jDoing)}.ra.jx,.cb.jx{border-right:5px solid var(--jDone)}.ra.jc,.cb.jc{border-right:5px solid var(--navMid)}
 .ra.c .pl{width:60px;height:60px}
 .ra.c .pl b{font:800 20px/1 Sora}
 .ra.c .w{font-weight:500}
@@ -885,7 +886,7 @@ body.t-li .c-av.lg{border-color:var(--border)}
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=8bd2704fe2"></script>
+<script src="shapes.js?v=d160194039"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1052,6 +1053,12 @@ async function loadSite(){
   }
   if(!st.site){ const kept=ls.get('wl_site',null); if(kept&&kept.format===WFM_SITE_SHAPE.format) st.site=kept; }
 }
+// The permits applied for from phones and their answers, as the relay keeps them (DEC-0359 rule 3).
+async function loadPerms(){
+  if(!STORE) return; const PS=WFM_SITE_SHAPE.permits;
+  try{ const t=await STORE.read(PS.folder+'/'+PS.index); if(t!=null){ const o=JSON.parse(t); if(o&&o.format===PS.format&&Array.isArray(o.items)){ st.perms=o; ls.set('wl_perms',o); } } }catch(e){}
+  if(!st.perms){ const kept=ls.get('wl_perms',null); if(kept&&Array.isArray(kept.items)) st.perms=kept; }
+}
 const siteAge=()=>st.site&&st.site.published?Date.now()-Date.parse(st.site.published):Infinity;
 const siteStale=()=>!(siteAge()<WFM_SITE_SHAPE.freshHours*36e5);
 const points=()=>(st.site&&st.site.points)||[];
@@ -1120,7 +1127,9 @@ const keep=c=>obPut(c).catch(e=>console.warn('outbox',e));
 async function send(c){
   await keep(c);
   try{ await deliver(c); }
-  catch(e){ console.warn('send',e); c.err=String(e&&e.message||e); c.errCode=e&&e.code||''; await keep(c); return false; }
+  catch(e){ console.warn('send',e); c.err=String(e&&e.message||e); c.errCode=e&&e.code||'';
+    if(c.errCode==='notissuer'){ await obDel(c.id).catch(()=>{}); return false; }
+    await keep(c); return false; }
   await obDel(c.id).catch(()=>{}); return true;
 }
 async function sendKept(){
@@ -1206,7 +1215,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,unscan:vUnscan,signoff:vSignoff,tags:vTags,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
@@ -1318,7 +1327,7 @@ function dueFor(){
     (i.kind==='soon'?soon:i.kind==='look'?today:over).push({t:'line',i:i});
   });
   const myJobs=[];
-  (s.jobs||[]).filter(j=>!j.round&&groups.has(j.group)).forEach(j=>{ const e=Date.parse(j.end);
+  (s.jobs||[]).filter(j=>!j.round&&j.state!=='done'&&groups.has(j.group)).forEach(j=>{ const e=Date.parse(j.end);
     if(e) (e<=now?over:today).push({t:'job',j:j}); else if(holders(j).some(isMe)) myJobs.push(j); });
   const rk={red:0,amber:1,grey:2};
   over.sort((a,b)=>((a.t==='missed'?0:a.t==='job'?1:a.i.kind==='look'?3:2)-(b.t==='missed'?0:b.t==='job'?1:b.i.kind==='look'?3:2))
@@ -1484,7 +1493,15 @@ function cats(xs){
 // (DEC-0305; 21.6). Each job says who holds it, every name (DEC-0309 rule 6).
 st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:'groups',grp:''};
 // Jobs is work that was reported: an occurrence of a planned job (a walk, a flush, a test) stays on Due (DEC-0312 rule 4).
-function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>!j.round&&!j.planned&&(fm||gs.has(j.group))); }
+function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state!=='done'&&!j.round&&!j.planned&&(fm||gs.has(j.group))); }
+// Jobs done in the last WFM_SITE_SHAPE.doneDays, as the desk publishes them (DEC-0349 rule 1): the same groups as open jobs.
+const doneAt=j=>Date.parse(j.done&&j.done.at)||0;
+function jobsDone(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state==='done'&&!j.round&&!j.planned&&(fm||gs.has(j.group))).sort((a,b)=>doneAt(b)-doneAt(a)); }
+const doneMine=j=>!!(j.done&&st.walker&&nk(j.done.by)===nk(st.walker));
+const doneDays=()=>WFM_SITE_SHAPE.doneDays;
+// How a done job closed, in words: signed off on the phone, closed with its reason, or done with nothing signed.
+function doneSay(j){ const d=j.done||{}; if(d.how) return 'Closed: '+d.how.toLowerCase()+(d.why?' ('+d.why+')':'');
+  return j.signed?'Signed off'+(nk(j.signed.by)!==nk(d.by)?' by '+youOr(j.signed.by):''):'Not signed'; }
 const jobById=id=>(SITE().jobs||[]).find(x=>x.id===id)||null;
 const jWhere=j=>{ const l=LOC(j.loc); return l?(/^\d+$/.test(l.name)?'Room ':'')+l.name+(l.level?' · '+lvName(l.level):''):(j.place||'Place not said'); };
 const jAge=j=>{ const d=Math.floor((Date.now()-Date.parse(j.raised))/864e5); return isNaN(d)?'':d<1?'today':plural(d,'day')+' ago'; };
@@ -1528,6 +1545,9 @@ function phImg(n,cls,alt,j){ const s=_ph[n];
 const jPic=(j,cls)=>(j.photos||[]).length?phImg(j.photos[0],cls,'Photo of '+(j.title||'the job'),j):words(j,cls);
 const SH={todo:'<svg viewBox="0 0 16 16" aria-hidden="true" style="color:var(--jTodo)"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>',
   doing:'<svg viewBox="0 0 16 16" aria-hidden="true" style="color:var(--jDoing)"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>'};
+// A group's three counts carry their state's mark in its colour (DEC-0337 rule 2); the number and word keep the tab's ink.
+const SMK=k=>'<svg class="sm s-'+k+'" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/>'
+  +(k==='doing'?'<path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/>':k==='done'?'<path d="M5.5 8.2l1.8 1.8 3.2-3.7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>':'')+'</svg>';
 // The square beside a job: its photo, or its place (a room's number and floor, or the place's name), as the desk's
 // card square (DEC-0327 rule 2). The title is never repeated in it.
 function jSquare(j){
@@ -1539,11 +1559,15 @@ function jSquare(j){
 }
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
-const jCls=j=>j.state==='done'?' jx':j.state==='doing'?' jd':' jt';
-function jobRowP(j,showGroup,own){ const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
+const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):j.state==='doing'?' jd':' jt';
+function jobRowP(j,showGroup,own){ if(j.state==='done') return jobRowDone(j,showGroup);
+  const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
   return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +(by?'<span class="sub">'+(j.state==='doing'?'<span class="stt">'+SH.doing+'In progress</span>'+(h.length?' · ':''):'')+(h.length?esc(own?'With '+h.map(x=>x.name).join(', '):holdersSay(j)):'')+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span><span class="ag"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i></span></button>'; }
+function jobRowDone(j,showGroup){ const d=j.done||{};
+  return '<button class="ra c'+(d.how?' jc':' jx')+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+'<span class="w">'+esc(j.title||'Job')+'</span>'
+    +'<span class="sub">'+esc((d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at))+'</span><span class="sub">'+esc(doneSay(j))+'</span></span></button>'; }
 // A group's icon, from its name (the site's groups are its own, DEC-0309); one set, one stroke (21.7).
 const GIC=[[/fire.?walk|walk/i,'flame'],[/fire/i,'fire-extinguisher'],[/legionella|water|tmv/i,'droplets'],[/banned/i,'ban'],[/hygiene/i,'spray-can'],[/housekeep/i,'bed-double'],[/inspect/i,'clipboard-check'],[/part|material/i,'pkg'],[/planned/i,'calendar-clock'],[/maint/i,'jobs']];
 function GICO(g){ const n=GROUP(g), m=GIC.find(x=>x[0].test(n)), k=m?m[1]:'folder'; return k==='pkg'?I.pkg:k==='jobs'?I.jobs:ICO(k); }
@@ -1572,9 +1596,10 @@ function jobCard(j){ const a=jLate(j);
   return '<button class="cb'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'wide')+'<span class="cbt" style="display:block">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+'</span><span class="sub">Raised '+esc(jAge(j))+'</span>'+(holders(j).length?'<span class="sub">'+esc(holdersSay(j))+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
 function jobsShown(){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code);
-  let L=jobsAll().filter(j=>!J.grp||j.group===J.grp).filter(j=>(j.state==='doing'?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
+  const dn=J.state==='done';
+  let L=(dn?jobsDone():jobsAll()).filter(j=>!J.grp||j.group===J.grp).filter(j=>dn||(j.state==='doing'?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
   const q=J.q.trim().toLowerCase(); if(q) L=L.filter(j=>(String(j.title)+' '+jWhere(j)).toLowerCase().indexOf(q)>=0);
-  const t=j=>Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc), i=l?lv.indexOf(l.level):-1; return i<0?99:i; };
+  const t=j=>dn?doneAt(j):Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc), i=l?lv.indexOf(l.level):-1; return i<0?99:i; };
   return L.sort((a,b)=>flagRank(a)-flagRank(b)||(J.sort==='old'?t(a)-t(b):J.sort==='place'?fl(a)-fl(b)||jWhere(a).localeCompare(jWhere(b)):t(b)-t(a))); }
 const nobody=j=>!holders(j).length, mineJ=j=>holders(j).some(isMe);
 const oldestDays=L=>L.length?Math.floor((Date.now()-Math.min(...L.map(j=>Date.parse(j.raised)||Date.now())))/864e5):0;
@@ -1591,12 +1616,14 @@ function vJobs(){
     +'<div class="sw" role="tablist">'+[['groups','Groups',open.length],['mine','Mine',my.length]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
     +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search every group" aria-label="Search jobs in every group" value="'+esc(J.q)+'"></label></div>';
   const q=J.q.trim().toLowerCase();
-  if(q){ const R=all.filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
+  if(q){ const R=all.concat(jobsDone()).filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
     h+='<div class="act"><span><span class="n">'+R.length+'</span> of <span class="n">'+all.length+'</span> match</span><button class="lnk" data-act="jclear">Clear</button></div>';
     h+=R.length?lh('Matches',R.length)+jl(jSortL(R),true):'<p class="para">No job matches.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   if(J.tab==='mine'){
+    const dm=jobsDone().filter(doneMine);
     h+=lh('Given to you')+(my.length?jl(jSortL(my),true,1):'<p class="para">Nothing is given to you. Jobs nobody has are in Groups.</p>');
+    h+=lh('Done by you, last '+doneDays()+' days',dm.length,1)+(dm.length?jl(dm,true,1):'<p class="para">Nothing done by you in the last '+doneDays()+' days.</p>');
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   if(open.length) h+='<div class="list">'+open.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, o=oldestDays(L), n=L.filter(nobody).length;
     return '<button class="r gr" data-act="jgrp" data-id="'+esc(g)+'"><span class="gi">'+GICO(g)+'</span><span class="m"><span class="w">'+esc(GROUP(g))+'</span>'
@@ -1608,15 +1635,15 @@ function vJobs(){
 }
 // A group opened: its name and its counts in the zone (21.1), the counts are the filter (DEC-0327 rule 2), its jobs below.
 function vGroup(){
-  const J=st.J, all=jobsAll().filter(j=>j.group===J.grp), nTodo=all.filter(j=>j.state!=='doing').length, nDoing=all.length-nTodo;
-  const inState=J.state==='doing'?nDoing:nTodo, L=jobsShown(), nf=J.sort!=='new'?1:0, o=oldestDays(all), nb=all.filter(nobody).length;
+  const J=st.J, all=jobsAll().filter(j=>j.group===J.grp), nTodo=all.filter(j=>j.state!=='doing').length, nDoing=all.length-nTodo, nDone=jobsDone().filter(j=>j.group===J.grp).length;
+  const inState=J.state==='doing'?nDoing:J.state==='done'?nDone:nTodo, L=jobsShown(), nf=J.sort!=='new'?1:0, o=oldestDays(all), nb=all.filter(nobody).length;
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('jgrpBack')+'<span class="eb">Your groups</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO(J.grp)+'</span><h1 style="margin:0">'+esc(GROUP(J.grp))+'</h1></div>'
     +'<p>'+(all.length?'<b class="n">'+nb+'</b> with nobody on '+(nb===1?'it':'them')+'. The oldest was raised <b class="n">'+o+'</b> '+(o===1?'day':'days')+' ago.':'Nothing open in this group.')+'</p>'
-    +'<div class="sw" role="tablist">'+[['todo','To Do',nTodo],['doing','In Progress',nDoing]].map(x=>'<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
+    +'<div class="sw" role="tablist">'+[['todo','To Do',nTodo],['doing','In Progress',nDoing],['done','Done',nDone]].map(x=>'<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"><span class="n">'+SMK(x[0])+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
     +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search" aria-label="Search this group" value="'+esc(J.q)+'"></label>'
-    +'</div>'+lh(J.state==='doing'?'In progress':'To do');
+    +'</div>'+lh(J.state==='doing'?'In progress':J.state==='done'?'Done, last '+doneDays()+' days':'To do');
   if(J.q.trim()) h+='<div class="act"><span><span class="n">'+L.length+'</span> of <span class="n">'+inState+'</span> shown</span><button class="lnk" data-act="jclear">Clear All</button></div>';
-  h+=L.length?jl(L,false):'<p class="para">'+(all.length?'No job here matches.':'Nothing open in this group.')+'</p>';
+  h+=L.length?jl(L,false):'<p class="para">'+(J.state==='done'?(nDone?'No job here matches.':'Nothing done in this group in the last '+doneDays()+' days. Older done jobs are on the desk’s Jobs page.'):all.length?'No job here matches.':'Nothing open in this group.')+'</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('jobs');
 }
 // One sheet: sort first, then the filter by group, each with its count; Clear All beside Show (Design 10.2, 9.13).
@@ -1648,6 +1675,37 @@ function vLine(){
 // file shows it filed it reads as sent, never as done (Design 9.11).
 const _sentPics={};
 const jSent=()=>ls.get('wl_jobSent',[]);
+// A job's permits as this phone knows them (DEC-0359 rule 3): the desk's, then each application from a phone the relay keeps
+// with its answer, then an answer sent from here and in neither yet. An answer changes only a permit still waiting, so the
+// desk's own answer, once published, stands.
+function jPerms(j){
+  const out=(j.permits||[]).map(p=>Object.assign({},p)), items=((st.perms&&st.perms.items)||[]).filter(x=>x.job===j.id).map(x=>Object.assign({},x));
+  jSent().filter(x=>x.job===j.id&&x.pa).forEach(x=>{ const k=permKey(x.pa); let it=items.find(i=>i.id===k);
+    if(!it){ it={id:k,job:j.id,types:x.pa.types,ids:x.pa.ids}; items.push(it); }
+    if(!it.answer) it.answer={act:x.act,person:x.by,taken:x.at,why:x.pa.why,sending:true}; });
+  items.forEach(it=>{ const ids=it.ids||[], desk=/^ptw:/.test(it.id);
+    (it.types||[]).forEach(t=>{
+      let p=out.find(q=>q.type===t&&((q.cap&&q.cap===it.id)||ids.indexOf(q.id)>=0));
+      if(!p&&!desk) p=out.find(q=>q.type===t&&!q.cap&&q.state==='Requested');   // a site file from before the desk said which application
+      if(!p){ if(desk||out.some(q=>q.type===t&&q.state==='Active')) return; p={id:'',cap:it.id,type:t,state:'Requested',by:it.person||'',at:it.taken||'',why:''}; out.push(p); }
+      if(!p.cap&&!desk) p.cap=it.id;
+      p.req=it;
+      const a=it.answer; if(a&&p.state==='Requested') Object.assign(p,{state:a.act==='permitissue'?'Active':'Cancelled',by:a.person||'',at:a.taken||'',why:a.why||'',phone:true,sending:!!a.sending});
+    }); });
+  return out;
+}
+// The application an answer is for, as the relay keys it: its capture id, or the register ids of one applied for on the desk.
+const permKey=pa=>pa.ref||((pa.ids||[]).length?'ptw:'+pa.ids.slice().sort().join('+'):'');
+// The first application on a job still waiting, with its types, the register ids the desk gave it, who applied and when.
+function permAsk(j){
+  const w=jPerms(j).filter(p=>p.state==='Requested'); if(!w.length) return null;
+  const k=w[0].cap||w[0].id, g=w.filter(p=>(p.cap||p.id)===k);
+  return {cap:w[0].cap||'',ids:g.map(p=>p.id).filter(Boolean),types:g.map(p=>p.type),req:w[0].req||null,by:(w[0].req&&w[0].req.person)||w[0].by||'',at:(w[0].req&&w[0].req.taken)||w[0].at||'',more:w.length-g.length};
+}
+// Who can issue a permit (DEC-0344 rule 3, DEC-0359 rule 2): the people the desk publishes, matched by name as the desk does.
+const issuers=()=>((SITE().alerts||{}).permit||[]).map(p=>p.name).filter(Boolean);
+const canIssue=()=>!!st.walker&&issuers().some(n=>nk(n)===nk(st.walker));
+const issuerSay=()=>(issuers().length?issuers().join(' or '):'The FM')+' issues it, from their phone or the desk.';
 function jPending(j){
   const th=j.thread||[], out=new Set(st.outbox.map(c=>c.id));
   return jSent().filter(x=>x.job===j.id&&!(x.act==='edit'||x.act==='delete'?th.some(e=>(e.chg||[]).indexOf(x.cap)>=0):th.some(e=>Date.parse(e.at)===Date.parse(x.at)&&nk(e.by)===nk(x.by)))).map(x=>Object.assign({waiting:out.has(x.cap)},x));
@@ -1655,12 +1713,14 @@ function jPending(j){
 // Kept a week at most; gone once filed, or once its job has left the site file and it has left the outbox.
 function jSentPrune(){ if(!st.site) return; const wk=Date.now()-7*864e5, out=new Set(st.outbox.map(c=>c.id));
   ls.set('wl_jobSent',jSent().filter(x=>{ const j=jobById(x.job); return Date.parse(x.at)>wk&&(j?jPending(j).some(y=>y.cap===x.cap):out.has(x.cap)); })); }
-const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned',parts:'Parts used',permit:'Permit',stop:'Stopped'};
+const PK={start:'Started',done:'Done',flag:'Flagged',unflag:'Flagged',pause:'Paused',restart:'Restarted',assign:'Assigned',parts:'Parts used',permit:'Permit',stop:'Stopped',permitissue:'Permit',permitrefuse:'Permit'};
 const pName=id=>{ const p=PEOPLE().find(x=>x.id===id); return p?p.name:id; };
 function pendText(x){ if(x.act==='note') return x.note||(x.au?WFM_CAPTURE_SHAPE.noWords:''); if(x.act==='start') return 'Started.'; if(x.act==='done') return x.note?'Done: '+x.note:'Done.';
   if(x.act==='pause') return x.note?'Paused: '+x.note+(/[.!?]$/.test(x.note)?'':'.'):'Paused.'; if(x.act==='restart') return 'Restarted.';
   if(x.act==='parts') return partsWords(x.parts);
   if(x.act==='stop'){ const w=String((x.stopped&&x.stopped.why)||'').trim(); return 'Stopped and told the FM: '+w+(/[.!?]$/.test(w)?'':'.')+(x.note?' '+x.note:''); } if(x.act==='permit') return 'Applied for a permit to work: '+(x.types||[]).join(', ')+'.';
+  if(x.act==='permitissue') return 'Issued the permit to work: '+((x.pa&&x.pa.types)||[]).join(', ')+'.';
+  if(x.act==='permitrefuse'){ const w=String((x.pa&&x.pa.why)||'').trim(); return 'Refused the permit to work: '+((x.pa&&x.pa.types)||[]).join(', ')+'.'+(w?' '+w+(/[.!?]$/.test(w)?'':'.'):''); }
   if(x.act==='assign'){ const a=x.assign||{on:[],off:[]}; return [(a.on||[]).length?'Put on: '+a.on.map(pName).join(', ')+'.':'',(a.off||[]).length?'Taken off: '+a.off.map(pName).join(', ')+'.':''].filter(Boolean).join(' '); }
   if(x.act==='flag'){ const w=String((x.flag&&x.flag.why)||'').trim(); return flagLabel(x.flag)+(w?': '+w+(/[.!?]$/.test(w)?'':'.'):'.'); } return 'Remove the flag.'; }
 const dayLab=t=>{ const d=new Date(t); if(isNaN(d)) return ''; const k=d.toDateString(); return k===new Date().toDateString()?'Today':k===new Date(Date.now()-864e5).toDateString()?'Yesterday':day(d); };
@@ -1674,6 +1734,7 @@ function jState(j){
   // A paused job is still in progress (DEC-0311 rule 1): the latest pause or restart sent from here, else the desk's.
   const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart').sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act==='pause':!!j.paused;
   // Pausing is for the job's group; assigning for the group and the FM (DEC-0314 rule 3).
+  if(j.state==='done') return {pend:pend,pS:null,pD:null,fl:null,doing:false,pPR:null,paused:false,canPause:false,canAsg:false,done:true};
   return {pend:pend,pS:pS,pD:pD,fl:fl,doing:doing,pPR:pPR,paused:paused,canPause:!pD&&!!meP()&&inGroup(j)&&doing&&!paused,canAsg:!pD&&!!meP()&&(inGroup(j)||isFM(myOwnPos()))};
 }
 // What the desk wrote as a job changed, as one small line across the middle (DEC-0307 rule 2): "Started by you".
@@ -1718,7 +1779,7 @@ function jThread(j,pend,inStrip){
     const mine=own&&id&&WFM_CAPTURE_SHAPE.msgKinds.indexOf(kind)>=0;
     h+='<div class="msg'+(own?' me':'')+'"><div class="bub"'+(mine?' data-mine="'+esc(id)+'" tabindex="0" aria-description="Press and hold to edit or delete"':'')+'>'+(kind!=='Note'?'<span class="kd">'+esc(kind)+'</span>':'')+pics+(au?voiceEl(au.k,au.s,au.t):'')
       +(words?'<p>'+esc(words)+'</p>':'')+'</div>'
-      +'<div class="meta">'+(own?'You':esc(e.by))+tm+esc(ps)+(ed?'<span class="ed">'+esc(ed)+'</span>':'')+'</div></div>';
+      +'<div class="meta">'+(own?'You':esc(e.by))+tm+esc(ps)+(e.after?' · Added after Done':'')+(ed?'<span class="ed">'+esc(ed)+'</span>':'')+'</div></div>';
   });
   return h;
 }
@@ -1737,7 +1798,7 @@ function jBar(F){
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
 }
 function vJob(){
-  const j=jobById(st.form.id); if(!j) return '<div class="body">'+formZone(st.place||'due','Job','No Longer Open','This job is no longer open in the site details from the desk.')+'</div>';
+  const j=jobById(st.form.id); if(!j) return '<div class="body">'+formZone(st.place||'due','Job','No Longer on the Phone','This job is no longer in the site details from the desk. Done jobs stay '+doneDays()+' days; older ones are on the desk’s Jobs page.')+'</div>';
   const F=st.form; if(!F.kind) F.kind='Note'; F.photos=F.photos||[]; if(F.note==null) F.note='';
   const S0=jState(j), e=Date.parse(j.end), a=jLate(j), pend=S0.pend, pD=S0.pD, pS=S0.pS, pPR=S0.pPR, paused=S0.paused, doing=S0.doing, fl=S0.fl;
   // Delivered or not (John, 21 Oct 2026, DEC-0323): delivered once it is in the site's Inbox.
@@ -1745,7 +1806,8 @@ function vJob(){
   const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.note,x:pPR}:j.paused):null;
   // Where it stands, and since when.
   let sw, ss='';
-  if(pD){ sw='Done'; ss='You marked it done at '+hm(pD.at)+'. '+sent(pD); }
+  if(S0.done){ const d=j.done||{}; sw=d.how?'Closed':'Done'; ss=(d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at)+'. '+doneSay(j)+'.'; }
+  else if(pD){ sw='Done'; ss='You marked it done at '+hm(pD.at)+'. '+sent(pD); }
   else if(paused){ const why=String(pz.why||'').trim(), me=pz.x||(!!st.walker&&nk(pz.by)===nk(st.walker));
     sw='In progress, paused'; ss='Paused by '+(me?'you':pz.by||'someone not named')+(isNaN(Date.parse(pz.at))?'':', '+at2(pz.at))+'.'+(why?' '+why+(/[.!?]$/.test(why)?'':'.'):'')+(pz.x?' '+sent(pz.x):''); }
   else if(doing){ sw='In progress'; const sx=pPR&&pPR.act==='restart'?pPR:pS;
@@ -1753,15 +1815,18 @@ function vJob(){
     else { const se=(j.thread||[]).filter(x=>(x.kind==='Started'||x.kind==='Restarted')&&!isNaN(Date.parse(x.at))).pop(); if(se) ss=se.kind+' by '+youOr(se.by)+', '+at2(se.at); } }
   else { sw='To do'; const r=(j.thread||[]).find(x=>x.kind==='Raised'&&!isNaN(Date.parse(x.at))); ss=r?'Raised'+(r.by?' by '+youOr(r.by):'')+', '+at2(r.at):(j.raised?'Raised '+jAge(j):''); }
   // Its permits (W; DEC-0313 rule 3): one applied for and not issued holds Start back.
-  const pms=j.permits||[], pPm=pend.find(x=>x.act==='permit'), pmWait=pms.filter(p=>p.state==='Requested'), pmOn=pms.filter(p=>p.state==='Active');
+  const pms=jPerms(j), pPm=pend.find(x=>x.act==='permit'), pmWait=pms.filter(p=>p.state==='Requested'), pmOn=pms.filter(p=>p.state==='Active');
   const pmRef=pms.filter(p=>p.state==='Cancelled'&&p.why!=null&&p.by).pop();
   const waitT=pmWait.map(p=>p.type).concat(pPm?(pPm.types||[]).filter(t=>!pmWait.some(p=>p.type===t)):[]);
   // The one action (Design 9.1), for the people in the job's group (DEC-0308 rule 3).
   let btn=null, why='';
-  if(!pD){
-    if(!meP()) why='Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.';
+  if(S0.done) why='Anything you add below goes on the job after its Done. The Done and its sign-off stay as they were.';
+  else if(!pD){
+    const pa=canIssue()?permAsk(j):null;
+    if(pa){ btn=['jpermitReview','permit','Review the Permit']; why=(pa.by?youOr(pa.by).replace(/^you$/,'You'):'Someone')+' applied for a permit to work: '+pa.types.join(', ')+(pa.at&&!isNaN(Date.parse(pa.at))?', at '+at2(pa.at):'')+'. The job cannot start until it is issued.'; }
+    else if(!meP()) why='Starting and finishing a job need your name from the Organisation Structure. Choose it in Settings.';
     else if(!inGroup(j)) why=(paused?'Restart':'Start, Pause')+' and Mark Done are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
-    else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' The desk issues it; '+(paused?'Restart':'Start the Job')+' comes back here once it does.';
+    else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' '+issuerSay()+' '+(paused?'Restart':'Start the Job')+' comes back here once it is issued.';
     else btn=paused?['jobRestart','play','Restart']:doing?['jobDone','tick','Mark Done']:['jobStart','play','Start the Job'];
   }
   const pmSay=pmOn.map(p=>'Permit to work, '+p.type.toLowerCase()+': issued'+(p.by?' by '+youOr(p.by):'')+'.').concat(pmRef&&!pmOn.length&&!waitT.length?['Permit to work, '+pmRef.type.toLowerCase()+': refused by '+youOr(pmRef.by)+(pmRef.why?'. '+pmRef.why.replace(/\.$/,''):'')+'.']:[]).join(' ');
@@ -1793,8 +1858,8 @@ function jMoreSheet(){
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +(S0.canPause?v('jobPause','pause','Pause the Job','Reason optional'):'')
     +(!S0.pD&&meP()?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
-    +v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged')
-    +(fl?v('jobUnflag','unflag','Remove the Flag',''):'')
+    +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
+    +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
     +(S0.canAsg?v('jobAssign','users','Change Who Is on It',n?n+' on it':'No one on it yet'):'')
     +'</div><div style="height:24px"></div></div>';
 }
@@ -1975,7 +2040,7 @@ function ckOut(C){ const hz=(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0
 // The old sheet's reasons, kept for a check sent before S5.
 function ckWhy(C){ if(C.none&&C.hz.length) return 'Choose the hazards here, or None of These, not both.'; if(!C.none&&!C.hz.length) return 'Tick each hazard here, or choose None of These.';
   if(C.hz.indexOf('height')>=0&&!C.from) return 'Say what you are working at height from.'; return ''; }
-function ckMissing(j,C){ return ckPermits(ckOut(C)).filter(t=>!(j.permits||[]).some(p=>p.type===t&&p.state==='Active')); }
+function ckMissing(j,C){ return ckPermits(ckOut(C)).filter(t=>!jPerms(j).some(p=>p.type===t&&p.state==='Active')); }
 // The earlier check on this job, as the site file has it, for Same as Before (DEC-0325 rule 2).
 function ckFrom(last){ const ans={}, sorted={}; (last.answers||[]).forEach(a=>{ ans[a.id]=a.a; if(a.sorted) sorted[a.id]=a.sorted; });
   return {hz:(last.hazards||[]).map(h=>h.id),none:!!last.none,note:'',from:last.from||'',iso:!!last.isolate,kit:(last.kit||[])[0]?last.kit[0].reg+'|'+last.kit[0].id:'',ans:ans,sorted:sorted}; }
@@ -1993,7 +2058,7 @@ function t5Cards(C){
   const out=[], hf=(WFM_CAPTURE_SHAPE.heightFrom||[]).find(h=>h.id===C.from);
   if(!C.none) (SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).forEach(h=>{ const H=t5Hz(h.id); if(!H) return;
     if(h.id==='height'&&hf&&hf.permit){ out.push({h:'height',q:{id:'h-permit',q:hf.label+' needs a permit to work',hint:'',ok:'none',says:'Permit',
-      hold:hf.label+' needs a permit to work.',clear:'The FM issues it on the desk.',permit:WFM_CAPTURE_SHAPE.permitFor.height}}); return; }
+      hold:hf.label+' needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:WFM_CAPTURE_SHAPE.permitFor.height}}); return; }
     H.qs.forEach(q=>out.push({h:h.id,q:q})); });
   T5().every.forEach(q=>out.push({h:'',q:q}));
   return out;
@@ -2047,16 +2112,16 @@ function vTake5(){
   if(C.step==='q'){ const cards=t5Cards(C), c=cards[C.qi]; if(!c){ C.step='go'; return vTake5(); }
     const q=c.q, a=C.ans[q.id], H=c.h?t5Hz(c.h):null, hl=c.h?(SITE().hazards||[]).find(h=>h.id===c.h):null;
     const forW=hl?hl.label.replace(/^Working at height$/,'Height'):'Every job', forI=H?H.icon:q.icon||'wrench';
-    const issued=q.permit&&(j.permits||[]).some(p=>p.type===q.permit&&p.state==='Active');
+    const issued=q.permit&&jPerms(j).some(p=>p.type===q.permit&&p.state==='Active');
     const art=q.ok==='none'?'<span class="big">'+t5Ic(c.h==='height'?T5FROM[C.from]||'arrow-up-from-line':forI)+'</span>':H&&H.sign?t5Sign(H.sign,'sg'):'<span class="big">'+t5Ic(forI)+'</span>';
     let h2=q.q, p=q.hint, btns;
-    if(q.ok==='none'){ h2=issued?'The permit to work is issued':q.q; p=issued?'Issued on the desk. Carry on.':(q.hint?q.hint+' ':'')+q.clear+' Answer the rest, then it goes with your application.';
+    if(q.ok==='none'){ h2=issued?'The permit to work is issued':q.q; p=issued?'Issued. Carry on.':(q.hint?q.hint+' ':'')+q.clear+' Answer the rest, then it goes with your application.';
       btns=issued?'<div class="yn col"><button class="yes" data-act="t5Seen" data-t5focus>'+t5Ic('arrow-right')+'Next</button></div>'
         :'<div class="yn col"><button class="yes" data-act="t5Seen" data-t5focus>'+I.permit+'Apply for the Permit</button>'
         +(c.h==='height'?'<button class="no" data-act="t5Step">Use a Stepladder Instead</button>':'<button class="no" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button>')+'</div>'; }
     else if(a!=null&&!t5Fine(q,a)&&q.sort){ p='You said '+a+'. '+q.hint;
       btns='<div class="yn col"><button class="yes" data-act="t5Sort" data-t5focus>'+I.tick+esc(q.sort)+'</button><button class="no" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button></div>'; }
-    else if(a!=null&&!t5Fine(q,a)&&q.hold&&q.permit){ h2=issued?'The permit to work is issued':q.hold; p=issued?'Issued on the desk. Carry on.':q.clear+' Answer the rest, then it goes with your application.';
+    else if(a!=null&&!t5Fine(q,a)&&q.hold&&q.permit){ h2=issued?'The permit to work is issued':q.hold; p=issued?'Issued. Carry on.':q.clear+' Answer the rest, then it goes with your application.';
       btns='<div class="yn col"><button class="yes" data-act="t5Held" data-t5focus>'+(issued?t5Ic('arrow-right')+'Next':I.permit+'Apply for the Permit')+'</button><button class="no" data-act="t5Undo">Change My Answer</button></div>'; }
     else if(a!=null&&!t5Fine(q,a)&&q.hold){ h2=q.hold; p='Start the Job is held. '+q.clear;
       btns='<div class="yn col"><button class="yes" data-act="t5Stop" data-t5focus>'+t5Ic('octagon-x')+'Stop and Tell the FM</button><button class="no" data-act="t5Undo">Change My Answer</button></div>'; }
@@ -2071,11 +2136,11 @@ function vTake5(){
   const good=!held.length&&!miss.length, when=hm(new Date().toISOString());
   const row=c=>{ const a=C.ans[c.q.id]; if(a==null) return ''; const ok=t5Fine(c.q,a), s=C.sorted[c.q.id], H=c.h?t5Hz(c.h):null;
     const w=c.q.ok==='none'?c.q.hold.replace(/\.$/,''):!ok&&s?(c.q.sortSays||s):!ok&&c.q.hold?c.q.hold.replace(/\.$/,''):c.q.says||c.q.q;
-    return '<li class="okr"><span class="bi">'+t5Ic(H?H.icon:c.q.icon||'wrench')+'</span><span>'+esc(w)+'</span><em>'+(c.q.ok==='none'||(!ok&&c.q.hold)?(c.q.permit&&(j.permits||[]).some(p=>p.type===c.q.permit&&p.state==='Active')?'Issued':'Held'):!ok&&s?'Sorted':a==='yes'?'Yes':'No')+'</em></li>'; };
+    return '<li class="okr"><span class="bi">'+t5Ic(H?H.icon:c.q.icon||'wrench')+'</span><span>'+esc(w)+'</span><em>'+(c.q.ok==='none'||(!ok&&c.q.hold)?(c.q.permit&&jPerms(j).some(p=>p.type===c.q.permit&&p.state==='Active')?'Issued':'Held'):!ok&&s?'Sorted':a==='yes'?'Yes':'No')+'</em></li>'; };
   const hzNoRa=C.none?[]:(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0&&!ras.some(r=>((r.for||{}).hazards||[]).indexOf(h.id)>=0));
   const top=good?'<div class="done"><span class="tick">'+I.tick+'</span><h2 data-t5focus tabindex="-1">Good to Go</h2><p>'+esc([jWhere(j)||j.title,st.walker,when].filter(Boolean).join(' · '))+'</p></div>'
     :'<div class="done"><span class="tick held">'+t5Ic('octagon-x')+'</span><h2 data-t5focus tabindex="-1">'+(held.length?'Start is held':'Waiting for the permit')+'</h2><p>'
-      +esc(held.length?held.map(c=>c.q.hold+' '+c.q.clear).join(' '):miss.join(' and ')+(miss.length===1?' needs':' need')+' a permit to work. The FM issues it on the desk, and Start the Job comes back once they do.')+'</p></div>';
+      +esc(held.length?held.map(c=>c.q.hold+' '+c.q.clear).join(' '):miss.join(' and ')+(miss.length===1?' needs':' need')+' a permit to work. '+issuerSay()+' Start the Job comes back once it is issued.')+'</p></div>';
   const go=good?'<button class="btn" data-act="t5Start">'+I.play+(C.mode==='restart'?'Restart the Job':'Start the Job')+'</button>'
     :held.length?'<button class="btn" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button>'
     :'<button class="btn" data-act="t5Permit">'+I.permit+'Apply for the Permit</button>';
@@ -2186,14 +2251,33 @@ function t5Act(a,b){
   if(a==='t5Start'){ if(t5Held(C).length||t5Missing(j,C).length) return t5Draw(); return jobSend(C.mode); }
 }
 // Apply for a Permit (DEC-0313 rule 3): the permit register's own fields for each type, and the times, all optional;
-// the check goes with it. The desk issues it; the job's Start waits until then.
+// the check goes with it. Whoever can issue it does, on their phone or the desk (DEC-0359); the job's Start waits until then.
 function jPermitSheet(){
   const F=st.form, j=jobById(F.id); if(!j||!F.ck) return ''; const miss=ckMissing(j,F.ck), pf=F.pf||{}, T=WFM_CAPTURE_SHAPE.permitFields||{};
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Apply for a permit"><div class="sh"><b>Apply for a Permit</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +'<p class="para">'+esc(miss.join(' and '))+' needs a permit to work. The desk issues it, and Start the Job comes back once it does. Your Before You Start goes with it.</p>'
+    +'<p class="para">'+esc(miss.join(' and '))+' needs a permit to work. '+esc(issuerSay())+' Start the Job comes back once it is issued. Your Before You Start goes with it.</p>'
     +'<div class="field"><span class="fl">When <span class="opt-w">(optional)</span></span><div class="inrow"><input type="time" id="pfrom" data-in="pfrom" aria-label="From" value="'+esc(F.pfrom||'')+'"><input type="time" id="pto" data-in="pto" aria-label="To" value="'+esc(F.pto||'')+'"></div></div>'
     +miss.map(t=>'<div class="grp">'+esc(t)+'</div>'+(T[t]||[]).map(d=>'<div class="field" style="padding-top:8px"><label for="pf-'+d.k+'">'+esc(d.l)+' <span class="opt-w">(optional)</span></label><input type="text" id="pf-'+d.k+'" data-in="pf" data-k="'+d.k+'" value="'+esc(pf[d.k]||'')+'"></div>').join('')).join('')
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpermitSend"'+(st.busy?' disabled':'')+'>'+I.permit+'Apply for the Permit</button></div></div>';
+}
+// Review a permit applied for (DEC-0359 rule 1): what was asked, by whom and when, what they filled in and their Before You
+// Start, then Issue the Permit, or Refuse with a reason if one is given. Only for those who can issue it (rule 2).
+function jReviewSheet(){
+  const F=st.form, j=jobById(F.id), g=j&&canIssue()&&permAsk(j); if(!g) return '';
+  const x=g.req, T=WFM_CAPTURE_SHAPE.permitFields||{}, ck=x&&x.check, fl=(x&&x.fields)||{}, dd=(l,v)=>'<dt>'+esc(l)+'</dt><dd>'+v+'</dd>';
+  const when=g.at&&!isNaN(Date.parse(g.at))?'<span class="n">'+esc(at2(g.at))+'</span>':'Not said', not='<b>Not filled in</b>';
+  const said=ck?(ck.none?'None of the hazards.':(ck.hazards||[]).map(h=>h.label||h.id).join(', ')+'.'):'';
+  const ans=ck?(ck.answers||[]).filter(a=>a.a==='yes'||a.a==='no').map(a=>'<li>'+esc(a.q)+' <b>'+(a.a==='yes'?'Yes':'No')+'</b>'+(a.sorted?'. Sorted: '+esc(a.sorted):'')+'</li>').join(''):'';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet pr" role="dialog" aria-modal="true" aria-label="Permit to work applied for"><div class="sh"><b>Permit Applied For</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<dl>'+dd('Permit',esc(g.types.join(' and ')))+dd('Job',(j.no?'Job <span class="mono">'+esc(j.no)+'</span>, ':'')+esc(jWhere(j)||j.title))
+      +dd('Applied for by',esc(g.by||'Someone not named')+', '+when)+(x?dd('When',x.from?'<span class="n">'+esc(x.from)+'</span>'+(x.to?' to <span class="n">'+esc(x.to)+'</span>':''):'No time given'):'')
+      +(x?g.types.map(t=>(T[t]||[]).map(d=>dd(d.l,fl[d.k]?esc(fl[d.k]):not)).join('')).join(''):'')
+      +(ck?dd('Their Before You Start',esc(said)+(ck.note?'<span class="sub">'+esc(ck.note)+'</span>':'')+(ans?'<ul>'+ans+'</ul>':'')):'')+'</dl>'
+    +(x?'':'<p class="para">What they filled in is on the desk’s Permit to Work page.</p>')
+    +'<p class="para">The job cannot start until it is issued. Your answer goes on Permit to Work and on the job, as it would from the desk'+(g.more?'. '+plural(g.more,'other permit')+' on this job '+(g.more===1?'waits':'wait')+' after this one':'')+'.</p>'
+    +'<div class="field"><label for="prwhy">Why it is refused <span class="opt-w">(optional)</span></label><textarea id="prwhy" data-in="prwhy">'+esc(F.prwhy||'')+'</textarea></div>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpermitIssue"'+(st.busy?' disabled':'')+'>'+I.shield+'Issue the Permit</button>'
+    +'<button class="btn g" data-act="jpermitRefuse"'+(st.busy?' disabled':'')+'>'+I.close+'Refuse</button></div></div>';
 }
 // Parts used: each line a thing and how many, picked from what this site has used before or typed, or None Used.
 // Parts used are typed in one box, in the person's own words (DEC-0339 rule 4): optional on Done, needed on Add Parts Used.
@@ -2238,7 +2322,7 @@ function jAssignSheet(){
 async function jobSend(act){
   const F=st.form, j=F&&jobById(F.id); if(!j||st.busy) return;
   const V=act==='voice'?F.voice:null; if(act==='voice'&&!V) return;
-  const fields={job:j.id,act:V?'note':act}; let photos=[];
+  const fields={job:j.id,act:V?'note':act}; let photos=[]; F.pa=null;
   if(act==='note'){ fields.msgKind=F.kind||'Note'; fields.note=String(F.note||'').trim(); photos=F.photos; }
   if(act==='edit'){ fields.entry=F.mid; fields.note=String(F.etext||'').trim(); }
   if(act==='delete') fields.entry=F.mid;
@@ -2249,6 +2333,10 @@ async function jobSend(act){
   if((act==='start'||act==='restart'||act==='permit')&&F.ck) fields.check=ckOut(F.ck);
   // The types go with it for the alert's words only (DEC-0344); the desk works them out again from the check.
   if(act==='permit'){ F.ckNeed=ckMissing(j,F.ck); fields.permit={from:F.pfrom||'',to:F.pto||'',fields:Object.assign({},F.pf||{}),types:F.ckNeed.slice()}; }
+  // An answer to a permit (DEC-0359): the application by its capture id and the register ids the desk gave it.
+  if(act==='permitissue'||act==='permitrefuse'){ const g=permAsk(j); if(!g||!canIssue()){ st.sheet=false; return render(); }
+    F.pa={ref:g.cap,ids:g.ids,types:g.types,why:act==='permitrefuse'?String(F.prwhy||'').trim():''};
+    fields.ref=g.cap; fields.permit={ids:g.ids,types:g.types}; if(F.pa.why) fields.permit.why=F.pa.why; }
   if(act==='pause') fields.note=String(F.pwhy||'').trim();
   if(act==='stop'){ const C=F.ck, q=C&&C.stopQ; fields.stopped={why:C.stop.why}; photos=C.stop.photos;
     fields.note=[q?'At “'+q+'”.':'',String(F.t5word||'').trim()].filter(Boolean).join(' '); }
@@ -2260,8 +2348,9 @@ async function jobSend(act){
   try{ c=await makeCapture('job',fields,photos); }
   catch(e){ st.busy=false; st.sheet=false; F.err='Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
+  if(!ok&&c.errCode==='notissuer'){ st.sheet=false; render(); return toast('Not sent: '+c.err); }
   const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null,
-    hz:fields.check&&!fields.check.none?fields.check.hazards.map(h=>h.id):null,stopped:fields.stopped||null}); ls.set('wl_jobSent',s);
+    hz:fields.check&&!fields.check.none?fields.check.hazards.map(h=>h.id):null,stopped:fields.stopped||null,pa:F.pa||null}); ls.set('wl_jobSent',s);
   _sentPics[c.id]=V?[]:photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
   if(V){ _sentAudio[c.id]={url:V.url,secs:V.secs}; F.voice=null; F.kind='Note'; st.twEnd=true; }
   if(act==='edit'||act==='delete'){ F.mid=''; F.etext=''; F.eerr=''; }
@@ -2271,6 +2360,7 @@ async function jobSend(act){
   if(act==='start'||act==='restart'||act==='permit'){ F.ck=null; F.pf={}; F.pfrom=''; F.pto=''; }
   if(act==='flag'){ F.why=''; F.level=''; F.ftried=false; }
   if(act==='pause'){ F.pwhy=''; F.ptried=false; }
+  if(F.pa){ F.prwhy=''; F.pa=null; }
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
   st.sheet=false; render();
   // Sent says itself on the job: the entry reads "Delivered" (DEC-0323). Only a problem is said here.
@@ -3155,6 +3245,9 @@ app.addEventListener('click',async e=>{
   if(a==='jobStart'||a==='jobRestart') return t5Open(a==='jobRestart'?'restart':'start');
   if(/^t5/.test(a)&&F&&(F.ck||F.fin)) return t5Act(a,b);
   if(a==='jpermitSend') return jobSend('permit');
+  if(a==='jpermitReview'){ F.prwhy=''; st.sheet='jreview'; return render(); }
+  if(a==='jpermitIssue') return jobSend('permitissue');
+  if(a==='jpermitRefuse') return jobSend('permitrefuse');
   // Parts used (DEC-0313 rule 4).
   if(a==='jobParts'){ F.ptext=''; F.ptried=false; st.sheet='jparts'; render(); const v=document.getElementById('ptext'); if(v) v.focus(); return; }
   if(a==='jpartsSend'){ if(!partsOut(F,true).ok){ F.ptried=true; render(); return; } return jobSend('parts'); }
@@ -3223,6 +3316,7 @@ function special(k,el){
     return true; }
   if(st.screen==='job'&&(k==='t5word'||k==='t5found')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='ptext'){ F.ptext=el.value; return true; }
+  if(st.screen==='job'&&k==='prwhy'){ F.prwhy=el.value; return true; }
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
   if(st.screen==='job'&&(k==='pfrom'||k==='pto')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
@@ -3245,8 +3339,8 @@ window.addEventListener('online',retry);
 // field in use: the new file is kept and the next screen draws it.
 async function siteRefresh(){
   if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup') return;
-  const was=st.site&&st.site.published; await loadSite();
-  if(!st.site||st.site.published===was) return;
+  const was=st.site&&st.site.published, wp=st.perms&&st.perms.updated; await Promise.all([loadSite(),loadPerms()]);
+  if(!st.site||(st.site.published===was&&(st.perms&&st.perms.updated)===wp)) return;
   jSentPrune();
   const a=document.activeElement;
   if(st.sheet||st.scanFor||st.rec||st.pv||(st.form&&st.form.voice)||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
@@ -3603,7 +3697,7 @@ function composer(c,ph,attach){
 function hoAdds(){
   const p=myOwnPos()||myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]), mine=j=>fm||gs.has(j.group), t0=dayStart();
   const js=(SITE().jobs||[]).filter(j=>!j.round&&!j.planned&&mine(j)), permits=[];
-  js.forEach(j=>(j.permits||[]).filter(x=>x.state==='Active').forEach(x=>permits.push({id:x.id,type:x.type,job:j.id,no:j.no,title:j.title,by:x.by,at:x.at})));
+  js.forEach(j=>jPerms(j).filter(x=>x.state==='Active').forEach(x=>permits.push({id:x.id,type:x.type,job:j.id,no:j.no,title:j.title,by:x.by,at:x.at})));
   const at=j=>{ const e=(j.thread||[]).filter(x=>x.kind==='Started'||x.kind==='Restarted').pop(); return e?Date.parse(e.at):NaN; };
   const doing=js.filter(j=>j.state==='doing'), now=doing.filter(j=>at(j)>=t0);
   return {permits:permits,started:now.map(j=>({id:j.id,no:j.no,title:j.title,where:jWhere(j),at:at(j)})),
@@ -3856,13 +3950,25 @@ async function boot(){
   if(!STORE){ st.form={link:''}; return go('setup'); }
   st.account=await STORE.account();
   bootStep(1,'Reading the site details');
-  await Promise.all([loadSite(),loadMsgs()]); msgSentPrune();
+  await Promise.all([loadSite(),loadMsgs(),loadPerms()]); msgSentPrune();
   bootStep(2,'Checking what is waiting to send');
   const w=whoGet(); st.walker=w&&w.name||''; st.pos=w&&w.pos||''; st.pid=w&&w.pid||'';
   if(!st.walker||!st.pos) return go('who');
-  home();
+  await home();
+  if(LINK_JOB) jobFromLink(LINK_JOB);
   alertsKeep();
 }
+const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
+// Opens the job an alert names, with the permit to review on top for whoever can issue it. The address is put back to the
+// page's own, so a reload opens Due.
+function jobFromLink(id){
+  try{ if(/[?&]job=/.test(location.search)) history.replaceState(null,'',location.pathname); }catch(e){}
+  if(['start','setup','who'].indexOf(st.screen)>=0) return;
+  const j=jobById(id); if(!j) return toast('That job is no longer on the phone.');
+  st.form={id:j.id,prwhy:''}; st.place='due'; st.sheet=canIssue()&&permAsk(j)?'jreview':false; go('job');
+}
+if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message',e=>{ const l=e.data&&e.data.open; if(!l) return;
+  try{ const id=new URL(l,location.href).searchParams.get('job'); if(id) jobFromLink(id); }catch(x){} });
 // For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
 if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh,msgRefresh:msgRefresh};
 // Keeps the page itself on the phone so it opens with no signal (DEC-0287 rule 3). Not in the check.

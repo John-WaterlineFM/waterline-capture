@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v502.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v504.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -38,7 +38,11 @@ const WFM_CAPTURE_SHAPE={
   photoSays:'This photo proves who was there, where and when, and nothing else.',
   // What a job update does (P3). P5 (DEC-0311, DEC-0314): pause carries its reason in note; assign carries
   // assign:{on:[person ids],off:[person ids]}.
-  jobActs:['note','flag','unflag','start','done','pause','restart','assign','edit','delete','parts','permit','stop'],
+  jobActs:['note','flag','unflag','start','done','pause','restart','assign','edit','delete','parts','permit','stop','permitissue','permitrefuse'],
+  // A permit issued or refused on the phone (DEC-0359): act permitissue or permitrefuse, ref the capture id of the application
+  // ('' when it was applied for on the desk), permit:{ids:[register ids, when the desk has filed it], types, why}. Only the
+  // people in the site file's alerts.permit may send one; the relay and the desk both refuse anyone else.
+  permitActs:['permitissue','permitrefuse'],
   // Before You Start (W; DEC-0313 rule 1, DEC-0325): a start or restart carries check:{none, hazards:[{id,label}], note,
   // same, kit:[{reg,id}]}: the hazards ticked, or None of These, never neither. Parts used (DEC-0313 rule 4): a done or a
   // parts update carries parts:{text}, typed in the person's own words (DEC-0339 rule 4); a capture from before 23 Oct 2026
@@ -83,7 +87,7 @@ const WFM_CAPTURE_SHAPE={
           basis:'S.I. 299/2007 reg 114 (a secure handhold); HSA, Using Ladders Safely'}]},
       electricity:{icon:'zap',sign:'W012',wear:[],qs:[
         {id:'e-iso',q:'Switching off a supply to work on it?',hint:'A circuit or a fixed appliance, at the board.',ok:'no',says:'No supply isolated',
-          hold:'Isolating a supply needs a permit to work.',clear:'The FM issues it on the desk.',permit:'Electrical Isolation',
+          hold:'Isolating a supply needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Electrical Isolation',
           basis:'S.I. 299/2007 reg 86(1)(b), (c); the site’s permit rule (DEC-0313 rule 3)'},
         {id:'e-live',q:'Any chance of touching live parts?',hint:'Wires, terminals, anything not proved dead.',ok:'no',says:'Nothing live to touch',
           hold:'Working live holds the job.',clear:'Make it dead first, or the FM arranges it.',
@@ -94,7 +98,7 @@ const WFM_CAPTURE_SHAPE={
           says:'Within training',hold:'This needs a competent electrician.',clear:'The FM arranges one.',basis:'S.I. 299/2007 reg 88'}]},
       'hot-work':{icon:'flame',wear:['M004','M009'],qs:[
         {id:'w-permit',q:'Hot work needs a permit to work',hint:'Flame, sparks or a heat gun.',ok:'none',says:'Permit',
-          hold:'Hot work needs a permit to work.',clear:'The FM issues it on the desk.',permit:'Hot Works',
+          hold:'Hot work needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Hot Works',
           basis:'Fire Services Act 1981 s.18(2), (3); the site’s permit rule (DEC-0313 rule 3)'},
         {id:'w-clear',q:'Anything that can burn cleared or covered?',hint:'Paper, fabric, dust, sprays, fuel.',ok:'yes',says:'Burnables cleared',
           sort:'I’ll Clear Them First',basis:'Fire Services Act 1981 s.18(3)'},
@@ -118,7 +122,7 @@ const WFM_CAPTURE_SHAPE={
           sort:'I’ll Air It and Sign It',basis:'S.I. 619/2001 reg 5; Safety, Health and Welfare at Work Act 2005 s.12'}]},
       confined:{icon:'cylinder',wear:[],qs:[
         {id:'s-permit',q:'Going into a confined space needs a permit',hint:'A tank, pit, duct, void, manhole or crawl space.',ok:'none',says:'Permit',
-          hold:'Entry needs a permit to work.',clear:'The FM issues it on the desk.',permit:'Confined Space',
+          hold:'Entry needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Confined Space',
           basis:'S.I. 218/2001 reg 5; the site’s permit rule (DEC-0313 rule 3)'},
         {id:'s-watch',q:'Someone outside who can see you?',hint:'They stay at the entrance the whole time.',ok:'yes',says:'Someone outside',
           hold:'No one goes in without someone outside.',clear:'The FM arranges it with the permit.',basis:'S.I. 218/2001 reg 6'},
@@ -200,6 +204,8 @@ const WFM_SITE_SHAPE={
   // Small copies of open jobs' photos for the phone (DEC-0305, DEC-0308 rule 4): base64 JPEG text in
   // Phone/photos/, long edge 480px, kept 7 days after the job is done. The site file names them per job.
   photos:{folder:'photos', edge:480, type:'image/jpeg', ext:'.b64', keepDays:7},
+  // A job done in the last doneDays stays on the phone, under Done, with its photos (DEC-0349 rule 1).
+  doneDays:7,
   // Open jobs' voice notes for the phone (P6), as the photos are: the sound as base64 text in Phone/audio/, named per
   // entry in the thread with its type and length.
   audio:{folder:'audio', ext:'.b64', keepDays:7},
@@ -208,5 +214,8 @@ const WFM_SITE_SHAPE={
   // Messages (DEC-0348): the relay keeps an index of notices, reads and handovers beside the Inbox (Messages/index.json),
   // text only, so they reach phones whether the desk is open or not. Phones are shown the last keepDays days; older ones are
   // archived beside it (Messages/archive-YYYY-MM.json). A message is a record and is never deleted (DEC-0353).
-  messages:{folder:'Messages', index:'index.json', format:'waterline-messages', keepDays:60}
+  messages:{folder:'Messages', index:'index.json', format:'waterline-messages', keepDays:60},
+  // The relay's copy of each permit applied for from a phone and its answer (DEC-0359 rule 3), so the applicant can start
+  // with the desk shut. Kept keepDays; the desk's register is the record.
+  permits:{folder:'Permits', index:'index.json', format:'waterline-permits', keepDays:30}
 };
