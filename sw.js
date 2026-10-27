@@ -34,9 +34,11 @@ function quietNow() {
 self.addEventListener('push', e => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) {}
   const n = d.notification || {};
-  // Quiet out of hours (Settings): the alert still comes, without sound or vibration.
+  // Quiet out of hours (Settings): the alert still comes, without sound or vibration. A tap left running is never
+  // quiet (DEC-0374 rule 8): the relay marks it loud.
+  const loud = !!(d.data && d.data.loud);
   e.waitUntil(quietNow().then(silent => self.registration.showNotification(n.title || 'Waterline', {
-    body: n.body || '', icon: 'push/icon-192.png', badge: 'badge-96.png', silent: silent, data: {link: (d.data && d.data.link) || (d.fcmOptions && d.fcmOptions.link) || './'}
+    body: n.body || '', icon: 'push/icon-192.png', badge: 'badge-96.png', silent: silent && !loud, data: {link: (d.data && d.data.link) || (d.fcmOptions && d.fcmOptions.link) || './'}
   })));
 });
 self.addEventListener('notificationclick', e => {

@@ -103,8 +103,49 @@ function doPost(e){
       const r = pushSend(t, 'Waterline test alert', 'Sent ' + Utilities.formatDate(new Date(), 'Europe/Dublin', 'HH:mm:ss') + '. If you can read this, alerts work.');
       return out(r);
     }
+    // A flush started on a phone (DEC-0374 rules 4 and 8): the relay holds it and alerts that phone if the tap is still
+    // open at the bracket's top. One every-minute trigger sweeps them while any is open, and removes itself after.
+    if(b.op === 'flushOpen' || b.op === 'flushClosed'){
+      const t = String(b.token || ''), id = String(b.id || '').slice(0, 160);
+      if(!devices()[t]) return out({ok:false, code:'bad', why:'This phone is not registered for alerts.'});
+      if(!id) return out({ok:false, code:'bad', why:'No flush was named.'});
+      const lock = LockService.getScriptLock(); lock.waitLock(20000);
+      try{
+        const f = flushes();
+        if(b.op === 'flushOpen') f[id] = {token:t, name:String(b.name || '').slice(0, 120), due:Number(b.due) || Date.now() + 300000};
+        else delete f[id];
+        PROPS.setProperty('FLUSHES', JSON.stringify(f));
+        flushTrigger(Object.keys(f).length > 0);
+      } finally { lock.releaseLock(); }
+      return out({ok:true});
+    }
     return out({ok:false, code:'bad', why:'The relay does not know that request.'});
   }catch(err){ return out({ok:false, code:'error', why:String(err && err.message || err)}); }
+}
+
+// ── Taps left running (DEC-0374) ────────────────────────────────────────────────────────────
+function flushes(){ try{ return JSON.parse(PROPS.getProperty('FLUSHES') || '{}'); }catch(e){ return {}; } }
+function flushTrigger(on){
+  const ts = ScriptApp.getProjectTriggers().filter(x => x.getHandlerFunction() === 'flushSweep');
+  if(on && !ts.length) ScriptApp.newTrigger('flushSweep').timeBased().everyMinutes(1).create();
+  if(!on) ts.forEach(x => ScriptApp.deleteTrigger(x));
+}
+// Each minute while a flush is open: a tap past its bracket's top alerts the phone that started it, every minute, until
+// the phone says it is off. It ignores quiet hours (rule 8). One open over two hours is dropped, so a lost phone stops.
+function flushSweep(){
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try{
+    const f = flushes(), now = Date.now();
+    Object.keys(f).forEach(id => {
+      const x = f[id];
+      if(now - x.due > 2 * 3600000){ delete f[id]; return; }
+      if(now < x.due) return;
+      const r = pushSend(x.token, 'Tap still running', x.name + ': the tap is still running. Turn it off.', PAGE, true);
+      if(r.code === 'gone') delete f[id];
+    });
+    PROPS.setProperty('FLUSHES', JSON.stringify(f));
+    flushTrigger(Object.keys(f).length > 0);
+  } finally { lock.releaseLock(); }
 }
 
 // ── Alerts (DEC-0288 rule 2; test first) ────────────────────────────────────────────────────
@@ -136,11 +177,11 @@ function fcmToken(){
 }
 // One alert to one phone, opening the page at link (the home page when none). A phone that has gone (uninstalled,
 // alerts turned off) is dropped.
-function pushSend(token, title, body, link){
+function pushSend(token, title, body, link, loud){
   const sa = JSON.parse(PROPS.getProperty('SERVICE_ACCOUNT') || '{}');
   const res = UrlFetchApp.fetch('https://fcm.googleapis.com/v1/projects/' + sa.project_id + '/messages:send', {
     method:'post', contentType:'application/json', muteHttpExceptions:true, headers:{Authorization:'Bearer ' + fcmToken()},
-    payload:JSON.stringify({message:{token:token, webpush:{notification:{title:title, body:body}, data:{link:link || PAGE}, fcm_options:{link:link || PAGE}}}})});
+    payload:JSON.stringify({message:{token:token, webpush:{notification:{title:title, body:body}, data:loud ? {link:link || PAGE, loud:'1'} : {link:link || PAGE}, fcm_options:{link:link || PAGE}}}})});
   const code = res.getResponseCode();
   if(code === 200) return {ok:true};
   if(code === 404 || /UNREGISTERED/.test(res.getContentText())){

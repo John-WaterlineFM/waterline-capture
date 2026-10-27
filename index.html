@@ -946,11 +946,36 @@ body.t-li .c-av.lg{border-color:var(--border)}
 .f.go .chev{margin-left:auto;color:var(--accentD)}
 .r.pk{min-height:56px;align-items:center}.r.pk .w{color:var(--text)}.r.pk>svg{color:var(--accentD);flex:none}
 .f .act{margin-left:auto}
+/* The flush round (slice FL, DEC-0374): one row per outlet in walk order, never re-sorted (Principles, design law 3);
+   the stripe and the word carry the state (21.3, 5.9); a row opens in place on stone with the parent's stripe dashed (DEC-0140). */
+.zone .bad{color:var(--inkRed)}.zone .ok{color:var(--sDone)}
+.r .st b.bad,.r .sub.bad{color:var(--redText)}
+.r .sub.amb{color:var(--amberText)}
+.r .sub.now{color:var(--text);font-weight:500}
+.r.open{background:var(--stone)}
+.fopen{background:var(--stone);border-bottom:1px solid var(--border);position:relative;padding:0 0 16px}
+.fopen .s3d{position:absolute;left:0;top:0;bottom:0;border-left:3px dashed var(--c)}
+.fopen .row2{padding:12px 16px 0}
+.fopen .field{padding-top:12px}
+.field.now .fig{outline:2px solid var(--accent);outline-offset:2px}
+.fopen .help:not(.bad):not(.amb){color:var(--textMS)}.help.bad{color:var(--redText)}.help.amb{color:var(--amberText)}
+.wk{display:inline-block;font:700 11px/20px Outfit;letter-spacing:1px;text-transform:uppercase;color:var(--textMid)}
+/* A row with its timer running is shaded in its state's colour, left running hardest, and its stripe is wider (DEC-0374 rule 13:
+   a tap left on costs thousands of litres and can flood, so it must not be missed in a list of 40). */
+.r.fl-run{background:color-mix(in srgb,var(--jDoing) 14%,var(--white))}
+.r.fl-done{background:color-mix(in srgb,var(--jDone) 16%,var(--white))}
+.r.fl-over{background:color-mix(in srgb,var(--jTodo) 24%,var(--white))}
+.r.fl-run .s3,.r.fl-done .s3,.r.fl-over .s3{width:6px}
+.r.fl-run .sub:not(.bad),.r.fl-done .sub:not(.bad){color:var(--text)}
+/* Night: the state colours are light, so a lighter mix keeps the row's words at 4.5:1 or more (Design 5.10). */
+body.t-ni .r.fl-run{background:color-mix(in srgb,var(--jDoing) 7%,var(--white))}
+body.t-ni .r.fl-done{background:color-mix(in srgb,var(--jDone) 10%,var(--white))}
+body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))}
 </style>
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=db6f3ac0f1"></script>
+<script src="shapes.js?v=2beee09299"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1042,6 +1067,8 @@ const LUCIDE={'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L
   'file-check':'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/>',
   'gauge':'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
   'plus':'<path d="M5 12h14"/><path d="M12 5v14"/>','minus':'<path d="M5 12h14"/>','moon':'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+  'rotate-ccw':'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  'timer':'<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
   'route':'<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
   'scan-line':'<path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
   'settings':'<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
@@ -1092,7 +1119,7 @@ const T5L={'arrow-up-from-line':'<path d="m18 9-6-6-6 6"/><path d="M12 3v14"/><p
   roof:'<path d="M2 12 12 4l10 8"/><path d="M5 10v10h14V10"/>'};
 const T5FROM={stepladder:'stepladder',ladder:'ladder',tower:'tower',scaffold:'tower',mewp:'tower',roof:'roof'};
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square')};
+const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -1277,7 +1304,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -1438,6 +1465,7 @@ function sheet(){
     +v('fault','fault','Report a Fault','')
     +v('proof','cert','Send Proof','A photo or a PDF first')
     +v('reading','meter','Take a Reading',hasReading?'':'No outlets or meters from the desk yet',!hasReading)
+    +v('flush','timer','Flush Round',flOutlets().length?flOutlets().length+' outlets, several at once':'No tagged outlets from the desk yet',!flOutlets().length)
     +v('rounds','round','Walk a Round',rs.length?'':'No walks set up on the desk yet',!rs.length)
     +'</div><div style="height:24px"></div></div>';
 }
@@ -3264,6 +3292,8 @@ function scanned(text,via){
   if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
   const F=st.form, at=new Date().toISOString();
   scanStop(); st.scanFor=null;
+  if(S.for==='flush'){ flTapPoint(p); return render(); }
+  if(S.for==='reading'&&p&&flOfPoint(p)){ flState(); flTapPoint(p); st.form=null; return go('flush'); }
   if(S.for==='where'){ F.point=id; F.via=via; F.place=''; }
   else if(S.for==='reading'){
     if(!p.reading){ F.scanErr=p.name+' is not an outlet or a meter the desk takes readings at. Scan the tag on the outlet or the meter.'; }
@@ -3299,7 +3329,10 @@ function after(){
   const walking=st.screen==='walk'&&st.form&&st.form.kind==='round';
   if(walking&&!st.form.paused&&!st.scanFor&&NFC_OK&&!_nfc&&(!st.walkNfc||st.walkNfc==='on')){ st.walkNfc=st.walkNfc||'starting';
     nfcStart(walkTap).then(r=>{ const was=st.walkNfc; st.walkNfc=r; if(st.screen==='walk'&&!st.scanFor&&was!==r) render(); }); }
-  if(!st.scanFor&&!walking){ nfcStop(); st.walkNfc=''; }
+  const flushing=st.screen==='flush';
+  if(flushing&&!st.scanFor&&NFC_OK&&!_nfc&&(!st.walkNfc||st.walkNfc==='on')){ st.walkNfc=st.walkNfc||'starting';
+    nfcStart(flTap).then(r=>{ st.walkNfc=r; }); }
+  if(!st.scanFor&&!walking&&!flushing){ nfcStop(); st.walkNfc=''; }
   if(walking&&st.form.paused&&!st.scanFor) nfcStop();
   if(st.screen==='msgs') phLoad(myChats().map(c=>c.photo).filter(Boolean));
   if((st.screen==='chat'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='chat'?chatMsgs(st.form.chat):[];
@@ -3342,6 +3375,13 @@ app.addEventListener('click',async e=>{
   if(MSG_ACTS.indexOf(a)>=0) return msgAct(a,b);
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
+  if(a==='flush'){ st.sheet=false; flState(); return go('flush'); }
+  if(a==='flRow'){ const F=flState(), z=!!b.closest('.zone'); F.open=z||F.open!==b.dataset.id?b.dataset.id:null; flKeep(); render(); if(z){ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(b.dataset.id)+'"]'); if(r) r.scrollIntoView({block:'center',behavior:'instant'}); } return; }
+  if(a==='flStart'||a==='flAgain'){ flStart(b.dataset.id); return render(); }
+  if(a==='flStop'){ flStop(b.dataset.id); return render(); }
+  if(a==='flScan'){ st.scanFor={for:'flush'}; _scanFrom='flush'; return render(); }
+  if(a==='flSend') return flSend(b);
+  if(a==='flWhy'){ const F=flState(), was=(F.why||{}).id===b.dataset.v; F.why=was?null:{id:b.dataset.v,note:(F.why||{}).note||''}; flKeep(); render(); const i=!was&&document.getElementById('fl-why'); if(i) i.focus(); return; }
   if(a==='walkStart'||a==='roundStart'){ const pr=String(b.dataset.id).split('|'), id=pr[0], from=a==='walkStart'?Number(pr[1]):NaN;
     const kept=ls.get('wl_walk',null); if(kept&&kept.round===id){ st.form=kept; return go('walk'); }
     // A walk starts at any time and counts for the walk time pressed (DEC-0347).
@@ -3570,7 +3610,223 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 setInterval(retry,60000);
 setInterval(siteRefresh,60000);
 setInterval(msgRefresh,60000);
+setInterval(flTick,500);
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') flWake(); });
 
+// ── The flush round (job 015, slice FL; DEC-0374) ───────────────────────────────────────────────────────────────────
+// Several outlets flush at once, each on its own clock (rule 6). The clocks are start and stop times kept on this phone
+// (wl_flush), so a reload or a lost signal loses none. The bracket, this week's temperature and the bands a figure is
+// judged by all come from the desk in the site details (rules 1, 2 and 9): nothing here decides them.
+const FL0={lo:120,hi:300}, FL_HOT=60, FL_COLD=120;   // seconds; the hot at 1 minute, the cold at 2 (HSG274 Part 2)
+function flState(){ if(!st.fl) st.fl=Object.assign({runs:{},open:null,q:''},ls.get('wl_flush',null)||{}); return st.fl; }
+const flKeep=()=>ls.set('wl_flush',st.fl);
+const flIsOutlet=p=>!!(p&&p.rec&&p.rec.reg==='waterOutlets'&&p.reading&&p.reading.kind!=='meter');
+// Every outlet on the round, tagged or not (rule 12), from the desk's outlet list; a desk before v511 sends only tags.
+// Walk order: the walk that holds their tags, if one does; else the desk's own order, as the weekly sheet lists them.
+function flOutlets(){
+  const outs=Array.isArray(SITE().outlets)?SITE().outlets
+    :points().filter(flIsOutlet).map(p=>({id:p.rec.id,name:p.name,where:p.where,reading:p.reading,point:p.id}));
+  const r=(SITE().rounds||[]).find(x=>(x.points||[]).some(id=>outs.some(o=>o.point===id)));
+  const at=o=>{ const i=r&&o.point?r.points.indexOf(o.point):-1; return i<0?1e6:i; };
+  return outs.slice().sort((a,b)=>at(a)-at(b)||outs.indexOf(a)-outs.indexOf(b));
+}
+const flById=id=>flOutlets().find(o=>o.id===id)||null;
+const flOfPoint=p=>p?flOutlets().find(o=>(o.point&&o.point===p.id)||(p.rec&&p.rec.reg==='waterOutlets'&&o.id===p.rec.id))||null:null;
+const flBr=p=>Object.assign({},FL0,(p&&p.reading&&p.reading.flush)||{});
+const flTemp=p=>!!(p&&p.reading&&p.reading.due&&p.reading.due.temp&&(p.reading.hot||p.reading.cold));
+const flRan=(f,now)=>f&&f.t0?((f.t1||now)-f.t0)/1000:null;
+const flMS=sec=>{ sec=Math.max(0,Math.floor(sec)); return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0'); };
+function flPh(p,f,now){ if(!f||!f.t0) return 'idle'; const t=flRan(f,now), b=flBr(p); if(f.t1) return t<b.lo?'short':'off'; return t<b.lo?'run':t<b.hi?'done':'over'; }
+// The reading wanted now, if any: the hot at 1 minute, the cold at 2.
+function flAsk(p,f,now){ if(!flTemp(p)||!f||!f.t0||f.t1) return ''; const t=flRan(f,now);
+  if(p.reading.hot&&t>=FL_HOT&&!num(f.hot)) return 'hot'; if(p.reading.cold&&t>=FL_COLD&&!num(f.cold)) return 'cold'; return ''; }
+// The desk's own bands, first match wins (rule 9), so the verdict at the tap is the desk's.
+function flJudge(tb,v){ const t=parseFloat(v); if(!tb||!tb.bands||isNaN(t)||t<=0||t>100) return null;
+  const b=tb.bands.find(x=>(x.min==null||t>=x.min)&&(x.max==null||t<=x.max))||tb.bands[tb.bands.length-1];
+  return {s:b.s,note:b.note||'',target:tb.target||''}; }
+const flWord=j=>j.s==='PASS'?'In range':j.s==='ACTION'?'Just out of range':'Out of range';
+const flCls=j=>j.s==='PASS'?'':j.s==='ACTION'?'amb':'bad';
+// The worst figure taken at an outlet, said in words.
+function flOut(p,f){
+  const bd=(p.reading&&p.reading.bands)||{}, js=[['hot','Hot'],['cold','Cold']].map(x=>{ const j=num(f[x[0]])?flJudge(bd[x[0]],f[x[0]]):null; return j&&j.s!=='PASS'?{j:j,txt:x[1]+' '+f[x[0]]+' °C: '+flWord(j).toLowerCase()+'.'}:null; }).filter(Boolean);
+  if(!js.length) return null; const w=js.find(x=>x.j.s==='FAIL')||js[0]; return {text:js.map(x=>x.txt).join(' '),cls:flCls(w.j)}; }
+const flFigsIn=(p,f)=>(!p.reading.hot||num(f.hot))&&(!p.reading.cold||num(f.cold));
+function flBits(p,f,now){
+  const ph=flPh(p,f,now), t=flRan(f,now), b=flBr(p), a=flAsk(p,f,now);
+  let stripe='', big='', word='', sub=esc(p.where||'')+(flTemp(p)?' · <span class="wk">Temp week</span>':''), cls='';
+  if(ph==='idle'){}
+  else if(ph==='run'){ stripe='var(--jDoing)'; big=flMS(b.lo-t); word='to go'; }
+  else if(ph==='done'){ stripe='var(--jDone)'; big=flMS(b.hi-t); word='to turn off'; sub='Flush done. Turn it off.'; cls='now'; }
+  else if(ph==='over'){ stripe='var(--jTodo)'; big=flMS(t); word='left running'; sub='Past '+flMS(b.hi)+'. Turn it off.'; cls='bad'; }
+  else if(ph==='off'){ stripe='var(--jDone)'; big=flMS(t); word='ran';
+    if(flTemp(p)&&!flFigsIn(p,f)){ sub='Temperature not entered. Open it to add it.'; cls='bad'; } }
+  else { stripe='var(--jTodo)'; big=flMS(t); word='short'; sub='Short of '+flMS(b.lo)+'. It is not a flush.'; cls='bad'; }
+  const o=f&&f.t0?flOut(p,f):null; if(o&&ph!=='over'&&ph!=='short'){ sub=esc(o.text); cls=o.cls; }
+  if(a&&ph!=='over'){ sub='Read the '+a+' now.'; cls='now'; }
+  return {stripe:stripe,big:big,word:word,sub:sub,cls:cls,bc:(ph==='over'||ph==='short')?'bad':'',tint:ph==='run'||ph==='done'||ph==='over'?' fl-'+ph:''};
+}
+const flHit=(p,q)=>!q||(String(p.name)+' '+String(p.where||'')).toLowerCase().indexOf(q.toLowerCase())>=0;
+function flRow(p,F,now){
+  const f=F.runs[p.id], x=flBits(p,f,now), open=F.open===p.id;
+  return '<button class="r'+(open?' open':'')+x.tint+(flHit(p,F.q)?'':' hide')+'" data-act="flRow" data-id="'+esc(p.id)+'" aria-expanded="'+open+'">'
+    +'<span class="s3" data-s3 style="background:'+(x.stripe||'transparent')+'"></span>'
+    +'<span class="m"><span class="w">'+esc(p.name)+'</span><span class="sub '+x.cls+'" data-sub>'+x.sub+'</span></span>'
+    +'<span class="st"><b class="n '+x.bc+'" data-b>'+x.big+'</b><i data-i>'+x.word+'</i></span></button>'
+    +(open?flOpened(p,F,now):'');
+}
+function flFig(p,f,k,label,due,now){
+  const ask=flAsk(p,f,now)===k, v=f&&f[k]||'', bd=(p.reading.bands||{})[k], j=num(v)?flJudge(bd,v):null;
+  const help=v&&!num(v)?'<div class="help bad">Enter the figure as the thermometer shows it, like 52.4.</div>'
+    :j?'<div class="help '+flCls(j)+'">'+flWord(j)+'. '+esc(j.s==='PASS'?'It should be '+j.target+'.':j.note?j.note.charAt(0).toUpperCase()+j.note.slice(1)+'.':'It should be '+j.target+'.')+'</div>'
+    :'<div class="help">'+(bd&&bd.target?'It should be '+esc(bd.target)+'. ':'')+(ask?'Read it now.':'At '+flMS(due)+' of running.')+'</div>';
+  return '<div class="field'+(ask?' now':'')+'"><label for="fl-'+k+'">'+label+'</label><label class="fig"><input id="fl-'+k+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(v)+'" data-flk="'+k+'" data-flid="'+esc(p.id)+'"><span class="u">'+esc(p.reading.unit||'°C')+'</span></label>'+help+'</div>';
+}
+function flOpened(p,F,now){
+  const f=F.runs[p.id], ph=flPh(p,f,now), x=flBits(p,f,now), b=flBr(p), du=p.reading.due||{};
+  let h='<div class="fopen"><span class="s3d" style="--c:'+(x.stripe||'var(--border)')+'"></span>';
+  if(flTemp(p)&&ph!=='idle'){ if(p.reading.hot) h+=flFig(p,f,'hot','Hot',FL_HOT,now); if(p.reading.cold) h+=flFig(p,f,'cold','Cold',FL_COLD,now); }
+  if(ph==='idle') h+='<div class="field"><div class="help" style="margin:0">'+(flTemp(p)?'Temperature this week ('+esc(String(du.why||'').toLowerCase())+'): '+(p.reading.hot&&p.reading.cold?'the hot at 1 minute, the cold at 2.':p.reading.hot?'the hot at 1 minute.':'the cold at 2 minutes.')
+      :'Flush only this week. No thermometer.'+(du.next?' The next temperature is in the week of '+esc(day(du.next))+'.':''))+' Run it '+flMS(b.lo)+' to '+flMS(b.hi)+'.</div></div>';
+  h+='<div class="row2">'+(ph==='idle'?'<button class="gh" data-act="flStart" data-id="'+esc(p.id)+'">'+I.play+'Start Flush</button>'
+    :ph==='short'||ph==='off'?'<button class="gh" data-act="flAgain" data-id="'+esc(p.id)+'">'+I.again+'Run It Again</button>'
+    :'<button class="gh" data-act="flStop" data-id="'+esc(p.id)+'">'+I.stop+'Tap Is Off</button>')+'</div></div>';
+  return h;
+}
+function flWeek(){ const d=new Date(), k=(d.getDay()+6)%7; d.setDate(d.getDate()-k); return day(d.toISOString().slice(0,10)); }
+function flZone(outs,F,now){
+  const ph=outs.map(p=>flPh(p,F.runs[p.id],now)), live=ph.filter(x=>x==='run'||x==='done'||x==='over').length;
+  const over=outs.filter((p,i)=>ph[i]==='over'), doneN=ph.filter(x=>x==='done').length, offN=ph.filter(x=>x==='off').length;
+  const say=over.length?'<b class="bad">Left running:</b> '+over.map(p=>'<button class="lnk" data-act="flRow" data-id="'+esc(p.id)+'">'+esc(p.name)+'</button>').join(', ')+'.'
+    :doneN?'<b class="ok">'+doneN+' flushed.</b> Turn '+(doneN>1?'them':'it')+' off.'
+    :live?'Each tap counts down to its flush time, then to the time it is left running.':'Scan a tag to start its flush. Several can run at once.';
+  return '<div class="zone"><div class="ztop">'+backBtn('home')+'<span class="eb">Flush Round · Week of '+esc(flWeek())+'</span></div>'
+    +'<div class="row1"><span class="num n'+(over.length?' bad':'')+'">'+live+'</span><span class="what">running</span></div>'
+    +'<p><b>'+offN+' of '+outs.length+'</b> done. '+say+'</p>'
+    +'<button class="'+(ph.some(x=>x==='off'||x==='short')?'gh':'btn')+'" data-act="flScan" data-for="flush">'+I.scan+'Scan the Next Tag</button></div>';
+}
+// Why a round is sent unfinished: the walk's own reasons (DEC-0362), Something else with a sentence (rule 11).
+const flWhyOk=F=>!!(F.why&&F.why.id&&(F.why.id!=='other'||String(F.why.note||'').trim()));
+function flLeft(outs,F,now){ return outs.filter(p=>flPh(p,F.runs[p.id],now)!=='off').length; }
+function flWhy(outs,F,now){
+  const ph=outs.map(p=>flPh(p,F.runs[p.id],now));
+  if(ph.some(x=>x==='run'||x==='done'||x==='over')||!ph.some(x=>x==='off'||x==='short')||!flLeft(outs,F,now)) return '';
+  const e=F.why||{};
+  return grp('Why the round is unfinished')+'<div class="list" role="radiogroup" aria-label="Why the round is unfinished">'+WFM_CAPTURE_SHAPE.earlyWhy.map(x=>{ const on=e.id===x.id;
+    return '<button class="lr" role="radio" aria-checked="'+on+'" data-act="flWhy" data-v="'+esc(x.id)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(x.label)+'</span></button>'
+      +(on&&x.id==='other'?'<div class="lopen"><div class="field"><label for="fl-why">What stopped the round</label><input type="text" id="fl-why" data-flwhy value="'+esc(e.note||'')+'"></div></div>':''); }).join('')+'</div>';
+}
+function flFoot(outs,F,now){
+  const ph=outs.map(p=>flPh(p,F.runs[p.id],now)), live=ph.filter(x=>x==='run'||x==='done'||x==='over').length, stopped=ph.filter(x=>x==='off'||x==='short').length;
+  if(!live&&!stopped) return '';
+  const left=flLeft(outs,F,now), why=!live&&left&&!flWhyOk(F);
+  const say=live?'Turn every tap off before sending. '+live+' still running.':why?left+' not flushed. Say why the round is unfinished before sending.':left?left+' not flushed. The desk names them as missed.':'';
+  return '<div class="foot">'+(say?'<div class="sub">'+esc(say)+'</div>':'')
+    +'<button class="btn p" data-act="flSend"'+(live||why||st.busy?' disabled':'')+'>'+I.send+'Send Round</button></div>';
+}
+const flAlertsOn=()=>{ const a=ls.get('wl_alerts',null); return !!(a&&a.token); };
+function vFlush(){
+  const F=flState(), now=Date.now(), outs=flOutlets();
+  if(!outs.length) return '<div class="body">'+formZone('home','Flush Round','No outlets from the desk','The desk has not published any tagged water outlets yet. Tag the outlets on the desk, and the round shows here.')+'</div>';
+  const shown=outs.filter(p=>flHit(p,F.q)).length;
+  return '<div class="body"><div data-flz>'+flZone(outs,F,now)+'</div>'
+    +'<div class="field"><label for="flq">Find an outlet</label><input type="search" id="flq" data-flq autocomplete="off" placeholder="Name or where" value="'+esc(F.q||'')+'"></div>'
+    +'<div class="grp" data-flg>'+(F.q?shown+' of '+outs.length+' outlets':'This week · walk order')+'</div><div class="list" data-fll>'+outs.map(p=>flRow(p,F,now)).join('')+'</div>'
+    +flWhy(outs,F,now)
+    +(F.q&&!shown?'<p class="para">No outlet matches “'+esc(F.q)+'”.</p>':'')
+    +(flAlertsOn()?'':'<p class="para">Alerts are off on this phone, so a tap left running only buzzes while Waterline is open. Turn alerts on in Settings.</p>')
+    +'<div style="height:24px"></div></div><div data-flf>'+flFoot(outs,F,now)+'</div>';
+}
+// Every half second: the clocks on screen, and the buzzes wherever the phone is in the app.
+let _flKey='';
+function flTick(){
+  const F=st.fl; if(!F) return; const now=Date.now(), outs=flOutlets(); let live=false;
+  outs.forEach(p=>{ const f=F.runs[p.id]; if(!f||!f.t0||f.t1) return; live=true; const t=flRan(f,now), b=flBr(p), k=f.buzz=f.buzz||{};
+    const bz=(id,pat)=>{ if(k[id]) return; k[id]=1; try{ navigator.vibrate&&navigator.vibrate(pat); }catch(e){} };
+    if(flTemp(p)&&p.reading.hot&&t>=FL_HOT) bz('hot',200); if(flTemp(p)&&p.reading.cold&&t>=FL_COLD) bz('cold',200);
+    if(t>=b.lo) bz('lo',[200,100,200]); if(t>=b.hi) bz('hi'+Math.floor((t-b.hi)/30),[400,100,400,100,400]); });
+  if(!live) flWake();
+  if(st.screen!=='flush'||st.sheet||st.scanFor||!live) return;
+  const z=app.querySelector('[data-flz]'); if(!z) return;
+  z.innerHTML=flZone(outs,F,now);
+  const op=F.open&&outs.find(p=>p.id===F.open), key=op?[op.id,flPh(op,F.runs[op.id],now),flAsk(op,F.runs[op.id],now)].join():'';
+  const typing=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.flk;
+  if(key!==_flKey&&!typing){ app.querySelector('[data-fll]').innerHTML=outs.map(p=>flRow(p,F,now)).join(''); _flKey=key; }
+  else outs.forEach(p=>{ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(p.id)+'"]'); if(!r) return; const x=flBits(p,F.runs[p.id],now);
+    const bb=r.querySelector('[data-b]'); bb.textContent=x.big; bb.className='n '+x.bc; r.querySelector('[data-i]').textContent=x.word;
+    const sb=r.querySelector('[data-sub]'); sb.innerHTML=x.sub; sb.className='sub '+x.cls; r.querySelector('[data-s3]').style.background=x.stripe||'transparent';
+    ['fl-run','fl-done','fl-over'].forEach(c=>r.classList.toggle(c,x.tint===' '+c)); });
+  app.querySelector('[data-flf]').innerHTML=flFoot(outs,F,now);
+}
+// The screen stays on while any tap runs (rule 3).
+let _flWL=null;
+function flWake(){
+  const live=!!(st.fl&&Object.values(st.fl.runs).some(f=>f.t0&&!f.t1));
+  if(live&&!_flWL&&navigator.wakeLock&&document.visibilityState==='visible'){ _flWL='asking';
+    navigator.wakeLock.request('screen').then(w=>{ _flWL=w; w.addEventListener('release',()=>{ if(_flWL===w) _flWL=null; }); }).catch(()=>{ _flWL=null; }); }
+  if(!live&&_flWL&&_flWL!=='asking'){ _flWL.release().catch(()=>{}); _flWL=null; }
+}
+// The relay holds each open flush and alerts this phone if it is still open at the bracket's top (rules 4 and 8).
+function flRelay(op,id){
+  const a=ls.get('wl_alerts',null), f=st.fl.runs[id], p=flById(id);
+  if(!a||!a.token||!STORE||!STORE.ask||!f) return;
+  STORE.ask({op:op,token:a.token,id:id+'@'+f.t0,name:p?p.name:id,due:f.t0+flBr(p).hi*1000}).catch(()=>{});
+}
+function flStart(id){
+  const F=flState(); F.runs[id]={t0:Date.now(),t1:0,hot:'',cold:''}; flKeep(); flRelay('flushOpen',id); flWake();
+  if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+}
+function flStop(id){ const F=flState(), f=F.runs[id]; if(!f||!f.t0||f.t1) return; f.t1=Date.now(); flKeep(); flRelay('flushClosed',id); flWake(); }
+function flTapPoint(pt){
+  const F=flState(), p=flOfPoint(pt), f=p&&F.runs[p.id];
+  if(!p) return toast((pt?pt.name:'That tag')+' is not an outlet on the flush round.');
+  if(f&&f.t0&&!f.t1) return toast(p.name+' is already running.');
+  if(f&&f.t1) return toast(p.name+' has been flushed. Open it to run it again.');
+  flStart(p.id); toast(p.name+': flush started.');
+}
+function flTap(sn){
+  if(st.screen!=='flush'||st.scanFor) return;
+  if(sn===null){ toast('The tag could not be read. Hold the phone still against it.'); return; }
+  const p=pointBySerial(sn);
+  if(!p){ toast('This tag is not linked to a point. Use Scan the Next Tag for its QR code.'); return; }
+  flTapPoint(p); render();
+}
+// Send Round: one reading per outlet run, as Take a Reading sends it, with how long it ran (rule 5).
+async function flSend(b){
+  if(st.busy||b.disabled) return;
+  const F=flState(), now=Date.now(), outs=flOutlets(), done=outs.filter(p=>{ const f=F.runs[p.id]; return f&&f.t0&&f.t1; });
+  // Never with a tap running; never unfinished without its reason (rules 10 and 11). The button says so too.
+  if(!done.length||outs.some(p=>{ const f=F.runs[p.id]; return f&&f.t0&&!f.t1; })) return;
+  const left=flLeft(outs,F,now); if(left&&!flWhyOk(F)) return;
+  const wl=(WFM_CAPTURE_SHAPE.earlyWhy.find(x=>x.id===(F.why||{}).id)||{}).label||'';
+  const note=left?'Flush round sent with '+left+' of '+outs.length+' not flushed: '+(F.why.id==='other'?String(F.why.note).trim():wl)+'.':'';
+  st.busy=true; render();
+  const cs=[];
+  try{
+    for(const p of done){
+      const f=F.runs[p.id], br=flBr(p), ran=Math.round((f.t1-f.t0)/1000), short=ran<br.lo, rd={unit:p.reading.unit||'°C'};
+      if(p.reading.hot&&num(f.hot)) rd.hot=num(f.hot); if(p.reading.cold&&num(f.cold)) rd.cold=num(f.cold);
+      cs.push(await makeCapture('reading',{point:p.point||undefined,record:p.point?undefined:{reg:'waterOutlets',id:p.id},note:note,outcome:short?'Flush stopped short':'Run and flushed',reading:(rd.hot||rd.cold)?rd:null,
+        taken:new Date(f.t0).toISOString(),flush:{start:new Date(f.t0).toISOString(),stop:new Date(f.t1).toISOString(),ran:ran,lo:br.lo,hi:br.hi}},[]));
+    }
+  }catch(e){ st.busy=false; toast('Nothing was sent. ('+(e.message||e)+')'); return render(); }
+  done.forEach(p=>{ delete F.runs[p.id]; }); F.open=null; F.q=''; F.why=null; flKeep();
+  st.capSend={state:'sending'}; go('due');
+  let ok=true; for(const c of cs) ok=(await send(c))&&ok;
+  st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
+  const me=st.capSend={state:ok?'sent':''}; capDraw();
+  if(ok) setTimeout(()=>{ if(st.capSend===me){ st.capSend=null; capDraw(); } },1800);
+  else toast('Waiting for signal. It sends by itself.');
+}
+// Typing a figure keeps the caret; the search hides rows and never re-sorts them.
+app.addEventListener('input',e=>{
+  const t=e.target, F=st.fl; if(!F) return;
+  if(t.hasAttribute('data-flq')){ F.q=t.value; flKeep(); const outs=flOutlets(), q=F.q;
+    outs.forEach(p=>{ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(p.id)+'"]'); if(r){ r.classList.toggle('hide',!flHit(p,q)); const o=r.nextElementSibling; if(o&&o.classList.contains('fopen')) o.classList.toggle('hide',!flHit(p,q)); } });
+    const g=app.querySelector('[data-flg]'), n=outs.filter(p=>flHit(p,q)).length; if(g) g.textContent=q?n+' of '+outs.length+' outlets':'This week · walk order'; return; }
+  if(t.hasAttribute('data-flwhy')){ F.why=Object.assign({},F.why,{note:t.value}); flKeep(); const ft=app.querySelector('[data-flf]'); if(ft) ft.innerHTML=flFoot(flOutlets(),F,Date.now()); return; }
+  if(t.dataset.flk){ const f=F.runs[t.dataset.flid]; if(f){ f[t.dataset.flk]=t.value; flKeep(); } }
+});
+app.addEventListener('change',e=>{ if(e.target.dataset&&e.target.dataset.flk&&st.screen==='flush'){ _flKey=''; const y=window.scrollY; render(); window.scrollTo(0,y); } });
 async function doSend(){
   const F=st.form; if(st.busy) return;
   st.busy=true; render();
