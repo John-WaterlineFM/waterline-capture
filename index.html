@@ -46,6 +46,7 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--accent);outline-
 .mono{font:400 12px ui-monospace,'SFMono-Regular',Consolas,monospace;color:var(--textMid)}
 svg{width:24px;height:24px;flex:none;display:block}
 .hide{display:none!important}
+#pt-list>[hidden],#pt-none[hidden]{display:none}
 
 /* the page title, on the page surface (Design 6.3, 4.13.1); nothing about the person (DEC-0302) */
 .ttl{font:800 20px/1.3 Sora;padding:16px 16px}
@@ -3178,8 +3179,8 @@ function vWalkLink(S){
 }
 // The round's offer: the next tap not yet run (DEC-0379 rules 1 and 2).
 function vFlLink(S){
-  const cs=flLinkable(), F=flState();
-  return vLinkOffer(S,{noun:'tap',on:'on the round',does:'Linking also starts that tap’s flush.',cs:cs,next:cs.find(o=>!(F.runs[o.id]&&F.runs[o.id].t0))||null,act:'flLink'});
+  const cs=flLinkable();
+  return vLinkOffer(S,{noun:'tap',on:'on the round',does:'Linking opens that tap on the round. It does not start the flush.',cs:cs,next:null,act:'flLink'});
 }
 function vScan(){
   const S=st.scanFor;
@@ -3250,7 +3251,7 @@ async function scanStart(){
     if(S.for==='walk'&&s&&walkLinkable().length){ scanStop(); S.offer={serial:s}; S.err=''; return render(); }
     // The flush round links a tap the same way (DEC-0379 rule 1); a tap linked on this phone starts at once (rule 4).
     if(S.for==='flush'){ const o=flKeptAt(s); if(o){ scanStop(); st.scanFor=null; flTapOutlet(o); return render(); }
-      if(s&&flLinkable().length){ scanStop(); S.offer={serial:s}; S.err=''; return render(); } }
+      if(s&&flLinkable().length){ scanStop(); S.offer={serial:s}; S.offerList=true; S.err=''; render(); return flPickFocus(); } }
     S.err=(S.for==='walk'||S.for==='flush')&&!s?'This phone did not give the tag’s serial number, so it cannot be linked. Scan its QR code.'
       :'This NFC tag is not linked to a point. Scan its QR code, or touch it on a walk or the flush round to link it.'; scanSay();
   }).then(r=>{ S.nfc=r; if(st.scanFor===S&&!S.err&&!S.say) scanSay(); });
@@ -3467,16 +3468,13 @@ app.addEventListener('click',async e=>{
     let ok=false; try{ ok=await linkSend(p,s); }catch(e){ return toast('The point was scanned, but the link was not sent. Touch the tag again on your next walk to link it.'); }
     if(st.form&&st.form.kind==='round'){ st.form.msg=p.name+' linked and scanned at '+hm(new Date().toISOString())+'.'; st.form.msgTone='green'; render(); }
     return toast(ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.'); }
-  // The round's link (DEC-0379): linking starts the tap's flush when it has not run yet (rule 2).
+  // The round's link (DEC-0379 v2): linking opens the tap; it never starts the flush (rule 2).
   if(a==='flLink'){ const S=st.scanFor, o=flById(b.dataset.id); if(!S||!S.offer||!o) return;
     const s=S.offer.serial, at=pointBySerial(s)||flKeptAt(s);
     if(at){ S.offer=null; S.offerList=false; S.err='This tag is already linked to '+at.name+'.'; S.started=false; return render(); }
-    const f=flState().runs[o.id], go1=!(f&&f.t0);
-    scanStop(); st.scanFor=null; if(go1) flStart(o.id); else if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
-    render();
-    let ok=false; try{ ok=await flLinkSend(o,s); }catch(e){ return toast((go1?o.name+': flush started. ':'')+'The link was not sent. Touch the tag again on the round to link it.'); }
-    render();
-    return toast((ok?'Linked to '+o.name+'. Sent to the desk.':'Linked to '+o.name+' on this phone. Waiting for signal to send it to the desk.')+(go1?' Flush started.':'')); }
+    scanStop(); st.scanFor=null; flTapOutlet(o); render();
+    let ok=false; try{ ok=await flLinkSend(o,s); }catch(e){ return toast('The link was not sent. Touch the tag again on the round to link it.'); }
+    return toast(ok?'Linked to '+o.name+'. Sent to the desk.':'Linked to '+o.name+' on this phone. Waiting for signal to send it to the desk.'); }
   if(a==='walkLinkList'){ if(st.scanFor){ st.scanFor.offerList=true; render(); const i=document.getElementById('pt-q'); if(i) i.focus(); } return; }
   if(a==='walkLinkListClose'){ if(st.scanFor){ st.scanFor.offerList=false; render(); } return; }
   if(a==='walkLinkNo'){ const S=st.scanFor; if(S&&S.fromWalk) return scanClose(); if(S){ S.offer=null; S.offerList=false; S.started=false; render(); } return; }
@@ -3552,7 +3550,9 @@ app.addEventListener('click',async e=>{
   if(a==='send'){ if(b.dataset.ok!=='1'){ F.sendTried=true; render(); const e=[...app.querySelectorAll('textarea[data-in],input[type=text][data-in],input[inputmode][data-in]')].find(x=>!String(x.value||'').trim()); if(e) e.focus(); return; } return doSend(); }
 });
 app.addEventListener('input',e=>{
-  const k=e.target.dataset.in; if(!k||!st.form) return;
+  const k=e.target.dataset.in; if(!k) return;
+  if(k==='ptq'){ special(k,e.target); return; }
+  if(!st.form) return;
   if(special(k,e.target)) return;
   st.form[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;
   if(k==='value'){ const F=st.form, p=F.point?pointById(F.point):(F.meter?meterAsPoint(F.meter):null), dp=p&&p.reading&&p.reading.dial&&p.reading.dp>0?p.reading.dp:0;
@@ -3609,7 +3609,7 @@ function special(k,el){
   if(st.screen==='job'&&k==='cknote'){ if(F.ck) F.ck.note=el.value; return true; }
   if(k==='upt'||k==='ureason'){ F.u[k==='upt'?'point':'reason']=el.value; if(k==='upt') return true; softKeep(el); return true; }
   // Narrows the point picker in place, so the field keeps the keyboard.
-  if(k==='ptq'){ const v=el.value.trim().toLowerCase(); let n=0; app.querySelectorAll('#pt-list [data-q]').forEach(b=>{ const hit=!v||b.dataset.q.indexOf(v)>=0; b.hidden=!hit; if(hit) n++; }); const no=document.getElementById('pt-none'); if(no) no.hidden=n>0; return true; }
+  if(k==='ptq'){ const v=el.value.trim().toLowerCase(); let n=0; app.querySelectorAll('#pt-list [data-q]').forEach(b=>{ const hit=wordHit(b.dataset.q,v); b.hidden=!hit; if(hit) n++; }); const no=document.getElementById('pt-none'); if(no) no.hidden=n>0; return true; }
   if(k==='noscannote'){ F.noScan=F.noScan||{why:'other'}; F.noScan.note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   if(k==='earlynote'){ F.early=F.early||{why:'other'}; F.early.note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
   if(k==='ansnote'){ const key=el.dataset.k; F.ans[key]=F.ans[key]||{note:'',photos:[]}; F.ans[key].note=el.value; ls.set('wl_walk',walkKeep(F)); softKeep(el); return true; }
@@ -3692,7 +3692,9 @@ function flBits(p,f,now){
   if(a&&ph!=='over'){ sub='Read the '+a+' now.'; cls='now'; }
   return {stripe:stripe,big:big,word:word,sub:sub,cls:cls,bc:(ph==='over'||ph==='short')?'bad':'',tint:ph==='run'||ph==='done'||ph==='over'?' fl-'+ph:''};
 }
-const flHit=(p,q)=>!q||(String(p.name)+' '+String(p.where||'')).toLowerCase().indexOf(q.toLowerCase())>=0;
+// A search matches the start of a word (John, 28 Oct 2026: typing "ice" still left him scrolling).
+const wordHit=(t,q)=>{ const w=x=>' '+String(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); const k=w(q); return k===' '||w(t).indexOf(k)>=0; };
+const flHit=(p,q)=>wordHit(String(p.name)+' '+String(p.where||''),q);
 function flRow(p,F,now){
   const f=F.runs[p.id], x=flBits(p,f,now), open=F.open===p.id;
   return '<button class="r'+(open?' open':'')+x.tint+(flHit(p,F.q)?'':' hide')+'" data-act="flRow" data-id="'+esc(p.id)+'" aria-expanded="'+open+'">'
@@ -3809,11 +3811,12 @@ function flTapPoint(pt){
   flTapOutlet(p);
 }
 function flTapOutlet(p){
-  const F=flState(), f=F.runs[p.id];
-  if(f&&f.t0&&!f.t1) return toast(p.name+' is already running.');
-  if(f&&f.t1) return toast(p.name+' has been flushed. Open it to run it again.');
-  flStart(p.id); toast(p.name+': flush started.');
+  // A tag is a way to the tap, never its start (DEC-0379 v2 rule 2): the row opens, the search clears so it shows.
+  const F=flState(); F.open=p.id; F.q=''; flKeep();
+  if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+  setTimeout(()=>{ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(p.id)+'"]'); if(r) r.scrollIntoView({block:'start',behavior:'instant'}); },0);
 }
+function flPickFocus(){ const i=document.getElementById('pt-q'); if(i) i.focus(); }
 function flTap(sn){
   if(st.screen!=='flush'||st.scanFor) return;
   if(sn===null){ toast('The tag could not be read. Hold the phone still against it.'); return; }
@@ -3822,7 +3825,7 @@ function flTap(sn){
   const o=flKeptAt(sn); if(o){ flTapOutlet(o); return render(); }
   // An unlinked tag offers the link, as a walk does (DEC-0379 rule 1).
   const s=WFM_CAPTURE_SHAPE.serialOf(sn);
-  if(s&&flLinkable().length){ st.scanFor={for:'flush',offer:{serial:s},started:true,live:false,fromWalk:true}; return render(); }
+  if(s&&flLinkable().length){ st.scanFor={for:'flush',offer:{serial:s},offerList:true,started:true,live:false,fromWalk:true}; render(); return flPickFocus(); }
   toast(s?'This tag is not linked, and every tap on the round already has a tag. Use Scan the Next Tag for its QR code.'
     :'This phone did not give the tag’s serial number, so it cannot be linked. Use Scan the Next Tag for its QR code.');
 }
