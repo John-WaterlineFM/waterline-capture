@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v511.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v518.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -76,10 +76,19 @@ const WFM_CAPTURE_SHAPE={
   // why, and what clears it; a permit hold names the permit register's type). heightFrom's permit:true holds the same way.
   take5:{
     steps:['Stop','Look','Assess','Control','Go'],
+    // Each step says what it means, in one line in the zone (DEC-0360 rule 1). Stop and Look are one screen.
+    lines:{look:'Stop before you start. Look round: what here could hurt you, or anyone near?',
+      from:'What are you working from? It decides what is asked.',
+      assess:'Is each one under control? Yes or No.',
+      control:'Not yet. Sort it before you start, or stop and tell the FM.',
+      go:'Start, and keep looking. If anything changes, stop.'},
+    // Something Else, the ninth tile (DEC-0360 rule 4): what the person sees that the list does not. It is kept on the
+    // check as `seen` and goes to the FM for the risk assessment review, as Mark Done's "Anything new" does.
+    other:{label:'Something else',q:'What is it, and what will you do about it?',hint:'It goes on the job and to the FM, to look at the risk assessment.'},
     signs:{M003:'Ear protection',M004:'Eye protection',M008:'Safety boots',M009:'Gloves',M014:'Hard hat',M015:'Hi-vis',M016:'Mask',
       M018:'Harness',M026:'Apron',W008:'Fall',W012:'Electricity',W017:'Hot surface'},
     hazards:{
-      height:{icon:'arrow-up-from-line',sign:'W008',wear:[],qs:[
+      height:{short:'Height',icon:'arrow-up-from-line',sign:'W008',wear:[],qs:[
         {id:'h-sound',q:'Feet, rungs and locks sound?',hint:'Look it over before you climb.',ok:'yes',says:'Ladder looked over',
           sort:'I’ll Use Another One',basis:'HSA, Using Ladders Safely: a pre-use check at least daily; S.I. 299/2007 reg 114'},
         {id:'h-short',q:'Done in under 30 minutes?',hint:'A ladder is for short jobs, not 30 minutes or more in one place.',ok:'yes',
@@ -90,7 +99,7 @@ const WFM_CAPTURE_SHAPE={
         {id:'h-hand',q:'One hand free to hold on, off the top steps?',hint:'Not the top two steps of a stepladder, or the top three rungs of a ladder.',
           ok:'yes',says:'A hand to hold, off the top steps',sort:'I’ll Get a Taller One',
           basis:'S.I. 299/2007 reg 114 (a secure handhold); HSA, Using Ladders Safely'}]},
-      electricity:{icon:'zap',sign:'W012',wear:[],qs:[
+      electricity:{short:'Electricity',icon:'zap',sign:'W012',wear:[],qs:[
         {id:'e-iso',q:'Switching off a supply to work on it?',hint:'A circuit or a fixed appliance, at the board.',ok:'no',says:'No supply isolated',
           hold:'Isolating a supply needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Electrical Isolation',
           basis:'S.I. 299/2007 reg 86(1)(b), (c); the site’s permit rule (DEC-0313 rule 3)'},
@@ -101,7 +110,7 @@ const WFM_CAPTURE_SHAPE={
           sort:'I’ll Use Another One',basis:'S.I. 299/2007 reg 81 (checked by the user before use)'},
         {id:'e-train',q:'Is this work within your training?',hint:'Fixed wiring and boards are for a competent electrician.',ok:'yes',
           says:'Within training',hold:'This needs a competent electrician.',clear:'The FM arranges one.',basis:'S.I. 299/2007 reg 88'}]},
-      'hot-work':{icon:'flame',wear:['M004','M009'],qs:[
+      'hot-work':{short:'Hot work',icon:'flame',wear:['M004','M009'],qs:[
         {id:'w-permit',q:'Hot work needs a permit to work',hint:'Flame, sparks or a heat gun.',ok:'none',says:'Permit',
           hold:'Hot work needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Hot Works',
           basis:'Fire Services Act 1981 s.18(2), (3); the site’s permit rule (DEC-0313 rule 3)'},
@@ -111,21 +120,21 @@ const WFM_CAPTURE_SHAPE={
           sort:'I’ll Get One First',basis:'Fire Services Act 1981 s.18(2)'},
         {id:'w-watch',q:'Someone watching for fire, during and after?',hint:'Not you. They stay on after you stop.',ok:'yes',says:'Fire watch',
           sort:'I’ll Get Someone',basis:'Fire Services Act 1981 s.18(2); insurer and industry practice'}]},
-      'hot-water':{icon:'thermometer-sun',sign:'W017',wear:['M009'],qs:[
+      'hot-water':{short:'Hot water',icon:'thermometer-sun',sign:'W017',wear:['M009'],qs:[
         {id:'t-off',q:'Supply off and pressure let off?',hint:'Before you open a pipe, valve or tank.',ok:'yes',says:'Off, pressure let off',
           sort:'I’ll Turn It Off First',basis:'Safety, Health and Welfare at Work Act 2005 s.19'},
         {id:'t-cool',q:'Cool enough to touch?',hint:'Pipes, rads and cylinders can scald.',ok:'yes',says:'Cool to touch',
           sort:'I’ll Let It Cool',basis:'Safety, Health and Welfare at Work Act 2005 s.19'},
         {id:'t-dry',q:'Water kept off electrics and the floor?',hint:'Cover sockets. Mop up as you go.',ok:'yes',says:'Water kept off',
           sort:'I’ll Cover and Mop',basis:'Safety, Health and Welfare at Work Act 2005 s.19'}]},
-      chemicals:{icon:'flask-conical',wear:['M004','M009','M026'],qs:[
+      chemicals:{short:'Chemicals',icon:'flask-conical',wear:['M004','M009','M026'],qs:[
         {id:'c-sds',q:'Read the label or data sheet?',hint:'It says what to wear and what not to mix.',ok:'yes',says:'Label read',
           sort:'I’ll Read It First',basis:'S.I. 619/2001 reg 4 (the supplier’s safety data sheet)'},
         {id:'c-mix',q:'One product at a time, never mixed?',hint:'Mixing cleaners can make a toxic gas.',ok:'yes',says:'Never mixed',
           sort:'I’ll Use One at a Time',basis:'S.I. 619/2001 reg 5; the product’s label'},
         {id:'c-air',q:'Room aired, and people kept out till dry?',hint:'Open a window. Sign the door.',ok:'yes',says:'Aired, people kept out',
           sort:'I’ll Air It and Sign It',basis:'S.I. 619/2001 reg 5; Safety, Health and Welfare at Work Act 2005 s.12'}]},
-      confined:{icon:'cylinder',wear:[],qs:[
+      confined:{short:'Confined space',icon:'cylinder',wear:[],qs:[
         {id:'s-permit',q:'Going into a confined space needs a permit',hint:'A tank, pit, duct, void, manhole or crawl space.',ok:'none',says:'Permit',
           hold:'Entry needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Confined Space',
           basis:'S.I. 218/2001 reg 5; the site’s permit rule (DEC-0313 rule 3)'},
@@ -133,12 +142,12 @@ const WFM_CAPTURE_SHAPE={
           hold:'No one goes in without someone outside.',clear:'The FM arranges it with the permit.',basis:'S.I. 218/2001 reg 6'},
         {id:'s-rescue',q:'Rescue plan ready?',hint:'How you would be got out, and with what.',ok:'yes',says:'Rescue plan ready',
           hold:'No one goes in without a rescue plan.',clear:'The FM arranges it with the permit.',basis:'S.I. 218/2001 reg 6(1)'}]},
-      alone:{icon:'user',wear:[],qs:[
+      alone:{short:'Working alone',icon:'user',wear:[],qs:[
         {id:'a-told',q:'Someone knows where you are, and till when?',hint:'Reception or the person on duty.',ok:'yes',says:'Someone told',
           sort:'I’ll Tell Someone Now',basis:'Safety, Health and Welfare at Work Act 2005 s.19; HSA guidance on lone working'},
         {id:'a-phone',q:'Phone charged and on you?',hint:'In your pocket, not in the van.',ok:'yes',says:'Phone on you',
           sort:'I’ll Get It First',basis:'HSA guidance on lone working (a way to keep in contact)'}]},
-      public:{icon:'users',wear:[],qs:[
+      public:{short:'Residents nearby',icon:'users',wear:[],qs:[
         {id:'p-keep',q:'Residents and children kept out?',hint:'Lock the door, cone it off or sign it.',ok:'yes',says:'Residents kept out',
           sort:'I’ll Close It Off',basis:'Safety, Health and Welfare at Work Act 2005 s.12'},
         {id:'p-reach',q:'Tools and chemicals out of reach?',hint:'Even when you step away.',ok:'yes',says:'Tools out of reach',
@@ -146,13 +155,14 @@ const WFM_CAPTURE_SHAPE={
         {id:'p-exit',q:'Escape routes and fire doors still clear?',hint:'Nothing left in a corridor or wedging a door.',ok:'yes',says:'Escape routes clear',
           sort:'I’ll Clear Them',basis:'Fire Services Act 1981 s.18(2)'}]}
     },
-    every:[{id:'x-tools',icon:'wrench',q:'Tools in working order?',hint:'Charged, nothing cracked or loose.',ok:'yes',says:'Tools in working order',
-      sort:'I’ll Swap Them',basis:'Safety, Health and Welfare at Work Act 2005 s.19; S.I. 299/2007 reg 81'}],
-    // What to wear (DEC-0346): common sense from S.I. 299/2007 Schedule 2 as replaced by S.I. 610/2021, Part C. Safety
-    // boots on every job; a hard hat from an extension ladder up (John's line, about 2 metres: never asked, told from what
-    // the work is done from); a harness on a roof or from a lift. Working from above a stepladder needs the Working at
-    // Height permit (heightFrom's permit:true).
-    everyWear:['M008'],
+    // No question is asked of every job (DEC-0360 rule 5): "Tools in working order?" was a yes nearly every time and helped
+    // no one assess. A check sent before keeps its answer in its own words.
+    every:[],
+    // What to wear (DEC-0346): common sense from S.I. 299/2007 Schedule 2 as replaced by S.I. 610/2021, Part C. Nothing on
+    // every job: safety boots are the uniform (DEC-0360 rule 6). A hard hat from an extension ladder up (John's line, about
+    // 2 metres: never asked, told from what the work is done from); a harness on a roof or from a lift. Working from above
+    // a stepladder needs the Working at Height permit (heightFrom's permit:true).
+    everyWear:[],
     fromWear:{ladder:['M014'],tower:['M014'],scaffold:['M014'],roof:['M014','M018'],mewp:['M014','M018']},
     wearBasis:'S.I. 299/2007 Schedule 2, as replaced by S.I. 610/2021, Part C; DEC-0346',
     // Mark Done (DEC-0341 rule 8): `when` names the hazard that must have been tapped; `ask` is the answer that asks what.

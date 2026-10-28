@@ -213,6 +213,11 @@ textarea{min-height:96px;resize:vertical}
 .yn button{flex:1;min-height:56px;border-radius:8px;border:1px solid var(--accentD);color:var(--accentD);font:600 13px Outfit;display:flex;align-items:center;justify-content:center;gap:4px}
 .yn button.on{border-width:2px}
 .unans{font-size:12px;color:var(--text);margin-top:8px}
+/* still to answer before a walk is signed off (DEC-0380 rule 4): an ink box and the instruction, never red (Design 5.3);
+   a box, because the 3px left edge is the consequence stripe (10.1) */
+.need{position:relative}.need::before{content:'';position:absolute;inset:0;border:2px solid var(--text);pointer-events:none;z-index:1}.need .unans{font-weight:600}
+.needsum{margin:12px 16px 0;padding:12px 16px 4px;background:var(--white);border:1px solid var(--text);border-radius:8px}
+.needsum b{display:block;font:600 13px Outfit;color:var(--text)}.needsum .lnk{display:flex;text-align:left}
 .no{margin-top:12px;padding:12px;background:var(--stone);border-radius:8px}
 .no .sub{margin-top:0}
 .no input{margin-top:8px}
@@ -562,6 +567,45 @@ body.t-li .tf .zone{--onInkMid:#4A6E8C}
 .tf .hero b{font:900 72px/0.85 Sora;letter-spacing:-2px}
 .tf .hero p{font:800 20px/1.25 Sora;padding-bottom:4px}
 .tf .hero p.stoph{padding:4px 0 0}
+/* T5R (DEC-0360; sandbox/mockups/take5-2026-10-24, frames 1 to 11): each step's line in the zone; the hazards three
+   across, each 88px with its picture in a 40px stone circle and a short name, Something Else the ninth with a dashed
+   circle, so Look needs no scroll at 390 x 844 or 360 x 720 (rule 3); Start, Pause and Stop on an opened job (rule 7). */
+.tf .z .t5{margin:6px 0 12px}
+.tf .zsay{margin:0;font:700 15px/1.4 Sora;color:var(--onInk)}
+.tf.full .done{padding:18px 24px 18px}
+.tf.full .done .tick{width:96px;height:96px;margin-bottom:14px}
+.tf.full .done .tick svg{width:52px;height:52px}
+.sheet.tf.full .wear{margin-bottom:12px}
+.tf .zsay+.zsub{margin-top:6px}
+.tf.lk .z{padding-bottom:16px}
+.tf.lk .pg{padding:10px 16px 0}
+.tf.lk .lab{margin-bottom:8px}
+.tf.lk .same{min-height:52px;padding:6px 8px 6px 10px;margin-bottom:10px;line-height:1.3}
+.tf.lk .same .bi{width:36px;height:36px}
+.tf.lk .same .bi svg{width:20px;height:20px}
+.tf .hz{grid-template-columns:repeat(3,1fr);gap:8px}
+.tf .hc{min-height:88px;padding:8px 6px;gap:6px;align-items:center;justify-content:center;text-align:center}
+.tf .hc .ic{width:44px;height:44px}
+.tf .hc .ic svg{width:24px;height:24px}
+.tf .hc b{text-align:center;font:500 13px/1.25 'DM Sans';display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tf .hc.on{padding:7px 5px}
+.tf .hc.else:not(.on) .ic{background:none;border:1.75px dashed var(--accentD);color:var(--accentD)}
+.tf .hc.else:not(.on) b{color:var(--accentD)}
+.tf.lk .none{min-height:48px;margin-top:8px}
+.scrim.t5o{z-index:22}
+.sheet.t5o{z-index:23}
+.prow{display:grid;grid-template-columns:repeat(3,1fr);margin:16px 0 0}
+.pc{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:44px;color:var(--onInk)}
+.pr{width:64px;height:64px;border-radius:50%;display:grid;place-items:center}
+.pr svg{width:28px;height:28px;fill:currentColor}
+.pc.p .pr{background:var(--accentOnInk);color:var(--zBtnText)}
+.pc.g .pr{border:2px solid var(--accentOnInk);color:var(--accentOnInk)}
+.pc.at .pr{background:var(--inkTrack);color:var(--onInk)}
+.pc.x .pr{background:var(--inkTrack);color:var(--navMid)}
+.pw{font:600 13px Outfit;color:var(--onInk)}
+.pc.x .pw{color:var(--navMid)}
+.ps{font:600 12px Sora;color:var(--navMid);margin-top:-4px}
+button.pc[disabled]{opacity:.6;cursor:default}
 .tf .zsub{margin-top:12px;font-size:12px;color:var(--navMid);line-height:1.4}
 .tf .z h1{font:800 20px/1.3 Sora;margin-top:4px}
 .tf .pg{flex:1;padding:20px 16px 16px}
@@ -582,12 +626,8 @@ body.t-li .tf .zone{--onInkMid:#4A6E8C}
 .hc,.kt{position:relative;min-height:104px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;text-align:left}
 .hc .ic,.kt .ic{width:44px;height:44px;border-radius:50%;background:var(--stone);display:grid;place-items:center;color:var(--text)}
 .hc b,.kt b{font:500 15px/1.25 'DM Sans'}
-.hc .tk{display:none}
-.hc.on .tk{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%}
 .hc.on,.kt.on{border:2px solid var(--accentD);padding:13px 13px 11px}
 .hc.on .ic,.kt.on .ic{background:var(--accentD);color:var(--btnText)}
-.hc.on .tk{background:var(--accentD);border-color:var(--accentD);display:grid;place-items:center;color:var(--btnText)}
-.hc.on .tk svg{width:14px;height:14px;stroke-width:3}
 .kt .pm{position:absolute;top:12px;right:12px;font:700 11px Outfit;letter-spacing:1px;text-transform:uppercase;color:var(--textMid)}
 .tf .none{margin-top:10px;width:100%;min-height:52px;border:1px solid var(--border);border-radius:12px;background:var(--white);display:flex;align-items:center;justify-content:center;gap:8px;font:600 13px Outfit;color:var(--accentD)}
 .tf .none.on{border:2px solid var(--accentD)}
@@ -976,7 +1016,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=2beee09299"></script>
+<script src="shapes.js?v=b0b5a0d107"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1307,7 +1347,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
@@ -1430,7 +1470,7 @@ function dueFor(){
     (i.kind==='soon'?soon:i.kind==='look'?today:over).push({t:'line',i:i});
   });
   const myJobs=[];
-  (s.jobs||[]).filter(j=>!j.round&&j.state!=='done'&&groups.has(j.group)).forEach(j=>{ const e=Date.parse(j.end);
+  (s.jobs||[]).filter(j=>!j.round&&j.state!=='done'&&!jDoneHere(j)&&groups.has(j.group)).forEach(j=>{ const e=Date.parse(j.end);
     if(e) (e<=now?over:today).push({t:'job',j:j}); else if(holders(j).some(isMe)) myJobs.push(j); });
   const rk={red:0,amber:1,grey:2};
   over.sort((a,b)=>((a.t==='missed'?0:a.t==='job'?1:a.i.kind==='look'?3:2)-(b.t==='missed'?0:b.t==='job'?1:b.i.kind==='look'?3:2))
@@ -1548,11 +1588,11 @@ function vDue(){
     const r=lead.r;
     h+='<div class="zone"><span class="eb">'+(nowW?'Open now':'Next')+'</span><div class="row1"><span class="num n">'+esc(hm(lead.from))+'</span><span class="what">'+esc(r.name)+'</span></div>'
       +'<p><b class="n">'+(r.points||[]).length+'</b> points, '+(nowW?'open until':'open from <b class="n">'+esc(hm(lead.from))+'</b> to')+' <b class="n">'+esc(hm(lead.to))+'</b>.'+((r.lines||[]).length?' Signed off, it brings <b class="n">'+r.lines.length+'</b> '+((r.lines.length===1)?'line':'lines')+' in date.':'')+'</p>'
-      +'<button class="btn" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+'Start the Walk</button></div>';
+      +'<button class="btn" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+walkOpenSay(r.id)+'</button></div>';
   } else if(!D.over.length&&!D.today.length&&!D.soon.length&&!D.mine.length&&jobsAll().length){
     h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">0</span><span class="what">jobs given to you</span></div>'
       +'<p>No walk, line or job is yours today. Your groups’ jobs are on Jobs.</p><button class="gh" data-act="jobs">'+I.jobs+'Open Jobs</button></div>';
-    return h+waitLine()+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
+    return h+waitLine()+walkCarry()+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
   } else {
     const n=D.over.length, all=n+D.today.length+D.soon.length+D.mine.length;
     if(!n&&D.mine.length){
@@ -1561,7 +1601,7 @@ function vDue(){
     else h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n" style="color:'+(n?'var(--inkRed)':'var(--onInk)')+'"'+(n?' data-urg':'')+'>'+n+'</span><span class="what">overdue</span></div>'
       +'<p>'+(all?'Of <b class="n">'+all+'</b> on your Due.':'Nothing on your Due.')+'</p></div>';
   }
-  h+=waitLine();
+  h+=waitLine()+walkCarry(lead&&lead.r.id);
   if(siteStale()||st.siteErr) h+=siteNote();
   const today=D.today.filter(x=>x!==lead);
   const any=D.over.length+today.length+D.soon.length+D.mine.length;
@@ -1603,10 +1643,16 @@ function cats(xs){
 st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:ls.get('wl_jtab','feed'),grp:''};
 if(['feed','groups'].indexOf(st.J.tab)<0) st.J.tab='feed';
 // Jobs is work that was reported: an occurrence of a planned job (a walk, a flush, a test) stays on Due (DEC-0312 rule 4).
-function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state!=='done'&&!j.round&&!j.planned&&(fm||gs.has(j.group))); }
+// Marked done on this phone and not yet filed by the desk: out of To Do and In Progress at once, in Done as waiting for the
+// desk (DEC-0381 rule 2; Design 9.11). The done sent from here, else null.
+let _dhK=null, _dhS=null;
+function jDoneHere(j){ if(j.state==='done') return null; const k=localStorage.getItem('wl_jobSent')||'';
+  if(k!==_dhK){ _dhK=k; _dhS=new Set(jSent().filter(x=>x.act==='done').map(x=>x.job)); }
+  return _dhS.has(j.id)&&jPending(j).find(x=>x.act==='done')||null; }
+function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state!=='done'&&!jDoneHere(j)&&!j.round&&!j.planned&&(fm||gs.has(j.group))); }
 // Jobs done in the last WFM_SITE_SHAPE.doneDays, as the desk publishes them (DEC-0349 rule 1): the same groups as open jobs.
-const doneAt=j=>Date.parse(j.done&&j.done.at)||0;
-function jobsDone(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state==='done'&&!j.round&&!j.planned&&(fm||gs.has(j.group))).sort((a,b)=>doneAt(b)-doneAt(a)); }
+const doneAt=j=>Date.parse(j.done&&j.done.at)||Date.parse((jDoneHere(j)||{}).at)||0;
+function jobsDone(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>(j.state==='done'||jDoneHere(j))&&!j.round&&!j.planned&&(fm||gs.has(j.group))).sort((a,b)=>doneAt(b)-doneAt(a)); }
 const doneMine=j=>!!(j.done&&st.walker&&nk(j.done.by)===nk(st.walker));
 const doneDays=()=>WFM_SITE_SHAPE.doneDays;
 // How a done job closed, in words: signed off on the phone, closed with its reason, or done with nothing signed.
@@ -1673,12 +1719,14 @@ function jSquare(j){
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
 const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):j.state==='doing'?' jd':' jt';
-function jobRowP(j,showGroup,own){ if(j.state==='done') return jobRowDone(j,showGroup);
+function jobRowP(j,showGroup,own){ if(j.state==='done'||jDoneHere(j)) return jobRowDone(j,showGroup);
   const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
   return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +(by?'<span class="sub">'+(j.state==='doing'?'<span class="stt">'+SH.doing+'In progress</span>'+(h.length?' · ':''):'')+(h.length?esc(own?'With '+h.map(x=>x.name).join(', '):holdersSay(j)):'')+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span><span class="ag"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i></span></button>'; }
-function jobRowDone(j,showGroup){ const d=j.done||{};
+function jobRowDone(j,showGroup){ const d=j.done||{}, here=jDoneHere(j);
+  if(here) return '<button class="ra c jx" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+'<span class="w">'+esc(j.title||'Job')+'</span>'
+    +'<span class="sub">'+esc('Marked done by you, '+at2(here.at))+'</span><span class="sub">'+esc(here.waiting?'Not delivered, no signal: it sends by itself.':'Waiting for the desk to file it.')+'</span></span></button>';
   return '<button class="ra c'+(d.how?' jc':' jx')+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +'<span class="sub">'+esc((d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at))+'</span><span class="sub">'+esc(doneSay(j))+'</span></span></button>'; }
 // A group's icon, from its name (the site's groups are its own, DEC-0309); one set, one stroke (21.7).
@@ -1842,8 +1890,9 @@ const youOr=n=>(!!st.walker&&nk(n)===nk(st.walker))?'you':(n||'someone not named
 function jState(j){
   const pend=jPending(j), pS=pend.find(x=>x.act==='start'), pD=pend.find(x=>x.act==='done');
   const fl=pend.some(x=>x.act==='unflag')?null:j.flag, doing=j.state==='doing'||!!pS;
-  // A paused job is still in progress (DEC-0311 rule 1): the latest pause or restart sent from here, else the desk's.
-  const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart').sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act==='pause':!!j.paused;
+  // A paused job is still in progress (DEC-0311 rule 1): the latest pause or restart sent from here, else the desk's. A stop
+  // sent on a job in progress pauses it, as the desk's stop writer does (DEC-0341 rule 5, DEC-0360 rule 7).
+  const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart'||(x.act==='stop'&&doing)).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act!=='restart':!!j.paused;
   // Pausing is for the job's group; assigning for the group and the FM (DEC-0314 rule 3).
   if(j.state==='done') return {pend:pend,pS:null,pD:null,fl:null,doing:false,pPR:null,paused:false,canPause:false,canAsg:false,done:true};
   return {pend:pend,pS:pS,pD:pD,fl:fl,doing:doing,pPR:pPR,paused:paused,canPause:!pD&&!!st.walker&&inGroup(j)&&doing&&!paused,canAsg:!pD&&!!st.walker&&(inGroup(j)||isFM(myOwnPos()))};
@@ -1914,7 +1963,7 @@ function vJob(){
   const S0=jState(j), e=Date.parse(j.end), a=jLate(j), pend=S0.pend, pD=S0.pD, pS=S0.pS, pPR=S0.pPR, paused=S0.paused, doing=S0.doing, fl=S0.fl;
   // Delivered or not (John, 21 Oct 2026, DEC-0323): delivered once it is in the site's Inbox.
   const sent=x=>x.waiting?'Not delivered, no signal: it sends by itself.':'Delivered.';
-  const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.note,x:pPR}:j.paused):null;
+  const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.stopped?'Stopped: '+pPR.stopped.why+(pPR.note?'. '+pPR.note:''):pPR.note,x:pPR}:j.paused):null;
   // Where it stands, and since when.
   let sw, ss='';
   if(S0.done){ const d=j.done||{}; sw=d.how?'Closed':'Done'; ss=(d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at)+'. '+doneSay(j)+'.'; }
@@ -1930,15 +1979,15 @@ function vJob(){
   const pmRef=pms.filter(p=>p.state==='Cancelled'&&p.why!=null&&p.by).pop();
   const waitT=pmWait.map(p=>p.type).concat(pPm?(pPm.types||[]).filter(t=>!pmWait.some(p=>p.type===t)):[]);
   // The one action (Design 9.1), for the people in the job's group (DEC-0308 rule 3).
-  let btn=null, why='';
+  let btn=null, why='', row=false;
   if(S0.done) why='Anything you add below goes on the job after its Done. The Done and its sign-off stay as they were.';
   else if(!pD){
     const pa=canIssue()?permAsk(j):null;
     if(pa){ btn=['jpermitReview','permit','Review the Permit']; why=(pa.by?youOr(pa.by).replace(/^you$/,'You'):'Someone')+' applied for a permit to work: '+pa.types.join(', ')+(pa.at&&!isNaN(Date.parse(pa.at))?', at '+at2(pa.at):'')+'. The job cannot start until it is issued.'; }
     else if(!st.walker) why='Starting and finishing a job need your name on this phone. Add it in Settings.';
-    else if(!inGroup(j)) why=(paused?'Restart':'Start, Pause')+' and Mark Done are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
-    else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' '+issuerSay()+' '+(paused?'Restart':'Start the Job')+' comes back here once it is issued.';
-    else btn=paused?['jobRestart','play','Restart']:doing?['jobDone','tick','Mark Done']:['jobStart','play','Start the Job'];
+    else if(!inGroup(j)) why='Start, Pause and Stop are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
+    else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' '+issuerSay()+' Start comes back here once it is issued.';
+    else row=true;
   }
   const pmSay=pmOn.map(p=>'Permit to work, '+p.type.toLowerCase()+': issued'+(p.by?' by '+youOr(p.by):'')+'.').concat(pmRef&&!pmOn.length&&!waitT.length?['Permit to work, '+pmRef.type.toLowerCase()+': refused by '+youOr(pmRef.by)+(pmRef.why?'. '+pmRef.why.replace(/\.$/,''):'')+'.']:[]).join(' ');
   const due=j.due?'Fell due '+when(j.due)+(e&&!a?', its time runs to '+when(j.end):''):'';
@@ -1948,7 +1997,7 @@ function vJob(){
     +'<div class="jwh">'+I.pin+'<span>'+esc(jWhere(j))+(a?' · <b data-urg style="color:var(--inkRed)">'+esc(a.join(' '))+'</b>':'')+'</span></div>'
     +(fl?'<div class="jfl">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.why?'. '+esc(fl.why):'')+'</span></div>':'')
     +'<div class="zact"><div class="jst"><b>'+esc(sw)+'</b>'+(ss?'<span>'+esc(ss)+'</span>':'')+'</div>'
-    +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'
+    +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'+(row?jRow(j,S0,pz):'')
     +(due?'<p class="jwhy">'+esc(due)+'</p>':'')+(pmSay?'<p class="jwhy">'+esc(pmSay)+'</p>':'')+(why?'<p class="jwhy">'+esc(why)+'</p>':'')+'</div>';
   // The photos not in the conversation, shown once (Design 4.11): those it was raised with, and any no entry carries.
   const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
@@ -1962,12 +2011,31 @@ function vJob(){
     +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(hs.length?'Change who is on this job':'Give this job to someone')+'">'+(hs.length?'Change':'Assign')+'</button>':'')+'</div>':'';
   return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+jBar(F)+'</div>';
 }
+// Start, Pause and Stop (DEC-0360 rule 7): always in the same three places. Teal is what can be pressed, the filled one is
+// the next step (Design 9.1, 21.2); the stage the job is in shows its time. Start on a paused job carries on.
+function jRow(j,S0,pz){
+  const b=st.busy?' disabled':'', go=(k,act,ic,w,lab)=>'<button class="pc '+k+'" data-act="'+act+'" aria-label="'+esc(lab)+'"'+b+'><span class="pr">'+I[ic]+'</span><span class="pw">'+w+'</span></button>';
+  const at=(ic,w,t)=>'<div class="pc at"><span class="pr">'+I[ic]+'</span><span class="pw">'+w+'</span>'+(t?'<span class="ps">'+esc(t)+'</span>':'')+'</div>';
+  const no=(ic,w)=>'<div class="pc x" aria-hidden="true"><span class="pr">'+I[ic]+'</span><span class="pw">'+w+'</span></div>';
+  let h;
+  if(S0.paused) h=go('p','jobRestart','play','Start','Start the job again')+at('pause','Paused',pz&&!isNaN(Date.parse(pz.at))?hm(pz.at):'')+go('g','jobStop','stop','Stop','Stop the job');
+  else if(S0.doing){ const sx=S0.pPR&&S0.pPR.act==='restart'?S0.pPR:S0.pS, se=sx?null:(j.thread||[]).filter(x=>(x.kind==='Started'||x.kind==='Restarted')&&!isNaN(Date.parse(x.at))).pop(), t=sx||se;
+    h=at('play','Started',t?hm(t.at):'')+go('g','jobPause','pause','Pause','Pause the job')+go('p','jobStop','stop','Stop','Stop the job'); }
+  else h=go('p','jobStart','play','Start','Start the job')+no('pause','Pause')+no('stop','Stop');
+  return '<div class="prow">'+h+'</div>'; }
+// Stop asks whether the job is finished (DEC-0360 rule 7, John's A): Finished is Mark Done's checks and signature
+// (DEC-0341 rule 8); Not Finished is Stop and Tell the FM (DEC-0341 rule 5).
+function jStopSheet(){
+  const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+ic+'<span class="m"><span class="w">'+esc(nm)+'</span><span class="sub">'+esc(ln)+'</span></span>'+I.chev+'</button>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Stop the job"><div class="sh"><b>Stop the Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +v('jobDone',I.tick,'It’s Finished','A few checks, then sign it off')+v('jobStopTell',t5Ic('octagon-x'),'Not Finished: Stop and Tell the FM','Why, and a word or a photo')
+    +'</div><div style="height:24px"></div></div>';
+}
 // More (⋮): the occasional things, out of the way of the one action (Design 21.1).
 function jMoreSheet(){
   const j=jobById(st.form.id); if(!j) return ''; const S0=jState(j), fl=S0.fl, n=holders(j).length;
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
-    +(S0.canPause?v('jobPause','pause','Pause the Job','Reason optional'):'')
     +(!S0.pD&&st.walker?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
     +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
@@ -2145,7 +2213,7 @@ function ckPermits(ck){ if(!ck||ck.none) return []; const T=WFM_CAPTURE_SHAPE, u
 // The check as it is sent: the site's hazards ticked, or None of These, never neither (the desk refuses both).
 function ckOut(C){ const hz=(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).map(h=>({id:h.id,label:h.label})), k=C.kit&&C.kit!=='-'?C.kit.split('|'):null;
   const ans=C.ans?t5Answers(C):[], j=st.form&&jobById(st.form.id);
-  return {none:!!C.none,hazards:hz,note:String(C.note||'').trim(),same:!!C.same,kit:k?[{reg:k[0],id:k[1]}]:[],from:C.hz.indexOf('height')>=0?C.from||'':'',
+  return {none:!!C.none,hazards:hz,note:String(C.note||'').trim(),seen:String(C.seen||'').trim(),same:!!C.same,kit:k?[{reg:k[0],id:k[1]}]:[],from:C.hz.indexOf('height')>=0?C.from||'':'',
     isolate:C.hz.indexOf('electricity')>=0&&(!!C.iso||ans.some(a=>a.id==='e-iso'&&a.a==='yes')),answers:ans,
     ras:j&&C.ans?t5Ras(j,C).map(r=>({id:r.id,read:r.read||'',fp:r.fp||'',opened:!!(C.ras||{})[r.id]})):[]}; }
 // The old sheet's reasons, kept for a check sent before S5.
@@ -2189,31 +2257,39 @@ function t5Kit(C){ const k=SITE().kit||[], step=C.from==='stepladder';
   return k.filter(x=>/ladder/i.test(x.label)).sort((a,b)=>(/step/i.test(b.label)===step)-(/step/i.test(a.label)===step)); }
 // Start or Restart opens it; an earlier check on the job offers Same as Before (DEC-0341 rule 10).
 function t5Open(mode){ const F=st.form;
-  F.ck={mode:mode,step:'look',hz:[],none:false,note:'',from:'',iso:false,kit:'',same:false,tried:false,ans:{},sorted:{},qi:0,ras:{},stop:null,back:'',raId:''};
+  F.ck={mode:mode,step:mode==='stop'?'stop':'look',hz:[],none:false,note:'',seen:'',otherOpen:false,from:'',iso:false,kit:'',same:false,tried:false,ans:{},sorted:{},qi:0,ras:{},stop:mode==='stop'?{why:'',photos:[],tried:false}:null,stopQ:'',back:'',raId:''};
   st.sheet='take5'; t5Draw(); }
 // Draws again and puts the focus where the person's eyes go: the card's question, else the first thing to press.
 function t5Draw(){ render(); const t=app.querySelector('.tf'); if(!t) return; t.scrollTop=0;
   const f=t.querySelector('[data-t5focus]')||t.querySelector('.pg button,.cardpg button,.ft button'); if(f) f.focus({preventScroll:true}); }
 // The answers as sent: each card as it was shown, and how it was sorted.
 function t5Answers(C){ return t5Cards(C).filter(c=>C.ans[c.q.id]!=null).map(c=>({id:c.q.id,q:c.q.q,a:C.ans[c.q.id],sorted:C.sorted[c.q.id]||''})); }
-function t5Zone(eb,n,extra){ return '<div class="zone z"><div class="zt"><button class="ib" data-act="t5Back" aria-label="Back">'+I.back+'</button><span class="eb">'+esc(eb)+'</span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-  +(n==null?'':'<ol class="t5" aria-label="Take 5">'+T5().steps.map((w,i)=>'<li class="'+(i<n?'d':i===n?'c':'')+'"'+(i===n?' aria-current="step"':'')+'><i></i><span>'+w+'</span></li>').join('')+'</ol>')+(extra||'')+'</div>'; }
+// Stop and Look are one screen (DEC-0360 rule 1): on Look both are lit. `line` names the step's line in take5.lines.
+function t5Zone(eb,n,extra,line){ return '<div class="zone z"><div class="zt"><button class="ib" data-act="t5Back" aria-label="Back">'+I.back+'</button><span class="eb">'+esc(eb)+'</span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+  +(n==null?'':'<ol class="t5" aria-label="Take 5">'+T5().steps.map((w,i)=>'<li class="'+(i===n||(n===1&&i===0)?'c':i<n?'d':'')+'"'+(i===n?' aria-current="step"':'')+'><i></i><span>'+w+'</span></li>').join('')+'</ol>')
+  +(line?'<p class="zsay">'+esc(T5().lines[line])+'</p>':'')+(extra||'')+'</div>'; }
+// Something Else (DEC-0360 rule 4): what the person sees that the list does not, and what they will do about it.
+function t5OtherSheet(){ const O=T5().other;
+  return '<div class="scrim t5o" data-act="t5OtherClose"></div><div class="sheet t5o" role="dialog" aria-modal="true" aria-labelledby="t5oh"><div class="sh"><b id="t5oh">Something Else Here</b><button class="ib" data-act="t5OtherClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<div class="field"><label for="t5seen">'+esc(O.q)+'</label><textarea id="t5seen" data-in="t5seen">'+esc(st.form.t5seen||'')+'</textarea><div class="help">'+esc(O.hint)+'</div></div>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="t5OtherAdd">'+I.tick+'Add It</button></div></div>'; }
 function vTake5(){
   const F=st.form, C=F.ck, j=jobById(F.id); if(!j||!C) return '';
   const eb='Before You Start · Job '+(j.no||''), wrap=(h,cls)=>'<div class="sheet tf'+(cls?' '+cls:'')+'" role="dialog" aria-modal="true" aria-label="Before you start">'+h+'</div>';
   const ft=(b,sub)=>'<div class="ft">'+(sub||'')+b+'</div>';
   if(C.step==='ra') return wrap(t5RaView(C));
   if(C.step==='stop') return wrap(t5StopView(j,C));
-  if(C.step==='look'){ const hz=(SITE().hazards||[]).filter(h=>t5Hz(h.id)), n=C.hz.length, last=j.check;
-    return wrap(t5Zone(eb,1,'<div class="hero"><b class="n">'+(C.none?0:n)+'</b><p>'+(n===1&&!C.none?'thing here<br>that could hurt':'things here<br>that could hurt')+'</p></div><div class="zsub">'+esc([jWhere(j),j.title].filter(Boolean).join(' · '))+'</div>')
+  if(C.step==='look'){ const hz=(SITE().hazards||[]).filter(h=>t5Hz(h.id)), n=C.hz.length, last=j.check, O=T5().other;
+    return wrap(t5Zone(eb,1,'<div class="zsub">'+esc([jWhere(j),j.title].filter(Boolean).join(' · '))+'</div>','look')
       +'<div class="pg">'+(last?'<button class="same" data-act="t5Same" data-t5focus><span class="bi">'+I.shield+'</span><span class="m"><b>Same as Before</b><span>'+esc(youOr(last.by)==='you'?'You':youOr(last.by))+', '+esc(at2(last.at))+': '+esc(last.says||'')+'</span></span>'+I.chev+'</button>':'')
       +'<div class="lab">Tap each one that’s here</div><div class="hz">'+hz.map(h=>{ const on=C.hz.indexOf(h.id)>=0;
-        return '<button class="hc'+(on?' on':'')+'" data-act="t5Hz" data-v="'+esc(h.id)+'" aria-pressed="'+on+'"><span class="tk">'+(on?I.tick:'')+'</span><span class="ic">'+t5Ic(t5Hz(h.id).icon)+'</span><b>'+esc(h.label)+'</b></button>'; }).join('')+'</div>'
+        return '<button class="hc'+(on?' on':'')+'" data-act="t5Hz" data-v="'+esc(h.id)+'" aria-pressed="'+on+'" aria-label="'+esc(h.label)+'"><span class="ic">'+t5Ic(t5Hz(h.id).icon)+'</span><b>'+esc(t5Hz(h.id).short||h.label)+'</b></button>'; }).join('')
+        +'<button class="hc else'+(C.seen?' on':'')+'" data-act="t5Other" aria-haspopup="dialog" aria-label="'+esc(O.label+(C.seen?': '+C.seen:''))+'"><span class="ic">'+t5Ic('pencil')+'</span><b>'+esc(O.label)+'</b></button></div>'
       +'<button class="none'+(C.none?' on':'')+'" data-act="t5None" aria-pressed="'+C.none+'">'+(C.none?I.tick:'')+'None of These</button>'
-      +(C.tried&&!n&&!C.none?'<div class="help err" role="alert">Tap each one that’s here, or None of These.</div>':'')+'</div>'
-      +ft('<button class="btn" data-act="t5Next">Next'+t5Ic('arrow-right')+'</button>')); }
+      +(C.tried&&!n&&!C.none&&!C.seen?'<div class="help err" role="alert">Tap each one that’s here, or None of These.</div>':'')+'</div>'
+      +ft('<button class="btn" data-act="t5Next">Next'+t5Ic('arrow-right')+'</button>'),'lk')+(C.otherOpen?t5OtherSheet():''); }
   if(C.step==='from'){ const kit=t5Kit(C), hf=WFM_CAPTURE_SHAPE.heightFrom||[], up=hf.find(h=>h.id===C.from), ladder=up&&!up.permit;
-    return wrap(t5Zone(eb,2)+'<div class="pg"><div class="lab" id="t5from">Working at height · from</div><div class="tiles" role="radiogroup" aria-labelledby="t5from">'
+    return wrap(t5Zone(eb,2,'','from')+'<div class="pg"><div class="lab" id="t5from">Working at height · from</div><div class="tiles" role="radiogroup" aria-labelledby="t5from">'
       +hf.map(h=>'<button class="kt'+(C.from===h.id?' on':'')+'" role="radio" aria-checked="'+(C.from===h.id)+'" data-act="t5From" data-v="'+esc(h.id)+'">'+(h.permit?'<span class="pm">Permit</span>':'')+'<span class="ic">'+t5Ic(T5FROM[h.id]||'arrow-up-from-line')+'</span><b>'+esc(h.label)+'</b></button>').join('')+'</div>'
       +(ladder&&kit.length?'<div class="lab sp" id="t5kit">Which one</div><div class="ok" role="radiogroup" aria-labelledby="t5kit">'
         +kit.map(k=>{ const v=k.reg+'|'+k.id, on=C.kit===v; return '<button class="kr'+(on?' on':'')+'" role="radio" aria-checked="'+on+'" data-act="t5Kit" data-v="'+esc(v)+'"><span class="rad"></span><span class="m"><b>'+esc(k.label)+'</b><span>'+esc([k.where,k.state].filter(Boolean).join(' · '))+'</span></span></button>'; }).join('')
@@ -2237,8 +2313,8 @@ function vTake5(){
     else if(a!=null&&!t5Fine(q,a)&&q.hold){ h2=q.hold; p='Start the Job is held. '+q.clear;
       btns='<div class="yn col"><button class="yes" data-act="t5Stop" data-t5focus>'+t5Ic('octagon-x')+'Stop and Tell the FM</button><button class="no" data-act="t5Undo">Change My Answer</button></div>'; }
     else btns='<div class="yn"><button class="no'+(a==='no'?' on':'')+'" data-act="t5Ans" data-v="no" aria-pressed="'+(a==='no')+'">No</button><button class="yes'+(a==='yes'?' on':'')+'" data-act="t5Ans" data-v="yes" aria-pressed="'+(a==='yes')+'">'+I.tick+'Yes</button></div>';
-    const held=a!=null&&!t5Fine(q,a)&&q.hold&&!q.permit;
-    return wrap(t5Zone(eb,3)+'<div class="cardpg"><div class="qc'+(held||q.ok==='none'&&!issued?' stop':'')+'"><span class="of">'+(C.qi+1)+' of '+cards.length+'</span><span class="for">'+t5Ic(forI)+esc(forW)+'</span>'
+    const held=a!=null&&!t5Fine(q,a)&&q.hold&&!q.permit, ctl=(q.ok==='none'&&!issued)||(a!=null&&!t5Fine(q,a));
+    return wrap(t5Zone(eb,ctl?3:2,'',ctl?'control':'assess')+'<div class="cardpg"><div class="qc'+(held||q.ok==='none'&&!issued?' stop':'')+'"><span class="of">'+(C.qi+1)+' of '+cards.length+'</span><span class="for">'+t5Ic(forI)+esc(forW)+'</span>'
       +'<div class="art">'+art+'</div><h2 data-t5focus tabindex="-1">'+esc(h2)+'</h2><p>'+esc(p)+'</p>'
       +(c.h==='height'&&q.id==='h-sound'&&C.kit&&C.kit!=='-'?t5KitSays(C):'')+btns+'</div>'
       +'</div>'); }
@@ -2252,12 +2328,14 @@ function vTake5(){
   const top=good?'<div class="done"><span class="tick">'+I.tick+'</span><h2 data-t5focus tabindex="-1">Good to Go</h2><p>'+esc([jWhere(j)||j.title,st.walker,when].filter(Boolean).join(' · '))+'</p></div>'
     :'<div class="done"><span class="tick held">'+t5Ic('octagon-x')+'</span><h2 data-t5focus tabindex="-1">'+(held.length?'Start is held':'Waiting for the permit')+'</h2><p>'
       +esc(held.length?held.map(c=>c.q.hold+' '+c.q.clear).join(' '):miss.join(' and ')+(miss.length===1?' needs':' need')+' a permit to work. '+issuerSay()+' Start the Job comes back once it is issued.')+'</p></div>';
-  const go=good?'<button class="btn" data-act="t5Start">'+I.play+(C.mode==='restart'?'Restart the Job':'Start the Job')+'</button>'
+  const go=good?'<button class="btn" data-act="t5Start">'+I.play+'Start the Job</button>'
     :held.length?'<button class="btn" data-act="t5Stop">'+t5Ic('octagon-x')+'Stop and Tell the FM</button>'
     :'<button class="btn" data-act="t5Permit">'+I.permit+'Apply for the Permit</button>';
-  return wrap(t5Zone(eb,null)+top
+  return wrap(t5Zone(eb,good?4:3,'',good?'go':'control')+top
     +(wear.length?'<div class="wear"><div class="lab">You must wear</div><div class="sgs">'+wear.map(c=>'<span class="sg">'+t5Sign(c)+'<b>'+esc(T5().signs[c]||c)+'</b></span>').join('')+'</div></div>':'')
     +'<ul class="okz" aria-label="What you said">'+(C.same?'<li class="okr"><span class="bi">'+I.shield+'</span><span>Same as before, '+esc(at2((j.check||{}).at||''))+'</span><em>Kept</em></li>':'')
+      +(C.seen?'<li class="okr"><span class="bi">'+t5Ic('pencil')+'</span><span>You saw: '+esc(C.seen.charAt(0).toLowerCase()+C.seen.slice(1))+'</span><em>Told</em></li>':'')
+      +(C.none?'<li class="okr"><span class="bi">'+I.tick+'</span><span>'+(C.seen?'Nothing on the list here':'Nothing here that could hurt')+'</span><em>None</em></li>':'')
       +cards.map(row).join('')+'</ul>'
     +(ras.length||hzNoRa.length?'<div class="ras">'+ras.map(r=>'<button class="ralink" data-act="t5Ra" data-v="'+esc(r.id)+'">'+t5Ic('file-text')+'<span>Read the risk assessment: '+esc(r.title)+'</span>'+I.chev+'</button>').join('')
       +(hzNoRa.length?'<p class="nora">No risk assessment is linked to '+esc(hzNoRa.map(h=>h.label.charAt(0).toLowerCase()+h.label.slice(1)).join(' or '))+' yet.</p>':'')+'</div>':'')
@@ -2330,20 +2408,28 @@ function t5Act(a,b){
   if(a==='t5Fin'){ F.fin.ans[b.dataset.k]=v; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const n=t.querySelector('[data-act="t5Fin"][data-k="'+b.dataset.k+'"][data-v="'+v+'"]'); if(n) n.focus({preventScroll:true}); return; }
   if(a==='t5SigClear'){ F.fin.strokes=[]; F.fin.at=''; const y=app.querySelector('.tf').scrollTop; render(); app.querySelector('.tf').scrollTop=y; return; }
   if(a==='t5DoneSend'){ if(t5FinWhy(j)){ F.fin.tried=true; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const e=t.querySelector('[role=alert]'); if(e) e.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
-  if(a==='t5Back'&&st.sheet==='jdone'){ st.sheet=false; render(); const f=app.querySelector('[data-act="jobDone"]'); if(f) f.focus(); return; }
+  if(a==='t5Back'&&st.sheet==='jdone'){ st.sheet=false; render(); const f=app.querySelector('[data-act="jobStop"]'); if(f) f.focus(); return; }
   if(!C) return;
   const cards=()=>t5Cards(C), cur=()=>cards()[C.qi];
   const next=()=>{ C.qi++; if(C.qi>=cards().length) C.step='go'; t5Draw(); };
   if(a==='t5Back'){
+    // Not finished, from the job's Stop (DEC-0360 rule 7): Back is the job again.
+    if(C.mode==='stop'){ F.ck=null; st.sheet=false; render(); const f=app.querySelector('[data-act="jobStop"]'); if(f) f.focus(); return; }
     if(C.step==='ra'||C.step==='stop'){ C.step=C.back||'go'; C.back=''; return t5Draw(); }
-    if(C.step==='go'){ if(C.same){ C.same=false; C.step='look'; C.ans={}; C.sorted={}; C.qi=0; return t5Draw(); } C.step='q'; C.qi=Math.max(0,cards().length-1); return t5Draw(); }
+    if(C.step==='go'){ if(C.same){ C.same=false; C.step='look'; C.ans={}; C.sorted={}; C.qi=0; return t5Draw(); }
+      if(!cards().length){ C.step=C.hz.indexOf('height')>=0?'from':'look'; return t5Draw(); }
+      C.step='q'; C.qi=Math.max(0,cards().length-1); return t5Draw(); }
     if(C.step==='q'){ if(C.qi>0){ C.qi--; return t5Draw(); } C.step=C.hz.indexOf('height')>=0?'from':'look'; return t5Draw(); }
     if(C.step==='from'){ C.step='look'; return t5Draw(); }
     st.sheet=false; render(); const f=app.querySelector('[data-act="jobStart"],[data-act="jobRestart"]'); if(f) f.focus(); return; }
   if(a==='t5Hz'){ const i=C.hz.indexOf(v); if(i>=0) C.hz.splice(i,1); else { C.hz.push(v); C.none=false; } C.same=false; render(); const n=app.querySelector('.tf [data-act="t5Hz"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
-  if(a==='t5None'){ C.none=!C.none; if(C.none) C.hz=[]; C.same=false; render(); const n=app.querySelector('.tf [data-act="t5None"]'); if(n) n.focus({preventScroll:true}); return; }
+  // None of These moves straight on to Good to Go, with no Next to press (DEC-0360 rule 2).
+  if(a==='t5None'){ C.none=true; C.hz=[]; C.same=false; C.tried=false; C.from=''; C.kit=''; C.ans={}; C.sorted={}; C.qi=0; C.step='go'; return t5Draw(); }
+  if(a==='t5Other'){ F.t5seen=C.seen; C.otherOpen=true; render(); const t=document.getElementById('t5seen'); if(t) t.focus(); return; }
+  if(a==='t5OtherClose'||a==='t5OtherAdd'){ if(a==='t5OtherAdd') C.seen=String(F.t5seen||'').trim(); C.otherOpen=false; if(C.seen) C.tried=false; render();
+    const n=app.querySelector('.tf [data-act="t5Other"]'); if(n) n.focus({preventScroll:true}); return; }
   if(a==='t5Next'){
-    if(C.step==='look'){ if(!C.hz.length&&!C.none){ C.tried=true; return render(); } C.tried=false; C.ans={}; C.sorted={}; C.qi=0; C.step=C.hz.indexOf('height')>=0?'from':'q'; return t5Draw(); }
+    if(C.step==='look'){ if(!C.hz.length&&!C.none&&!C.seen){ C.tried=true; return render(); } if(C.hz.length) C.none=false; C.tried=false; C.ans={}; C.sorted={}; C.qi=0; C.step=C.hz.indexOf('height')>=0?'from':'q'; return t5Draw(); }
     if(C.step==='from'){ if(!C.from){ C.tried=true; return render(); } C.tried=false; C.qi=0; C.step='q'; return t5Draw(); } return; }
   if(a==='t5From'){ C.from=v; const up=(WFM_CAPTURE_SHAPE.heightFrom||[]).find(h=>h.id===v); if(up&&up.permit) C.kit=''; C.ans={}; C.sorted={}; render(); const n=app.querySelector('.tf [data-act="t5From"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
   if(a==='t5Kit'){ C.kit=v; render(); const n=app.querySelector('.tf [data-act="t5Kit"][data-v="'+CSS.escape(v)+'"]'); if(n) n.focus({preventScroll:true}); return; }
@@ -2476,6 +2562,9 @@ async function jobSend(act){
   if(F.pa){ F.prwhy=''; F.pa=null; }
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
   st.sheet=false; render();
+  // Marked done: the job closes and the list it was opened from comes back, ready for the next (DEC-0381 rule 1).
+  if(act==='done'&&(ok||c.errCode!=='refused')){ if(st.J&&st.J.grp) st.J.state='todo'; const bk=app.querySelector('.zone .ztop [aria-label="Back"]'); if(bk) bk.click();
+    return toast('Job '+(j.no?j.no+' ':'')+'marked done.'+(ok?'':' It sends when there is signal.')); }
   // Sent says itself on the job: the entry reads "Delivered" (DEC-0323). Only a problem is said here.
   if(!ok) toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
 }
@@ -2488,7 +2577,7 @@ function vMissed(){
   const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
   return '<div class="body"><div class="zone"><div class="ztop">'+backBtn('due')+'<span class="eb">'+esc(r.name)+'</span></div><div class="row1"><span class="num n" data-urg style="color:var(--inkRed)">'+w.missed+'</span><span class="what">not walked</span></div>'
     +'<p>The last at <b class="n">'+esc(hm(w.lastMissed))+'</b>, '+esc(day(w.lastMissed))+'. A walk’s time cannot be walked once it has passed; the desk closes each one with a reason on Jobs.'+(w.open?' The next is open now, until <b class="n">'+esc(hm(w.open.end))+'</b>.':'')+'</p>'
-    +(w.open?'<button class="btn" data-act="roundStart" data-id="'+esc(r.id)+'">'+I.scan+'Start the Walk</button>':'')+'</div>'
+    +(w.open?'<button class="btn" data-act="roundStart" data-id="'+esc(r.id)+'">'+I.scan+walkOpenSay(r.id)+'</button>':'')+'</div>'
     +'<div class="list" style="border-top:none">'+f('Walked by',esc(r.walker||'Not chosen'))+(it.linesDue?f('Its lines','not proven since <span class="n">'+esc(day(it.linesDue))+'</span>'):'')+'</div></div>';
 }
 function vWalkInfo(){
@@ -2820,38 +2909,55 @@ function vWalk(){
   if(!r) return '<div class="body">'+formZone('home','Walk','Walk Not Found','This walk is no longer in the site details from the desk. Go back and choose another, or ask the desk to publish again.')+'</div>';
   const seen={}; W.scans.forEach(x=>{ if(!seen[x.point]) seen[x.point]=x; });
   const uns={}; (W.unscanned||[]).forEach(u=>{ uns[u.point]=u; });
-  const n=r.points.filter(id=>seen[id]).length, nu=r.points.filter(id=>uns[id]).length, next=r.points.find(id=>!seen[id]&&!uns[id]), paused=!!W.paused;
+  const n=r.points.filter(id=>seen[id]).length, nu=r.points.filter(id=>uns[id]).length, next=r.points.find(id=>!seen[id]&&!uns[id]), paused=!!W.paused, fresh=!W.started, empty=walkEmpty(W);
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walkQuit')+'<span class="eb">'+esc(r.name)+'</span></div>'
     // Points are scanned in any order (DEC-0293 rule 3); a walk is touch and go (DEC-0361) and can be paused (DEC-0362).
-    +(paused?'<h1>Paused at <span class="n">'+hm(W.paused)+'</span></h1>'
+    +(fresh?'<h1>Not Started</h1>':paused?'<h1>Paused at <span class="n">'+hm(W.paused)+'</span></h1>'
       :next?'<h1>'+(walkTapOn()?'Touch Any Tag':'Scan Any Point')+'</h1>':'<h1>Every Point Done</h1>')
     +'<div class="prog"><i style="width:'+Math.round((n+nu)/Math.max(1,r.points.length)*100)+'%"></i></div>'
     +'<p><b class="n">'+n+'</b> of <b class="n">'+r.points.length+'</b> scanned'+(nu?', <b class="n">'+nu+'</b> would not scan':'')
-    +(paused?', <b class="n">'+walkMins(W)+'</b> minutes walked. It waits on this phone until you come back.':'. Started <b class="n">'+hm(W.started)+'</b>.')+'</p>'
+    +(fresh?'. It starts when you press Start below or '+(walkTapOn()?'touch':'scan')+' the first tag, and its time is taken then.'
+      :paused?', <b class="n">'+walkMins(W)+'</b> minutes walked. It waits on this phone until you come back.':'. Started <b class="n">'+hm(W.started)+'</b>.')+'</p>'
     +(!paused&&next&&NFC_OK&&(st.walkNfc==='off'||st.walkNfc==='denied')?'<p>'+(st.walkNfc==='off'?'NFC is turned off on this phone. Turn it on in the phone’s settings to touch tags, or scan their QR codes.':'This page is not allowed to read tags. Turn it on, or scan the QR codes.')+'</p>':'')
-    +(!paused&&!next?'<button class="btn" data-act="signoff">Finish and Sign Off</button>'
-      :!paused&&st.walkNfc==='denied'?'<button class="btn" data-act="walkNfcOn">Turn On Tap to Scan</button>':'')+'</div>'+waitLine();
+    +(fresh?''
+      :!paused&&!next?'<button class="btn" data-act="signoff">Finish and Sign Off</button>'
+      :!paused&&st.walkNfc==='denied'?'<button class="btn" data-act="walkNfcOn">Turn On Tap to Scan</button>':'')
+    // Started with nothing in it: dropped, and nothing is kept (DEC-0380 rule 2).
+    +(!fresh&&empty?'<p>Nothing is scanned yet, so dropping it keeps nothing.</p><button class="lnk" data-act="walkDrop">Drop This Walk</button>':'')+'</div>'+waitLine();
   if(W.msg) h+='<div class="wait" role="status">'+esc(W.msg)+'</div>';
   if(next&&!paused) h+='<div class="pad"><button class="gh" data-act="unscan">'+I.photo+'The Tag Will Not Scan</button></div>';
   // One list, in walking order; a point done is ticked where it stands (Design 4.11; DEC-0362 rule 5).
   h+=grp(next?'Points, in any order':'Points')+'<div class="list">'+r.points.map(id=>{ const p=pointById(id), s=seen[id], u=uns[id];
     const sub=s?'Scanned at <span class="n">'+hm(s.at)+'</span>':u?'Would not scan: “'+esc(u.reason)+'”'+(u.photo!=null?', photo taken':''):esc(ptWhere(p));
     return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+sub+'</span></span>'+(s?'<span class="ptok" role="img" aria-label="Done">'+I.tick+'</span>':'')+'</div>'; }).join('')+'</div>';
-  return h+'<div style="height:24px"></div></div>'+walkBar(paused);
+  return h+'<div style="height:24px"></div></div>'+walkBar(W);
 }
-// The walk's foot is the main screen's own bar (DEC-0362 rule 1): Pause where Capture sits, Resume when paused.
-function walkBar(paused){
+// The walk's foot is the main screen's own bar (DEC-0362 rule 1): Pause where Capture sits, Resume when paused, Start before
+// it has started, with no Finish until then (DEC-0380 rule 1).
+function walkBar(W){ const paused=!!W.paused, fresh=!W.started;
   return '<nav class="navb" aria-label="Walk"><div class="side"><button class="nv" data-act="scan" data-for="walk">'+I.scan+'<span>QR Code</span></button></div>'
-    +'<button class="nv cap" data-act="'+(paused?'walkResume':'walkPause')+'"><span class="capb">'+(paused?I.play:I.pause)+'</span><span>'+(paused?'Resume':'Pause')+'</span></button>'
-    +'<div class="side"><button class="nv" data-act="signoff">'+I.stop+'<span>Finish</span></button></div></nav>';
+    +'<button class="nv cap" data-act="'+(fresh?'walkGo':paused?'walkResume':'walkPause')+'"><span class="capb">'+(fresh||paused?I.play:I.pause)+'</span><span>'+(fresh?'Start':paused?'Resume':'Pause')+'</span></button>'
+    +'<div class="side">'+(fresh?'':'<button class="nv" data-act="signoff">'+I.stop+'<span>Finish</span></button>')+'</div></nav>';
 }
 // Minutes walked: since it started, less its pauses.
 function walkMins(W){
   const now=Date.now(), off=(W.pauses||[]).reduce((s,x)=>s+((x.until?Date.parse(x.until):now)-Date.parse(x.at)),0);
   return Math.max(0,Math.round((now-Date.parse(W.started)-off)/60000));
 }
-function walkPause(F){ if(F.paused) return; const at=new Date().toISOString(); F.pauses=(F.pauses||[]).concat([{at:at,until:''}]); F.paused=at; nfcStop(); ls.set('wl_walk',walkKeep(F)); }
+function walkPause(F){ if(F.paused||!F.started) return; const at=new Date().toISOString(); F.pauses=(F.pauses||[]).concat([{at:at,until:''}]); F.paused=at; nfcStop(); ls.set('wl_walk',walkKeep(F)); }
 function walkResume(F){ if(!F.paused) return; const ps=F.pauses||[], last=ps[ps.length-1]; if(last&&!last.until) last.until=new Date().toISOString(); F.paused=''; ls.set('wl_walk',walkKeep(F)); }
+// A walk starts on Start or its first tag, never on being opened; only then is it kept on the phone (DEC-0380 rule 1).
+function walkBegin(F){ if(F.started) return; F.started=new Date().toISOString(); ls.set('wl_walk',walkKeep(F)); }
+// Nothing scanned, named or answered: a walk with nothing in it, let go without a record (DEC-0380 rule 2).
+function walkEmpty(W){ return !(W.scans||[]).length&&!(W.unscanned||[]).length&&!Object.keys(W.ans||{}).length&&!(W.noScan||{}).why&&!(W.early||{}).why; }
+function walkDrop(F){ const k=ls.get('wl_walk',null); if(k&&k.round===F.round) ls.del('wl_walk'); nfcStop(); st.form=null; go('due'); }
+// The walk's button on Due and on the round: it opens the walk, or carries on the one kept on this phone.
+function walkOpenSay(id){ const k=ls.get('wl_walk',null); return k&&k.round===id&&k.started?'Carry On the Walk':'Open the Walk'; }
+// A walk kept on this phone waits on Due to be carried on; it never takes over the opening screen (DEC-0380 rule 3).
+function walkCarry(skip){ const W=ls.get('wl_walk',null), r=W&&W.started&&W.round!==skip&&roundById(W.round); if(!r) return '';
+  const n=new Set((W.scans||[]).map(x=>x.point)).size;
+  return grp('Carry on')+'<div class="list">'+rowHtml('roundStart',r.id,'',esc(r.name),(W.paused?'Paused at <span class="n">'+esc(hm(W.paused))+'</span>':'Started <span class="n">'+esc(hm(W.started))+'</span>')
+    +' · <span class="n">'+n+'</span> of <span class="n">'+r.points.length+'</span> scanned')+'</div>'; }
 // The points neither scanned nor named as not scanning: a walk with any is stopped early and says why (DEC-0362 rule 2).
 function walkMissing(W,r){ const s=new Set(W.scans.map(x=>x.point)), u=new Set((W.unscanned||[]).map(x=>x.point)); return r.points.filter(id=>!s.has(id)&&!u.has(id)); }
 // A tag that will not scan: which point, why, and a photo (research §4; DEC-0293).
@@ -2859,12 +2965,14 @@ function vUnscan(){
   const W=st.form, r=roundById(W.round), U=W.u;
   const left=r.points.filter(id=>!W.scans.some(x=>x.point===id)&&!(W.unscanned||[]).some(x=>x.point===id));
   const ph=U.photo!=null?W.photos[U.photo]:null;
+  const T=U.tried, noWhy=!String(U.reason||'').trim(), noPh=U.photo==null;
   return '<div class="body">'+formZone('walkBack',r.name,'The Tag Will Not Scan','Name the point, say why, and take a photo. The walk’s record names it as not scanned.')
+    +(T&&(noWhy||noPh)?needSum([noWhy?'Say why it will not scan':'',noPh?'Take the photo':''].filter(Boolean)):'')
     +'<div class="field"><label for="upt">Which point</label><select id="upt" data-in="upt">'+left.map(id=>{ const p=pointById(id); return '<option value="'+esc(id)+'"'+(U.point===id?' selected':'')+'>'+esc(p?p.name:id)+'</option>'; }).join('')+'</select></div>'
-    +'<div class="field"><label for="ureason">Why it will not scan</label><input id="ureason" type="text" data-in="ureason" value="'+esc(U.reason||'')+'" placeholder="Sticker torn, tag missing, no signal…"></div>'
-    +'<div class="field"><span class="fl">Photo of the point</span><div class="thumbs">'+(ph?'<div class="th" style="background-image:url('+ph.url+')"></div>':'')
-    +'<label class="th add" aria-label="Take the photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="uphoto"></label></div></div><div style="height:24px"></div></div>'
-    +sendBtnAct('unscanSave','Save',String(U.reason||'').trim()&&U.photo!=null,!String(U.reason||'').trim()?'Say why it will not scan.':'Take the photo first.');
+    +'<div class="field'+(T&&noWhy?' need':'')+'"><label for="ureason">Why it will not scan</label><input id="ureason" type="text" data-in="ureason" value="'+esc(U.reason||'')+'" placeholder="Sticker torn, tag missing, no signal…">'+(T&&noWhy?'<div class="unans">Say why it will not scan</div>':'')+'</div>'
+    +'<div class="field'+(T&&noPh?' need':'')+'"><span class="fl">Photo of the point</span><div class="thumbs">'+(ph?'<div class="th" style="background-image:url('+ph.url+')"></div>':'')
+    +'<label class="th add" aria-label="Take the photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="uphoto"></label></div>'+(T&&noPh?'<div class="unans">Take the photo</div>':'')+'</div><div style="height:24px"></div></div>'
+    +'<div class="foot"><button class="btn p" data-act="unscanSave">Save</button></div>';
 }
 // ── Fire Walks on the phone (DEC-0366 rule 5; mockup sandbox/mockups/walk-jobs-2026-10-25, A). The site's walks, as each
 // falls due, are the desk's Fire Walks job group: a slot done carries its walk; a slot whose window has closed with no walk
@@ -2972,48 +3080,58 @@ function vSignoff(){
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walkBack')+'<span class="eb">Sign off</span></div><h1>'+esc(r.name)+'</h1>'
     +'<p><b class="n">'+seen.size+'</b> of <b class="n">'+r.points.length+'</b> points, <b class="n">'+hm(W.started)+'</b> to <b class="n">'+hm(new Date().toISOString())+'</b>.'
     +(nu?' <b class="n">'+nu+'</b> would not scan.':'')+(miss.length?' <b class="n">'+miss.length+'</b> not scanned.':'')+'</p>'
-    +(miss.length?'<button class="lnk" data-act="showMiss" aria-expanded="'+!!W.showMiss+'">'+(W.showMiss?'Hide Them':'Show Them')+'</button>':'')+'</div>'+waitLine();
+    +(miss.length?'<button class="lnk" data-act="showMiss" aria-expanded="'+!!W.showMiss+'">'+(W.showMiss?'Hide Them':'Show Them')+'</button>':'')+'</div>'+waitLine()+(T&&m.length?needSum(signSays(W,r)):'');
   if(miss.length&&W.showMiss) h+='<div class="list">'+miss.map(id=>{ const p=pointById(id); return '<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(p?p.name:id)+'</span><span class="sub">'+esc(ptWhere(p))+'</span></span></div>'; }).join('')+'</div>';
   // No point scanned (DEC-0372): the question is why, not why it stopped, and the lines go in date as claimed.
   if(!seen.size){ const e=W.noScan||{};
-    h+=grp('Why no point was scanned')+'<div class="list" role="radiogroup" aria-label="Why no point was scanned">'+WFM_CAPTURE_SHAPE.noScanWhy.map(x=>{ const on=e.why===x.id;
+    h+=grp('Why no point was scanned')+'<div'+(T&&!e.why?' class="need"':'')+'><div class="list" role="radiogroup" aria-label="Why no point was scanned">'+WFM_CAPTURE_SHAPE.noScanWhy.map(x=>{ const on=e.why===x.id;
       return '<button class="lr'+(on&&x.id==='other'?' lrno':'')+'" role="radio" aria-checked="'+on+'" data-act="noScanWhy" data-v="'+esc(x.id)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(x.label)+'</span></button>'
-        +(on&&x.id==='other'?'<div class="lopen"><div class="field"><label for="noscan-note">Why nothing was scanned</label><input type="text" id="noscan-note" data-in="noscannote" value="'+esc(e.note||'')+'"></div>'
-          +(T&&!String(e.note||'').trim()?'<div class="unans">Say why nothing was scanned</div>':'')+'</div>':''); }).join('')+'</div>'
-      +(T&&!e.why?'<div class="unans" style="margin:8px 16px 0">Say why no point was scanned</div>':'')
+        +(on&&x.id==='other'?'<div class="lopen"><div class="field'+(T&&!String(e.note||'').trim()?' need':'')+'"><label for="noscan-note">Why nothing was scanned</label><input type="text" id="noscan-note" data-in="noscannote" value="'+esc(e.note||'')+'">'
+          +(T&&!String(e.note||'').trim()?'<div class="unans">Say why nothing was scanned</div>':'')+'</div></div>':''); }).join('')+'</div>'
+      +(T&&!e.why?'<div class="unans" style="margin:8px 16px 0">Say why no point was scanned</div>':'')+'</div>'
       +'<p class="say" style="margin:12px 16px 0"><span>With no point scanned, its <b class="n">'+r.lines.length+'</b> lines go in date as claimed, not evidenced.</span></p>';
   }
   else if(miss.length){ const e=W.early||{};
     // The reasons are ring rows, as the lines are (John, 25 Oct: "i hate these pills"); Something else opens in place
     // with its labelled field (Design 10.5).
-    h+=grp('Why it stopped early')+'<div class="list" role="radiogroup" aria-label="Why it stopped early">'+WFM_CAPTURE_SHAPE.earlyWhy.map(x=>{ const on=e.why===x.id;
+    h+=grp('Why it stopped early')+'<div'+(T&&!e.why?' class="need"':'')+'><div class="list" role="radiogroup" aria-label="Why it stopped early">'+WFM_CAPTURE_SHAPE.earlyWhy.map(x=>{ const on=e.why===x.id;
       return '<button class="lr'+(on&&x.id==='other'?' lrno':'')+'" role="radio" aria-checked="'+on+'" data-act="earlyWhy" data-v="'+esc(x.id)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(x.label)+'</span></button>'
-        +(on&&x.id==='other'?'<div class="lopen"><div class="field"><label for="early-note">What stopped the walk</label><input type="text" id="early-note" data-in="earlynote" value="'+esc(e.note||'')+'"></div>'
-          +(T&&!String(e.note||'').trim()?'<div class="unans">Say what stopped it</div>':'')+'</div>':''); }).join('')+'</div>'
-      +(T&&!e.why?'<div class="unans" style="margin:8px 16px 0">Say why it stopped early</div>':'');
+        +(on&&x.id==='other'?'<div class="lopen"><div class="field'+(T&&!String(e.note||'').trim()?' need':'')+'"><label for="early-note">What stopped the walk</label><input type="text" id="early-note" data-in="earlynote" value="'+esc(e.note||'')+'">'
+          +(T&&!String(e.note||'').trim()?'<div class="unans">Say what stopped it</div>':'')+'</div></div>':''); }).join('')+'</div>'
+      +(T&&!e.why?'<div class="unans" style="margin:8px 16px 0">Say why it stopped early</div>':'')+'</div>';
   }
   // Each line is one row: a teal ring, ticked by All OK, crossed by a tap (Design 21.2: pressable is teal, and only that).
   h+=grp('The '+plural(r.lines.length,'line')+' it proves')
     +(W.allOk&&!open?'<div class="wait" role="status">'+(nos?'All OK except <b class="n">'+nos+'</b>':'All OK')+', pressed at <b class="n">'+hm(W.allOk)+'</b>. <button class="lnk" data-act="allOkUndo">Undo</button></div>':'')
     +'<div class="list">';
   r.lines.forEach(id=>{ const l=lineById(id), a=ans(id), what=l?l.what:id, s=a.ok===true?'ok':a.ok===false?'no':'';
-    h+='<button class="lr'+(s==='no'?' lrno':'')+'" data-act="lineTap" data-k="'+esc(id)+'" aria-label="'+esc(what)+(s==='ok'?', OK':s==='no'?', not OK':'')+'"><span class="ring'+(s?' ring-'+s:'')+'">'+(s==='ok'?I.tick:s==='no'?I.close:'')+'</span><span class="w">'+esc(what)+'</span></button>';
+    h+='<button class="lr'+(s==='no'?' lrno':'')+(T&&!s?' need':'')+'" data-act="lineTap" data-k="'+esc(id)+'" aria-label="'+esc(what)+(s==='ok'?', OK':s==='no'?', not OK':'')+'"><span class="ring'+(s?' ring-'+s:'')+'">'+(s==='ok'?I.tick:s==='no'?I.close:'')+'</span><span class="w">'+esc(what)+'</span></button>';
     if(a.ok===false){ const ph=(a.photos||[]).map(k=>W.photos[k]).filter(Boolean), ng=(r.noGroup||{})[id]||'';
-      h+='<div class="lopen"><div class="field"><label for="n-'+esc(id)+'">What is wrong</label><input type="text" id="n-'+esc(id)+'" data-in="ansnote" data-k="'+esc(id)+'" value="'+esc(a.note||'')+'"></div>'
-        +(T&&!String(a.note||'').trim()?'<div class="unans">Say what is wrong</div>':'')
+      h+='<div class="lopen"><div class="field'+(T&&!String(a.note||'').trim()?' need':'')+'"><label for="n-'+esc(id)+'">What is wrong</label><input type="text" id="n-'+esc(id)+'" data-in="ansnote" data-k="'+esc(id)+'" value="'+esc(a.note||'')+'">'
+        +(T&&!String(a.note||'').trim()?'<div class="unans">Say what is wrong</div>':'')+'</div>'
         +ansWhere(W,r,id,a)
-        +'<div class="thumbs">'+ph.map(p=>'<div class="th" style="background-image:url('+p.url+')"></div>').join('')+'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="ansphoto" data-k="'+esc(id)+'"></label></div>'
-        +(T&&!ph.length?'<div class="unans">Take a photo</div>':'')
+        +'<div'+(T&&!ph.length?' class="need"':'')+'><div class="thumbs">'+ph.map(p=>'<div class="th" style="background-image:url('+p.url+')"></div>').join('')+'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="ansphoto" data-k="'+esc(id)+'"></label></div>'
+        +(T&&!ph.length?'<div class="unans">Take a photo</div>':'')+'</div>'
         +'<p class="say">'+(ng?GICO(ng):I.jobs)+'<span>Sign off makes this a job'+(ng?' in <b>'+esc(GROUP(ng))+'</b>':'')+', with what you wrote and the photo. The line stays out of date until the job is done.</span></p></div>'; }
   });
   // One primary (Design 9.1): All OK while lines are open, then Sign Off and Send.
   h+='</div><div style="height:24px"></div></div><div class="foot">'
-    +(T&&m.length?'<div class="unans" role="alert" style="margin:0">Not yet: '+esc(m.length===1?m[0]:m.length+' answers missing')+'.</div>':'')
     +(open?'<button class="btn p" data-act="allOk">'+I.tick+(nos?'All Other Lines OK':'All '+r.lines.length+' Lines OK')+'</button>'
       :'<button class="btn p" data-act="signSend"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':'Sign Off and Send')+'</button>')
     +(W.err?'<div class="note" role="alert"><span class="eb">Not sent</span>'+esc(W.err)+'</div>':'')+'</div>';
   return h;
 }
+// What is still to answer, as instructions in the order they stand on the screen, one for each place marked (Design 8.4).
+function signSays(W,r){ const s=[], none=!(W.scans||[]).length, e=none?(W.noScan||{}):walkMissing(W,r).length?(W.early||{}):null;
+  if(e){ if(!e.why) s.push(none?'Say why no point was scanned':'Say why it stopped early'); else if(e.why==='other'&&!String(e.note||'').trim()) s.push(none?'Say why nothing was scanned':'Say what stopped it'); }
+  r.lines.forEach(id=>{ const a=W.ans[id], l=lineById(id), w=l?l.what:id;
+    if(!a||typeof a.ok!=='boolean') s.push('Answer “'+w+'”');
+    else if(!a.ok){ if(!String(a.note||'').trim()) s.push('Say what is wrong with “'+w+'”'); if(!(a.photos||[]).length) s.push('Take a photo for “'+w+'”'); } });
+  return s; }
+// On submit, the summary at the top links to each place still to answer (Design 9.6); role alert, as it blocks (9.10).
+function needSum(says){ return '<div class="needsum" role="alert"><b>Answer these first:</b>'+says.map((x,i)=>'<button class="lnk" data-act="needGo" data-i="'+i+'">'+esc(x)+'</button>').join('')+'</div>'; }
+// Brings a marked place into view, and puts the cursor in it where it is typed.
+function needGo(i){ const n=app.querySelectorAll('.need')[i||0]; if(!n) return; n.scrollIntoView({block:'center',behavior:'instant'}); const f=n.querySelector('input[type="text"]'); if(f) f.focus({preventScroll:true}); }
 function sendBtnAct(act,label,ok,why){ return '<div class="foot"><button class="btn p" data-act="'+act+'"'+(ok?'':' disabled')+'>'+esc(label)+'</button>'+(ok||!why?'':'<span class="sub">'+esc(why)+'</span>')+'</div>'; }
 // ── The toast (Design 9.10): bottom, 4 s, one line, past tense ───────────────────────────────
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.className='toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
@@ -3320,7 +3438,7 @@ function scanned(text,via){
     const r=roundById(F.round), prev=F.scans.find(x=>x.point===id);
     if(r.points.indexOf(id)<0){ F.msg=(p?p.name:id)+' is not on this round. Nothing was recorded.'; F.msgTone='amber'; }
     else if(prev){ F.msg=(p?p.name:id)+' was already scanned at '+hm(prev.at)+'.'; F.msgTone=''; }
-    else { F.scans.push({point:id,at:at,via:via}); F.msg=(p?p.name:id)+' scanned at '+hm(at)+'.'; F.msgTone='green'; ls.set('wl_walk',F); }
+    else { walkBegin(F); F.scans.push({point:id,at:at,via:via}); F.msg=(p?p.name:id)+' scanned at '+hm(at)+'.'; F.msgTone='green'; ls.set('wl_walk',F); }
   }
   render();
 }
@@ -3362,9 +3480,10 @@ function after(){
 function scanClose(){ scanStop(); st.scanFor=null; render(); }
 document.addEventListener('keydown',e=>{
   if(st.pv&&e.key==='Escape'){ e.preventDefault(); st.pv=null; return render(); }
-  const sh=app.querySelector('.sheet');
+  const sh=app.querySelector('.sheet.t5o')||app.querySelector('.sheet');
   if(sh&&!app.querySelector('.scan')){
-    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobDone"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
+    if(e.key==='Escape'&&st.sheet==='take5'&&st.form&&st.form.ck&&st.form.ck.otherOpen){ e.preventDefault(); return t5Act('t5OtherClose',{dataset:{}}); }
+    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobStop"]',jstop:'[data-act="jobStop"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
     if(e.key==='Tab'){ const f=[...sh.querySelectorAll('button:not([disabled]),textarea,input')]; if(!f.length) return; const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1); e.preventDefault(); f[n].focus(); }
     return;
   }
@@ -3401,16 +3520,18 @@ app.addEventListener('click',async e=>{
   if(a==='flSend') return flSend(b);
   if(a==='flWhy'){ const F=flState(), was=(F.why||{}).id===b.dataset.v; F.why=was?null:{id:b.dataset.v,note:(F.why||{}).note||''}; flKeep(); render(); const i=!was&&document.getElementById('fl-why'); if(i) i.focus(); return; }
   if(a==='walkStart'||a==='roundStart'){ const pr=String(b.dataset.id).split('|'), id=pr[0], from=a==='walkStart'?Number(pr[1]):NaN;
-    const kept=ls.get('wl_walk',null); if(kept&&kept.round===id){ st.form=kept; return go('walk'); }
-    // A walk starts at any time and counts for the walk time pressed (DEC-0347).
-    st.form={kind:'round',round:id,started:new Date().toISOString(),walkFor:isNaN(from)?'':new Date(from).toISOString(),scans:[],unscanned:[],photos:[],ans:{}}; ls.set('wl_walk',walkKeep(st.form)); return go('walk'); }
+    const kept=ls.get('wl_walk',null); if(kept&&kept.round===id){ st.form=Object.assign({unscanned:[],ans:{},photos:[]},kept); return go('walk'); }
+    // A walk counts for the walk time pressed (DEC-0347). Opening it shows it; it starts on Start or the first tag,
+    // and is kept on the phone only then (DEC-0380 rule 1).
+    st.form={kind:'round',round:id,started:'',walkFor:isNaN(from)?'':new Date(from).toISOString(),scans:[],unscanned:[],photos:[],ans:{}}; return go('walk'); }
   if(a==='walkBack'){ return go('walk'); }
   if(a==='unscan'){ const r=roundById(F.round), nx=r.points.find(id=>!F.scans.some(x=>x.point===id)&&!F.unscanned.some(x=>x.point===id));
     if(!nx){ F.msg='Every point is scanned or named.'; F.msgTone=''; return render(); }
     F.u={point:nx,reason:'',photo:null}; return go('unscan'); }
-  if(a==='unscanSave'){ F.unscanned.push({point:F.u.point,reason:String(F.u.reason).trim(),photo:F.u.photo}); const p=pointById(F.u.point);
+  if(a==='unscanSave'){ const U=F.u; if(!String(U.reason||'').trim()||U.photo==null){ U.tried=true; render(); return needGo(); }
+    walkBegin(F); F.unscanned.push({point:F.u.point,reason:String(F.u.reason).trim(),photo:F.u.photo}); const p=pointById(F.u.point);
     F.msg=(p?p.name:F.u.point)+' named as not scanned.'; F.msgTone='amber'; F.u=null; ls.set('wl_walk',walkKeep(F)); return go('walk'); }
-  if(a==='signoff'){ F.tried=false; return go('signoff'); }
+  if(a==='signoff'){ if(!F.started) return; F.tried=false; return go('signoff'); }
   // Not OK on a line, or back: before All OK a line taken back is unanswered again, never OK by itself (Law 1).
   if(a==='ans'){ const v=b.dataset.v==='1', k=b.dataset.k;
     if(v&&!F.allOk) delete F.ans[k]; else { F.ans[k]=F.ans[k]||{note:'',photos:[]}; F.ans[k].ok=v; }
@@ -3433,11 +3554,18 @@ app.addEventListener('click',async e=>{
   if(a==='walkrec') return go('walkrec');
   if(a==='showMiss'){ F.showMiss=!F.showMiss; return render(); }
   if(a==='walkPause'){ walkPause(F); F.msg=''; return render(); }
+  if(a==='walkGo'){ walkBegin(F); F.msg=''; return render(); }
+  if(a==='walkDrop'){ walkDrop(F); return toast('Walk dropped. Nothing was kept.'); }
+  if(a==='needGo') return needGo(Number(b.dataset.i)||0);
   if(a==='walkResume'){ walkResume(F); F.msg=''; return render(); }
   if(a==='signSend'){ const r=roundById(F.round), m=signMissing(F,r);
-    if(m.length){ F.tried=true; render(); const u=app.querySelector('.unans'); if(u) u.scrollIntoView({block:'center'}); return; }
+    if(m.length){ F.tried=true; render(); return needGo(); }
     return doSend(); }
-  if(a==='walkQuit'){ walkPause(F); ls.set('wl_walk',walkKeep(F)); st.form=null; go('due'); return toast('Paused. Start the same walk again to carry on.'); }
+  // Back: a walk never started, or started with nothing in it, keeps nothing; one with scans is paused and waits on Due
+  // (DEC-0380 rules 2 and 3).
+  if(a==='walkQuit'){ if(!F.started){ nfcStop(); st.form=null; return go('due'); }
+    if(walkEmpty(F)){ walkDrop(F); return toast('Walk dropped. Nothing was scanned, so nothing was kept.'); }
+    walkPause(F); ls.set('wl_walk',walkKeep(F)); st.form=null; go('due'); return toast('Walk paused. Carry it on from Due.'); }
   if(a==='pickLoc'){ const l=LOC(b.dataset.id); if(l){ F.loc=l.id; F.place=l.name; F.picked=true; } return render(); }
   if(a==='pickMeter'){ F.meter=b.dataset.id; F.point=''; F.scanErr=''; return render(); }
   if(a==='scan'){ if(F&&F.kind==='round'&&F.paused) walkResume(F); _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
@@ -3535,6 +3663,8 @@ app.addEventListener('click',async e=>{
   if(a==='jobParts'){ F.ptext=''; F.ptried=false; st.sheet='jparts'; render(); const v=document.getElementById('ptext'); if(v) v.focus(); return; }
   if(a==='jpartsSend'){ if(!partsOut(F,true).ok){ F.ptried=true; render(); return; } return jobSend('parts'); }
   if(a==='jobUnflag') return jobSend('unflag');
+  if(a==='jobStop'){ st.sheet='jstop'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
+  if(a==='jobStopTell'){ F.t5word=''; return t5Open('stop'); }
   if(a==='jobDone'){ F.ptext=''; F.ptried=false; F.t5found=''; F.fin={ans:{},strokes:[],at:'',tried:false}; st.sheet='jdone'; t5Draw(); return; }
   // Pause, Restart and Change on Assigned (P5). The desk checks the group and the reason again as it files them.
   if(a==='jobPause'){ F.ptried=false; st.sheet='jpause'; render(); const v=document.getElementById('pwhy'); if(v) v.focus(); return; }
@@ -3601,7 +3731,7 @@ function special(k,el){
   if((st.screen==='chat'||st.screen==='replies')&&(k==='ctext'||k==='ntTitle'||k==='ntText'||/^p_/.test(k))){ F[k]=el.value; if(el.tagName==='TEXTAREA') grow(el);
     const g=app.querySelector('.c-go'); if(k==='ctext'&&g&&!st.hoRec&&!F.voice){ const has=!!(el.value.trim()||F.photos.length||F.mode); g.setAttribute('aria-label',has?'Send':'Record a voice note'); g.innerHTML=has?ICO('arrow-up'):ICO('mic'); }
     return true; }
-  if(st.screen==='job'&&(k==='t5word'||k==='t5found')){ F[k]=el.value; return true; }
+  if(st.screen==='job'&&(k==='t5word'||k==='t5found'||k==='t5seen')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='ptext'){ F.ptext=el.value; return true; }
   if(st.screen==='job'&&k==='prwhy'){ F.prwhy=el.value; return true; }
   if(st.screen==='job'&&k==='pf'){ F.pf=F.pf||{}; F.pf[el.dataset.k]=el.value; return true; }
@@ -4556,7 +4686,10 @@ async function home(){
   jSentPrune(); phPrune().catch(()=>{});
   if(st.screen==='start'){ bootStep(3,'Ready'); await new Promise(r=>setTimeout(r,300)); }
   const walk=ls.get('wl_walk',null);
-  if(walk&&walk.round&&roundById(walk.round)){ st.form=Object.assign({unscanned:[],ans:{},photos:[]},walk); return go('walk'); }
+  // A kept walk with nothing in it is let go; one paused waits on Due; only one still running when the phone closed the
+  // page opens again on it (DEC-0380 rules 2 and 3).
+  if(walk&&(!walk.started||walkEmpty(walk))) ls.del('wl_walk');
+  else if(walk&&walk.round&&roundById(walk.round)&&!walk.paused){ st.form=Object.assign({unscanned:[],ans:{},photos:[]},walk); return go('walk'); }
   go('due');
 }
 async function boot(){
