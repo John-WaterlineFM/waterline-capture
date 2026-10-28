@@ -3155,25 +3155,36 @@ function walkLinkable(){
   return r.points.filter(id=>!F.scans.some(x=>x.point===id)&&!(F.unscanned||[]).some(x=>x.point===id))
     .map(pointById).filter(p=>p&&!p.nfc&&!k[p.id]);
 }
-// The offer (Design 9.1: one primary, the point the walk says is next). Nothing is written to the tag (DEC-0345).
-function vWalkLink(S){
-  const F=st.form, r=roundById(F.round), nextId=r.points.find(id=>!F.scans.some(x=>x.point===id)&&!(F.unscanned||[]).some(x=>x.point===id));
-  const cs=walkLinkable(), nx=cs.find(p=>p.id===nextId);
+// The offer (Design 9.1: one primary, the next one the walk or the round says). Nothing is written to the tag (DEC-0345).
+// Drawn once for a walk and for the flush round (DEC-0379 rule 1): o names the noun, where, what linking also does,
+// the candidates, the next one and the action.
+function vLinkOffer(S,o){
+  const nx=o.next, n=o.noun, N=n.charAt(0).toUpperCase()+n.slice(1);
   // Design 9.5: what happens (the scan as well), and how a wrong link is put right. The button carries the name (4.11).
-  return '<div class="say" role="status">This NFC tag is not linked to a point yet. '+(nx?'Link it to the next point on this walk?':'Pick the point it is on.')
-    +' Linking also counts as that point’s scan. A wrong link is put right by linking the point again. Nothing is written to the tag.</div>'
-    +'<div class="foot">'+(nx?'<button class="btn p" data-act="walkLink" data-id="'+esc(nx.id)+'">Link to '+esc(nx.name)+'</button>':'')
-    +'<button class="btn g" data-act="walkLinkList">'+(nx?'Another Point':'Pick the Point')+'</button>'
+  return '<div class="say" role="status">This NFC tag is not linked to a '+n+' yet. '+(nx?'Link it to the next '+n+' '+o.on+'?':'Pick the '+n+' it is on.')
+    +' '+o.does+' A wrong link is put right by linking the '+n+' again. Nothing is written to the tag.</div>'
+    +'<div class="foot">'+(nx?'<button class="btn p" data-act="'+o.act+'" data-id="'+esc(nx.id)+'">Link to '+esc(nx.name)+'</button>':'')
+    +'<button class="btn g" data-act="walkLinkList">'+(nx?'Another '+N:'Pick the '+N)+'</button>'
     +'<button class="btn g" data-act="walkLinkNo">Not Now</button></div>'
     // Typing narrows the points (John, 25 Oct 2026: "having to scroll through a list of 40 tags is too much").
-    +(S.offerList?'<div class="pick">'+bar('Pick the Point','walkLinkListClose')
-      +'<div class="pad"><input type="text" inputmode="search" id="pt-q" data-in="ptq" autocomplete="off" placeholder="Type part of the point’s name" aria-label="Find the point"></div>'
-      +'<div class="list" id="pt-list">'+cs.map(p=>'<button class="verb" data-act="walkLink" data-id="'+esc(p.id)+'" data-q="'+esc((p.name+' '+(p.where||'')).toLowerCase())+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||ptPlace(p))+'</span></span>'+I.chev+'</button>').join('')+'</div><p class="sub" id="pt-none" hidden style="padding:12px 16px">No point on this walk without a tag matches that.</p></div>':'');
+    +(S.offerList?'<div class="pick">'+bar('Pick the '+N,'walkLinkListClose')
+      +'<div class="pad"><input type="text" inputmode="search" id="pt-q" data-in="ptq" autocomplete="off" placeholder="Type part of the '+n+'’s name" aria-label="Find the '+n+'"></div>'
+      +'<div class="list" id="pt-list">'+o.cs.map(p=>'<button class="verb" data-act="'+o.act+'" data-id="'+esc(p.id)+'" data-q="'+esc((p.name+' '+(p.where||'')).toLowerCase())+'"><span class="m"><span class="nm">'+esc(p.name)+'</span><span class="ln">'+esc(p.where||ptPlace(p))+'</span></span>'+I.chev+'</button>').join('')+'</div><p class="sub" id="pt-none" hidden style="padding:12px 16px">No '+n+' '+o.on+' without a tag matches that.</p></div>':'');
+}
+function vWalkLink(S){
+  const F=st.form, r=roundById(F.round), nextId=r.points.find(id=>!F.scans.some(x=>x.point===id)&&!(F.unscanned||[]).some(x=>x.point===id));
+  const cs=walkLinkable();
+  return vLinkOffer(S,{noun:'point',on:'on this walk',does:'Linking also counts as that point’s scan.',cs:cs,next:cs.find(p=>p.id===nextId)||null,act:'walkLink'});
+}
+// The round's offer: the next tap not yet run (DEC-0379 rules 1 and 2).
+function vFlLink(S){
+  const cs=flLinkable(), F=flState();
+  return vLinkOffer(S,{noun:'tap',on:'on the round',does:'Linking also starts that tap’s flush.',cs:cs,next:cs.find(o=>!(F.runs[o.id]&&F.runs[o.id].t0))||null,act:'flLink'});
 }
 function vScan(){
   const S=st.scanFor;
   if(S.offer) return '<div class="scan" role="dialog" aria-modal="true" aria-label="Link this tag"><div class="top"><button class="ibtn" data-act="scanClose" aria-label="Close">'+I.close+'</button><div class="t">Link This Tag</div><div style="width:44px"></div></div>'
-    +'<div class="vf" style="visibility:hidden"></div>'+vWalkLink(S)+'</div>';
+    +'<div class="vf" style="visibility:hidden"></div>'+(S.for==='flush'?vFlLink(S):vWalkLink(S))+'</div>';
   return '<div class="scan" role="dialog" aria-modal="true" aria-label="Scan a tag"><div class="top"><button class="ibtn" data-act="scanClose" aria-label="Close">'+I.close+'</button><div class="t">Scan a Tag</div><div style="width:44px"></div></div>'
     +'<div class="vf"><video playsinline muted class="'+(S.live?'':'hide')+'"></video><div class="frame"></div></div>'
     +'<div class="say'+(S.err?' err':'')+'"'+(S.err?' role="alert"':' role="status"')+'>'+esc(S.err||S.say||scanHint(S))+'</div>'
@@ -3192,13 +3203,16 @@ const NFC_OK=('NDEFReader' in window)&&window.isSecureContext;
 // Links made on this phone, kept until the desk publishes them in the site file (Design 9.11: queued, never saved).
 function linksKept(){
   const k=ls.get('wl_links',{}), out={};
-  Object.keys(k).forEach(id=>{ const p=pointById(id); if(p&&p.nfc!==k[id].serial) out[id]=k[id]; });
+  Object.keys(k).forEach(id=>{
+    // A tap linked before the desk had a tag for it (DEC-0379 rule 4): kept until the desk publishes a point with its serial.
+    if(id.indexOf('rec:')===0){ if(!points().some(p=>p.nfc===k[id].serial)) out[id]=k[id]; return; }
+    const p=pointById(id); if(p&&p.nfc!==k[id].serial) out[id]=k[id]; });
   if(Object.keys(out).length!==Object.keys(k).length) ls.set('wl_links',out);
   return out;
 }
 function pointBySerial(s){
   const sn=WFM_CAPTURE_SHAPE.serialOf(s); if(!sn) return null;
-  const k=linksKept(), id=Object.keys(k).find(i=>k[i].serial===sn);
+  const k=linksKept(), id=Object.keys(k).find(i=>i.indexOf('rec:')<0&&k[i].serial===sn);
   if(id) return pointById(id);
   return points().find(p=>p.nfc===sn&&!k[p.id])||null;
 }
@@ -3234,8 +3248,11 @@ async function scanStart(){
     // A walk links the tag where the person stands (John, 23 Oct 2026): the next point, or another point of the walk.
     const s=WFM_CAPTURE_SHAPE.serialOf(sn);
     if(S.for==='walk'&&s&&walkLinkable().length){ scanStop(); S.offer={serial:s}; S.err=''; return render(); }
-    S.err=S.for==='walk'&&!s?'This phone did not give the tag’s serial number, so it cannot be linked. Scan its QR code.'
-      :'This NFC tag is not linked to a point. Scan its QR code, or touch it on a walk to link it.'; scanSay();
+    // The flush round links a tap the same way (DEC-0379 rule 1); a tap linked on this phone starts at once (rule 4).
+    if(S.for==='flush'){ const o=flKeptAt(s); if(o){ scanStop(); st.scanFor=null; flTapOutlet(o); return render(); }
+      if(s&&flLinkable().length){ scanStop(); S.offer={serial:s}; S.err=''; return render(); } }
+    S.err=(S.for==='walk'||S.for==='flush')&&!s?'This phone did not give the tag’s serial number, so it cannot be linked. Scan its QR code.'
+      :'This NFC tag is not linked to a point. Scan its QR code, or touch it on a walk or the flush round to link it.'; scanSay();
   }).then(r=>{ S.nfc=r; if(st.scanFor===S&&!S.err&&!S.say) scanSay(); });
   if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ S.live=false; S.say='The camera cannot run live on this connection. Take a photo of the tag instead.'; render(); return; }
   try{
@@ -3450,6 +3467,16 @@ app.addEventListener('click',async e=>{
     let ok=false; try{ ok=await linkSend(p,s); }catch(e){ return toast('The point was scanned, but the link was not sent. Touch the tag again on your next walk to link it.'); }
     if(st.form&&st.form.kind==='round'){ st.form.msg=p.name+' linked and scanned at '+hm(new Date().toISOString())+'.'; st.form.msgTone='green'; render(); }
     return toast(ok?'Linked to '+p.name+'. Sent to the desk.':'Linked to '+p.name+' on this phone. Waiting for signal to send it to the desk.'); }
+  // The round's link (DEC-0379): linking starts the tap's flush when it has not run yet (rule 2).
+  if(a==='flLink'){ const S=st.scanFor, o=flById(b.dataset.id); if(!S||!S.offer||!o) return;
+    const s=S.offer.serial, at=pointBySerial(s)||flKeptAt(s);
+    if(at){ S.offer=null; S.offerList=false; S.err='This tag is already linked to '+at.name+'.'; S.started=false; return render(); }
+    const f=flState().runs[o.id], go1=!(f&&f.t0);
+    scanStop(); st.scanFor=null; if(go1) flStart(o.id); else if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+    render();
+    let ok=false; try{ ok=await flLinkSend(o,s); }catch(e){ return toast((go1?o.name+': flush started. ':'')+'The link was not sent. Touch the tag again on the round to link it.'); }
+    render();
+    return toast((ok?'Linked to '+o.name+'. Sent to the desk.':'Linked to '+o.name+' on this phone. Waiting for signal to send it to the desk.')+(go1?' Flush started.':'')); }
   if(a==='walkLinkList'){ if(st.scanFor){ st.scanFor.offerList=true; render(); const i=document.getElementById('pt-q'); if(i) i.focus(); } return; }
   if(a==='walkLinkListClose'){ if(st.scanFor){ st.scanFor.offerList=false; render(); } return; }
   if(a==='walkLinkNo'){ const S=st.scanFor; if(S&&S.fromWalk) return scanClose(); if(S){ S.offer=null; S.offerList=false; S.started=false; render(); } return; }
@@ -3777,8 +3804,12 @@ function flStart(id){
 }
 function flStop(id){ const F=flState(), f=F.runs[id]; if(!f||!f.t0||f.t1) return; f.t1=Date.now(); flKeep(); flRelay('flushClosed',id); flWake(); }
 function flTapPoint(pt){
-  const F=flState(), p=flOfPoint(pt), f=p&&F.runs[p.id];
+  const p=flOfPoint(pt);
   if(!p) return toast((pt?pt.name:'That tag')+' is not an outlet on the flush round.');
+  flTapOutlet(p);
+}
+function flTapOutlet(p){
+  const F=flState(), f=F.runs[p.id];
   if(f&&f.t0&&!f.t1) return toast(p.name+' is already running.');
   if(f&&f.t1) return toast(p.name+' has been flushed. Open it to run it again.');
   flStart(p.id); toast(p.name+': flush started.');
@@ -3787,8 +3818,31 @@ function flTap(sn){
   if(st.screen!=='flush'||st.scanFor) return;
   if(sn===null){ toast('The tag could not be read. Hold the phone still against it.'); return; }
   const p=pointBySerial(sn);
-  if(!p){ toast('This tag is not linked to a point. Use Scan the Next Tag for its QR code.'); return; }
-  flTapPoint(p); render();
+  if(p){ flTapPoint(p); return render(); }
+  const o=flKeptAt(sn); if(o){ flTapOutlet(o); return render(); }
+  // An unlinked tag offers the link, as a walk does (DEC-0379 rule 1).
+  const s=WFM_CAPTURE_SHAPE.serialOf(sn);
+  if(s&&flLinkable().length){ st.scanFor={for:'flush',offer:{serial:s},started:true,live:false,fromWalk:true}; return render(); }
+  toast(s?'This tag is not linked, and every tap on the round already has a tag. Use Scan the Next Tag for its QR code.'
+    :'This phone did not give the tag’s serial number, so it cannot be linked. Use Scan the Next Tag for its QR code.');
+}
+// The tap a tag was linked to on this phone before the desk had a tag for it (DEC-0379 rule 4).
+function flKeptAt(sn){
+  const s=WFM_CAPTURE_SHAPE.serialOf(sn); if(!s) return null;
+  const k=linksKept(), id=Object.keys(k).find(i=>i.indexOf('rec:')===0&&k[i].serial===s);
+  return id?flById(id.slice(4)):null;
+}
+// The round's taps with no tag yet, in round order: none published by the desk, none linked on this phone.
+function flLinkable(){
+  const k=linksKept();
+  return flOutlets().filter(o=>{ if(k['rec:'+o.id]) return false; const p=o.point?pointById(o.point):null; return !(p&&(p.nfc||k[p.id])); });
+}
+// A tap's link: to its point when the desk has one, else to the outlet itself, and the desk makes the point (rule 3).
+async function flLinkSend(o,s){
+  const p=o.point?pointById(o.point):null; if(p) return linkSend(p,s);
+  const c=await makeCapture('tag',{record:{reg:'waterOutlets',id:o.id},serial:s,place:o.name+(o.where?' · '+o.where:'')},[]);
+  const k=ls.get('wl_links',{}); k['rec:'+o.id]={serial:s,at:new Date().toISOString(),cap:c.id}; ls.set('wl_links',k);
+  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); return ok;
 }
 // Send Round: one reading per outlet run, as Take a Reading sends it, with how long it ran (rule 5).
 async function flSend(b){
