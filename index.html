@@ -586,6 +586,7 @@ body.t-li .tf .zone{--onInkMid:#4A6E8C}
 .tf.lk .same .bi{width:36px;height:36px}
 .tf.lk .same .bi svg{width:20px;height:20px}
 .tf .hz{grid-template-columns:repeat(3,1fr);gap:8px}
+.tf .hz.four{grid-template-columns:repeat(4,1fr)}
 .tf .hc{min-height:88px;padding:8px 6px;gap:6px;align-items:center;justify-content:center;text-align:center}
 .tf .hc .ic{width:44px;height:44px}
 .tf .hc .ic svg{width:24px;height:24px}
@@ -1022,7 +1023,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=f316524a71"></script>
+<script src="shapes.js?v=b99f8e5d90"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1361,7 +1362,11 @@ function render(){
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
   after();
   if(st.sheet==='jdone') t5SigBind();
+  t5Fit();
 }
+// Look's tiles go four across where three across would make it scroll (DEC-0383 rule 6, amending DEC-0360 rule 3).
+function t5Fit(){ const t=app.querySelector('.tf.lk'), hz=t&&t.querySelector('.hz'); if(!hz) return; hz.classList.remove('four');
+  if(t.scrollHeight>t.clientHeight+1) hz.classList.add('four'); }
 // A page's head: its title on navy with the desk's wave under it, as Messages has (DEC-0354 rule 4; John, 24 Oct 2026).
 function pageHead(title,right){ return '<div class="c-hd"><div class="c-t"><h1>'+esc(title)+'</h1>'+(right||'')+'</div>'+WAVE+'</div>'; }
 function head(eb,title,sub){ return '<div class="head"><div class="eb">'+esc(eb)+'</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</div>'; }
@@ -2233,7 +2238,8 @@ function ckFrom(last){ const ans={}, sorted={}; (last.answers||[]).forEach(a=>{ 
 // Drawn as sandbox/mockups/safety-2026-10-23/final.html. The questions, what to wear and what holds Start are the desk's
 // one table (WFM_CAPTURE_SHAPE.take5, Law 3); this page asks them and sends the answers. Stop, Look, Assess, Control, Go.
 const T5=()=>WFM_CAPTURE_SHAPE.take5;
-const t5Ic=n=>LUCIDE[n]?ICO(n):T5L[n]?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+T5L[n]+'</svg>':'';
+// A hazard's picture comes from the one table first (take5.icons; DEC-0383 rule 1), so a hazard added on the desk draws.
+const t5Ic=n=>(T5().icons||{})[n]?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+T5().icons[n]+'</svg>':LUCIDE[n]?ICO(n):T5L[n]?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+T5L[n]+'</svg>':'';
 // A sign is a meaning, never a button (DEC-0342 rule 4): its own colours in every theme, its words beside it or as alt.
 const t5Sign=(c,cls)=>'<img class="'+(cls||'')+'" src="signs/ISO_7010_'+c+'.svg" alt="'+esc(T5().signs[c]||c)+'">';
 function t5Hz(id){ return T5().hazards[id]||null; }
