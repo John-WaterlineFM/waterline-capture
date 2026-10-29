@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v518.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v520.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -148,7 +148,8 @@ const WFM_CAPTURE_SHAPE={
         {id:'a-phone',q:'Phone charged and on you?',hint:'In your pocket, not in the van.',ok:'yes',says:'Phone on you',
           sort:'I’ll Get It First',basis:'HSA guidance on lone working (a way to keep in contact)'}]},
       public:{short:'Residents nearby',icon:'users',wear:[],qs:[
-        {id:'p-keep',q:'Residents and children kept out?',hint:'Lock the door, cone it off or sign it.',ok:'yes',says:'Residents kept out',
+        // A site whose set-up records no child residents is asked noChildren instead (DEC-0384 rule 2, DEC-0338 rule 3).
+        {id:'p-keep',q:'Residents and children kept out?',noChildren:'Residents kept out?',hint:'Lock the door, cone it off or sign it.',ok:'yes',says:'Residents kept out',
           sort:'I’ll Close It Off',basis:'Safety, Health and Welfare at Work Act 2005 s.12'},
         {id:'p-reach',q:'Tools and chemicals out of reach?',hint:'Even when you step away.',ok:'yes',says:'Tools out of reach',
           sort:'I’ll Take Them With Me',basis:'Safety, Health and Welfare at Work Act 2005 s.12'},

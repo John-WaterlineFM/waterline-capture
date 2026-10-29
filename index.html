@@ -21,10 +21,10 @@
    Themes: the desk's THEMES (Design 5.2), Waterline, Light and Night, switched in Settings by anyone (DEC-0303 rule 4). */
 body.t-wl{--cream:#F5F7F9;--white:#FFFFFF;--stone:#E4EEF4;--ink:#0D1F2D;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#0D1F2D;--textMid:#3A5A72;--textMuted:#4A6E8C;--textMS:#4A6E8C;--border:#D4E3EC;--accent:#1E87A8;--accentD:#156B87;--accentOnInk:#3AABC6;--btnFill:#156B87;--btnText:#FFFFFF;--zBtnText:#071320;
-  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A;--sTodo:#F87171;--sDoing:#FACC15;--sDone:#34D399}
+  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A;--sTodo:#F87171;--sDoing:#FACC15;--sDone:#34D399;--inkGreen:#34D399}
 body.t-li{--cream:#F5F7F9;--white:#FFFFFF;--stone:#E4EEF4;--ink:#0D1F2D;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#0D1F2D;--textMid:#3A5A72;--textMuted:#4A6E8C;--textMS:#4A6E8C;--border:#D4E3EC;--accent:#1E87A8;--accentD:#156B87;--accentOnInk:#3995B2;--btnFill:#156B87;--btnText:#FFFFFF;--zBtnText:#071320;
-  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A;--sTodo:var(--jTodo);--sDoing:var(--jDoing);--sDone:var(--jDone)}
+  --red:#DC2626;--redText:#991B1B;--amber:#D97706;--amberText:#92400E;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#DC2626;--jDoing:#B8860B;--jDone:#16A34A;--sTodo:var(--jTodo);--sDoing:var(--jDoing);--sDone:var(--jDone);--inkGreen:#34D399}
 /* Light on the phone (John, 21 Oct 2026, DEC-0310): the desk's Light differs from Waterline only in its sidebar, which the
    phone has not got, so on the phone Light turns the top block white with navy words. Its words, teal and state colours
    take the light-surface tokens; the block keeps its place, its one action and its hairline under it. */
@@ -32,8 +32,10 @@ body.t-li .zone{background:var(--white);border-bottom:1px solid var(--border);--
 body.t-li .zone .prog i,body.t-li .zone .fill,body.t-li .zone .steps span.d{background:var(--text)}
 body.t-ni{--cream:#091624;--white:#0D2035;--stone:#122840;--ink:#071320;--onInk:#FFFFFF;--navMid:rgba(255,255,255,.72);--onInkMid:rgba(255,255,255,.6);--inkTrack:rgba(255,255,255,.16);
   --text:#C8E5F2;--textMid:#6A9BB5;--textMuted:#5490AB;--textMS:#6A9BB5;--border:#1C3A52;--accent:#3AABC6;--accentD:#7ECFE0;--accentOnInk:#5BBDD4;--btnFill:#3AABC6;--btnText:#071320;--zBtnText:#071320;
-  --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#F87171;--jDoing:#FACC15;--jDone:#34D399;--sTodo:var(--jTodo);--sDoing:var(--jDoing);--sDone:var(--jDone)}
+  --red:#F87171;--redText:#F87171;--amber:#FBBF24;--amberText:#FBBF24;--inkRed:#F87171;--inkAmber:#FBBF24;--jTodo:#F87171;--jDoing:#FACC15;--jDone:#34D399;--sTodo:var(--jTodo);--sDoing:var(--jDoing);--sDone:var(--jDone);--inkGreen:#34D399}
 *{box-sizing:border-box;margin:0;padding:0}
+/* A double tap never zooms the page; pinch still does (WCAG 1.4.4; DEC-0384 rule 5). */
+html{touch-action:manipulation}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;min-height:100vh}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:none;text-align:inherit}
@@ -671,6 +673,8 @@ button.pc[disabled]{opacity:.6;cursor:default}
 .done{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 24px 28px}
 .done .tick{width:112px;height:112px;border-radius:50%;background:var(--onInk);color:var(--zBtnText);display:grid;place-items:center;margin-bottom:22px}
 .done .tick svg{width:60px;height:60px;stroke-width:2.5}
+/* Good to Go is a green light: the check's one-line assurance on the hero takes green (Design 5.5, DEC-0384 rule 1). */
+.done .tick.go{background:var(--inkGreen);color:var(--ink)}
 .done h2{font:900 28px/1.2 Sora}
 .done h2:focus{outline:none}
 .done p{color:var(--navMid);margin-top:8px;font-size:15px;line-height:1.5}
@@ -761,6 +765,8 @@ body.t-ni{--sendFill:#1E7D9B;--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#0916
 @keyframes wfmWaveTile{0%{background-position:0 0}100%{background-position:-600px 0}}
 .body>.zone:first-child::after{content:'';display:block;height:22px;margin:16px -16px -24px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='w' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%233AABC6' stop-opacity='.22'/%3E%3Cstop offset='1' stop-color='%233AABC6' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0' fill='none' stroke='rgba(255,255,255,.35)' stroke-width='1.4'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0' fill='none' stroke='%233AABC6' stroke-width='1.2' opacity='.8'/%3E%3Cpath d='M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0L1200 40L0 40Z' fill='url(%23w)'/%3E%3C/svg%3E") repeat-x 0 0/600px 22px;animation:wfmWaveTile 8s linear infinite}
 @media (prefers-reduced-motion:reduce){.body>.zone:first-child::after{animation:none}}
+/* A tab strip's underline sits above the wave, never on it (DEC-0384 rule 3): its -16px meets the wave's 16px. */
+.body>.zone:first-child>.sw{margin-bottom:-16px}
 .c-hd{background:var(--ink);color:#FFFFFF;padding:16px;position:sticky;top:0;z-index:3}
 .c-t{display:flex;align-items:center;gap:12px}
 .c-t>.ib{margin:-8px -8px -8px 0;color:var(--accentOnInk)}
@@ -1016,7 +1022,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 </head>
 <body>
 <main id="app"></main>
-<script src="shapes.js?v=b0b5a0d107"></script>
+<script src="shapes.js?v=f316524a71"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -2231,6 +2237,8 @@ const t5Ic=n=>LUCIDE[n]?ICO(n):T5L[n]?'<svg viewBox="0 0 24 24" fill="none" stro
 // A sign is a meaning, never a button (DEC-0342 rule 4): its own colours in every theme, its words beside it or as alt.
 const t5Sign=(c,cls)=>'<img class="'+(cls||'')+'" src="signs/ISO_7010_'+c+'.svg" alt="'+esc(T5().signs[c]||c)+'">';
 function t5Hz(id){ return T5().hazards[id]||null; }
+// A question in this site's words: where its set-up records no child residents, children are left out (DEC-0384 rule 2).
+const t5SiteQ=q=>q.noChildren&&SITE().childResidents===false?Object.assign({},q,{q:q.noChildren}):q;
 // The cards this check asks, in the site's order: each hazard tapped, then the question every job asks (DEC-0341 rule 2).
 // Working from above a stepladder is one card that holds Start for its permit (DEC-0313 rule 3).
 function t5Cards(C){
@@ -2238,7 +2246,7 @@ function t5Cards(C){
   if(!C.none) (SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0).forEach(h=>{ const H=t5Hz(h.id); if(!H) return;
     if(h.id==='height'&&hf&&hf.permit){ out.push({h:'height',q:{id:'h-permit',q:hf.label+' needs a permit to work',hint:'',ok:'none',says:'Permit',
       hold:hf.label+' needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:WFM_CAPTURE_SHAPE.permitFor.height}}); return; }
-    H.qs.forEach(q=>out.push({h:h.id,q:q})); });
+    H.qs.forEach(q=>out.push({h:h.id,q:t5SiteQ(q)})); });
   T5().every.forEach(q=>out.push({h:'',q:q}));
   return out;
 }
@@ -2325,7 +2333,7 @@ function vTake5(){
     const w=c.q.ok==='none'?c.q.hold.replace(/\.$/,''):!ok&&s?(c.q.sortSays||s):!ok&&c.q.hold?c.q.hold.replace(/\.$/,''):c.q.says||c.q.q;
     return '<li class="okr"><span class="bi">'+t5Ic(H?H.icon:c.q.icon||'wrench')+'</span><span>'+esc(w)+'</span><em>'+(c.q.ok==='none'||(!ok&&c.q.hold)?(c.q.permit&&jPerms(j).some(p=>p.type===c.q.permit&&p.state==='Active')?'Issued':'Held'):!ok&&s?'Sorted':a==='yes'?'Yes':'No')+'</em></li>'; };
   const hzNoRa=C.none?[]:(SITE().hazards||[]).filter(h=>C.hz.indexOf(h.id)>=0&&!ras.some(r=>((r.for||{}).hazards||[]).indexOf(h.id)>=0));
-  const top=good?'<div class="done"><span class="tick">'+I.tick+'</span><h2 data-t5focus tabindex="-1">Good to Go</h2><p>'+esc([jWhere(j)||j.title,st.walker,when].filter(Boolean).join(' · '))+'</p></div>'
+  const top=good?'<div class="done"><span class="tick go">'+I.tick+'</span><h2 data-t5focus tabindex="-1">Good to Go</h2><p>'+esc([jWhere(j)||j.title,st.walker,when].filter(Boolean).join(' · '))+'</p></div>'
     :'<div class="done"><span class="tick held">'+t5Ic('octagon-x')+'</span><h2 data-t5focus tabindex="-1">'+(held.length?'Start is held':'Waiting for the permit')+'</h2><p>'
       +esc(held.length?held.map(c=>c.q.hold+' '+c.q.clear).join(' '):miss.join(' and ')+(miss.length===1?' needs':' need')+' a permit to work. '+issuerSay()+' Start the Job comes back once it is issued.')+'</p></div>';
   const go=good?'<button class="btn" data-act="t5Start">'+I.play+'Start the Job</button>'
@@ -4671,6 +4679,14 @@ app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]')
 app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
 app.addEventListener('touchend',e=>{ if(!_sw) return; const S0=_sw; _sw=null; S0.el.style.transform=''; const dx=(e.changedTouches[0]||{}).clientX-S0.x;
   if(dx>64&&st.screen==='chat'){ st.form.replyTo=S0.id; st.form.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); } });
+// Swipe left or right in a group to move between To Do, In Progress and Done, as the tabs do (DEC-0384 rule 4).
+let _gsw=null;
+app.addEventListener('touchstart',e=>{ _gsw=st.screen==='jobs'&&st.J&&st.J.grp&&!st.sheet&&e.touches.length===1&&!e.target.closest('input,textarea,.sheet')?{x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}:null; },{passive:true});
+app.addEventListener('touchcancel',()=>{ _gsw=null; },{passive:true});
+app.addEventListener('touchend',e=>{ if(!_gsw) return; const S0=_gsw, t=e.changedTouches[0]; _gsw=null; if(!t||st.screen!=='jobs'||!st.J.grp||st.sheet) return;
+  const dx=t.clientX-S0.x, dy=t.clientY-S0.y; if(Math.abs(dx)<64||Math.abs(dx)<2*Math.abs(dy)||Date.now()-S0.t>800) return;
+  const T=['todo','doing','done'], i=T.indexOf(st.J.state)+(dx<0?1:-1); if(i<0||i>=T.length) return;
+  st.J.state=T[i]; render(); });
 let _clp=null;
 let _clpHeld=false;
 // The click a long press ends with is not a click, however long the finger stays down: the window starts again as it lifts.
