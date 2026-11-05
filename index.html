@@ -1022,6 +1022,24 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 </style>
 </head>
 <body>
+<div id="iv" aria-hidden="true" style="position:fixed;inset:0;z-index:999;pointer-events:none">
+  <div id="iv-bg" style="position:absolute;inset:0;background:#F5F7F9"></div><script>try{if(JSON.parse(localStorage.getItem("wl_theme")||"0")==="ni")document.getElementById("iv-bg").style.background="#091624";}catch(e){}</script>
+  <div id="iv-hi" style="position:absolute;left:24px;right:24px;bottom:calc(64px + env(safe-area-inset-bottom));text-align:center;font:400 30px/1.25 'DM Sans',sans-serif;letter-spacing:-.01em;color:#3A5A72;opacity:0;will-change:transform,opacity"></div>
+  <img id="iv-lg" alt="" style="position:absolute;left:calc(50% - 120px);top:255px;width:240px;height:151px;opacity:0;will-change:transform,opacity">
+  <!-- the wave: the phone's own three paths, drawn where the line was; stirred while the phone loads, calm once it has -->
+  <div id="iv-wv" style="position:absolute;left:0;width:100%;height:22px;overflow:visible;line-height:0;will-change:transform">
+    <div id="iv-cl" style="position:absolute;inset:-60px 0;overflow:hidden;clip-path:inset(0 100% 0 0)">
+      <div id="iv-sy" style="position:absolute;left:0;top:60px;width:100%;height:22px;transform-origin:0 5.5px">
+        <svg id="iv-sv" viewBox="0 0 2400 40" preserveAspectRatio="none" fill="none" style="width:200%;height:22px;display:block;overflow:visible">
+          <defs><linearGradient id="ivWash" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3AABC6" stop-opacity="0.22"/><stop offset="100%" stop-color="#3AABC6" stop-opacity="0"/></linearGradient></defs>
+          <path id="iv-p3" d="M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 L2400 40 L0 40 Z" fill="url(#ivWash)" opacity="0"/>
+          <path id="iv-p1" d="M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0" stroke="rgba(255,255,255,.35)" stroke-width="1.4" opacity="0"/>
+          <path id="iv-p2" d="M0 10c100-4 200-4 300 0s200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0 200-4 300 0 200 4 300 0" stroke="#3AABC6" stroke-width="3" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
 <main id="app"></main>
 <script src="shapes.js?v=b99f8e5d90"></script>
 <script>
@@ -4706,7 +4724,7 @@ async function home(){
   st.outbox=await obAll().catch(()=>st.outbox);
   if(st.outbox.length&&navigator.onLine!==false) await sendKept();
   jSentPrune(); phPrune().catch(()=>{});
-  if(st.screen==='start'){ bootStep(3,'Ready'); await new Promise(r=>setTimeout(r,300)); }
+  if(st.screen==='start') bootStep(3,'Ready');
   const walk=ls.get('wl_walk',null);
   // A kept walk with nothing in it is let go; one paused waits on Due; only one still running when the phone closed the
   // page opens again on it (DEC-0380 rules 2 and 3).
@@ -4745,6 +4763,147 @@ if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefres
 // Keeps the page itself on the phone so it opens with no signal (DEC-0287 rule 3). Not in the check.
 if('serviceWorker' in navigator&&!testStore()&&location.protocol==='https:') navigator.serviceWorker.register('sw.js').catch(()=>{});
 boot();
+</script>
+<script>
+// The opening (job 015 slice SU; DEC-0400 to DEC-0406). On the day's first open: the greeting at the foot, the site's
+// logo on the page, Waterline's wave drawn under it, stirred and quick while the phone loads. When the first screen is
+// drawn the wave rises, the logo locked to it and fading, and settles as it rises (smaller, slower, thinner) until it
+// is that screen's own wave, in its place and moving with it; then the opening goes. Every later open that day: the
+// wave alone, stirred where the screen's wave is, settling when the screen is ready. It follows the load, never a timer.
+(function(){
+  // full on the phone's first open of the day, quick after
+  const today=new Date().toDateString(); let SHORT=false;
+  try{ SHORT=localStorage.getItem('wl_introDay')===today; localStorage.setItem('wl_introDay',today); }catch(e){}
+  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EXP='cubic-bezier(0.4, 0.14, 0.3, 1)', IO='cubic-bezier(0.65, 0, 0.35, 1)', $=id=>document.getElementById(id);
+  const th=(function(){ try{ return JSON.parse(localStorage.getItem('wl_theme')||'"wl"'); }catch(e){ return 'wl'; } })();
+  $('iv-bg').style.background=th==='ni'?'#091624':'#F5F7F9';
+  const t0=performance.now(); let endAt=0;
+  const now=()=>performance.now()-t0;
+  function an(el,kf,o){ const at=o.delay||0;
+    const a=el.animate(kf,Object.assign({fill:'both',easing:IO},o,{delay:Math.max(0,at-now())})); endAt=Math.max(endAt,at+(o.duration||0)); return a; }
+  const fade=(el,at,dur,a,b)=>an(el,[{opacity:a==null?0:a},{opacity:b==null?1:b}],{delay:at,duration:dur||440});
+  const lg=$('iv-lg'), bg=$('iv-bg'), iv=$('iv'), wv=$('iv-wv'), cl=$('iv-cl'), sy=$('iv-sy'), sv=$('iv-sv'), p2=$('iv-p2'), hi=$('iv-hi');
+  // Who is holding the phone, as the phone keeps it. Signed in, the phone opens on Due and the greeting has a name;
+  // not yet (the first open on a phone), it opens on Who Are You and the greeting has none.
+  const who=(function(){ try{ return JSON.parse(localStorage.getItem('wl_who')||sessionStorage.getItem('wl_who')||'null'); }catch(e){ return null; } })();
+  const signedIn=!!(who&&who.name&&who.pos), first=(who&&who.name||'').trim().split(/\s+/)[0]||'';
+  const h=new Date().getHours(), part=h>=5&&h<12?'morning':h>=12&&h<17?'afternoon':'evening';
+  // Familiar, as an assistant who knows you says it (John: "its familiar. its your guide, its your assistant"; "just
+  // not punctuated as you have. nor in start black bold lettering"): "Morning John", light, in the soft slate.
+  hi.textContent=part[0].toUpperCase()+part.slice(1)+(first?' '+first:'');
+  if(th==='ni') hi.style.color='#C8E5F2';
+  // Any site's logo, as uploaded (John: "your not designing for my logo. your designing for any logo uploaded").
+  // 1. A solid ground (all four corners one colour) is taken out, colour to alpha, so the logo sits on the page.
+  // 2. It is trimmed to what is drawn and fitted by its shape into 260 x 150, standing on one baseline above the wave.
+  // 3. On this theme's ground, if over a quarter of what is drawn falls under 2:1 (all but vanishing) and the logo
+  //    does not carry its own ground (a block with its words inside), it shows in one colour: ink on a light page,
+  //    white on Night. A logo that reads keeps its own colours.
+  const GROUND=th==='ni'?[9,22,36]:[245,247,249], BOX={w:260,h:150}, BASE=406;
+  (function prep(){
+    const im=new Image(); im.onload=()=>{
+      const S=Math.min(1,600/Math.max(im.width,im.height)), W=Math.round(im.width*S), H=Math.round(im.height*S);
+      const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'); x.drawImage(im,0,0,W,H);
+      const D=x.getImageData(0,0,W,H), p=D.data, at=(i,j)=>4*(j*W+i);
+      const cs=[at(2,2),at(W-3,2),at(2,H-3),at(W-3,H-3)].map(k=>[p[k],p[k+1],p[k+2],p[k+3]]);
+      const same=cs.every(q=>q[3]>250&&Math.max(...q.slice(0,3).map((v,n)=>Math.abs(v-cs[0][n])))<30);
+      if(same){ const g=cs[0].slice(0,3).map(v=>v/255);
+        // only the ground joined to the edges goes: white words inside a red block stay
+        const near=k=>Math.max(Math.abs(p[k]-cs[0][0]),Math.abs(p[k+1]-cs[0][1]),Math.abs(p[k+2]-cs[0][2]))<90;
+        const out=new Uint8Array(W*H), q=[]; for(let i=0;i<W;i++){ q.push(i,(H-1)*W+i); } for(let j=0;j<H;j++){ q.push(j*W,j*W+W-1); }
+        while(q.length){ const n=q.pop(); if(out[n]||!near(4*n)) continue; out[n]=1; const i=n%W, j=(n-i)/W;
+          if(i>0)q.push(n-1); if(i<W-1)q.push(n+1); if(j>0)q.push(n-W); if(j<H-1)q.push(n+W); }
+        // a logo drawn on its own block (one colour over 40% of what is not ground) keeps the ground colour inside
+        // that block (its words); anywhere else the ground colour goes, holes in letters included
+        const bn={}; let nn=0; for(let k=0;k<p.length;k+=4){ if(out[k/4]||near(k)) continue; nn++; const key=(p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5); bn[key]=(bn[key]||0)+1; }
+        const dm=Object.entries(bn).sort((a,b)=>b[1]-a[1])[0]; let bb=null;
+        if(dm&&dm[1]/nn>.4){ bb=[W,H,-1,-1]; for(let j=0;j<H;j++) for(let i=0;i<W;i++){ const k=at(i,j); if(!out[j*W+i]&&((p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5))===dm[0]){ if(i<bb[0])bb[0]=i; if(j<bb[1])bb[1]=j; if(i>bb[2])bb[2]=i; if(j>bb[3])bb[3]=j; } } }
+        const inBlock=n=>{ if(!bb) return false; const i=n%W, j=(n-i)/W; return i>bb[0]&&i<bb[2]&&j>bb[1]&&j<bb[3]; };
+        for(let k=0;k<p.length;k+=4){ const n=k/4; if(!out[n]&&(!near(k)||inBlock(n))) continue; const c3=[p[k]/255,p[k+1]/255,p[k+2]/255];
+          let a=0; c3.forEach((v,n)=>{ const gn=g[n]; const d=v>gn?(gn<1?(v-gn)/(1-gn):0):(gn>0?(gn-v)/gn:0); if(d>a) a=d; });
+          a=a<.04?0:a; if(a>0) for(let n=0;n<3;n++) p[k+n]=Math.round(Math.max(0,Math.min(1,(c3[n]-g[n]*(1-a))/a))*255);
+          p[k+3]=Math.round(a*(p[k+3]/255)*255); } }
+      // trim
+      let x0=W,y0=H,x1=-1,y1=-1; for(let j=0;j<H;j++) for(let i=0;i<W;i++) if(p[at(i,j)+3]>25){ if(i<x0)x0=i; if(i>x1)x1=i; if(j<y0)y0=j; if(j>y1)y1=j; }
+      if(x1<0){ x0=0;y0=0;x1=W-1;y1=H-1; }
+      // reading on this ground
+      const L=(r,g,b)=>{ const f=v=>{ v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4); }; return .2126*f(r)+.7152*f(g)+.0722*f(b); };
+      const CR=(a,b)=>(Math.max(a,b)+.05)/(Math.min(a,b)+.05), Lg=L(...GROUND);
+      let ink=0, weak=0; const bins={};
+      // logos are exempt from WCAG's contrast minimums (1.4.3, 1.4.11), so a brand's own colours stand unless the
+      // logo would all but vanish: under 2:1 against this ground
+      for(let k=0;k<p.length;k+=4){ if(p[k+3]<128) continue; ink++; if(CR(L(p[k],p[k+1],p[k+2]),Lg)<2) weak++;
+        const key=(p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5); bins[key]=(bins[key]||0)+1; }
+      // its own ground: one colour over 40% of what is drawn, with something inside it at 3:1 against it
+      const top=Object.entries(bins).sort((a,b)=>b[1]-a[1])[0]; let block=false;
+      if(top&&top[1]/ink>.4){ const [r,g,b]=top[0].split('-').map(v=>v*32+16), Lb=L(r,g,b); let inner=0;
+        for(let k=0;k<p.length;k+=4){ if(p[k+3]>=128&&CR(L(p[k],p[k+1],p[k+2]),Lb)>=3) inner++; } block=inner/ink>.05; }
+      const mono=!block&&ink&&weak/ink>.25;
+      if(mono){ const col=th==='ni'?[255,255,255]:[13,31,45];
+        for(let k=0;k<p.length;k+=4){ p[k]=col[0];p[k+1]=col[1];p[k+2]=col[2]; p[k+3]=Math.min(255,Math.round(p[k+3]*1.6)); } }
+      x.putImageData(D,0,0);
+      const tw=x1-x0+1, thh=y1-y0+1, o=document.createElement('canvas'); o.width=tw; o.height=thh; o.getContext('2d').drawImage(c,x0,y0,tw,thh,0,0,tw,thh);
+      const f=Math.min(BOX.w/tw,BOX.h/thh), w=Math.round(tw*f), hh=Math.round(thh*f);
+      Object.assign(lg.style,{width:w+'px',height:hh+'px',left:'calc(50% - '+(w/2)+'px)',top:(BASE-hh)+'px'});
+      lg.src=o.toDataURL('image/png');
+    };
+    im.src='push/icon-512.png';
+  })();
+  // The two waves the phone draws: Due's head (2400 units across 750px, a 375px loop) and the wave under a screen's
+  // first block (a 1200-unit tile 600px wide, a 600px loop). The opening draws the one it will land on.
+  const TILE=!signedIn; if(TILE){ sv.style.width='1200px'; }
+  const LOOP=TILE?600:375;
+  // Every later open (John: "the shorted load is also pointless with the logo"): no logo, no greeting; the wave is
+  // already where Due's is, stirred while the phone loads, and settles there when Due is ready.
+  if(SHORT){ lg.style.display='none'; hi.style.display='none'; }
+  const Y0=SHORT?57.5:426, STIR=SHORT?2.6:3.4, FAST=3;   // how much bigger, and how much quicker, the wave runs while loading
+  wv.style.top=(Y0-5.5)+'px';                            // the teal path's middle (y 10 of 40 at 22px) on the line
+  const K=SHORT?{lgD:0,dr:0,drD:400,up:450,upD:700}:{lgD:700,dr:500,drD:1500,up:2300,upD:1500};
+  // the wave's own loop, run quicker while loading
+  const flow=sv.animate([{transform:'translateX(0)'},{transform:'translateX(-'+LOOP+'px)'}],{duration:8000,iterations:Infinity});
+  if(RM){ lg.style.opacity=1; hi.style.opacity=SHORT?0:1; cl.style.clipPath='none'; flow.pause(); }
+  else {
+    flow.playbackRate=FAST; sy.style.transform='scaleY('+STIR+')';
+    fade(lg,0,K.lgD);
+    // the greeting, on the day's first open only
+    // (John: "have the welcome on the bottom of the screen and not tied to the animation": it stands at the foot,
+    // comes in at once, and goes only when the opening does)
+    if(!SHORT) fade(hi,100,600);
+    an(cl,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],{delay:K.dr,duration:K.drD});
+  }
+  (function wait(){
+    // where it lands: Due's head wave, or the wave under the first block of Who Are You (a ::after on the zone)
+    let r=null, ra=null;
+    if(!TILE){ const hd=document.querySelector('.c-hd'), rw=hd&&hd.querySelector('.c-wv'), real=rw&&rw.querySelector('.c-wave');
+      if(real){ r=rw.getBoundingClientRect(); ra=real.getAnimations()[0]; } }
+    else { const z=document.querySelector('.body>.zone:first-child');
+      if(z&&!document.querySelector('.splash')){ const b=z.getBoundingClientRect(); r={left:b.left,top:b.bottom-22,width:b.width,height:22};
+        ra=z.getAnimations({subtree:true}).find(a=>a.effect&&a.effect.pseudoElement==='::after')||null; } }
+    if(!r){ return setTimeout(wait,40); }
+    const at=Math.max(K.up,now()), DY=r.top-(Y0-5.5);
+    if(RM){ wv.style.transform='translateY('+DY+'px)'; fade(iv,at,440,1,0); }
+    else {
+      // loaded: the wave rises and settles; the logo moves locked to it (the same curve, the same distance)
+      const rise=[{transform:'translateY(0)'},{transform:'translateY('+DY+'px)'}];
+      an(wv,rise,{delay:at,duration:K.upD,easing:EXP,fill:'forwards'});
+      an(lg,rise,{delay:at,duration:K.upD,easing:EXP});
+      an(lg,[{opacity:1},{opacity:0}],{delay:at+K.upD*.2,duration:K.upD*.5,easing:IO});
+      an(sy,[{transform:'scaleY('+STIR+')'},{transform:'scaleY(1)'}],{delay:at,duration:K.upD+300,easing:'cubic-bezier(0.3, 0, 0.2, 1)'});
+      an(p2,[{strokeWidth:'3px'},{strokeWidth:'1px'}],{delay:at,duration:K.upD+300});
+      // the flow slows to the page's own pace as it settles
+      const steps=24; for(let i=1;i<=steps;i++) setTimeout(()=>{ flow.updatePlaybackRate(FAST+(1-FAST)*(1-Math.pow(1-i/steps,2))); },Math.max(0,at-now())+(K.upD+300)*i/steps);
+      const M=at+K.upD;
+      fade(bg,M-200,SHORT?250:500,1,0); if(!SHORT) fade(hi,M-750,500,1,0);   // gone before Due's bar shows through
+      fade($('iv-p1'),M-200,500); fade($('iv-p3'),M-200,500);
+      // the real wave takes over, in step: the overlay goes once it moves with it
+      // (the page's wave, hidden under the opening, is set to the opening's place in the loop, so nothing jumps)
+      setTimeout(()=>{ flow.playbackRate=1; if(ra) ra.currentTime=flow.currentTime%8000; },Math.max(0,M+300-now()));
+      fade(wv,M+400,300,1,0);
+      endAt=Math.max(endAt,M+700);
+    }
+    setTimeout(()=>{ iv.remove(); },endAt-now()+40);
+  })();
+})();
 </script>
 </body>
 </html>
