@@ -165,7 +165,7 @@ svg{width:24px;height:24px;flex:none;display:block}
 .field{padding:16px 16px 0}
 .field>label,.field>.fl{display:block;font:600 12px Outfit;color:var(--text);margin-bottom:8px}
 .field .opt-w{color:var(--textMuted)}
-textarea,input[type=text],input[type=url],input[type=search],input[type=number],input[type=time],select{width:100%;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:12px;font-size:16px;line-height:1.4;min-height:48px;color:var(--text)}
+textarea,input[type=text],input[type=url],input[type=email],input[type=password],input[type=search],input[type=number],input[type=time],select{width:100%;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:12px;font-size:16px;line-height:1.4;min-height:48px;color:var(--text)}
 textarea{min-height:96px;resize:vertical}
 ::placeholder{color:var(--textMuted);opacity:1}
 .help{font-size:12px;line-height:1.4;color:var(--textMuted);margin-top:8px}
@@ -769,6 +769,38 @@ body.t-ni{--sendFill:#1E7D9B;--unreadText:#4ADE80;--avMgr:#1C3A52;--chatBg:#0916
 /* A tab strip's underline sits above the wave, never on it (DEC-0384 rule 3): its -16px meets the wave's 16px. */
 .body>.zone:first-child>.sw{margin-bottom:-16px}
 .c-hd{background:var(--ink);color:#FFFFFF;padding:16px;position:sticky;top:0;z-index:3}
+/* Sign-in (DEC-0408, DEC-0409): the phone's own head in whichever theme is on, the site's logo and the greeting in it,
+   the navy filled down to the wave (the tide line: no straight cut, no hairline in Light); one question below it. */
+.body.si{padding-top:0}
+.zone.si-hd{padding:calc(16px + env(safe-area-inset-top)) 16px 0;text-align:center}
+body.t-li .zone.si-hd{border-bottom:0}
+.body>.zone.si-hd:first-child::after{display:none}
+.si-logo{width:140px;height:76px;margin:0 auto;display:flex;align-items:flex-end;justify-content:center}
+.si-logo img{max-width:140px;max-height:76px;display:block}
+.zone h1.si-greet{font:400 30px/1.25 'DM Sans',sans-serif;letter-spacing:-.01em;color:var(--onInk);margin-top:20px}
+.si-tide{height:22px;line-height:0;overflow:hidden;margin:8px -16px 0}
+.si-tide .sea{fill:var(--cream)}
+.si-tide .ln{stroke:var(--accentOnInk)}
+body.t-li .si-tide .ln{stroke:var(--accent)}
+.si-main{padding:12px 16px 24px}
+.si-say{color:var(--textMid)}
+.si-lab{display:block;font:600 12px/1.4 Outfit;color:var(--text);margin-bottom:8px}
+.si-lrow,.si-who{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.si-lrow .si-lab{margin-bottom:0}
+.si-who .e{font:500 15px/1.4 'DM Sans';color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.si-box{position:relative}
+.si input{width:100%;height:48px;padding:12px;border-radius:8px;border:1.5px solid var(--textMuted);background:var(--white);color:var(--text);font:400 16px/1.4 'DM Sans',sans-serif}
+.si .bad input{border-width:2px;padding:11.5px}
+.si input#pw{padding-right:84px}
+.si .bad input#pw{padding-right:83.5px}
+.si input#pw[type=password]{letter-spacing:2px}
+.si-eye{position:absolute;right:2px;top:2px;min-width:44px;height:44px;padding:0 10px;display:flex;align-items:center;gap:4px;color:var(--accentD);font:600 13px Outfit;border-radius:6px}
+.si-eye svg{width:20px;height:20px}
+.si-err{display:flex;gap:8px;align-items:flex-start;font:500 12px/1.4 'DM Sans';color:var(--text);margin-top:8px}
+.si-err svg{width:16px;height:16px}
+.si .note{margin:0}
+.si .note b{color:var(--text);font-weight:500}
+.si-g12{height:12px}.si-g16{height:16px}.si-g24{height:24px}
 .c-t{display:flex;align-items:center;gap:12px}
 .c-t>.ib{margin:-8px -8px -8px 0;color:var(--accentOnInk)}
 .c-t>.ib:first-child{margin:-8px -4px -8px -12px}
@@ -1041,7 +1073,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
   </div>
 </div>
 <main id="app"></main>
-<script src="shapes.js?v=b99f8e5d90"></script>
+<script src="shapes.js?v=8ca5d7b028"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1049,28 +1081,63 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 // code 'exists' if the file is already there (DEC-0265 rule 2). read(path) gives text, or null when
 // the file is not there. Nothing on this page deletes, renames or edits a file.
 // The real backing is the site's Google relay (DEC-0279, companion/relay.gs): a set-up link from the
-// desk carries its address and the site code, kept on this phone. Staff sign in to nothing.
+// desk carries its address and the site code, kept on this phone. From DEC-0408 each person signs in with their own
+// account (an email and a password; Firebase Authentication), and every request carries that sign-in for the relay to
+// check with Google. The site code works until the desk requires sign-in.
 // The sandbox check hands the page an in-memory folder instead.
 function testStore(){ try{ return window.parent!==window&&window.parent.wfmTestStore||null; }catch(e){ return null; } }
 function b64(blob){ return new Promise((ok,no)=>{ const r=new FileReader(); r.onload=()=>ok(String(r.result).split(',')[1]||''); r.onerror=()=>no(r.error); r.readAsDataURL(blob); }); }
-// A set-up link is ?relay=<address>&code=<site code>. It is kept, then taken out of the address bar.
+// A set-up link is ?relay=<address>&code=<site code>, until the desk requires sign-in. The link at the end of Google's
+// "set your password" email is ?relay=<address> alone (DEC-0408): the phone then asks the person to sign in. Either is
+// kept, then taken out of the address bar. A phone already signed in keeps its sign-in.
 function takeSetupLink(href){
   try{ const q=new URL(href,location.href).searchParams, relay=q.get('relay'), code=q.get('code');
-    if(!relay||!code||!/^https:\/\/script\.google\.com\//.test(relay)&&!/^http:\/\/localhost[:\/]/.test(relay)) return false;
-    localStorage.setItem('wl_relay',JSON.stringify({url:relay,code:code})); return true; }catch(e){ return false; }
+    if(!relay||!/^https:\/\/script\.google\.com\//.test(relay)&&!/^http:\/\/localhost[:\/]/.test(relay)) return false;
+    let was=null; try{ was=JSON.parse(localStorage.getItem('wl_relay')||'null'); }catch(e){}
+    if(was&&was.url===relay&&was.acct&&!code) return true;
+    localStorage.setItem('wl_relay',JSON.stringify(code?{url:relay,code:code}:{url:relay})); return true; }catch(e){ return false; }
+}
+// Signed out, by the person or because the relay no longer takes this phone's sign-in (the FM switched the person off,
+// or the site now signs everyone in): the phone forgets who it was and opens on Sign In, saying why. What waits to be
+// sent stays, and goes once someone signs in.
+function signedOutHere(why){
+  try{ const r=JSON.parse(localStorage.getItem('wl_relay')||'null'); if(r&&r.url) localStorage.setItem('wl_relay',JSON.stringify({url:r.url}));
+    localStorage.removeItem('wl_who'); sessionStorage.removeItem('wl_who'); localStorage.setItem('wl_out',JSON.stringify(String(why||''))); }catch(e){}
+  fbAuth().then(a=>a.signOut()).catch(()=>{}).then(()=>location.reload());
 }
 function relayStore(){
   if(takeSetupLink(location.href)) history.replaceState(null,'',location.pathname);
   let r=null; try{ r=JSON.parse(localStorage.getItem('wl_relay')||'null'); }catch(e){}
-  if(!r||!r.url||!r.code) return null;
-  const call=async body=>{
+  if(!r||!r.url) return null;
+  const post=async body=>{
     // text/plain keeps it a simple request, so the browser sends it without a preflight.
-    const res=await fetch(r.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({code:r.code},body))});
+    const res=await fetch(r.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
     let j=null; try{ j=await res.json(); }catch(e){ throw new Error('The site’s relay did not answer properly ('+res.status+')'); }
     if(!j.ok){ const e=new Error(j.why||'The site’s relay refused it'); e.code=j.code; throw e; }
     return j;
   };
+  // Who is asking: the person's own sign-in, which the relay checks with Google; else, until sign-in is required, the
+  // site code. The address it was called on goes too, so the relay can tell the desk where it is.
+  const call=async body=>{
+    const id={self:r.url};
+    if(r.acct){ const a=await fbAuth(), u=a.currentUser;
+      if(!u){ const e=new Error('You are signed out. Sign in again.'); e.code='signedout'; signedOutHere(e.message); throw e; }
+      id.idToken=await u.getIdToken(); id.ua=phoneKind(); }
+    else if(r.code) id.code=r.code;
+    else { const e=new Error('This phone is not signed in.'); e.code='signin'; throw e; }
+    try{ return await post(Object.assign(id,body)); }
+    catch(e){ if(e.code==='signedout'||e.code==='signin'||e.code==='noaccess') signedOutHere(e.message); throw e; }
+  };
   return {
+    acct:()=>!!r.acct, needsSignIn:()=>!r.acct&&!r.code,
+    config:()=>post({op:'config'}),
+    // Signs the person in with Google, then asks the relay who they are on the site's list (DEC-0408).
+    signIn:async(email,pw)=>{ const a=await fbAuth(); await a.signInWithEmailAndPassword(email,pw);
+      const was=r; r={url:r.url,acct:true};
+      try{ const me=await post({op:'me',self:r.url,idToken:await a.currentUser.getIdToken(),ua:phoneKind()});
+        localStorage.setItem('wl_relay',JSON.stringify(r)); localStorage.removeItem('wl_out'); return me; }
+      catch(e){ r=was; await a.signOut().catch(()=>{}); throw e; } },
+    resetPassword:async email=>{ const a=await fbAuth(); await a.sendPasswordResetEmail(email); },
     account:async()=>null,
     add:async(path,blob)=>{ await call({op:'add',path:path,type:blob.type||'',data:await b64(blob)}); },
     // Alerts (DEC-0344): pushConfig, pushRegister and pushTest, as the relay names them.
@@ -1119,7 +1186,9 @@ const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}}
 
 // One icon set on every screen (John, 20 Oct 2026; DEC-0303 rule 8): Lucide (lucide.dev, ISC licence), each
 // icon's own path data on its 24px grid at one stroke. The names on the left are what this page calls them.
-const LUCIDE={'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
+const LUCIDE={'eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+'circle-alert':'<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
+'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
   'arrow-up':'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
   'reply':'<polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/>',
   'image':'<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
@@ -1185,7 +1254,7 @@ const T5L={'arrow-up-from-line':'<path d="m18 9-6-6-6 6"/><path d="M12 3v14"/><p
   roof:'<path d="M2 12 12 4l10 8"/><path d="M5 10v10h14V10"/>'};
 const T5FROM={stepladder:'stepladder',ladder:'ladder',tower:'tower',scaffold:'tower',mewp:'tower',roof:'roof'};
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw')};
+const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),alert:ICO('circle-alert')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -1355,8 +1424,9 @@ function formZone(back,eb,title,say){ return '<div class="zone"><div class="ztop
 const lvName=c=>((SITE().levels||[]).find(l=>l.code===c)||{}).name||'';
 // A section as the register names it, without the "Compliance —" prefix (audit D4).
 const secOf=i=>{ const l=lineById(i.id); return String((l&&l.section)||i.register||'Other').replace(/^Compliance\s*[—–-]\s*/,''); };
-// The theme, the desk's three (Design 5.2), chosen by anyone in Settings (DEC-0303 rule 4).
-const theme=()=>{ const t=ls.get('wl_theme','wl'); return ['wl','li','ni'].indexOf(t)>=0?t:'wl'; };
+// The theme, the desk's three (Design 5.2), chosen by anyone in Settings (DEC-0303 rule 4); Light where nobody has
+// chosen one (DEC-0409 rule 4), so a site's logo keeps its own colours.
+const theme=()=>{ const t=ls.get('wl_theme','li'); return ['wl','li','ni'].indexOf(t)>=0?t:'li'; };
 // Swaps in only the help line and the send button of the screen as it would now draw, leaving every
 // field where it is, so the keyboard and what is being typed are never disturbed.
 function softRender(){
@@ -1370,7 +1440,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -1402,18 +1472,163 @@ function vStart(){
 function bootStep(n,say){ st.boot={n:n,of:3,say:say}; if(st.screen!=='start') return;
   const f=app.querySelector('.splash .fill'), t=app.querySelector('.splash .step'), l=app.querySelector('.splash .load'), c=app.querySelector('.splash .bn');
   if(f&&t){ f.style.width=Math.round(n/3*100)+'%'; t.textContent=say+'…'; l.setAttribute('aria-valuenow',n); if(c) c.textContent=Math.max(1,n); } else render(); }
+// Any site's logo, prepared for the ground it stands on (DEC-0405 rule 1): a solid ground (all four corners one colour)
+// taken out, colour to alpha; trimmed to what is drawn; shown in one colour (`one`) where over a quarter of it would
+// fall under 2:1 on this ground and it does not carry its own block. The opening and the sign-in head both use it.
+function logoPrep(im,ground,one){
+  const S=Math.min(1,600/Math.max(im.width,im.height)), W=Math.round(im.width*S), H=Math.round(im.height*S);
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'); x.drawImage(im,0,0,W,H);
+  const D=x.getImageData(0,0,W,H), p=D.data, at=(i,j)=>4*(j*W+i);
+  const cs=[at(2,2),at(W-3,2),at(2,H-3),at(W-3,H-3)].map(k=>[p[k],p[k+1],p[k+2],p[k+3]]);
+  const same=cs.every(q=>q[3]>250&&Math.max(...q.slice(0,3).map((v,n)=>Math.abs(v-cs[0][n])))<30);
+  if(same){ const g=cs[0].slice(0,3).map(v=>v/255);
+    // only the ground joined to the edges goes: white words inside a red block stay
+    const near=k=>Math.max(Math.abs(p[k]-cs[0][0]),Math.abs(p[k+1]-cs[0][1]),Math.abs(p[k+2]-cs[0][2]))<90;
+    const out=new Uint8Array(W*H), q=[]; for(let i=0;i<W;i++){ q.push(i,(H-1)*W+i); } for(let j=0;j<H;j++){ q.push(j*W,j*W+W-1); }
+    while(q.length){ const n=q.pop(); if(out[n]||!near(4*n)) continue; out[n]=1; const i=n%W, j=(n-i)/W;
+      if(i>0)q.push(n-1); if(i<W-1)q.push(n+1); if(j>0)q.push(n-W); if(j<H-1)q.push(n+W); }
+    // a logo drawn on its own block (one colour over 40% of what is not ground) keeps the ground colour inside
+    // that block (its words); anywhere else the ground colour goes, holes in letters included
+    const bn={}; let nn=0; for(let k=0;k<p.length;k+=4){ if(out[k/4]||near(k)) continue; nn++; const key=(p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5); bn[key]=(bn[key]||0)+1; }
+    const dm=Object.entries(bn).sort((a,b)=>b[1]-a[1])[0]; let bb=null;
+    if(dm&&dm[1]/nn>.4){ bb=[W,H,-1,-1]; for(let j=0;j<H;j++) for(let i=0;i<W;i++){ const k=at(i,j); if(!out[j*W+i]&&((p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5))===dm[0]){ if(i<bb[0])bb[0]=i; if(j<bb[1])bb[1]=j; if(i>bb[2])bb[2]=i; if(j>bb[3])bb[3]=j; } } }
+    const inBlock=n=>{ if(!bb) return false; const i=n%W, j=(n-i)/W; return i>bb[0]&&i<bb[2]&&j>bb[1]&&j<bb[3]; };
+    for(let k=0;k<p.length;k+=4){ const n=k/4; if(!out[n]&&(!near(k)||inBlock(n))) continue; const c3=[p[k]/255,p[k+1]/255,p[k+2]/255];
+      let a=0; c3.forEach((v,n)=>{ const gn=g[n]; const d=v>gn?(gn<1?(v-gn)/(1-gn):0):(gn>0?(gn-v)/gn:0); if(d>a) a=d; });
+      a=a<.04?0:a; if(a>0) for(let n=0;n<3;n++) p[k+n]=Math.round(Math.max(0,Math.min(1,(c3[n]-g[n]*(1-a))/a))*255);
+      p[k+3]=Math.round(a*(p[k+3]/255)*255); } }
+  // trim
+  let x0=W,y0=H,x1=-1,y1=-1; for(let j=0;j<H;j++) for(let i=0;i<W;i++) if(p[at(i,j)+3]>25){ if(i<x0)x0=i; if(i>x1)x1=i; if(j<y0)y0=j; if(j>y1)y1=j; }
+  if(x1<0){ x0=0;y0=0;x1=W-1;y1=H-1; }
+  // reading on this ground
+  const L=(r,g,b)=>{ const f=v=>{ v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4); }; return .2126*f(r)+.7152*f(g)+.0722*f(b); };
+  const CR=(a,b)=>(Math.max(a,b)+.05)/(Math.min(a,b)+.05), Lg=L(...ground);
+  let ink=0, weak=0; const bins={};
+  // logos are exempt from WCAG's contrast minimums (1.4.3, 1.4.11), so a brand's own colours stand unless the
+  // logo would all but vanish: under 2:1 against this ground
+  for(let k=0;k<p.length;k+=4){ if(p[k+3]<128) continue; ink++; if(CR(L(p[k],p[k+1],p[k+2]),Lg)<2) weak++;
+    const key=(p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5); bins[key]=(bins[key]||0)+1; }
+  // its own ground: one colour over 40% of what is drawn, with something inside it at 3:1 against it
+  const top=Object.entries(bins).sort((a,b)=>b[1]-a[1])[0]; let block=false;
+  if(top&&top[1]/ink>.4){ const [r,g,b]=top[0].split('-').map(v=>v*32+16), Lb=L(r,g,b); let inner=0;
+    for(let k=0;k<p.length;k+=4){ if(p[k+3]>=128&&CR(L(p[k],p[k+1],p[k+2]),Lb)>=3) inner++; } block=inner/ink>.05; }
+  const mono=!block&&ink&&weak/ink>.25;
+  if(mono){ const col=one;
+    for(let k=0;k<p.length;k+=4){ p[k]=col[0];p[k+1]=col[1];p[k+2]=col[2]; p[k+3]=Math.min(255,Math.round(p[k+3]*1.6)); } }
+  x.putImageData(D,0,0);
+  const tw=x1-x0+1, thh=y1-y0+1, o=document.createElement('canvas'); o.width=tw; o.height=thh; o.getContext('2d').drawImage(c,x0,y0,tw,thh,0,0,tw,thh);
+  return o;
+}
+// The sign-in head (DEC-0409 rule 1): the phone's own head in whichever theme is on, the site's logo prepared for its
+// ground and the greeting by the time of day (DEC-0406), ending on the tide line: the navy filled down to the head's own
+// wave, the teal line on it, moving on the head wave's loop (rule 3).
+const TIDE='M0 7c100-7 200-7 300 0s200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0 200-7 300 0 200 7 300 0';
+const siName=()=>{ try{ return SITE().site||ls.get('wl_site',{}).site||'The site'; }catch(e){ return 'The site'; } };
+const _siLogo={};
+function siLogo(){
+  const th=theme(); if(_siLogo[th]!==undefined) return _siLogo[th];
+  _siLogo[th]='';
+  const im=new Image(); im.onload=()=>{ try{
+    // Night is judged on Night's page, as the opening is, so the logo the phone opened with is the one it signs in
+    // with (John, 6 Nov 2026: white in Night; DEC-0409 rule 1)
+    _siLogo[th]=logoPrep(im,{wl:[13,31,45],li:[255,255,255],ni:[9,22,36]}[th],th==='li'?[13,31,45]:[255,255,255]).toDataURL('image/png');
+    if(theme()===th) app.querySelectorAll('.si-logo').forEach(d=>{ d.innerHTML='<img src="'+_siLogo[th]+'" alt="'+esc(siName())+'">'; }); }catch(e){} };
+  im.src='push/icon-512.png';
+  return '';
+}
+function siHead(){
+  const h=new Date().getHours(), part=h>=5&&h<12?'Morning':h>=12&&h<17?'Afternoon':'Evening', url=siLogo();
+  return '<div class="zone si-hd"><div class="si-logo">'+(url?'<img src="'+url+'" alt="'+esc(siName())+'">':'')+'</div><h1 class="si-greet">'+part+'</h1>'
+    +'<div class="si-tide" aria-hidden="true"><svg class="c-wave" viewBox="0 0 2400 40" preserveAspectRatio="none" fill="none"><path class="sea" d="'+TIDE+'L2400 41L0 41Z"/><path class="ln" d="'+TIDE+'" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></div></div>';
+}
+// An error at its field, in text with a mark, never red (Design 9.6, 21.3).
+const siErr=(id,t)=>'<div class="si-err" id="'+id+'" role="alert">'+I.alert+'<span>'+esc(t)+'</span></div>';
 // The set-up screen: one sentence of what is needed, the link field and one primary. A link that is missing or not
 // Waterline's is said where it is (Design 9.6), and the button stays pressable so it can say why (Design 9.1).
 function vSetup(){
   const F=st.form||{};
-  const why=F.bad==='empty'?'Paste the set-up link first.':F.bad?'That is not a Waterline set-up link. Ask the desk for it again.':'';
-  return '<div class="body"><div class="zone">'+'<span class="eb">Set up</span>'
-    +'<h1>Connect This Phone to the Site</h1>'
-    +'<p>Open the set-up link the desk gave you on this phone, or paste it below. You do this once.</p></div>'
-    +'<div class="field"><label for="setup">Set-up link</label><input id="setup" type="url" autocomplete="off" placeholder="Paste the link from the desk" value="'+esc(F.link||'')+'" data-in="link"'+(why?' aria-invalid="true" aria-describedby="setup-err"':'')+'>'
-    +(why?'<div class="help err" id="setup-err" role="alert">'+esc(why)+'</div>':'')+'</div>'
-    +'<p class="para">What you capture goes only to the site’s own Inbox folder. This phone keeps a copy only until it has been sent.</p></div>'
-    +'<div class="foot"><button class="btn p" data-act="setupLink">'+I.link+'Connect</button></div>';
+  const why=F.bad==='empty'?'Paste the link first.':F.bad?'That is not a Waterline link. Open the one in your invite email.':'';
+  return '<div class="body si">'+siHead()+'<div class="si-main">'
+    +'<p class="si-say">This phone does not know your site yet. Open the link at the end of your invite email, on this phone. You do this once.</p><div class="si-g24"></div>'
+    +'<div'+(why?' class="bad"':'')+'><label class="si-lab" for="setup">Or paste the link from the email</label><input id="setup" type="url" autocomplete="off" value="'+esc(F.link||'')+'" data-in="link"'+(why?' aria-invalid="true" aria-describedby="setup-err"':'')+'>'
+    +(why?siErr('setup-err',why):'')+'</div><div class="si-g16"></div>'
+    +'<button class="btn p" data-act="setupLink">'+I.link+'Open the Link</button><div class="si-g24"></div>'
+    +'<p class="si-say">What you capture goes only to the site’s own Inbox folder. This phone keeps a copy only until it has been sent.</p></div></div>';
+}
+// ── Sign in (DEC-0408, DEC-0409) ────────────────────────────────────────────────────────────
+// One question at a time: the person's own email, then the password they set from the reset email. Who they are, their
+// position and whether they are a manager come from the site's list; nothing else is asked (Design 9.6).
+function vSignin(){
+  const F=st.form||(st.form={}), out=ls.get('wl_out',''), e=F.err||{}, busy=F.busy?' disabled':'';
+  let h='<div class="body si">'+siHead()+'<div class="si-main">';
+  if(F.step!==2) h+='<p class="si-say">Sign in with your own email, the one your invite came to.</p>'
+    +(out?'<div class="si-g16"></div><div class="note" role="status"><span class="eb">Signed out</span>'+esc(out)+'</div>':'')
+    +'<div class="si-g24"></div><div'+(e.email?' class="bad"':'')+'><label class="si-lab" for="email">Your email</label><input id="email" type="email" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" value="'+esc(F.email||'')+'" data-in="email"'+(e.email?' aria-invalid="true" aria-describedby="email-err"':'')+'>'
+    +(e.email?siErr('email-err',e.email):'')+'</div><div class="si-g16"></div>'
+    +'<button class="btn p" data-act="signinNext">Continue</button>';
+  // The email stays in view, named as the account being checked (rule 2); the reset sits on the password's row (4.7).
+  else h+='<span class="si-lab" style="margin-bottom:0">Signing in as</span><div class="si-who"><span class="e">'+esc(F.email)+'</span><button class="lnk" data-act="signinChange"'+busy+'>Change</button></div>'
+    +'<input type="email" autocomplete="username" value="'+esc(F.email)+'" hidden>'
+    +'<div class="si-g12"></div><div'+(e.pw?' class="bad"':'')+'><div class="si-lrow"><label class="si-lab" for="pw">Password</label><button class="lnk" data-act="pwReset"'+busy+'>'+(F.busy==='reset'?'Sending…':F.sent?'Send It Again':'Reset My Password')+'</button></div>'
+    +'<div class="si-box"><input id="pw" type="'+(F.show?'text':'password')+'" autocomplete="current-password" value="'+esc(F.pw||'')+'" data-in="pw"'+(e.pw?' aria-invalid="true" aria-describedby="pw-err"':'')+'>'
+    +'<button class="si-eye" data-act="pwShow" aria-controls="pw" aria-pressed="'+!!F.show+'">'+I.eye+(F.show?'Hide':'Show')+'</button></div>'
+    +(e.pw?siErr('pw-err',e.pw):'')+'</div>'
+    +(F.sent?'<div class="si-g16"></div><div class="note" role="status"><span class="eb">Email sent</span>A link to reset your password is on its way to <b>'+esc(F.sent)+'</b>. Open it on this phone.</div>':'')
+    +'<div class="si-g16"></div><button class="btn p" data-act="signinGo"'+busy+'>'+(F.busy==='in'?'Signing In…':'Sign In')+'</button>';
+  return h+'</div></div>';
+}
+// What went wrong, as the person needs it (Design 8.5, 9.11; DEC-0409 rule 5): three problem screens, each with one thing
+// to try. An account the site's list does not hold, or holds switched off, reads as switched off. Never the sign-in
+// provider's own words, which name it (rule 6).
+const SI_WRONG='That email and password do not match. Type the password again.',
+  SI_LOCKED='This account is locked after too many tries. Reset your password to unlock it.',
+  SI_OFF='This account is switched off. Ask the FM to switch it back on.';
+function signinWhy(e){
+  const c=String(e&&e.code||'');
+  if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c)) return {pw:SI_WRONG};
+  if(/invalid-email/.test(c)) return {email:'That is not an email address.'};
+  if(/user-disabled/.test(c)||c==='noaccess') return {pw:SI_OFF};
+  if(/too-many-requests/.test(c)) return {pw:SI_LOCKED};
+  if(/network/.test(c)||c==='timeout') return {pw:'This phone has no signal, so it cannot sign in. Try again when it has signal.'};
+  if(/^auth\//.test(c)||/firebase/i.test(String(e&&e.message))) return {pw:'Sign-in did not go through. Try again in a minute.'};
+  return {pw:String(e&&e.message||e)};
+}
+function signinNext(){
+  const F=st.form||(st.form={}); if(F.busy) return;
+  const email=String(F.email||'').trim(); F.err={};
+  if(!email) F.err.email='Type your email.';
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) F.err.email='That is not an email address.';
+  if(F.err.email){ render(); const i=document.getElementById('email'); if(i) i.focus(); return; }
+  F.email=email; F.step=2; F.sent=''; render(); const p=document.getElementById('pw'); if(p) p.focus();
+}
+function signinChange(){
+  const F=st.form||(st.form={}); if(F.busy) return;
+  F.step=1; F.pw=''; F.err={}; F.sent=''; F.show=false; render(); const i=document.getElementById('email'); if(i) i.focus();
+}
+// Show and Hide change the field where it is, so what is typed and the keyboard stay.
+function pwShow(b){
+  const F=st.form||(st.form={}); F.show=!F.show; const i=document.getElementById('pw'); if(i) i.type=F.show?'text':'password';
+  if(b){ b.lastChild.textContent=F.show?'Hide':'Show'; b.setAttribute('aria-pressed',String(F.show)); }
+}
+async function signinGo(){
+  const F=st.form||(st.form={}); if(F.busy) return;
+  if(F.step!==2) return signinNext();
+  const email=String(F.email||'').trim(), pw=String(F.pw||'');
+  F.err={}; F.sent='';
+  if(!pw){ F.err.pw='Type your password.'; render(); const i=document.getElementById('pw'); if(i) i.focus(); return; }
+  F.busy='in'; render();
+  let me; try{ me=await STORE.signIn(email,pw); }
+  catch(e){ F.busy=false; F.err=signinWhy(e); if(F.err.email) F.step=1; render(); const i=document.getElementById(F.err.email?'email':'pw'); if(i) i.focus(); return; }
+  whoPut({name:me.name,pos:me.pos,pid:me.pid,keep:true}); ls.set('wl_mgr',!!me.mgr);
+  location.reload();
+}
+async function pwReset(){
+  const F=st.form||(st.form={}); if(F.busy) return;
+  const email=String(F.email||'').trim(); F.err={}; F.sent='';
+  if(!email){ F.step=1; F.err.email='Type your email first.'; render(); const i=document.getElementById('email'); if(i) i.focus(); return; }
+  F.busy='reset'; render();
+  try{ await STORE.resetPassword(email); F.sent=email; }catch(e){ F.err=/user-not-found/.test(String(e&&e.code))?{}:signinWhy(e); if(!Object.keys(F.err).length) F.sent=email; }
+  F.busy=false; render();
 }
 // ── Who is holding it (Work 015 P2; D2a-2) ───────────────────────────────────────────────────
 // A name and a position from the desk's Organisation Structure, or a department. Kept on an own
@@ -2200,6 +2415,8 @@ app.addEventListener('pointermove',e=>{ if(_lp&&Math.hypot(e.clientX-_lp.x,e.cli
 ['pointerup','pointercancel'].forEach(t=>app.addEventListener(t,()=>{ if(_lp){ clearTimeout(_lp.t); _lp=null; } }));
 app.addEventListener('contextmenu',e=>{ const b=e.target.closest('.bub[data-mine]'); if(!b) return; e.preventDefault(); if(_lp){ clearTimeout(_lp.t); _lp=null; } lpOpen(b.dataset.mine); });
 app.addEventListener('click',e=>{ if(Date.now()-_lpAt<700){ e.stopImmediatePropagation(); e.preventDefault(); } },true);
+app.addEventListener('keydown',e=>{ if(e.key!=='Enter'||st.screen!=='signin') return; const id=e.target&&e.target.id;
+  if(id==='email'){ e.preventDefault(); signinNext(); } else if(id==='pw'){ e.preventDefault(); signinGo(); } });
 app.addEventListener('keydown',e=>{ const b=e.target.closest&&e.target.closest('.bub[data-mine]'); if(b&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); lpOpen(b.dataset.mine); } });
 // The message held: what it is now, here, with any change sent from here and not yet filed.
 function msgNow(j,id){ const pend=jPending(j), e=(j.thread||[]).find(x=>x.cap===id)||null, x=pend.find(y=>y.cap===id&&!(y.act==='edit'||y.act==='delete'))||null;
@@ -2630,11 +2847,32 @@ function alertsCan(){
   const iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   return iOS&&!(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)?'ios':'no';
 }
+// Each Firebase part is loaded once, alerts and sign-in alike.
+const _fbParts={};
+function fbPart(src,say){ return _fbParts[src]||(_fbParts[src]=new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=FB+src; s.onload=ok;
+  s.onerror=()=>{ delete _fbParts[src]; no(new Error(say)); }; document.head.appendChild(s); })); }
 function fbLoad(){
-  if(window.firebase&&firebase.messaging) return Promise.resolve(firebase);
-  const one=src=>new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=FB+src; s.onload=ok; s.onerror=()=>no(new Error('The alert service could not be reached. Try again with signal.')); document.head.appendChild(s); });
-  return one('firebase-app-compat.js').then(()=>one('firebase-messaging-compat.js')).then(()=>firebase);
+  const say='The alert service could not be reached. Try again with signal.';
+  return fbPart('firebase-app-compat.js',say).then(()=>fbPart('firebase-messaging-compat.js',say)).then(()=>firebase);
 }
+// The person's sign-in (DEC-0408): Firebase Authentication, in the project the alerts use, set up from the relay's
+// public config. It keeps the person signed in on this phone. The sandbox check hands the page a stand-in instead.
+let _fbAuth=null;
+function fbAuth(){
+  try{ if(window.parent!==window&&window.parent.wfmFakeAuth) return Promise.resolve(window.parent.wfmFakeAuth); }catch(e){}
+  if(_fbAuth) return _fbAuth;
+  const say='Sign-in could not be reached. Try again with signal.';
+  return _fbAuth=(async()=>{
+    const c=await STORE.config();
+    await fbPart('firebase-app-compat.js',say); await fbPart('firebase-auth-compat.js',say);
+    if(!firebase.apps.length) firebase.initializeApp(c.config);
+    const a=firebase.auth();
+    await new Promise(ok=>{ const off=a.onAuthStateChanged(()=>{ off(); ok(); }); });
+    return a;
+  })().catch(e=>{ _fbAuth=null; throw e; });
+}
+// What kind of device it is, in a few words, for the desk's list (never anything that names the person).
+function phoneKind(){ const u=navigator.userAgent; return /iPad/.test(u)?'an iPad':/iPhone/.test(u)?'an iPhone':/Android/.test(u)?(/Mobile/.test(u)?'an Android phone':'an Android tablet'):'a computer'; }
 // quiet: re-registering on open, with no question asked and nothing said unless it fails.
 async function alertsOn(quiet){
   const me=meP(); if(!STORE||!STORE.ask||!me||AL.busy||alertsCan()) return;
@@ -2694,10 +2932,12 @@ function vMe(){
   const p=myPos(), s=SITE(), th=theme();
   const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
   const o=(k,v,act)=>'<button class="f go" data-act="'+act+'"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+I.chev+'</button>';
+  const acct=!!(STORE&&STORE.acct&&STORE.acct());
   return '<div class="body">'+pageHead('Settings')+'<div class="zone logo"><span class="tile"><img src="push/icon-512.png" alt="'+esc(s.site||'The site')+'"></span></div>'
     +'<div class="grp">Theme</div><div class="seg">'+[['wl','Waterline'],['li','Light'],['ni','Night']].map(x=>'<button class="'+(th===x[0]?'on':'')+'" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(th===x[0])+'">'+(th===x[0]?I.tick:'')+x[1]+'</button>').join('')+'</div>'
-    +'<div class="grp">You</div><div class="list">'+o('Name',esc(st.walker),'whoAgain')
-    +o('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen','whoPosAgain')+'</div>'
+    +'<div class="grp">You</div><div class="list">'+(acct?f('Name',esc(st.walker)):o('Name',esc(st.walker),'whoAgain'))
+    +(acct&&!ls.get('wl_mgr',false)?f:o)('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen','whoPosAgain')+'</div>'
+    +(acct?'<div class="pad"><button class="lnk" data-act="signOut">Sign Out</button></div>':'')
     +alertsGroup()
     +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published))):'Not published yet')
     +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent when there is signal':'Nothing')+'</div>'
@@ -3619,6 +3859,12 @@ app.addEventListener('click',async e=>{
     st.walker=nm; st.pid=''; if(!st.whoBack) st.pos=''; return whoDone(); }
   if(a==='posPick'){ st.pos=b.dataset.id; return whoDone(); }
   if(a==='whoAgain'){ st.form=null; st.whoBack='me'; return go('who'); }
+  if(a==='signinNext') return signinNext();
+  if(a==='signinChange') return signinChange();
+  if(a==='pwShow') return pwShow(b);
+  if(a==='signinGo') return signinGo();
+  if(a==='pwReset') return pwReset();
+  if(a==='signOut') return signedOutHere('You signed out. Sign in again with your email and password.');
   if(a==='whoPosAgain'){ st.form=null; st.whoBack='me'; return go('whopos'); }
   if(a==='walkLink'){ const S=st.scanFor, p=pointById(b.dataset.id); if(!S||!S.offer||!p) return;
     const s=S.offer.serial, o=pointBySerial(s);
@@ -3787,7 +4033,7 @@ window.addEventListener('online',retry);
 // into what the desk filed without closing the app (John, 20 Oct 2026). Never redrawn under a sheet, the scanner or a
 // field in use: the new file is kept and the next screen draws it.
 async function siteRefresh(){
-  if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup') return;
+  if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup'||st.screen==='signin') return;
   const was=st.site&&st.site.published, wp=st.perms&&st.perms.updated; await Promise.all([loadSite(),loadPerms()]);
   if(!st.site||(st.site.published===was&&(st.perms&&st.perms.updated)===wp)) return;
   jSentPrune();
@@ -4119,7 +4365,7 @@ async function loadMsgs(){
     if(o&&o.format===MS.format&&Array.isArray(o.items)){ st.msgs=o; _mi=null; ls.set('wl_msgs',o); } }catch(e){}
 }
 async function msgRefresh(){
-  if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup') return;
+  if(!STORE||st.busy||document.visibilityState==='hidden'||st.screen==='start'||st.screen==='setup'||st.screen==='signin') return;
   const was=st.msgs&&st.msgs.updated; await loadMsgs(); msgSentPrune();
   if(!st.msgs||st.msgs.updated===was) return;
   const a=document.activeElement;
@@ -4736,11 +4982,16 @@ async function boot(){
   document.body.className='t-'+theme();
   render();
   if(!STORE){ st.form={link:''}; return go('setup'); }
+  if(STORE.needsSignIn&&STORE.needsSignIn()){ st.form={}; return go('signin'); }
   st.account=await STORE.account();
   bootStep(1,'Reading the site details');
   await Promise.all([loadSite(),loadMsgs(),loadPerms()]); msgSentPrune();
   bootStep(2,'Checking what is waiting to send');
+  const acct=!!(STORE.acct&&STORE.acct()), meNow=()=>STORE.ask({op:'me'}).then(me=>{ whoPut({name:me.name,pos:me.pos,pid:me.pid,keep:true}); ls.set('wl_mgr',!!me.mgr); return me; });
+  if(acct&&!whoGet()) await meNow().catch(()=>{});
   const w=whoGet(); st.walker=w&&w.name||''; st.pos=w&&w.pos||''; st.pid=w&&w.pid||'';
+  if(acct&&!st.walker){ st.form={}; return go('signin'); }
+  if(acct) meNow().then(me=>{ if(me.name!==st.walker||me.pos!==st.pos){ st.walker=me.name; st.pos=me.pos; st.pid=me.pid; render(); } }).catch(()=>{});
   if(!st.walker) return go('who');
   if(!st.pos) return go('whopos');
   await home();
@@ -4752,7 +5003,7 @@ const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
 // page's own, so a reload opens Due.
 function jobFromLink(id){
   try{ if(/[?&]job=/.test(location.search)) history.replaceState(null,'',location.pathname); }catch(e){}
-  if(['start','setup','who','whopos','whotype'].indexOf(st.screen)>=0) return;
+  if(['start','setup','signin','who','whopos','whotype'].indexOf(st.screen)>=0) return;
   const j=jobById(id); if(!j) return toast('That job is no longer on the phone.');
   st.form={id:j.id,prwhy:''}; st.place='due'; st.sheet=canIssue()&&permAsk(j)?'jreview':false; go('job');
 }
@@ -4776,7 +5027,7 @@ boot();
   try{ SHORT=localStorage.getItem('wl_introDay')===today; localStorage.setItem('wl_introDay',today); }catch(e){}
   const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const EXP='cubic-bezier(0.4, 0.14, 0.3, 1)', IO='cubic-bezier(0.65, 0, 0.35, 1)', $=id=>document.getElementById(id);
-  const th=(function(){ try{ return JSON.parse(localStorage.getItem('wl_theme')||'"wl"'); }catch(e){ return 'wl'; } })();
+  const th=(function(){ try{ return JSON.parse(localStorage.getItem('wl_theme')||'"li"'); }catch(e){ return 'li'; } })();
   $('iv-bg').style.background=th==='ni'?'#091624':'#F5F7F9';
   const t0=performance.now(); let endAt=0;
   const now=()=>performance.now()-t0;
@@ -4802,47 +5053,7 @@ boot();
   const GROUND=th==='ni'?[9,22,36]:[245,247,249], BOX={w:260,h:150}, BASE=406;
   (function prep(){
     const im=new Image(); im.onload=()=>{
-      const S=Math.min(1,600/Math.max(im.width,im.height)), W=Math.round(im.width*S), H=Math.round(im.height*S);
-      const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'); x.drawImage(im,0,0,W,H);
-      const D=x.getImageData(0,0,W,H), p=D.data, at=(i,j)=>4*(j*W+i);
-      const cs=[at(2,2),at(W-3,2),at(2,H-3),at(W-3,H-3)].map(k=>[p[k],p[k+1],p[k+2],p[k+3]]);
-      const same=cs.every(q=>q[3]>250&&Math.max(...q.slice(0,3).map((v,n)=>Math.abs(v-cs[0][n])))<30);
-      if(same){ const g=cs[0].slice(0,3).map(v=>v/255);
-        // only the ground joined to the edges goes: white words inside a red block stay
-        const near=k=>Math.max(Math.abs(p[k]-cs[0][0]),Math.abs(p[k+1]-cs[0][1]),Math.abs(p[k+2]-cs[0][2]))<90;
-        const out=new Uint8Array(W*H), q=[]; for(let i=0;i<W;i++){ q.push(i,(H-1)*W+i); } for(let j=0;j<H;j++){ q.push(j*W,j*W+W-1); }
-        while(q.length){ const n=q.pop(); if(out[n]||!near(4*n)) continue; out[n]=1; const i=n%W, j=(n-i)/W;
-          if(i>0)q.push(n-1); if(i<W-1)q.push(n+1); if(j>0)q.push(n-W); if(j<H-1)q.push(n+W); }
-        // a logo drawn on its own block (one colour over 40% of what is not ground) keeps the ground colour inside
-        // that block (its words); anywhere else the ground colour goes, holes in letters included
-        const bn={}; let nn=0; for(let k=0;k<p.length;k+=4){ if(out[k/4]||near(k)) continue; nn++; const key=(p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5); bn[key]=(bn[key]||0)+1; }
-        const dm=Object.entries(bn).sort((a,b)=>b[1]-a[1])[0]; let bb=null;
-        if(dm&&dm[1]/nn>.4){ bb=[W,H,-1,-1]; for(let j=0;j<H;j++) for(let i=0;i<W;i++){ const k=at(i,j); if(!out[j*W+i]&&((p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5))===dm[0]){ if(i<bb[0])bb[0]=i; if(j<bb[1])bb[1]=j; if(i>bb[2])bb[2]=i; if(j>bb[3])bb[3]=j; } } }
-        const inBlock=n=>{ if(!bb) return false; const i=n%W, j=(n-i)/W; return i>bb[0]&&i<bb[2]&&j>bb[1]&&j<bb[3]; };
-        for(let k=0;k<p.length;k+=4){ const n=k/4; if(!out[n]&&(!near(k)||inBlock(n))) continue; const c3=[p[k]/255,p[k+1]/255,p[k+2]/255];
-          let a=0; c3.forEach((v,n)=>{ const gn=g[n]; const d=v>gn?(gn<1?(v-gn)/(1-gn):0):(gn>0?(gn-v)/gn:0); if(d>a) a=d; });
-          a=a<.04?0:a; if(a>0) for(let n=0;n<3;n++) p[k+n]=Math.round(Math.max(0,Math.min(1,(c3[n]-g[n]*(1-a))/a))*255);
-          p[k+3]=Math.round(a*(p[k+3]/255)*255); } }
-      // trim
-      let x0=W,y0=H,x1=-1,y1=-1; for(let j=0;j<H;j++) for(let i=0;i<W;i++) if(p[at(i,j)+3]>25){ if(i<x0)x0=i; if(i>x1)x1=i; if(j<y0)y0=j; if(j>y1)y1=j; }
-      if(x1<0){ x0=0;y0=0;x1=W-1;y1=H-1; }
-      // reading on this ground
-      const L=(r,g,b)=>{ const f=v=>{ v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4); }; return .2126*f(r)+.7152*f(g)+.0722*f(b); };
-      const CR=(a,b)=>(Math.max(a,b)+.05)/(Math.min(a,b)+.05), Lg=L(...GROUND);
-      let ink=0, weak=0; const bins={};
-      // logos are exempt from WCAG's contrast minimums (1.4.3, 1.4.11), so a brand's own colours stand unless the
-      // logo would all but vanish: under 2:1 against this ground
-      for(let k=0;k<p.length;k+=4){ if(p[k+3]<128) continue; ink++; if(CR(L(p[k],p[k+1],p[k+2]),Lg)<2) weak++;
-        const key=(p[k]>>5)+'-'+(p[k+1]>>5)+'-'+(p[k+2]>>5); bins[key]=(bins[key]||0)+1; }
-      // its own ground: one colour over 40% of what is drawn, with something inside it at 3:1 against it
-      const top=Object.entries(bins).sort((a,b)=>b[1]-a[1])[0]; let block=false;
-      if(top&&top[1]/ink>.4){ const [r,g,b]=top[0].split('-').map(v=>v*32+16), Lb=L(r,g,b); let inner=0;
-        for(let k=0;k<p.length;k+=4){ if(p[k+3]>=128&&CR(L(p[k],p[k+1],p[k+2]),Lb)>=3) inner++; } block=inner/ink>.05; }
-      const mono=!block&&ink&&weak/ink>.25;
-      if(mono){ const col=th==='ni'?[255,255,255]:[13,31,45];
-        for(let k=0;k<p.length;k+=4){ p[k]=col[0];p[k+1]=col[1];p[k+2]=col[2]; p[k+3]=Math.min(255,Math.round(p[k+3]*1.6)); } }
-      x.putImageData(D,0,0);
-      const tw=x1-x0+1, thh=y1-y0+1, o=document.createElement('canvas'); o.width=tw; o.height=thh; o.getContext('2d').drawImage(c,x0,y0,tw,thh,0,0,tw,thh);
+      const o=logoPrep(im,GROUND,th==='ni'?[255,255,255]:[13,31,45]), tw=o.width, thh=o.height;
       const f=Math.min(BOX.w/tw,BOX.h/thh), w=Math.round(tw*f), hh=Math.round(thh*f);
       Object.assign(lg.style,{width:w+'px',height:hh+'px',left:'calc(50% - '+(w/2)+'px)',top:(BASE-hh)+'px'});
       lg.src=o.toDataURL('image/png');
@@ -4851,7 +5062,8 @@ boot();
   })();
   // The two waves the phone draws: Due's head (2400 units across 750px, a 375px loop) and the wave under a screen's
   // first block (a 1200-unit tile 600px wide, a 600px loop). The opening draws the one it will land on.
-  const TILE=!signedIn; if(TILE){ sv.style.width='1200px'; }
+  const rl=(function(){ try{ return JSON.parse(localStorage.getItem('wl_relay')||'null'); }catch(e){ return null; } })();
+  const TILE=!signedIn&&!!(rl&&rl.code); if(TILE){ sv.style.width='1200px'; }
   const LOOP=TILE?600:375;
   // Every later open (John: "the shorted load is also pointless with the logo"): no logo, no greeting; the wave is
   // already where Due's is, stirred while the phone loads, and settles there when Due is ready.
@@ -4872,9 +5084,10 @@ boot();
     an(cl,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],{delay:K.dr,duration:K.drD});
   }
   (function wait(){
-    // where it lands: Due's head wave, or the wave under the first block of Who Are You (a ::after on the zone)
+    // where it lands: Due's head wave, the sign-in head's tide line, or the wave under the first block of Who Are You
+    // (a ::after on the zone)
     let r=null, ra=null;
-    if(!TILE){ const hd=document.querySelector('.c-hd'), rw=hd&&hd.querySelector('.c-wv'), real=rw&&rw.querySelector('.c-wave');
+    if(!TILE){ const hd=document.querySelector('.c-hd')||document.querySelector('.si-hd'), rw=hd&&hd.querySelector('.c-wv,.si-tide'), real=rw&&rw.querySelector('.c-wave');
       if(real){ r=rw.getBoundingClientRect(); ra=real.getAnimations()[0]; } }
     else { const z=document.querySelector('.body>.zone:first-child');
       if(z&&!document.querySelector('.splash')){ const b=z.getBoundingClientRect(); r={left:b.left,top:b.bottom-22,width:b.width,height:22};

@@ -1,7 +1,7 @@
 // Waterline capture relay (DEC-0279). A Google Apps Script web app in the site's own Google account.
 // It adds a capture's files to Inbox/ in the Waterline Workspace,
 // never over a file already there (DEC-0265 rule 2), and reads Phone/site.json, which the desk
-// publishes (DEC-0271), with the job photos and voice notes the desk copies to Phone/photos/ and Phone/audio/ (DEC-0308 rule 4; P6); and, once set up, registers phones for alerts and sends them (DEC-0288). It keeps an index of notices, reads and handovers in Messages/index.json, so they reach phones whether the desk is open or not (DEC-0348), and of permits applied for from a phone with their answers, in Permits/index.json (DEC-0359). Every request carries the site code; a wrong code writes nothing.
+// publishes (DEC-0271), with the job photos and voice notes the desk copies to Phone/photos/ and Phone/audio/ (DEC-0308 rule 4; P6); and, once set up, registers phones for alerts and sends them (DEC-0288). It keeps an index of notices, reads and handovers in Messages/index.json, so they reach phones whether the desk is open or not (DEC-0348), and of permits applied for from a phone with their answers, in Permits/index.json (DEC-0359). Every request carries the sign-in of the person's own account, which Google checks (Firebase Authentication; DEC-0408), or, until the desk requires sign-in, the site code; anything else writes nothing.
 //
 // Set up once:
 //   1. script.google.com > New project. Paste this file over Code.gs. Save.
@@ -41,9 +41,14 @@ function folder(parent, name, create){
 function doPost(e){
   try{
     const b = JSON.parse(e.postData.contents);
-    const code = PROPS.getProperty('SITE_CODE');
-    if(!code || b.code !== code) return out({ok:false, code:'refused', why:'This phone’s site code is not this site’s. Open the latest set-up link from the desk.'});
     const ws = DriveApp.getFolderById(PROPS.getProperty('WORKSPACE_ID'));
+    // The site's sign-in settings are public by design (Firebase's web config), so a phone can sign in before it asks
+    // for anything else.
+    if(b.op === 'config'){ const c = fbConfig(); return c ? out({ok:true, config:c}) : out({ok:false, code:'missing', why:'Sign-in is not set up on the relay yet.'}); }
+    const w = whoIs(b, ws);
+    if(w.no) return out(w.no);
+    // Who the signed-in account is, as the desk lists them (DEC-0408).
+    if(b.op === 'me') return out(w.who ? {ok:true, pid:w.who.pid, name:w.who.name, pos:w.who.pos, mgr:!!w.p.mgr} : {ok:false, code:'signin', why:'This phone is not signed in.'});
     if(b.op === 'add'){
       const m = /^Inbox\/([A-Za-z0-9._-]{1,120})$/.exec(String(b.path || ''));
       if(!m) return out({ok:false, code:'bad', why:'Only a file in the Inbox folder can be added.'});
@@ -51,11 +56,18 @@ function doPost(e){
       let rec = null;
       if(/\.json$/.test(m[1])){ try{ rec = JSON.parse(Utilities.newBlob(Utilities.base64Decode(String(b.data || ''))).getDataAsString('UTF-8')); }catch(x){} }
       const no = permitGate(rec, ws); if(no) return out(no);
+      // Who sent it, as the relay knows it (DEC-0407 rule 4; Design 13.7). Never taken from the phone.
+      let blob = Utilities.newBlob(Utilities.base64Decode(String(b.data || '')), String(b.type || 'application/octet-stream'), m[1]);
+      if(rec && typeof rec === 'object'){
+        delete rec.signedIn;
+        if(w.who) rec.signedIn = {pid:w.who.pid, name:w.who.name, at:new Date().toISOString()};
+        blob = Utilities.newBlob(JSON.stringify(rec), 'application/json', m[1]);
+      }
       const lock = LockService.getScriptLock(); lock.waitLock(20000);
       try{
         const inbox = folder(ws, 'Inbox', true);
         if(inbox.getFilesByName(m[1]).hasNext()) return out({ok:false, code:'exists', why:'That file is already in the Inbox.'});
-        inbox.createFile(Utilities.newBlob(Utilities.base64Decode(String(b.data || '')), String(b.type || 'application/octet-stream'), m[1]));
+        inbox.createFile(blob);
       } finally { lock.releaseLock(); }
       // A capture's record arrives last (slice A); a permit applied for alerts whoever can issue it (DEC-0344), and its
       // answer the person who applied (DEC-0359). Only after the file is kept, and a failure here never fails the add.
@@ -72,16 +84,16 @@ function doPost(e){
       const p = String(b.path || ''), pm = /^Phone\/(photos|audio)\/([A-Za-z0-9._-]{1,120}\.b64)$/.exec(p);
       if(p === PERMIT_PATH){ const pf = permitFile(ws, false); return pf ? out({ok:true, text:pf.getBlob().getDataAsString('UTF-8')}) : out({ok:false, code:'missing', why:'No permit has been applied for from a phone yet.'}); }
       if(p === MSG_PATH){ const mf = msgFile(ws, false); return mf ? out({ok:true, text:mf.getBlob().getDataAsString('UTF-8')}) : out({ok:false, code:'missing', why:'No message has been sent yet.'}); }
+      if(p === 'Phone/site.json') try{ relayUrlKeep(ws, b.self); }catch(x){}
+      // Phone/accounts.json holds people's emails, for the relay alone: it is never read out (DEC-0408).
       if(p !== 'Phone/site.json' && !pm) return out({ok:false, code:'bad', why:'Only the site details, messages, permits, job photos and voice notes can be read.'});
       const ph = folder(ws, 'Phone', false), dir = pm ? (ph && folder(ph, pm[1], false)) : ph, it = dir && dir.getFilesByName(pm ? pm[2] : 'site.json');
       if(!it || !it.hasNext()) return out({ok:false, code:'missing', why: pm ? 'That file is not in Phone/' + pm[1] + '.' : 'The desk has not published the site details yet.'});
       return out({ok:true, text:it.next().getBlob().getDataAsString('UTF-8')});
     }
     if(b.op === 'pushConfig'){
-      const cfg = PROPS.getProperty('FIREBASE_CONFIG'), vapid = PROPS.getProperty('VAPID_KEY');
-      if(!cfg || !vapid) return out({ok:false, code:'missing', why:'Alerts are not set up on the relay yet.'});
-      // Taken as pasted from the Firebase console, where the keys are not in quotes.
-      let conf; try{ conf = JSON.parse(cfg); }catch(e){ conf = JSON.parse(cfg.replace(/^[^{]*/, '').replace(/;?\s*$/, '').replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g, '$1"$2":')); }
+      const conf = fbConfig(), vapid = PROPS.getProperty('VAPID_KEY');
+      if(!conf || !vapid) return out({ok:false, code:'missing', why:'Alerts are not set up on the relay yet.'});
       return out({ok:true, config:conf, vapidKey:vapid.trim()});
     }
     if(b.op === 'pushRegister'){
@@ -91,7 +103,7 @@ function doPost(e){
       try{
         // The phone's position and department, and whether its holder is a manager, decide which notices and handovers
         // alert it (DEC-0348 rule 6, DEC-0351). No shift is kept.
-        const d = devices(); d[t] = {name:String(b.name || '').slice(0, 80), role:String(b.role || '').slice(0, 40), pid:String(b.pid || '').slice(0, 80),
+        const d = devices(); d[t] = {name:String(w.who ? w.who.name : b.name || '').slice(0, 80), role:String(b.role || '').slice(0, 40), pid:String(w.who ? w.who.pid : b.pid || '').slice(0, 80),
           pos:String(b.pos || '').slice(0, 80), dept:String(b.dept || '').slice(0, 80), mgr:b.mgr === true, ev:b.ev === true, at:new Date().toISOString()};
         PROPS.setProperty('DEVICES', JSON.stringify(d));
       } finally { lock.releaseLock(); }
@@ -121,6 +133,86 @@ function doPost(e){
     }
     return out({ok:false, code:'bad', why:'The relay does not know that request.'});
   }catch(err){ return out({ok:false, code:'error', why:String(err && err.message || err)}); }
+}
+
+// ── Sign-in (DEC-0408) ──────────────────────────────────────────────────────────────────────
+// A person signs in on the phone and the desk with their own account: their email and a password they set from
+// Google's own "set your password" email (Firebase Authentication). The relay writes no sign-in of its own. Each request
+// carries the account's ID token; the relay asks Google whose account it is (Identity Toolkit accounts:lookup), keeps
+// that answer for the token's life, and finds the person by the account's email in Phone/accounts.json, which the desk
+// writes for the relay alone. Phone/signins.json tells the desk who has signed in, and when.
+function sha(x){ return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(x), Utilities.Charset.UTF_8).map(v => ('0' + (v & 255).toString(16)).slice(-2)).join(''); }
+// The Firebase web config, as pasted from the console (the keys may not be in quotes). Public: it names the project.
+function fbConfig(){
+  const cfg = PROPS.getProperty('FIREBASE_CONFIG'); if(!cfg) return null;
+  try{ return JSON.parse(cfg); }catch(e){ return JSON.parse(cfg.replace(/^[^{]*/, '').replace(/;?\s*$/, '').replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g, '$1"$2":')); }
+}
+function accounts(ws){
+  const cache = CacheService.getScriptCache(), hit = cache.get('ACCOUNTS');
+  if(hit) return JSON.parse(hit);
+  const ph = folder(ws, 'Phone', false), it = ph && ph.getFilesByName('accounts.json');
+  let o = null; try{ o = it && it.hasNext() ? JSON.parse(it.next().getBlob().getDataAsString('UTF-8')) : null; }catch(e){}
+  if(!o || o.format !== 'waterline-accounts') o = {format:'waterline-accounts', version:1, required:false, people:[]};
+  try{ cache.put('ACCOUNTS', JSON.stringify(o), 60); }catch(e){}
+  return o;
+}
+// The account an ID token belongs to, as Google says; null if Google does not accept it.
+function tokenAccount(tok){
+  const cache = CacheService.getScriptCache(), key = 'TK_' + sha(tok), hit = cache.get(key);
+  if(hit) return JSON.parse(hit);
+  const c = fbConfig(); if(!c || !c.apiKey) return null;
+  const res = UrlFetchApp.fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + encodeURIComponent(c.apiKey),
+    {method:'post', contentType:'application/json', muteHttpExceptions:true, payload:JSON.stringify({idToken:tok})});
+  let j = null; try{ j = JSON.parse(res.getContentText()); }catch(e){}
+  const u = j && j.users && j.users[0];
+  if(res.getResponseCode() !== 200 || !u || u.disabled || !u.email) return null;
+  // Kept no longer than the token itself lasts (an hour at most).
+  let exp = 0; try{ exp = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe((x => x + '===='.slice((x.length % 4) || 4))(String(tok).split('.')[1]))).getDataAsString()).exp * 1000; }catch(e){}
+  const a = {email:String(u.email).toLowerCase(), uid:String(u.localId || '')}, secs = Math.floor(Math.min(3000, ((exp || Date.now() + 600000) - Date.now()) / 1000));
+  if(secs > 30) try{ cache.put(key, JSON.stringify(a), secs); }catch(e){}
+  return a;
+}
+function whoIs(b, ws){
+  const acc = accounts(ws);
+  if(b.idToken){
+    const a = tokenAccount(String(b.idToken));
+    if(!a) return {no:{ok:false, code:'signedout', why:'You are signed out. Sign in again.'}};
+    const p = (acc.people || []).find(x => x && String(x.email || '').toLowerCase() === a.email);
+    if(!p || p.active === false) return {no:{ok:false, code:'noaccess', why:'This account is not on the site’s list. Ask the FM to add your email to your entry.'}};
+    try{ seenKeep(ws, p, b.ua); }catch(x){ Logger.log('signins.json not written: ' + (x && x.message || x)); }
+    return {who:{pid:String(p.pid), name:String(p.name || ''), pos:String(p.pos || '')}, p:p};
+  }
+  const code = PROPS.getProperty('SITE_CODE');
+  if(code && b.code === code){
+    if(!acc.required) return {who:null, old:true};
+    return {no:{ok:false, code:'signin', why:'This site now signs each person in. Sign in with your email.'}};
+  }
+  return {no:{ok:false, code:'refused', why:'This phone is not signed in to this site. Sign in with your email.'}};
+}
+// When each person last signed in, and on what, for the desk: written when it is new, or once a day.
+function seenKeep(ws, p, ua){
+  const k = 'SEEN_' + p.pid, was = PROPS.getProperty(k), now = new Date().toISOString(), kind = String(ua || '').slice(0, 40);
+  let o = null; try{ o = JSON.parse(was || 'null'); }catch(e){}
+  if(o && o.ua === kind && Date.now() - Date.parse(o.at) < 12 * 36e5) return;
+  PROPS.setProperty(k, JSON.stringify({at:now, ua:kind, name:String(p.name || '')}));
+  const all = PROPS.getProperties(), items = [];
+  Object.keys(all).forEach(x => { if(/^SEEN_/.test(x)){ try{ const v = JSON.parse(all[x]); items.push({pid:x.slice(5), name:v.name, at:v.at, ua:v.ua}); }catch(e){} } });
+  const ph = folder(ws, 'Phone', true), text = JSON.stringify({format:'waterline-signins', version:2, written:now, items:items}, null, 1);
+  const it = ph.getFilesByName('signins.json');
+  if(it.hasNext()) it.next().setContent(text); else ph.createFile('signins.json', text, 'application/json');
+}
+// Phone/relay.json: this relay's /exec address, the phone page's and the public sign-in config, so the desk can send an invite. The address
+// a phone called is the surest; Google's own answer is taken when the phone does not say. Written again if it changes.
+function relayUrlKeep(ws, self){
+  const ok = x => /^https:\/\/script\.google\.com\/.+\/exec$/.test(String(x || ''));
+  const u = ok(self) ? String(self) : ScriptApp.getService().getUrl();
+  const tag = u + ' ' + PAGE + ' ' + ((fbConfig() || {}).apiKey || '');
+  if(!ok(u) || PROPS.getProperty('RELAY_URL') === tag) return;
+  const c = fbConfig() || {};
+  const ph = folder(ws, 'Phone', true), text = JSON.stringify({format:'waterline-relay', version:1, url:u, page:PAGE, firebase:{apiKey:c.apiKey || '', authDomain:c.authDomain || '', projectId:c.projectId || ''}});
+  const it = ph.getFilesByName('relay.json');
+  if(it.hasNext()) it.next().setContent(text); else ph.createFile('relay.json', text, 'application/json');
+  PROPS.setProperty('RELAY_URL', tag);
 }
 
 // ── Taps left running (DEC-0374) ────────────────────────────────────────────────────────────
