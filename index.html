@@ -943,6 +943,21 @@ body.t-ni .qx-bar i{background:var(--textMid)}
 .c-wr{max-width:96%}
 .c-b.c-wr{background:var(--white)}
 .c-bd{background:var(--chatBg)}
+/* The wallpaper (DEC-0410): a chat's ground, and the page under the Jobs and Messages lists, whose rows are cards
+   (Design 9.2: 12px, a 1px border, no shadow; Design 4.6: 8px apart, 12px from the sides). One copy of the art per ground; each file holds four repeats, so 960px draws a 480px repeat. */
+.t-wl,.t-li{--wall:url(wallpaper-light.webp);--wallChat:url(wallpaper-chat-light.webp)}
+.t-ni{--wall:url(wallpaper-night.webp);--wallChat:url(wallpaper-night.webp)}
+body.s-jobs,body.s-msgs{background-image:var(--wall);background-size:960px 960px;background-attachment:fixed}
+.s-chat .c-bd,.s-chat .c-th{background:var(--chatBg) var(--wallChat) 0 0/960px 960px fixed}
+.s-jobs .list{background:none;border:0;display:flex;flex-direction:column;gap:8px;padding:0 12px}
+.s-jobs .list>.ra{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);border-left:1px solid var(--border);border-radius:12px}
+.s-jobs .list>.ra:not(.jt):not(.jd):not(.jx):not(.jc){border-right:1px solid var(--border)}
+.s-msgs .c-list{background:none;display:flex;flex-direction:column;gap:8px;padding:8px 12px}
+.s-msgs .c-ch{border:1px solid var(--border);border-radius:12px}
+.s-msgs .c-ch .c-m{border-bottom:none}
+/* Text straight on the wallpaper keeps its contrast (Design 5.10): the art's deepest line would take the 11px label from 5.0 to 4.4,
+   so a halo in the page colour keeps the lines off the letters. */
+.s-jobs .lh,.s-jobs .act,.s-jobs .para{text-shadow:0 0 2px var(--cream),0 0 4px var(--cream),0 0 6px var(--cream)}
 .c-x{width:44px;height:44px;margin:-12px -10px -12px 0;display:grid;place-items:center;color:#FFFFFF}
 .c-h .c-x{color:var(--accentD)}
 .c-to{display:flex;align-items:center;gap:8px;padding:4px 10px;border-top:1px solid var(--border);color:var(--textMid)}
@@ -1436,7 +1451,7 @@ function softRender(){
     if(o.length===n.length) o.forEach((el,i)=>el.replaceWith(n[i])); else render(); });
 }
 function render(){
-  document.body.className='t-'+theme();
+  document.body.className='t-'+theme()+' s-'+st.screen;
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
