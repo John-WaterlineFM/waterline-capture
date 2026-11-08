@@ -610,7 +610,7 @@ body.t-li .tf .zone{--onInkMid:#4A6E8C}
 .pgr{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px 0;min-height:44px}.pgq.dense .pgr{padding:8px 0}
 .pgr .pn{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--textMuted);display:grid;place-items:center;color:var(--btnText);transition:background .12s}
 .pgr.on .pn{background:var(--btnFill);border-color:var(--btnFill)}.pgr .pn svg{width:14px;height:14px}
-.pgr b{display:block;font:500 15px/1.4 'DM Sans';color:var(--text)}
+.pgr b{display:block;font:500 15px/1.6 'DM Sans';color:var(--text)}
 .pgk{margin:16px 0 0;font:400 12px/1.5 'DM Sans';color:var(--textMid)}
 .tf .ft .pgc{margin:0 0 8px;text-align:center}
 .pgp:has(.dense){padding-top:12px}.pgp:has(.dense) .pgs{width:48px;height:44px}.pgp:has(.dense) .pgi{width:48px;height:48px}
@@ -751,14 +751,6 @@ ol.cl li::before{content:counter(c);font:700 13px Sora;color:var(--textMuted);wi
 .chip.on{background:var(--accentD);color:var(--btnText)}
 .chip svg{width:16px;height:16px;stroke-width:2.5}
 .tf .field label,.tf .fl{display:block}
-.so{list-style:none;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.sr{padding:12px 14px;border-top:1px solid var(--border)}
-.sr:first-child{border-top:0}
-.sr>b{display:block;font:500 15px/1.35 'DM Sans';margin-bottom:8px}
-.ynp{display:flex;gap:8px}
-.ynp button{flex:1;min-height:44px;border-radius:8px;border:1.5px solid var(--accentD);color:var(--accentD);font:600 13px Outfit;display:flex;align-items:center;justify-content:center;gap:6px}
-.ynp button.on{background:var(--accentD);color:var(--btnText)}
-.ynp svg{width:16px;height:16px;stroke-width:2.5}
 .sigw{padding-top:20px}
 .sigp{margin-top:8px;height:120px;border:1.5px dashed var(--textMuted);border-radius:10px;background:var(--stone);position:relative}
 .sigp canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;color:var(--text);border-radius:10px}
@@ -1109,7 +1101,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
   </div>
 </div>
 <main id="app"></main>
-<script src="shapes.js?v=6ff5ff336d"></script>
+<script src="shapes.js?v=da5ec66156"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1299,16 +1291,20 @@ const t5AskFor=(h,from)=>{ const H=t5Hz(h), a=H&&H.ask; return titleCase(typeof 
 const t5MarkSay=(P,M)=>{ const n=P.filter(x=>M[x.q.id]).length; return n===P.length?'All '+n+' are marked true.':n+' of '+P.length+' marked. You will be asked about the others.'; };
 // Slide to mark (DEC-0411 v4 rule 6; Design 12.9): a tap marks a line (or clears it, if marked); a slide marks or clears every line
 // the finger passes, the same way; Space or Enter toggles. The page is redrawn only when the finger lifts. No timing is kept.
-function t5MarkBind(){ const L=app.querySelector('.tf .pgq'); if(!L||!st.form||!st.form.ck) return; const C=st.form.ck; C.marks=C.marks||{};
-  const rows=()=>[...L.querySelectorAll('.pgr')].map(x=>({q:{id:x.dataset.id}}));
-  const set=(b,v)=>{ if(!b) return; const id=b.dataset.id; if(!!C.marks[id]===v) return; if(v) C.marks[id]=true; else delete C.marks[id];
+// The same binding serves every slide-to-mark list on the phone (DEC-0412): `L` the list, `M` its marks, `say` what the count line
+// reads, `after` what runs once a press or slide has changed a mark. With none given it binds Before You Start's page.
+function t5MarkBind(L,M,say,after){ L=L||app.querySelector('.tf .pgq'); if(!L) return; if(!M){ if(!st.form||!st.form.ck) return; const C=st.form.ck; M=C.marks=C.marks||{}; }
+  const rows=()=>[...L.querySelectorAll('.pgr')].map(x=>({q:{id:x.dataset.id}})); say=say||(()=>t5MarkSay(rows(),M));
+  let mode=null, changed=false;
+  const set=(b,v)=>{ if(!b) return; const id=b.dataset.id; if(!!M[id]===v) return; if(v) M[id]=true; else delete M[id]; changed=true;
     b.classList.toggle('on',v); b.setAttribute('aria-checked',v); b.querySelector('.pn').innerHTML=v?I.tick:'';
-    const say=app.querySelector('.tf .pgc'); if(say) say.textContent=t5MarkSay(rows(),C.marks); };
-  let mode=null; const at=e=>{ const el=document.elementFromPoint(e.clientX,e.clientY); return el&&el.closest('.tf .pgr'); };
-  L.onpointerdown=e=>{ const b=at(e); if(!b) return; e.preventDefault(); try{ L.setPointerCapture(e.pointerId); }catch(_){} mode=!C.marks[b.dataset.id]; set(b,mode); };
+    const c=app.querySelector('.tf .pgc'); if(c) c.textContent=say(); };
+  const done=()=>{ mode=null; if(changed&&after){ changed=false; after(); } };
+  const at=e=>{ const el=document.elementFromPoint(e.clientX,e.clientY); return el&&el.closest('.tf .pgr'); };
+  L.onpointerdown=e=>{ const b=at(e); if(!b) return; e.preventDefault(); try{ L.setPointerCapture(e.pointerId); }catch(_){} mode=!M[b.dataset.id]; set(b,mode); };
   L.onpointermove=e=>{ if(mode===null) return; set(at(e),mode); };
-  L.onpointerup=L.onpointercancel=()=>{ mode=null; };
-  L.onkeydown=e=>{ const b=e.target.closest('.pgr'); if(b&&(e.key===' '||e.key==='Enter')){ e.preventDefault(); set(b,!C.marks[b.dataset.id]); } }; }
+  L.onpointerup=L.onpointercancel=done;
+  L.onkeydown=e=>{ const b=e.target.closest('.pgr'); if(b&&(e.key===' '||e.key==='Enter')){ e.preventDefault(); set(b,!M[b.dataset.id]); done(); } }; }
 // The phone's own back goes one decision back while Before You Start is open (DEC-0411 v4 rule 8): one history entry is held
 // while the check is open and spent on the same Back as the arrow; when the check closes another way it is taken back quietly.
 let t5Hist=false, t5Skip=false;
@@ -1511,7 +1507,7 @@ function render(){
   if(st.ds){ app.insertAdjacentHTML('beforeend',vDocScan()); dsBind(); }
   const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
   after();
-  if(st.sheet==='jdone') t5SigBind();
+  if(st.sheet==='jdone'){ t5SigBind(); t5FinBind(); }
   if(st.sheet==='take5') t5MarkBind();
   t5HistSync();
   t5Fit();
@@ -2712,16 +2708,20 @@ function t5StopView(j,C){ const S0=C.stop;
     +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="t5photo"></label></div></div>'
     +(S0.tried&&!S0.why?'<div class="help err" role="alert">Pick why it is stopped.</div>':'')+'</div>'
     +'<div class="ft"><button class="btn" data-act="t5StopSend"'+(st.busy?' disabled':'')+'>'+I.send+'Send to the FM</button></div>'; }
-// Mark Done (DEC-0341 rule 8): left safe, anything new, then a finger signature. "Power back on" only when Electricity was tapped.
+// Mark Done (DEC-0341 rule 8; DEC-0412): the finish checks as sentences on the slide-to-mark list, then a finger signature.
+// A marked line is its fine answer; "Nothing new or unexpected." left unmarked asks what was found. "Power back on" only when
+// Electricity was tapped. No timing is kept.
 function t5Elec(j){ const s=jSent().filter(x=>x.job===j.id&&x.hz).pop(); return s?s.hz.indexOf('electricity')>=0:!!(j.check&&(j.check.hazards||[]).some(h=>h.id==='electricity')); }
 function t5FinQs(j){ return T5().finish.filter(f=>!f.when||(f.when==='electricity'&&t5Elec(j))); }
 function vFinish(){
   const F=st.form, j=jobById(F.id); if(!j) return ''; const D=F.fin, qs=t5FinQs(j), err=D.tried?t5FinWhy(j):'';
   F.dphotos=F.dphotos||[];
+  D.marks=D.marks||{}; const M=D.marks, nw=t5FinNew(j);
   return '<div class="sheet tf" role="dialog" aria-modal="true" aria-label="Mark done">'+t5Zone('Mark Done · Job '+(j.no||''),null,'<div class="hero"><b class="n">'+qs.length+'</b><p>checks,<br>then sign</p></div>')
-    +'<div class="pg"><ul class="so">'+qs.map((f,i)=>{ const a=D.ans[f.id], id='fq'+i;
-      return '<li class="sr"><b id="'+id+'">'+esc(f.q)+'</b><div class="ynp" role="radiogroup" aria-labelledby="'+id+'">'+['yes','no'].map(v=>'<button class="'+(a===v?'on':'')+'" role="radio" aria-checked="'+(a===v)+'" data-act="t5Fin" data-k="'+f.id+'" data-v="'+v+'"'+(i===0&&v==='yes'?' data-t5focus':'')+'>'+(a===v?I.tick:'')+(v==='yes'?'Yes':'No')+'</button>').join('')+'</div>'
-        +(f.ask&&a===f.ask?'<div class="field" style="padding:12px 0 0"><label for="t5found">'+esc(f.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')+'</li>'; }).join('')+'</ul>'
+    +'<div class="pg"><p class="pgd">Slide your finger down the ones that are true.</p><ol class="pgq">'+qs.map((f,i)=>{ const on=!!M[f.id];
+      return '<li><button class="pgr'+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-id="'+esc(f.id)+'"'+(i===0?' data-t5focus':'')+'><span class="pn">'+(on?I.tick:'')+'</span><b>'+esc(t5Sure(f))+'</b></button></li>'; }).join('')+'</ol>'
+    +'<p class="pgc pgd" aria-live="polite" style="margin-top:8px">'+t5FinSay(qs,M)+'</p>'
+    +(nw?'<div class="field" style="padding:16px 0 0"><label for="t5found">'+esc(nw.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')
     +'<div class="field" style="padding:20px 0 0"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
     +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
     +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label></div></div>'
@@ -2732,10 +2732,17 @@ function vFinish(){
     +(err?'<div class="help err" role="alert">'+esc(err)+'</div>':'')+'</div>'
     +'<div class="ft">'+(F.dphotos.length?'':'<p class="say">With no photo, the job’s record says none was taken.</p>')+'<button class="btn" data-act="t5DoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Sign and Mark Done</button></div></div>';
 }
-function t5FinWhy(j){ const D=st.form.fin, qs=t5FinQs(j), un=qs.filter(f=>D.ans[f.id]==null);
-  if(un.length) return 'Answer '+(un.length===1?'“'+un[0].q+'”':'each question')+'.';
-  const nw=qs.find(f=>f.ask&&D.ans[f.id]===f.ask); if(nw&&!String(st.form.t5found||'').trim()) return 'Say what you found.';
+const t5FinSay=(qs,M)=>{ const n=qs.filter(f=>M[f.id]).length; return n===qs.length?'All '+n+' marked.':n+' of '+qs.length+' marked. The FM will see which.'; };
+// The line whose unmarked state asks a question ("What did you find?"), once anything is marked or Sign was pressed.
+function t5FinNew(j){ const D=st.form.fin, M=D.marks||{}; if(!D.tried&&!Object.keys(M).length) return null; return t5FinQs(j).find(f=>f.ask&&!M[f.id])||null; }
+function t5FinWhy(j){ const D=st.form.fin;
+  if(t5FinNew(j)&&!String(st.form.t5found||'').trim()) return 'Say what you found.';
   if(!D.strokes.length) return 'Sign with your finger.'; return ''; }
+// Mark Done's list bound to the one slide-to-mark binding; the sheet is redrawn only when "What did you find?" must open or close.
+function t5FinBind(){ const F=st.form, D=F&&F.fin, j=F&&jobById(F.id), L=app.querySelector('.tf .pgq'); if(!D||!j||!L) return; D.marks=D.marks||{}; const qs=t5FinQs(j);
+  t5MarkBind(L,D.marks,()=>t5FinSay(qs,D.marks),()=>{ const open=!!app.querySelector('#t5found'), want=!!t5FinNew(j); if(open===want) return;
+    const f=document.activeElement, fid=f&&f.classList&&f.classList.contains('pgr')?f.dataset.id:'', y=app.querySelector('.tf').scrollTop; render();
+    const t=app.querySelector('.tf'); if(t){ t.scrollTop=y; const n=fid&&t.querySelector('.pgr[data-id="'+fid+'"]'); if(n) n.focus({preventScroll:true}); } }); }
 // The signature pad: strokes kept in the form so a redraw keeps them, drawn again on each render.
 function t5SigBind(){ const cv=document.getElementById('t5sig'); if(!cv) return; const D=st.form.fin, r=cv.getBoundingClientRect(), k=window.devicePixelRatio||1;
   cv.width=Math.round(r.width*k); cv.height=Math.round(r.height*k); const g=cv.getContext('2d'); g.scale(k,k);
@@ -2754,7 +2761,6 @@ function t5SigPng(){ const D=st.form.fin, cv=document.createElement('canvas'); c
 // What each press on the check and the sign-out does (S5).
 function t5Act(a,b){
   const F=st.form, C=F.ck, j=jobById(F.id), v=b.dataset.v; if(!j) return;
-  if(a==='t5Fin'){ F.fin.ans[b.dataset.k]=v; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const n=t.querySelector('[data-act="t5Fin"][data-k="'+b.dataset.k+'"][data-v="'+v+'"]'); if(n) n.focus({preventScroll:true}); return; }
   if(a==='t5SigClear'){ F.fin.strokes=[]; F.fin.at=''; const y=app.querySelector('.tf').scrollTop; render(); app.querySelector('.tf').scrollTop=y; return; }
   if(a==='t5DoneSend'){ if(t5FinWhy(j)){ F.fin.tried=true; const y=app.querySelector('.tf').scrollTop; render(); const t=app.querySelector('.tf'); t.scrollTop=y; const e=t.querySelector('[role=alert]'); if(e) e.scrollIntoView({block:'nearest'}); return; } return jobSend('done'); }
   if(a==='t5Back'&&st.sheet==='jdone'){ st.sheet=false; render(); const f=app.querySelector('[data-act="jobStop"]'); if(f) f.focus(); return; }
@@ -2905,7 +2911,7 @@ async function jobSend(act){
   if(act==='pause') fields.note=String(F.pwhy||'').trim();
   if(act==='stop'){ const C=F.ck, q=C&&C.stopQ; fields.stopped={why:C.stop.why}; photos=C.stop.photos;
     fields.note=[q?'At “'+q+'”.':'',String(F.t5word||'').trim()].filter(Boolean).join(' '); }
-  if(act==='done'){ const D=F.fin; fields.finish={answers:t5FinQs(j).map(f=>({id:f.id,q:f.q,a:D.ans[f.id]})),found:String(F.t5found||'').trim()};
+  if(act==='done'){ const D=F.fin; fields.finish={answers:t5FinQs(j).map(f=>({id:f.id,q:f.q,a:D.marks[f.id]?f.ok:(f.ok==='yes'?'no':'yes')})),found:String(F.t5found||'').trim()};
     if(D.strokes.length){ photos=photos.concat([{file:await t5SigPng(),keep:true,sig:true}]); fields.sig={file:'',by:st.walker,at:D.at||new Date().toISOString()}; } }
   if(act==='assign') fields.assign=F.asgSend;
   st.busy=true; F.err=''; keepRender();
@@ -4060,7 +4066,7 @@ app.addEventListener('click',async e=>{
   if(a==='jobUnflag') return jobSend('unflag');
   if(a==='jobStop'){ st.sheet='jstop'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
   if(a==='jobStopTell'){ F.t5word=''; return t5Open('stop'); }
-  if(a==='jobDone'){ F.ptext=''; F.ptried=false; F.t5found=''; F.fin={ans:{},strokes:[],at:'',tried:false}; st.sheet='jdone'; t5Draw(); return; }
+  if(a==='jobDone'){ F.ptext=''; F.ptried=false; F.t5found=''; F.fin={marks:{},strokes:[],at:'',tried:false}; st.sheet='jdone'; t5Draw(); return; }
   // Pause, Restart and Change on Assigned (P5). The desk checks the group and the reason again as it files them.
   if(a==='jobPause'){ F.ptried=false; st.sheet='jpause'; render(); const v=document.getElementById('pwhy'); if(v) v.focus(); return; }
   if(a==='jobPauseSend') return jobSend('pause');   // the reason is optional (DEC-0316)

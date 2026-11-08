@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v548.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v549.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -209,9 +209,11 @@ const WFM_CAPTURE_SHAPE={
     fromWear:{ladder:['M014'],tower:['M014'],scaffold:['M014'],roof:['M014','M018'],mewp:['M014','M018']},
     wearBasis:'S.I. 299/2007 Schedule 2, as replaced by S.I. 610/2021, Part C; DEC-0346',
     // Mark Done (DEC-0341 rule 8): `when` names the hazard that must have been tapped; `ask` is the answer that asks what.
-    finish:[{id:'f-back',q:'All tools and materials returned?',ok:'yes'},{id:'f-clear',q:'Work area inspected and clear?',ok:'yes'},
-      {id:'f-power',q:'Power back on, covers back on?',ok:'yes',when:'electricity'},
-      {id:'f-new',q:'Anything new or not as expected?',ok:'no',ask:'yes',askQ:'What did you find?'}],
+    // `sure` is the sentence the phone shows, true when the answer is `ok` (DEC-0412): a line slid over or tapped is its fine answer.
+    finish:[{id:'f-back',q:'All tools and materials returned?',ok:'yes',sure:'All tools and materials are returned.'},
+      {id:'f-clear',q:'Work area inspected and clear?',ok:'yes',sure:'The work area is inspected and clear.'},
+      {id:'f-power',q:'Power back on, covers back on?',ok:'yes',when:'electricity',sure:'Power is back on and covers are back on.'},
+      {id:'f-new',q:'Anything new or not as expected?',ok:'no',ask:'yes',askQ:'What did you find?',sure:'Nothing new or unexpected.'}],
     stopWhy:['Not safe','Wrong kit','Need help','Something new'],
     says:'This records what was asked and answered on the day. It does not say the job was safe.'
   },
