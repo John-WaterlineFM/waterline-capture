@@ -197,9 +197,18 @@ function seenKeep(ws, p, ua){
   PROPS.setProperty(k, JSON.stringify({at:now, ua:kind, name:String(p.name || '')}));
   const all = PROPS.getProperties(), items = [];
   Object.keys(all).forEach(x => { if(/^SEEN_/.test(x)){ try{ const v = JSON.parse(all[x]); items.push({pid:x.slice(5), name:v.name, at:v.at, ua:v.ua}); }catch(e){} } });
-  const ph = folder(ws, 'Phone', true), text = JSON.stringify({format:'waterline-signins', version:2, written:now, items:items}, null, 1);
-  const it = ph.getFilesByName('signins.json');
-  if(it.hasNext()) it.next().setContent(text); else ph.createFile('signins.json', text, 'application/json');
+  phoneFileWrite(ws, 'signins.json', JSON.stringify({format:'waterline-signins', version:2, written:now, items:items}, null, 1));
+}
+// Writes one of the relay's own files in Phone/, under the script lock, so requests arriving together never make two
+// copies of it (they did on 6 Nov: relay.json, relay (1).json, relay (2).json). Returns false if the lock was busy.
+function phoneFileWrite(ws, name, text, still){
+  const lock = LockService.getScriptLock(); if(!lock.tryLock(10000)) return false;
+  try{
+    if(still && !still()) return true;
+    const ph = folder(ws, 'Phone', true), it = ph.getFilesByName(name);
+    if(it.hasNext()) it.next().setContent(text); else ph.createFile(name, text, 'application/json');
+    return true;
+  } finally { lock.releaseLock(); }
 }
 // Phone/relay.json: this relay's /exec address, the phone page's and the public sign-in config, so the desk can send an invite. The address
 // a phone called is the surest; Google's own answer is taken when the phone does not say. Written again if it changes.
@@ -209,10 +218,9 @@ function relayUrlKeep(ws, self){
   const tag = u + ' ' + PAGE + ' ' + ((fbConfig() || {}).apiKey || '');
   if(!ok(u) || PROPS.getProperty('RELAY_URL') === tag) return;
   const c = fbConfig() || {};
-  const ph = folder(ws, 'Phone', true), text = JSON.stringify({format:'waterline-relay', version:1, url:u, page:PAGE, firebase:{apiKey:c.apiKey || '', authDomain:c.authDomain || '', projectId:c.projectId || ''}});
-  const it = ph.getFilesByName('relay.json');
-  if(it.hasNext()) it.next().setContent(text); else ph.createFile('relay.json', text, 'application/json');
-  PROPS.setProperty('RELAY_URL', tag);
+  const text = JSON.stringify({format:'waterline-relay', version:1, url:u, page:PAGE, firebase:{apiKey:c.apiKey || '', authDomain:c.authDomain || '', projectId:c.projectId || ''}});
+  // Asked again inside the lock: a request that waited behind the one that wrote it writes nothing.
+  if(phoneFileWrite(ws, 'relay.json', text, () => PROPS.getProperty('RELAY_URL') !== tag)) PROPS.setProperty('RELAY_URL', tag);
 }
 
 // ── Taps left running (DEC-0374) ────────────────────────────────────────────────────────────

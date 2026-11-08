@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v544.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v548.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -49,7 +49,8 @@ const WFM_CAPTURE_SHAPE={
   // people in the site file's alerts.permit may send one; the relay and the desk both refuse anyone else.
   permitActs:['permitissue','permitrefuse'],
   // Before You Start (W; DEC-0313 rule 1, DEC-0325): a start or restart carries check:{none, hazards:[{id,label}], note,
-  // same, kit:[{reg,id}]}: the hazards ticked, or None of These, never neither. Parts used (DEC-0313 rule 4): a done or a
+  // same, kit:[{reg,id}]}: the hazards ticked, or None of These, never neither. A check kept from another job (DEC-0411)
+  // also carries sameFrom:{job, no, at, different:'no'}: the job it came from, when, and that nothing here was different. Parts used (DEC-0313 rule 4): a done or a
   // parts update carries parts:{text}, typed in the person's own words (DEC-0339 rule 4); a capture from before 23 Oct 2026
   // carries parts:{none, lines:[{what,qty,unit}]}: the lines, or None, never neither. Done's parts are optional.
   checkSays:'This records what the person considered on the day. It is not the site’s risk assessment.',
@@ -88,81 +89,98 @@ const WFM_CAPTURE_SHAPE={
     signs:{M003:'Ear protection',M004:'Eye protection',M008:'Safety boots',M009:'Gloves',M014:'Hard hat',M015:'Hi-vis',M016:'Mask',
       M018:'Harness',M026:'Apron',W008:'Fall',W012:'Electricity',W017:'Hot surface'},
     hazards:{
-      height:{label:'Working at height',short:'Height',icon:'arrow-up-from-line',sign:'W008',wear:[],qs:[
-        {id:'h-sound',q:'Feet, rungs and locks sound?',hint:'Look it over before you climb.',ok:'yes',says:'Ladder looked over',
+      // Each question carries `sure`, the same check as one short sentence that is true when it is fine, for the phone's
+      // page of checks (DEC-0411 v4 rule 6; plain words, DEC-0341 rule 2); `ask` is the page's heading. A height question
+      // marked `for:['ladder']` is asked only for a leaning ladder (rule 7). `sure` or `ask` may be keyed by what the
+      // work is done from, `_` the default.
+      height:{label:'Working at height',short:'Height',icon:'arrow-up-from-line',sign:'W008',wear:[],
+        ask:{_:'Before you go up',stepladder:'Before you go up the stepladder',ladder:'Before you go up the ladder'},qs:[
+        {id:'h-sound',q:'Feet, rungs and locks sound?',hint:'Look it over before you climb.',ok:'yes',says:'Ladder looked over',sure:'The ladder is not damaged.',
           sort:'I’ll Use Another One',basis:'HSA, Using Ladders Safely: a pre-use check at least daily; S.I. 299/2007 reg 114'},
         {id:'h-short',q:'Done in under 30 minutes?',hint:'A ladder is for short jobs, not 30 minutes or more in one place.',ok:'yes',
-          says:'Under 30 minutes',sort:'I’ll Take Breaks Off It',sortSays:'Breaks off it, over 30 minutes',
+          says:'Under 30 minutes',sure:'The job takes less than 30 minutes.',sort:'I’ll Take Breaks Off It',sortSays:'Breaks off it, over 30 minutes',
           basis:'HSA, Using Ladders Safely: not 30 minutes or more in one position; S.I. 299/2007 reg 114(1)'},
-        {id:'h-firm',q:'Firm, level floor, and no one under you?',hint:'Stand it on solid ground. Keep people out from below.',ok:'yes',
-          says:'Firm floor, clear below',sort:'I’ll Clear It First',basis:'S.I. 299/2007 reg 114 (stable, firm surface)'},
+        {id:'h-firm',q:'Is the floor flat and hard?',hint:'Not on a box, a pallet or anything that moves.',ok:'yes',
+          says:'Firm, level floor',sure:'The ladder stands on a flat, hard floor.',sort:'I’ll Move It',basis:'S.I. 299/2007 reg 114 (stable, firm surface)'},
+        {id:'h-tied',for:['ladder'],q:'Is the ladder tied, or is someone holding the bottom?',hint:'Tie it at the top if you can. If not, a second person holds the bottom.',ok:'yes',
+          says:'Tied, or held at the bottom',sure:'The ladder is tied at the top, or another person holds the bottom.',sort:'I’ll Get Someone to Hold It',sortSays:'A second person holds it',
+          basis:'S.I. 299/2007 reg 114(e); HSA, Using Ladders Safely: securing your ladder'},
+        {id:'h-angle',for:['ladder'],q:'Is the foot of the ladder about a quarter of its height from the wall?',hint:'A 4-metre ladder stands 1 metre out. That is the 1 in 4 rule, about 75 degrees.',ok:'yes',
+          says:'Set at 1 in 4',sure:'The foot of the ladder is about a quarter of its height from the wall. A 4-metre ladder: 1 metre out.',sort:'I’ll Move It',sortSays:'Moved to 1 in 4',
+          basis:'HSA, Using Ladders Safely: the correct angle is 75 degrees or the 1 in 4 rule'},
         {id:'h-hand',q:'One hand free to hold on, off the top steps?',hint:'Not the top two steps of a stepladder, or the top three rungs of a ladder.',
-          ok:'yes',says:'A hand to hold, off the top steps',sort:'I’ll Get a Taller One',
-          basis:'S.I. 299/2007 reg 114 (a secure handhold); HSA, Using Ladders Safely'}]},
-      electricity:{label:'Electricity',short:'Electricity',icon:'zap',sign:'W012',wear:[],qs:[
-        {id:'e-iso',q:'Switching off a supply to work on it?',hint:'A circuit or a fixed appliance, at the board.',ok:'no',says:'No supply isolated',
+          ok:'yes',says:'A hand to hold, off the top steps',sure:{_:'You hold on with one hand. You do not stand on the top two steps.',ladder:'You hold on with one hand. You do not stand on the top three rungs.'},
+          sort:'I’ll Get a Taller One',sortSays:'Taller ladder used',basis:'S.I. 299/2007 reg 114 (a secure handhold); HSA, Using Ladders Safely'},
+        {id:'h-tools',q:'Are your tools in a belt or tied on?',hint:'Nothing loose that can fall on someone.',ok:'yes',
+          says:'Tools in a belt or tied on',sure:'Your tools are in a belt or tied on. Nothing can fall.',sort:'I’ll Use a Tool Belt',sortSays:'Tool belt used',
+          basis:'S.I. 299/2007 reg 116(a); HSA, Using Ladders Safely: light work only'},
+        {id:'h-zone',q:'Can anyone walk under you?',hint:'Put out cones or a sign if people pass.',ok:'no',
+          says:'Nobody can walk under',sure:'Nobody can walk under you. Cones or a sign are out.',sort:'I’ll Cone It Off',sortSays:'Coned off',
+          basis:'S.I. 299/2007 reg 117'}]},
+      electricity:{label:'Electricity',short:'Electricity',icon:'zap',sign:'W012',wear:[],ask:'Before you work near power',qs:[
+        {id:'e-iso',q:'Switching off a supply to work on it?',hint:'A circuit or a fixed appliance, at the board.',ok:'no',sure:'You do not turn off the power to do this job.',says:'No supply isolated',
           hold:'Isolating a supply needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Electrical Isolation',
           basis:'S.I. 299/2007 reg 86(1)(b), (c); the site’s permit rule (DEC-0313 rule 3)'},
-        {id:'e-live',q:'Any chance of touching live parts?',hint:'Wires, terminals, anything not proved dead.',ok:'no',says:'Nothing live to touch',
+        {id:'e-live',q:'Any chance of touching live parts?',hint:'Wires, terminals, anything not proved dead.',ok:'no',sure:'You will not touch anything with power in it.',says:'Nothing live to touch',
           hold:'Working live holds the job.',clear:'Make it dead first, or the FM arranges it.',
           basis:'S.I. 299/2007 reg 86(1)(d)'},
-        {id:'e-lead',q:'Leads, plugs and chargers undamaged?',hint:'No cuts, tape, scorch marks or loose plugs.',ok:'yes',says:'Leads and chargers undamaged',
+        {id:'e-lead',q:'Leads, plugs and chargers undamaged?',hint:'No cuts, tape, scorch marks or loose plugs.',ok:'yes',sure:'Cables, plugs and chargers are not damaged.',says:'Leads and chargers undamaged',
           sort:'I’ll Use Another One',basis:'S.I. 299/2007 reg 81 (checked by the user before use)'},
-        {id:'e-train',q:'Is this work within your training?',hint:'Fixed wiring and boards are for a competent electrician.',ok:'yes',
+        {id:'e-train',q:'Is this work within your training?',hint:'Fixed wiring and boards are for a competent electrician.',ok:'yes',sure:'You are trained for this work.',
           says:'Within training',hold:'This needs a competent electrician.',clear:'The FM arranges one.',basis:'S.I. 299/2007 reg 88'}]},
-      'hot-work':{label:'Hot work',short:'Hot work',icon:'flame',wear:['M004','M009'],qs:[
+      'hot-work':{label:'Hot work',short:'Hot work',icon:'flame',wear:['M004','M009'],ask:'Before you use heat or flame',qs:[
         {id:'w-permit',q:'Hot work needs a permit to work',hint:'Flame, sparks or a heat gun.',ok:'none',says:'Permit',
           hold:'Hot work needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Hot Works',
           basis:'Fire Services Act 1981 s.18(2), (3); the site’s permit rule (DEC-0313 rule 3)'},
-        {id:'w-clear',q:'Anything that can burn cleared or covered?',hint:'Paper, fabric, dust, sprays, fuel.',ok:'yes',says:'Burnables cleared',
+        {id:'w-clear',q:'Anything that can burn cleared or covered?',hint:'Paper, fabric, dust, sprays, fuel.',ok:'yes',sure:'Things that can burn are moved away or covered.',says:'Burnables cleared',
           sort:'I’ll Clear Them First',basis:'Fire Services Act 1981 s.18(3)'},
-        {id:'w-ext',q:'Fire extinguisher within reach?',hint:'The right type, in your hand’s reach.',ok:'yes',says:'Extinguisher to hand',
+        {id:'w-ext',q:'Fire extinguisher within reach?',hint:'The right type, in your hand’s reach.',ok:'yes',sure:'A fire extinguisher is near you.',says:'Extinguisher to hand',
           sort:'I’ll Get One First',basis:'Fire Services Act 1981 s.18(2)'},
-        {id:'w-watch',q:'Someone watching for fire, during and after?',hint:'Not you. They stay on after you stop.',ok:'yes',says:'Fire watch',
+        {id:'w-watch',q:'Someone watching for fire, during and after?',hint:'Not you. They stay on after you stop.',ok:'yes',sure:'Another person watches for fire, during and after.',says:'Fire watch',
           sort:'I’ll Get Someone',basis:'Fire Services Act 1981 s.18(2); insurer and industry practice'}]},
-      'hot-water':{label:'Water and hot surfaces',short:'Hot water',icon:'thermometer-sun',sign:'W017',wear:['M009'],qs:[
-        {id:'t-off',q:'Supply off and pressure let off?',hint:'Before you open a pipe, valve or tank.',ok:'yes',says:'Off, pressure let off',
+      'hot-water':{label:'Water and hot surfaces',short:'Hot water',icon:'thermometer-sun',sign:'W017',wear:['M009'],ask:'Before you work on pipes or tanks',qs:[
+        {id:'t-off',q:'Supply off and pressure let off?',hint:'Before you open a pipe, valve or tank.',ok:'yes',sure:'The water is turned off. There is no pressure in the pipe.',says:'Off, pressure let off',
           sort:'I’ll Turn It Off First',basis:'Safety, Health and Welfare at Work Act 2005 s.19'},
-        {id:'t-cool',q:'Cool enough to touch?',hint:'Pipes, rads and cylinders can scald.',ok:'yes',says:'Cool to touch',
+        {id:'t-cool',q:'Cool enough to touch?',hint:'Pipes, rads and cylinders can scald.',ok:'yes',sure:'Pipes and tanks are cool. You can touch them.',says:'Cool to touch',
           sort:'I’ll Let It Cool',basis:'Safety, Health and Welfare at Work Act 2005 s.19'},
-        {id:'t-dry',q:'Water kept off electrics and the floor?',hint:'Cover sockets. Mop up as you go.',ok:'yes',says:'Water kept off',
+        {id:'t-dry',q:'Water kept off electrics and the floor?',hint:'Cover sockets. Mop up as you go.',ok:'yes',sure:'No water near electrics. The floor is dry.',says:'Water kept off',
           sort:'I’ll Cover and Mop',basis:'Safety, Health and Welfare at Work Act 2005 s.19'}]},
-      chemicals:{label:'Chemicals',short:'Chemicals',icon:'flask-conical',wear:['M004','M009','M026'],qs:[
-        {id:'c-sds',q:'Read the label or data sheet?',hint:'It says what to wear and what not to mix.',ok:'yes',says:'Label read',
+      chemicals:{label:'Chemicals',short:'Chemicals',icon:'flask-conical',wear:['M004','M009','M026'],ask:'Before you use chemicals',qs:[
+        {id:'c-sds',q:'Read the label or data sheet?',hint:'It says what to wear and what not to mix.',ok:'yes',sure:'You read the label on the product.',says:'Label read',
           sort:'I’ll Read It First',basis:'S.I. 619/2001 reg 4 (the supplier’s safety data sheet)'},
-        {id:'c-mix',q:'One product at a time, never mixed?',hint:'Mixing cleaners can make a toxic gas.',ok:'yes',says:'Never mixed',
+        {id:'c-mix',q:'One product at a time, never mixed?',hint:'Mixing cleaners can make a toxic gas.',ok:'yes',sure:'You use one product. You do not mix products.',says:'Never mixed',
           sort:'I’ll Use One at a Time',basis:'S.I. 619/2001 reg 5; the product’s label'},
-        {id:'c-air',q:'Room aired, and people kept out till dry?',hint:'Open a window. Sign the door.',ok:'yes',says:'Aired, people kept out',
+        {id:'c-air',q:'Room aired, and people kept out till dry?',hint:'Open a window. Sign the door.',ok:'yes',sure:'The window is open. People stay out until it is dry.',says:'Aired, people kept out',
           sort:'I’ll Air It and Sign It',basis:'S.I. 619/2001 reg 5; Safety, Health and Welfare at Work Act 2005 s.12'}]},
-      confined:{label:'A confined space',short:'Confined space',icon:'cylinder',wear:[],qs:[
+      confined:{label:'A confined space',short:'Confined space',icon:'cylinder',wear:[],ask:'Before you go in',qs:[
         {id:'s-permit',q:'Going into a confined space needs a permit',hint:'A tank, pit, duct, void, manhole or crawl space.',ok:'none',says:'Permit',
           hold:'Entry needs a permit to work.',clear:'The FM or the permit issuer issues it, from their phone or the desk.',permit:'Confined Space',
           basis:'S.I. 218/2001 reg 5; the site’s permit rule (DEC-0313 rule 3)'},
-        {id:'s-watch',q:'Someone outside who can see you?',hint:'They stay at the entrance the whole time.',ok:'yes',says:'Someone outside',
+        {id:'s-watch',q:'Someone outside who can see you?',hint:'They stay at the entrance the whole time.',ok:'yes',sure:'A person outside can see you all the time.',says:'Someone outside',
           hold:'No one goes in without someone outside.',clear:'The FM arranges it with the permit.',basis:'S.I. 218/2001 reg 6'},
-        {id:'s-rescue',q:'Rescue plan ready?',hint:'How you would be got out, and with what.',ok:'yes',says:'Rescue plan ready',
+        {id:'s-rescue',q:'Rescue plan ready?',hint:'How you would be got out, and with what.',ok:'yes',sure:'There is a plan to get you out.',says:'Rescue plan ready',
           hold:'No one goes in without a rescue plan.',clear:'The FM arranges it with the permit.',basis:'S.I. 218/2001 reg 6(1)'}]},
-      alone:{label:'Working alone',short:'Working alone',icon:'user',wear:[],qs:[
-        {id:'a-told',q:'Someone knows where you are, and till when?',hint:'Reception or the person on duty.',ok:'yes',says:'Someone told',
+      alone:{label:'Working alone',short:'Working alone',icon:'user',wear:[],ask:'You are working alone',qs:[
+        {id:'a-told',q:'Someone knows where you are, and till when?',hint:'Reception or the person on duty.',ok:'yes',sure:'Someone knows where you are and when you finish.',says:'Someone told',
           sort:'I’ll Tell Someone Now',basis:'Safety, Health and Welfare at Work Act 2005 s.19; HSA guidance on lone working'},
-        {id:'a-phone',q:'Phone charged and on you?',hint:'In your pocket, not in the van.',ok:'yes',says:'Phone on you',
+        {id:'a-phone',q:'Phone charged and on you?',hint:'In your pocket, not in the van.',ok:'yes',sure:'Your phone is charged and with you.',says:'Phone on you',
           sort:'I’ll Get It First',basis:'HSA guidance on lone working (a way to keep in contact)'}]},
-      public:{label:'Residents or the public in the area',short:'Residents nearby',icon:'users',wear:[],qs:[
+      public:{label:'Residents or the public in the area',short:'Residents nearby',icon:'users',wear:[],ask:'Residents are near',qs:[
         // A site whose set-up records no child residents is asked noChildren instead (DEC-0384 rule 2, DEC-0338 rule 3).
-        {id:'p-keep',q:'Residents and children kept out?',noChildren:'Residents kept out?',hint:'Lock the door, cone it off or sign it.',ok:'yes',says:'Residents kept out',
+        {id:'p-keep',q:'Residents and children kept out?',noChildren:'Residents kept out?',sure:'Residents and children cannot come in.',sureNoChildren:'Residents cannot come in.',hint:'Lock the door, cone it off or sign it.',ok:'yes',says:'Residents kept out',
           sort:'I’ll Close It Off',basis:'Safety, Health and Welfare at Work Act 2005 s.12'},
-        {id:'p-reach',q:'Tools and chemicals out of reach?',hint:'Even when you step away.',ok:'yes',says:'Tools out of reach',
+        {id:'p-reach',q:'Tools and chemicals out of reach?',hint:'Even when you step away.',ok:'yes',sure:'Residents cannot reach your tools or chemicals.',says:'Tools out of reach',
           sort:'I’ll Take Them With Me',basis:'Safety, Health and Welfare at Work Act 2005 s.12'},
-        {id:'p-exit',q:'Escape routes and fire doors still clear?',hint:'Nothing left in a corridor or wedging a door.',ok:'yes',says:'Escape routes clear',
+        {id:'p-exit',q:'Escape routes and fire doors still clear?',hint:'Nothing left in a corridor or wedging a door.',ok:'yes',sure:'Fire exits and fire doors are not blocked.',says:'Escape routes clear',
           sort:'I’ll Clear Them',basis:'Fire Services Act 1981 s.18(2)'}]},
       // Manual handling (DEC-0383 rule 5): no ISO 7010 sign means it, so a Lucide picture (DEC-0342 rule 3). The
       // questions are S.I. 299/2007 reg 69(a) and Schedule 3 items 1 and 3, read on revisedacts.lawreform.ie, 28 Oct 2026.
-      manual:{label:'Manual handling',short:'Manual handling',icon:'package',wear:[],qs:[
-        {id:'m-aid',q:'Trolley, sack truck or a second person used?',hint:'Wheel it if you can. Do not carry what a trolley can.',ok:'yes',
+      manual:{label:'Manual handling',short:'Manual handling',icon:'package',wear:[],ask:'Before you lift or carry',qs:[
+        {id:'m-aid',q:'Trolley, sack truck or a second person used?',hint:'Wheel it if you can. Do not carry what a trolley can.',ok:'yes',sure:'You use a trolley, or another person helps.',
           says:'Trolley or help used',sort:'I’ll Get a Trolley',basis:'S.I. 299/2007 reg 69(a)'},
-        {id:'m-load',q:'Light enough to hold close, with a good grip?',hint:'Test it first. Too heavy, too big or awkward: get help.',ok:'yes',
+        {id:'m-load',q:'Light enough to hold close, with a good grip?',hint:'Test it first. Too heavy, too big or awkward: get help.',ok:'yes',sure:'You can hold it close to your body.',
           says:'Held close, good grip',sort:'I’ll Get Help',basis:'S.I. 299/2007 Schedule 3, item 1'},
-        {id:'m-route',q:'Route clear, floor dry, nothing to climb?',hint:'Clear the way before you lift.',ok:'yes',
+        {id:'m-route',q:'Route clear, floor dry, nothing to climb?',hint:'Clear the way before you lift.',ok:'yes',sure:'The way is clear and the floor is dry.',
           says:'Route clear',sort:'I’ll Clear the Way',basis:'S.I. 299/2007 Schedule 3, item 3'}]}
     },
     // Each hazard's picture as the phone draws it (Lucide, one stroke 1.75 on a 24px grid; Design 21.7), so the desk's
