@@ -1,7 +1,7 @@
 // Keeps the phone page itself on the phone, so it opens with no signal (Work 015 P2; DEC-0287 rule 3).
 // Network first: a fresh page whenever there is signal, the kept copy when there is none. Only this
 // site's own files are kept; the relay (Google) and captures are never cached here.
-const KEEP = 'waterline-phone-6';
+const KEEP = 'waterline-phone-7';
 // The scanner's libraries (slice SP), pinned by version so a kept copy never goes stale: kept apart from the page's
 // own files, fetched with CORS so a failure is never kept, and served from the phone once kept.
 const LIBS = 'waterline-libs-1';
