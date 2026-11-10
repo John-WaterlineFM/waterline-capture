@@ -1067,6 +1067,40 @@ body.t-li .c-av.lg{border-color:var(--border)}
 .fopen .field{padding-top:12px}
 .field.now .fig{outline:2px solid var(--accent);outline-offset:2px}
 .fopen .help:not(.bad):not(.amb){color:var(--textMS)}.help.bad{color:var(--redText)}.help.amb{color:var(--amberText)}
+/* The flush round's list (slice FX; DEC-0413 to DEC-0415). The dashed line is the stripe's own width; a sink's two taps
+   sit side by side, their buttons on one line; hot and cold by the tap's own colour, on the labels only (DEC-0413). */
+.fopen .s3d{border-left-width:var(--sw,3px)}
+.fopen .say{padding:12px 16px 0;font:400 13px/1.45 'DM Sans',sans-serif;color:var(--textMS)}
+.fopen .say b{color:var(--text);font-weight:700}
+.fopen .say.amb{color:var(--amberText)}
+.r .flsn{display:block;font:700 12px/1.4 'DM Sans',sans-serif;color:var(--text)}
+.r .st b.amb{color:var(--amberText)}
+.r .sub.amb{color:var(--amberText)}
+.taps{display:grid;grid-template-columns:1fr;gap:8px;padding:12px 16px 0}
+.taps.two{grid-template-columns:1fr 1fr}
+.tap{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.tap .s3{width:4px}
+.tap .hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding-left:4px}
+.taps.two .tap .hd{flex-direction:column;align-items:flex-start;gap:2px}
+.tap .lb{font:700 11px Outfit;letter-spacing:.06em;text-transform:uppercase;color:var(--textMid)}
+.tap .clk{font:800 20px Sora;color:var(--text);font-variant-numeric:tabular-nums}
+.tap .clk.bad{color:var(--redText)}
+.tap .wd{font:400 12px/1.4 'DM Sans',sans-serif;color:var(--textMS);padding-left:4px}
+.tap .wd.bad{color:var(--redText)} .tap .wd.ok{color:var(--text)}
+.tap.fl-run .wd:not(.bad),.tap.fl-done .wd:not(.bad),.tap.fl-run .help:not(.bad):not(.amb),.tap.fl-done .help:not(.bad):not(.amb),.tap.fl-over .help:not(.bad):not(.amb){color:var(--text)}   /* 4.5:1 on the shading in Night, as the row's own sub-line */
+.tap .field{padding:8px 0 0 4px}
+.tap .row2{padding:8px 0 0 4px;margin-top:auto}
+.tap .row2 .gh{width:100%;justify-content:center;padding-left:8px;padding-right:8px;margin-top:0}
+.taps.two .fig input{font:800 20px/1 Sora;min-height:44px}
+.taps.two .fig{min-height:56px;padding-left:8px;padding-right:8px}
+.tap.fl-run{background:color-mix(in srgb,var(--jDoing) 10%,var(--white))}
+.tap.fl-done{background:color-mix(in srgb,var(--jDone) 12%,var(--white))}
+.tap.fl-over{background:color-mix(in srgb,var(--jTodo) 14%,var(--white))}
+body.t-wl,body.t-li{--hotT:#B3261E;--coldT:#1859B8}
+body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
+.tap.k-hot .lb,.tap.k-hot .field>label:first-child{color:var(--hotT)}
+.tap.k-cold .lb,.tap.k-cold .field>label:first-child{color:var(--coldT)}
+.fopen>.row2{padding:12px 16px 0}
 .wk{display:inline-block;font:700 11px/20px Outfit;letter-spacing:1px;text-transform:uppercase;color:var(--textMid)}
 /* A row with its timer running is shaded in its state's colour, left running hardest, and its stripe is wider (DEC-0374 rule 13:
    a tap left on costs thousands of litres and can flood, so it must not be missed in a list of 40). */
@@ -1074,7 +1108,7 @@ body.t-li .c-av.lg{border-color:var(--border)}
 .r.fl-done{background:color-mix(in srgb,var(--jDone) 16%,var(--white))}
 .r.fl-over{background:color-mix(in srgb,var(--jTodo) 24%,var(--white))}
 .r.fl-run .s3,.r.fl-done .s3,.r.fl-over .s3{width:6px}
-.r.fl-run .sub:not(.bad),.r.fl-done .sub:not(.bad){color:var(--text)}
+.r.fl-run .sub:not(.bad),.r.fl-done .sub:not(.bad),.r.fl-over .sub:not(.bad){color:var(--text)}
 /* Night: the state colours are light, so a lighter mix keeps the row's words at 4.5:1 or more (Design 5.10). */
 body.t-ni .r.fl-run{background:color-mix(in srgb,var(--jDoing) 7%,var(--white))}
 body.t-ni .r.fl-done{background:color-mix(in srgb,var(--jDone) 10%,var(--white))}
@@ -3909,11 +3943,11 @@ app.addEventListener('click',async e=>{
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
   if(a==='flush'){ st.sheet=false; flState(); return go('flush'); }
   if(a==='flRow'){ const F=flState(), z=!!b.closest('.zone'); F.open=z||F.open!==b.dataset.id?b.dataset.id:null; flKeep(); render(); if(z){ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(b.dataset.id)+'"]'); if(r) r.scrollIntoView({block:'center',behavior:'instant'}); } return; }
-  if(a==='flStart'||a==='flAgain'){ flStart(b.dataset.id); return render(); }
-  if(a==='flStop'){ flStop(b.dataset.id); return render(); }
+  if(a==='flStart'||a==='flAgain'){ flStart(b.dataset.id,b.dataset.t); return render(); }
+  if(a==='flStop'){ flStop(b.dataset.id,b.dataset.t); return render(); }
+  if(a==='flSave'){ const p=flById(b.dataset.id); if(p) flSave(p); return; }
+  if(a==='flFlushed'){ const p=flById(b.dataset.id); if(p) flFlushed(p); return; }
   if(a==='flScan'){ st.scanFor={for:'flush'}; _scanFrom='flush'; return render(); }
-  if(a==='flSend') return flSend(b);
-  if(a==='flWhy'){ const F=flState(), was=(F.why||{}).id===b.dataset.v; F.why=was?null:{id:b.dataset.v,note:(F.why||{}).note||''}; flKeep(); render(); const i=!was&&document.getElementById('fl-why'); if(i) i.focus(); return; }
   if(a==='walkStart'||a==='roundStart'){ const pr=String(b.dataset.id).split('|'), id=pr[0], from=a==='walkStart'?Number(pr[1]):NaN;
     const kept=ls.get('wl_walk',null); if(kept&&kept.round===id){ st.form=Object.assign({unscanned:[],ans:{},photos:[]},kept); return go('walk'); }
     // A walk counts for the walk time pressed (DEC-0347). Opening it shows it; it starts on Start or the first tag,
@@ -4171,15 +4205,24 @@ setInterval(msgRefresh,60000);
 setInterval(flTick,500);
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') flWake(); });
 
-// ── The flush round (job 015, slice FL; DEC-0374) ───────────────────────────────────────────────────────────────────
-// Several outlets flush at once, each on its own clock (rule 6). The clocks are start and stop times kept on this phone
-// (wl_flush), so a reload or a lost signal loses none. The bracket, this week's temperature and the bands a figure is
-// judged by all come from the desk in the site details (rules 1, 2 and 9): nothing here decides them.
-const FL0={lo:120,hi:300}, FL_HOT=60, FL_COLD=120;   // seconds; the hot at 1 minute, the cold at 2 (HSG274 Part 2)
-function flState(){ if(!st.fl) st.fl=Object.assign({runs:{},open:null,q:''},ls.get('wl_flush',null)||{}); return st.fl; }
+// ── The flush round (job 015, slice FX; DEC-0374, DEC-0413 to DEC-0415) ─────────────────────────────────────────────
+// A list of the outlets on the round, each by its last flush: green within 5 days, amber on days 6 and 7, red after or
+// never (Design 21.3). An opened outlet shows the taps of its type, each on its own clock; a WC is one press. An outlet
+// sends itself once every tap of its type is off and every due figure is in, so nothing waits on the phone for a round
+// to be finished (DEC-0374 rules 6 and 11 amended). The clocks are start and stop times kept on this phone (wl_flush),
+// so a reload or a lost signal loses none. Bracket, due temperatures, bands and the last flush come from the desk.
+const FL0={lo:120,hi:300}, FL_AT={hot:60,mix:60,cold:120};   // seconds; the hot at 1 minute, the cold at 2 (HSG274 Part 2)
+const FL_BUZZ=[200,100,200];                                  // one buzz for everything (John, 10 Nov 2026)
+const FL_TAPS={sink:[['hot','Hot tap'],['cold','Cold tap']],tmv:[['mix','Blended tap']],shower:[['mix','Shower']],
+  hot:[['hot','Hot tap']],store:[['hot','Hot tap']],cold:[['cold','Cold tap']],flush:[]};
+const FL_SAY={sink:'Sink · hot and cold taps',tmv:'Blended tap (TMV)',shower:'Shower (TMV)',hot:'Hot point',store:'Hot point',cold:'Cold point',flush:'Toilet'};
+function flState(){
+  if(!st.fl){ st.fl=Object.assign({runs:{},open:null,q:'',done:{}},ls.get('wl_flush',null)||{}); if(!st.fl.done) st.fl.done={}; flOld(); }
+  return st.fl;
+}
 const flKeep=()=>ls.set('wl_flush',st.fl);
 const flIsOutlet=p=>!!(p&&p.rec&&p.rec.reg==='waterOutlets'&&p.reading&&p.reading.kind!=='meter');
-// Every outlet on the round, tagged or not (rule 12), from the desk's outlet list; a desk before v511 sends only tags.
+// Every outlet on the round, tagged or not (DEC-0374 rule 12), from the desk's outlet list; a desk before v511 sends only tags.
 // Walk order: the walk that holds their tags, if one does; else the desk's own order, as the weekly sheet lists them.
 function flOutlets(){
   const outs=Array.isArray(SITE().outlets)?SITE().outlets
@@ -4191,151 +4234,244 @@ function flOutlets(){
 const flById=id=>flOutlets().find(o=>o.id===id)||null;
 const flOfPoint=p=>p?flOutlets().find(o=>(o.point&&o.point===p.id)||(p.rec&&p.rec.reg==='waterOutlets'&&o.id===p.rec.id))||null:null;
 const flBr=p=>Object.assign({},FL0,(p&&p.reading&&p.reading.flush)||{});
-const flTemp=p=>!!(p&&p.reading&&p.reading.due&&p.reading.due.temp&&(p.reading.hot||p.reading.cold));
+const flTaps=p=>FL_TAPS[(p.reading||{}).kind]||(p.reading.hot&&p.reading.cold?FL_TAPS.sink:p.reading.cold?FL_TAPS.cold:FL_TAPS.hot);
+const flSide=k=>k==='cold'?'cold':'hot';                       // a blended figure is the desk's hot figure (its TMV band)
+// Whether a temperature is due at this tap this week: the desk's schedule, on the sides it names (DEC-0415).
+function flDue(p,k){ const d=(p.reading||{}).due||{}; if(!d.temp) return false; const s=Array.isArray(d.sides)?d.sides:['hot','cold']; return s.indexOf(flSide(k))>=0; }
 const flRan=(f,now)=>f&&f.t0?((f.t1||now)-f.t0)/1000:null;
 const flMS=sec=>{ sec=Math.max(0,Math.floor(sec)); return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0'); };
 function flPh(p,f,now){ if(!f||!f.t0) return 'idle'; const t=flRan(f,now), b=flBr(p); if(f.t1) return t<b.lo?'short':'off'; return t<b.lo?'run':t<b.hi?'done':'over'; }
-// The reading wanted now, if any: the hot at 1 minute, the cold at 2.
-function flAsk(p,f,now){ if(!flTemp(p)||!f||!f.t0||f.t1) return ''; const t=flRan(f,now);
-  if(p.reading.hot&&t>=FL_HOT&&!num(f.hot)) return 'hot'; if(p.reading.cold&&t>=FL_COLD&&!num(f.cold)) return 'cold'; return ''; }
-// The desk's own bands, first match wins (rule 9), so the verdict at the tap is the desk's.
+const flLive=ph=>ph==='run'||ph==='done'||ph==='over';
+const flRun=(p,k)=>((st.fl.runs[p.id]||{})[k])||null;
+function flOutPh(p,now){ const ps=flTaps(p).map(t=>flPh(p,flRun(p,t[0]),now)); return ps.includes('over')?'over':ps.includes('done')?'done':ps.includes('run')?'run':''; }
+// The desk's own bands, first match wins (DEC-0374 rule 9), so the verdict at the tap is the desk's.
 function flJudge(tb,v){ const t=parseFloat(v); if(!tb||!tb.bands||isNaN(t)||t<=0||t>100) return null;
   const b=tb.bands.find(x=>(x.min==null||t>=x.min)&&(x.max==null||t<=x.max))||tb.bands[tb.bands.length-1];
   return {s:b.s,note:b.note||'',target:tb.target||''}; }
 const flWord=j=>j.s==='PASS'?'In range':j.s==='ACTION'?'Just out of range':'Out of range';
-const flCls=j=>j.s==='PASS'?'':j.s==='ACTION'?'amb':'bad';
-// The worst figure taken at an outlet, said in words.
-function flOut(p,f){
-  const bd=(p.reading&&p.reading.bands)||{}, js=[['hot','Hot'],['cold','Cold']].map(x=>{ const j=num(f[x[0]])?flJudge(bd[x[0]],f[x[0]]):null; return j&&j.s!=='PASS'?{j:j,txt:x[1]+' '+f[x[0]]+' °C: '+flWord(j).toLowerCase()+'.'}:null; }).filter(Boolean);
-  if(!js.length) return null; const w=js.find(x=>x.j.s==='FAIL')||js[0]; return {text:js.map(x=>x.txt).join(' '),cls:flCls(w.j)}; }
-const flFigsIn=(p,f)=>(!p.reading.hot||num(f.hot))&&(!p.reading.cold||num(f.cold));
-function flBits(p,f,now){
-  const ph=flPh(p,f,now), t=flRan(f,now), b=flBr(p), a=flAsk(p,f,now);
-  let stripe='', big='', word='', sub=esc(p.where||'')+(flTemp(p)?' · <span class="wk">Temp week</span>':''), cls='';
-  if(ph==='idle'){}
-  else if(ph==='run'){ stripe='var(--jDoing)'; big=flMS(b.lo-t); word='to go'; }
-  else if(ph==='done'){ stripe='var(--jDone)'; big=flMS(b.hi-t); word='to turn off'; sub='Flush done. Turn it off.'; cls='now'; }
-  else if(ph==='over'){ stripe='var(--jTodo)'; big=flMS(t); word='left running'; sub='Past '+flMS(b.hi)+'. Turn it off.'; cls='bad'; }
-  else if(ph==='off'){ stripe='var(--jDone)'; big=flMS(t); word='ran';
-    if(flTemp(p)&&!flFigsIn(p,f)){ sub='Temperature not entered. Open it to add it.'; cls='bad'; } }
-  else { stripe='var(--jTodo)'; big=flMS(t); word='short'; sub='Short of '+flMS(b.lo)+'. It is not a flush.'; cls='bad'; }
-  const o=f&&f.t0?flOut(p,f):null; if(o&&ph!=='over'&&ph!=='short'){ sub=esc(o.text); cls=o.cls; }
-  if(a&&ph!=='over'){ sub='Read the '+a+' now.'; cls='now'; }
-  return {stripe:stripe,big:big,word:word,sub:sub,cls:cls,bc:(ph==='over'||ph==='short')?'bad':'',tint:ph==='run'||ph==='done'||ph==='over'?' fl-'+ph:''};
+const flBands=(p,k)=>((p.reading||{}).bands||{})[flSide(k)]||null;
+// The last flush and temperature: the desk's, or this phone's own when it is newer (kept until the desk has it).
+const flToday=()=>{ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+function flLast(p){
+  const L=p.last||{}, m=(st.fl.done||{})[p.id], f=L.flush||null, t=L.temp||null;
+  if(!m) return {flush:f,temp:t};
+  return {flush:m.ok&&(!f||m.date>=f.date)?{date:m.date,by:'You'}:f, temp:m.temp&&(!t||m.date>=t.date)?Object.assign({date:m.date,by:'You'},m.temp):t};
+}
+function flAge(p){ const l=flLast(p).flush; if(!l||!l.date) return null; const a=new Date(flToday()+'T00:00:00'), b=new Date(l.date+'T00:00:00'); return Math.round((a-b)/864e5); }
+function flDueState(p){ const a=flAge(p); return a==null||a>7?'over':a>=6?'due':'ok'; }
+const flAgeWords=a=>a==null?['Never','flushed']:a<=0?['Today','flushed']:a===1?['1 day','ago']:a<14?[a+' days','ago']:[Math.floor(a/7)+' wks','ago'];
+const flShort=iso=>{ const d=new Date(iso+'T00:00:00'); return d.getDate()+' '+MON[d.getMonth()]; };
+function flTempText(t,p){ if(!t) return ''; const k=(p.reading||{}).kind, mix=k==='tmv'||k==='shower';
+  return [t.hot?(mix?'Blended ':'Hot ')+t.hot+' °C':'',t.cold&&!mix?'Cold '+t.cold+' °C':''].filter(Boolean).join(', '); }
+
+// ── The row ──────────────────────────────────────────────────────────────────────────────────────────────
+function flBits(p,now){
+  const ph=flOutPh(p,now), L=flLast(p), a=flAge(p), d=flDueState(p), du=(p.reading||{}).due||{};
+  const tt=flTempText(L.temp,p), tAt=L.temp&&L.flush&&L.temp.date!==L.flush.date?' on '+flShort(L.temp.date):'';
+  let top='';
+  if(p.sentinel) top='<span class="flsn">Sentinel, '+esc(p.sentinel)+' · '+(du.temp?'temp due this month':L.temp?'temp taken '+esc(flShort(L.temp.date)):'temp not due')+'</span>';
+  let sub=esc(FL_SAY[(p.reading||{}).kind]||'Outlet')+(p.where?' · '+esc(p.where):'')+(!p.sentinel&&du.temp?' · <span class="wk">Temp week</span>':'');
+  let sub2=L.flush?'Last '+esc(flShort(L.flush.date))+(L.flush.by?' by '+esc(L.flush.by):'')+(tt?' · '+esc(tt)+esc(tAt):(p.reading||{}).kind==='flush'?'':' · no temperature on file')
+    :'No flush on file'+(tt?' · '+esc(tt)+' on '+esc(flShort(L.temp.date)):'');
+  let stripe=d==='over'?'var(--red)':d==='due'?'var(--amber)':'var(--jDone)', bc=d==='over'?'bad':d==='due'?'amb':'', c2='', tint='';
+  let [big,word]=flAgeWords(a); if(d==='due') word='due'; if(d==='over'&&a!=null) word='overdue';
+  const held=flHeld(p,now);
+  if(ph){
+    const ts=flTaps(p), fs=ts.map(t=>[t,flRun(p,t[0])]).filter(x=>flLive(flPh(p,x[1],now)));
+    const w=fs.find(x=>flPh(p,x[1],now)==='over')||fs.find(x=>flPh(p,x[1],now)==='done')||fs[0], wp=flPh(p,w[1],now), t=flRan(w[1],now), b=flBr(p);
+    const nm=ts.length>1?w[0][1].split(' ')[0].toLowerCase()+' ':'';
+    if(wp==='run'){ big=flMS(b.lo-t); word=nm+'to go'; stripe='var(--jDoing)'; bc=''; }
+    else if(wp==='done'){ big=flMS(b.hi-t); word=nm+'to turn off'; stripe='var(--jDone)'; bc=''; sub2='Flush done. Turn '+(nm?'the '+nm+'tap':'it')+' off.'; c2=''; }
+    else { big=flMS(t); word=nm+'left running'; stripe='var(--jTodo)'; bc='bad'; sub2='Past '+flMS(b.hi)+'. Turn it off.'; c2='bad'; }
+    if(fs.length>1) word=fs.length+' taps · '+word;
+    tint=' fl-'+ph;
+  } else if(held){ sub2=esc(held); c2='amb'; }
+  return {top:top,sub:sub,sub2:sub2,c2:c2,stripe:stripe,big:big,word:word,bc:bc,tint:tint};
 }
 // A search matches the start of a word (John, 28 Oct 2026: typing "ice" still left him scrolling).
 const wordHit=(t,q)=>{ const w=x=>' '+String(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); const k=w(q); return k===' '||w(t).indexOf(k)>=0; };
 const flHit=(p,q)=>wordHit(String(p.name)+' '+String(p.where||''),q);
 function flRow(p,F,now){
-  const f=F.runs[p.id], x=flBits(p,f,now), open=F.open===p.id;
+  const x=flBits(p,now), open=F.open===p.id;
   return '<button class="r'+(open?' open':'')+x.tint+(flHit(p,F.q)?'':' hide')+'" data-act="flRow" data-id="'+esc(p.id)+'" aria-expanded="'+open+'">'
-    +'<span class="s3" data-s3 style="background:'+(x.stripe||'transparent')+'"></span>'
-    +'<span class="m"><span class="w">'+esc(p.name)+'</span><span class="sub '+x.cls+'" data-sub>'+x.sub+'</span></span>'
-    +'<span class="st"><b class="n '+x.bc+'" data-b>'+x.big+'</b><i data-i>'+x.word+'</i></span></button>'
-    +(open?flOpened(p,F,now):'');
+    +'<span class="s3" style="background:'+x.stripe+'"></span>'
+    +'<span class="m"><span class="w">'+esc(p.name)+'</span>'+x.top+'<span class="sub">'+x.sub+'</span><span class="sub '+x.c2+'">'+x.sub2+'</span></span>'
+    +'<span class="st"><b class="n '+x.bc+'">'+x.big+'</b><i>'+x.word+'</i></span></button>'
+    +(open?flOpened(p,F,now,x):'');
 }
-function flFig(p,f,k,label,due,now){
-  const ask=flAsk(p,f,now)===k, v=f&&f[k]||'', bd=(p.reading.bands||{})[k], j=num(v)?flJudge(bd,v):null;
-  const help=v&&!num(v)?'<div class="help bad">Enter the figure as the thermometer shows it, like 52.4.</div>'
-    :j?'<div class="help '+flCls(j)+'">'+flWord(j)+'. '+esc(j.s==='PASS'?'It should be '+j.target+'.':j.note?j.note.charAt(0).toUpperCase()+j.note.slice(1)+'.':'It should be '+j.target+'.')+'</div>'
-    :'<div class="help">'+(bd&&bd.target?'It should be '+esc(bd.target)+'. ':'')+(ask?'Read it now.':'At '+flMS(due)+' of running.')+'</div>';
-  return '<div class="field'+(ask?' now':'')+'"><label for="fl-'+k+'">'+label+'</label><label class="fig"><input id="fl-'+k+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(v)+'" data-flk="'+k+'" data-flid="'+esc(p.id)+'"><span class="u">'+esc(p.reading.unit||'°C')+'</span></label>'+help+'</div>';
+
+// ── An opened outlet ─────────────────────────────────────────────────────────────────────────────────────
+// What the temperature box says (DEC-0414). HSG274 Part 2: the hot should reach 50 °C WITHIN one minute of running, the
+// cold be below 20 °C within two, so an early figure counts only if it is already in range by the desk's bands. Every
+// figure keeps the running time it was taken at.
+function flFigHelp(p,k,f,now){
+  const at=FL_AT[k], tt=flRan(f,now)||0, v=f&&f.fig, took=f&&f.figAt!=null?f.figAt:tt, due=flDue(p,k), name=k==='mix'?'blended':k;
+  if(v&&isNaN(parseFloat(v))) return {cls:'bad',txt:'Enter the figure as the thermometer shows it, like 52.4.'};
+  if(!v){
+    if(!due) return {cls:'',txt:'Not due. Add it if you take one'+(tt<at?', at '+flMS(at)+' of running.':'.')};
+    if(tt<at) return {cls:'',txt:'Read it at '+flMS(at)+'. <b>'+flMS(at-tt)+'</b> to wait.'};
+    return {cls:'',now:true,txt:'<b>Read the '+name+' now.</b>'};
+  }
+  const j=flJudge(flBands(p,k),v), early=took<at;
+  if(!j) return {cls:'',txt:'Taken at '+flMS(took)+'.'};
+  if(early&&j.s==='PASS') return {cls:'',txt:'Taken at '+flMS(took)+'. In range already, so it counts.'};
+  if(early) return {cls:'amb',txt:'<b>Too early to count.</b> Taken at '+flMS(took)+'. Read it again at '+flMS(at)+'.'};
+  return j.s==='PASS'?{cls:'',txt:'Taken at '+flMS(took)+'. In range.'}
+    :{cls:j.s==='ACTION'?'amb':'bad',txt:'Taken at '+flMS(took)+'. <b>'+flWord(j)+'.</b> '+esc(j.note?j.note.charAt(0).toUpperCase()+j.note.slice(1)+'.':j.target?'It should be '+j.target+'.':'')};
 }
-function flOpened(p,F,now){
-  const f=F.runs[p.id], ph=flPh(p,f,now), x=flBits(p,f,now), b=flBr(p), du=p.reading.due||{};
-  let h='<div class="fopen"><span class="s3d" style="--c:'+(x.stripe||'var(--border)')+'"></span>';
-  if(flTemp(p)&&ph!=='idle'){ if(p.reading.hot) h+=flFig(p,f,'hot','Hot',FL_HOT,now); if(p.reading.cold) h+=flFig(p,f,'cold','Cold',FL_COLD,now); }
-  if(ph==='idle') h+='<div class="field"><div class="help" style="margin:0">'+(flTemp(p)?'Temperature this week ('+esc(String(du.why||'').toLowerCase())+'): '+(p.reading.hot&&p.reading.cold?'the hot at 1 minute, the cold at 2.':p.reading.hot?'the hot at 1 minute.':'the cold at 2 minutes.')
-      :'Flush only this week. No thermometer.'+(du.next?' The next temperature is in the week of '+esc(day(du.next))+'.':''))+' Run it '+flMS(b.lo)+' to '+flMS(b.hi)+'.</div></div>';
-  h+='<div class="row2">'+(ph==='idle'?'<button class="gh" data-act="flStart" data-id="'+esc(p.id)+'">'+I.play+'Start Flush</button>'
-    :ph==='short'||ph==='off'?'<button class="gh" data-act="flAgain" data-id="'+esc(p.id)+'">'+I.again+'Run It Again</button>'
-    :'<button class="gh" data-act="flStop" data-id="'+esc(p.id)+'">'+I.stop+'Tap Is Off</button>')+'</div></div>';
-  return h;
+function flTapBox(p,t,now){
+  const k=t[0], f=flRun(p,k), ph=flPh(p,f,now), tt=flRan(f,now), b=flBr(p), due=flDue(p,k);
+  let clk='–', cc='', wd='Not run yet. Run it '+flMS(b.lo)+' to '+flMS(b.hi)+'.', wc='', tint='', stripe='transparent';
+  if(ph==='run'){ clk=flMS(b.lo-tt); wd='Running. The clock is the time to go.'; tint=' fl-run'; stripe='var(--jDoing)'; }
+  if(ph==='done'){ clk=flMS(b.hi-tt); wd='Flush done. Turn it off.'; wc='ok'; tint=' fl-done'; stripe='var(--jDone)'; }
+  if(ph==='over'){ clk=flMS(tt); cc='bad'; wd='Left running. Turn it off.'; wc='bad'; tint=' fl-over'; stripe='var(--jTodo)'; }
+  if(ph==='off'){ clk=flMS(tt); wd='Ran '+flMS(tt)+'.'; wc='ok'; stripe='var(--jDone)';
+    if(due&&!flFigOk(f)){ wd='Ran '+flMS(tt)+'. <b>Temperature due and not taken.</b> Enter it, or run it again.'; wc='bad'; } }
+  if(ph==='short'){ clk=flMS(tt); cc='bad'; wd='Short of '+flMS(b.lo)+'. It is not a flush.'; wc='bad'; stripe='var(--jTodo)'; }
+  const btn=ph==='idle'?'<button class="gh" data-act="flStart" data-id="'+esc(p.id)+'" data-t="'+k+'">'+I.play+'Start</button>'
+    :flLive(ph)?'<button class="gh" data-act="flStop" data-id="'+esc(p.id)+'" data-t="'+k+'">'+I.stop+'Tap Is Off</button>'
+    :'<button class="gh" data-act="flAgain" data-id="'+esc(p.id)+'" data-t="'+k+'">'+I.again+'Run It Again</button>';
+  const h=ph!=='idle'?flFigHelp(p,k,f,now):null, tl=k==='mix'?'Blended':k==='hot'?'Hot':'Cold';
+  const fig=h?'<div class="field'+(h.now?' now':'')+'"><label for="fl-'+k+'">'+tl+' temperature'+(due?' · due':'')+'</label><label class="fig"><input id="fl-'+k+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(f&&f.fig||'')+'" data-flk="'+k+'" data-flid="'+esc(p.id)+'"><span class="u">'+esc(p.reading.unit||'°C')+'</span></label><div class="help '+h.cls+'" data-flh="'+esc(p.id)+'|'+k+'">'+h.txt+'</div></div>':'';
+  return '<div class="tap k-'+k+tint+'"><span class="s3" style="background:'+stripe+'"></span><div class="hd"><span class="lb">'+esc(t[1])+'</span><span class="clk '+cc+'">'+clk+'</span></div>'
+    +'<div class="wd '+wc+'">'+wd+'</div>'+fig+'<div class="row2">'+btn+'</div></div>';
 }
-function flWeek(){ const d=new Date(), k=(d.getDay()+6)%7; d.setDate(d.getDate()-k); return day(d.toISOString().slice(0,10)); }
+function flOpened(p,F,now,x){
+  const ts=flTaps(p), du=(p.reading||{}).due||{}, L=flLast(p), k=(p.reading||{}).kind;
+  let h='<div class="fopen"><span class="s3d" style="--c:'+x.stripe+';--sw:'+(x.tint?'6px':'3px')+'"></span>';
+  if(!ts.length){
+    const m=(F.done||{})[p.id], today=m&&m.date===flToday();
+    return h+'<div class="say">A toilet is flushed once. No timer, no thermometer.</div><div class="row2">'
+      +(today?'<button class="gh" data-act="flFlushed" data-id="'+esc(p.id)+'">'+I.tick+'Flushed Again</button>':'<button class="btn p" data-act="flFlushed" data-id="'+esc(p.id)+'">'+I.tick+'Flushed</button>')+'</div></div>';
+  }
+  const due=ts.filter(t=>flDue(p,t[0])), wh=due.map(t=>t[0]==='cold'?'the cold at 2 minutes':'the '+(t[0]==='mix'?'blended':'hot')+' at 1 minute');
+  const lim=due.map(t=>{ const b=flBands(p,t[0]); return b&&b.target?(t[0]==='mix'?'blended ':t[0]+' ')+b.target:''; }).filter(Boolean);
+  let say='';
+  if(p.sentinel&&!du.temp) say+='Its temperature is taken once a month. '+((L.temp?'The last was taken on '+esc(flShort(L.temp.date))+(L.temp.by?' by '+esc(L.temp.by):'')+': <b>'+esc(flTempText(L.temp,p))+'</b>. ':'')+'The next is due '+(du.next?'in the week of '+esc(day(du.next)):'next month')+'. You can still add one today. ');
+  if(due.length) say+=(p.sentinel?'Read ':'<b>Temperature this week:</b> ')+wh.join(', ')+'. The first water out is what sat in the pipe, so a reading before then only counts if it is already in range'+(lim.length?' ('+esc(lim.join(', '))+')':'')+'. ';
+  else if(!p.sentinel) say+='No temperature due this week. You can still add one. ';
+  if(ts.length>1) say+='Run both taps. Each has its own clock.';
+  h+='<div class="say">'+say+'</div><div class="taps'+(ts.length>1?' two':'')+'">'+ts.map(t=>flTapBox(p,t,now)).join('')+'</div>';
+  const held=flHeld(p,now);
+  if(held) h+='<div class="say amb">'+esc(held)+'</div><div class="row2"><button class="gh" data-act="flSave" data-id="'+esc(p.id)+'">'+I.send+esc(flSaveLabel(p,now))+'</button></div>';
+  return h+'</div>';
+}
+
+// ── Saving an outlet ─────────────────────────────────────────────────────────────────────────────────────
+const flFigOk=f=>!!(f&&f.fig&&!isNaN(parseFloat(f.fig)));
+// What still stops an outlet sending itself, once no tap of it runs: a tap not run, or a due figure not in.
+function flMissing(p,now){
+  const ts=flTaps(p), fs=ts.map(t=>[t,flRun(p,t[0])]);
+  if(!fs.some(x=>x[1]&&x[1].t0)||fs.some(x=>flLive(flPh(p,x[1],now)))) return null;
+  return {taps:fs.filter(x=>!x[1]||!x[1].t0).map(x=>x[0]),figs:fs.filter(x=>x[1]&&x[1].t0&&flDue(p,x[0][0])&&!flFigOk(x[1])).map(x=>x[0])};
+}
+function flHeld(p,now){ const m=flMissing(p,now); if(!m||(!m.taps.length&&!m.figs.length)) return '';
+  return [m.taps.length?'The '+m.taps.map(t=>t[1].toLowerCase()).join(' and ')+' is not run yet.':'', m.figs.length?'The '+m.figs.map(t=>t[0]==='mix'?'blended':t[0]).join(' and ')+' temperature is due.':''].filter(Boolean).join(' ')+' Not sent yet.'; }
+function flSaveLabel(p,now){ const m=flMissing(p,now)||{taps:[],figs:[]};
+  return m.taps.length&&!m.figs.length?'Save Without the '+m.taps.map(t=>t[1].replace(/^\w/,c=>c.toUpperCase()).replace(' tap',' Tap')).join(' and '):m.figs.length&&!m.taps.length?'Save Without the Temperature':'Save As It Is'; }
+// An outlet sends itself when nothing is missing; Save Without… sends it as it is.
+function flMaybeSave(p){ const m=flMissing(p,Date.now()); if(m&&!m.taps.length&&!m.figs.length) flSave(p); }
+// One reading per outlet, as Take a Reading sends it, with each tap's own times (DEC-0374 rule 5). A sink is a flush
+// only when both its taps ran the bracket's lower figure: one short or not run makes the outlet's flush short.
+async function flSave(p){
+  const F=flState(), ts=flTaps(p), b=flBr(p), rs=F.runs[p.id]||{}, run=ts.filter(t=>rs[t[0]]&&rs[t[0]].t0&&rs[t[0]].t1);
+  if(!run.length) return;
+  const tap=t=>{ const f=rs[t[0]]; return {tap:t[0],start:new Date(f.t0).toISOString(),stop:new Date(f.t1).toISOString(),ran:Math.round((f.t1-f.t0)/1000),
+    fig:flFigOk(f)?num(f.fig):undefined,figAt:flFigOk(f)?f.figAt:undefined}; };
+  const taps=run.map(tap), ran=ts.length===run.length?Math.min.apply(null,taps.map(x=>x.ran)):0, short=ran<b.lo;
+  const rd={unit:p.reading.unit||'°C'}; run.forEach(t=>{ const f=rs[t[0]]; if(flFigOk(f)) rd[flSide(t[0])]=num(f.fig); });
+  const notRun=ts.filter(t=>run.indexOf(t)<0).map(t=>t[1].toLowerCase()), lateFig=run.filter(t=>flDue(p,t[0])&&!flFigOk(rs[t[0]])).map(t=>t[0]==='mix'?'blended':t[0]);
+  const note=[notRun.length?'The '+notRun.join(' and ')+' was not run.':'',lateFig.length?'The '+lateFig.join(' and ')+' temperature was due and not taken.':''].filter(Boolean).join(' ');
+  const t0=Math.min.apply(null,run.map(t=>rs[t[0]].t0)), t1=Math.max.apply(null,run.map(t=>rs[t[0]].t1));
+  let c;
+  try{ c=await makeCapture('reading',{point:p.point||undefined,record:p.point?undefined:{reg:'waterOutlets',id:p.id},note:note,outcome:short?'Flush stopped short':'Run and flushed',
+    reading:(rd.hot||rd.cold)?rd:null,taken:new Date(t0).toISOString(),
+    flush:{start:new Date(t0).toISOString(),stop:new Date(t1).toISOString(),ran:ran,lo:b.lo,hi:b.hi,taps:taps}},[]); }
+  catch(e){ toast('Nothing was sent. ('+(e.message||e)+')'); return; }
+  delete F.runs[p.id];
+  F.done[p.id]={date:flToday(),ok:!short,temp:(rd.hot||rd.cold)?{hot:rd.hot!=null?String(rd.hot):'',cold:rd.cold!=null?String(rd.cold):''}:null};
+  flKeep(); render();
+  toast(p.name+(short?' sent as short: '+(notRun.length?'the '+notRun.join(' and ')+' was not run.':'a tap ran under '+flMS(b.lo)+'.'):' flushed and sent.'));
+  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.');
+}
+async function flFlushed(p){
+  const F=flState(); let c;
+  try{ c=await makeCapture('reading',{point:p.point||undefined,record:p.point?undefined:{reg:'waterOutlets',id:p.id},note:'',outcome:'Run and flushed',reading:null,taken:new Date().toISOString()},[]); }
+  catch(e){ toast('Nothing was sent. ('+(e.message||e)+')'); return; }
+  F.done[p.id]={date:flToday(),ok:true,temp:null}; flKeep(); render(); toast(p.name+' flushed and sent.');
+  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.');
+}
+// Flushes kept by the round before 10 Nov 2026 (one clock an outlet, held for Send Round): sent once as they were,
+// with their own times, so none that was run is lost. A clock still open is dropped: its tap is long off.
+function flOld(){
+  const F=st.fl, old=Object.keys(F.runs||{}).filter(id=>F.runs[id]&&F.runs[id].t0!==undefined);
+  if(!old.length) return;
+  const go=old.map(id=>[id,F.runs[id]]); old.forEach(id=>delete F.runs[id]); flKeep();
+  setTimeout(async()=>{ for(const [id,f] of go){ const p=flById(id); if(!p||!f.t1) continue;
+    const b=flBr(p), ran=Math.round((f.t1-f.t0)/1000), rd={unit:p.reading.unit||'°C'}; if(num(f.hot)) rd.hot=num(f.hot); if(num(f.cold)) rd.cold=num(f.cold);
+    try{ const c=await makeCapture('reading',{point:p.point||undefined,record:p.point?undefined:{reg:'waterOutlets',id:p.id},note:'Kept on the phone from an earlier round and sent on '+day(new Date())+'.',
+      outcome:ran<b.lo?'Flush stopped short':'Run and flushed',reading:(rd.hot||rd.cold)?rd:null,taken:new Date(f.t0).toISOString(),
+      flush:{start:new Date(f.t0).toISOString(),stop:new Date(f.t1).toISOString(),ran:ran,lo:b.lo,hi:b.hi}},[]); await send(c); }catch(e){} }
+    st.outbox=await obAll().catch(()=>st.outbox); },0);
+}
+
+// ── The screen ───────────────────────────────────────────────────────────────────────────────────────────
 function flZone(outs,F,now){
-  const ph=outs.map(p=>flPh(p,F.runs[p.id],now)), live=ph.filter(x=>x==='run'||x==='done'||x==='over').length;
-  const over=outs.filter((p,i)=>ph[i]==='over'), doneN=ph.filter(x=>x==='done').length, offN=ph.filter(x=>x==='off').length;
-  const say=over.length?'<b class="bad">Left running:</b> '+over.map(p=>'<button class="lnk" data-act="flRow" data-id="'+esc(p.id)+'">'+esc(p.name)+'</button>').join(', ')+'.'
-    :doneN?'<b class="ok">'+doneN+' flushed.</b> Turn '+(doneN>1?'them':'it')+' off.'
-    :live?'Each tap counts down to its flush time, then to the time it is left running.':'Scan a tag to start its flush. Several can run at once.';
-  return '<div class="zone"><div class="ztop">'+backBtn('home')+'<span class="eb">Flush Round · Week of '+esc(flWeek())+'</span></div>'
-    +'<div class="row1"><span class="num n'+(over.length?' bad':'')+'">'+live+'</span><span class="what">running</span></div>'
-    +'<p><b>'+offN+' of '+outs.length+'</b> done. '+say+'</p>'
-    +'<button class="'+(ph.some(x=>x==='off'||x==='short')?'gh':'btn')+'" data-act="flScan" data-for="flush">'+I.scan+'Scan the Next Tag</button></div>';
-}
-// Why a round is sent unfinished: the walk's own reasons (DEC-0362), Something else with a sentence (rule 11).
-const flWhyOk=F=>!!(F.why&&F.why.id&&(F.why.id!=='other'||String(F.why.note||'').trim()));
-function flLeft(outs,F,now){ return outs.filter(p=>flPh(p,F.runs[p.id],now)!=='off').length; }
-function flWhy(outs,F,now){
-  const ph=outs.map(p=>flPh(p,F.runs[p.id],now));
-  if(ph.some(x=>x==='run'||x==='done'||x==='over')||!ph.some(x=>x==='off'||x==='short')||!flLeft(outs,F,now)) return '';
-  const e=F.why||{};
-  return grp('Why the round is unfinished')+'<div class="list" role="radiogroup" aria-label="Why the round is unfinished">'+WFM_CAPTURE_SHAPE.earlyWhy.map(x=>{ const on=e.id===x.id;
-    return '<button class="lr" role="radio" aria-checked="'+on+'" data-act="flWhy" data-v="'+esc(x.id)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(x.label)+'</span></button>'
-      +(on&&x.id==='other'?'<div class="lopen"><div class="field"><label for="fl-why">What stopped the round</label><input type="text" id="fl-why" data-flwhy value="'+esc(e.note||'')+'"></div></div>':''); }).join('')+'</div>';
-}
-function flFoot(outs,F,now){
-  const ph=outs.map(p=>flPh(p,F.runs[p.id],now)), live=ph.filter(x=>x==='run'||x==='done'||x==='over').length, stopped=ph.filter(x=>x==='off'||x==='short').length;
-  if(!live&&!stopped) return '';
-  const left=flLeft(outs,F,now), why=!live&&left&&!flWhyOk(F);
-  const say=live?'Turn every tap off before sending. '+live+' still running.':why?left+' not flushed. Say why the round is unfinished before sending.':left?left+' not flushed. The desk names them as missed.':'';
-  return '<div class="foot">'+(say?'<div class="sub">'+esc(say)+'</div>':'')
-    +'<button class="btn p" data-act="flSend"'+(live||why||st.busy?' disabled':'')+'>'+I.send+'Send Round</button></div>';
+  const over=outs.filter(p=>flDueState(p)==='over').length, dueN=outs.filter(p=>flDueState(p)==='due').length, ok=outs.length-over-dueN;
+  const live=outs.filter(p=>flOutPh(p,now)), left=outs.filter(p=>flOutPh(p,now)==='over');
+  const say=left.length?'<b class="bad">Left running:</b> '+left.map(p=>'<button class="lnk" data-act="flRow" data-id="'+esc(p.id)+'">'+esc(p.name)+'</button>').join(', ')+'.'
+    :live.length?live.length+' running.':dueN?dueN+' due in the next two days.':'';
+  return '<div class="zone"><div class="ztop">'+backBtn('home')+'<span class="eb">Flush Round</span></div>'
+    +'<div class="row1"><span class="num n'+(over?' bad':'')+'">'+over+'</span><span class="what">overdue</span></div>'
+    +'<p><b>'+ok+' of '+outs.length+'</b> flushed in the last 7 days. '+say+'</p>'
+    +'<button class="gh" data-act="flScan" data-for="flush">'+I.scan+'Scan the Next Tag</button></div>';
 }
 const flAlertsOn=()=>{ const a=ls.get('wl_alerts',null); return !!(a&&a.token); };
 function vFlush(){
   const F=flState(), now=Date.now(), outs=flOutlets();
-  if(!outs.length) return '<div class="body">'+formZone('home','Flush Round','No outlets from the desk','The desk has not published any tagged water outlets yet. Tag the outlets on the desk, and the round shows here.')+'</div>';
+  if(!outs.length) return '<div class="body">'+formZone('home','Flush Round','No outlets from the desk','The desk has not published any water outlets yet. Add them on the desk, and the round shows here.')+'</div>';
   const shown=outs.filter(p=>flHit(p,F.q)).length;
   return '<div class="body"><div data-flz>'+flZone(outs,F,now)+'</div>'
     +'<div class="field"><label for="flq">Find an outlet</label><input type="search" id="flq" data-flq autocomplete="off" placeholder="Name or where" value="'+esc(F.q||'')+'"></div>'
-    +'<div class="grp" data-flg>'+(F.q?shown+' of '+outs.length+' outlets':'This week · walk order')+'</div><div class="list" data-fll>'+outs.map(p=>flRow(p,F,now)).join('')+'</div>'
-    +flWhy(outs,F,now)
+    +'<div class="grp" data-flg>'+(F.q?shown+' of '+outs.length+' outlets':'Walk order · each sends as it is done')+'</div><div class="list" data-fll>'+outs.map(p=>flRow(p,F,now)).join('')+'</div>'
     +(F.q&&!shown?'<p class="para">No outlet matches “'+esc(F.q)+'”.</p>':'')
     +(flAlertsOn()?'':'<p class="para">Alerts are off on this phone, so a tap left running only buzzes while Waterline is open. Turn alerts on in Settings.</p>')
-    +'<div style="height:24px"></div></div><div data-flf>'+flFoot(outs,F,now)+'</div>';
+    +'<div style="height:24px"></div></div>';
 }
-// Every half second: the clocks on screen, and the buzzes wherever the phone is in the app.
-let _flKey='';
+// Every half second: the clocks on screen, and the buzz wherever the phone is in the app. One buzz for everything:
+// a figure to read, a flush done, and again every 30 seconds a tap is left running.
 function flTick(){
   const F=st.fl; if(!F) return; const now=Date.now(), outs=flOutlets(); let live=false;
-  outs.forEach(p=>{ const f=F.runs[p.id]; if(!f||!f.t0||f.t1) return; live=true; const t=flRan(f,now), b=flBr(p), k=f.buzz=f.buzz||{};
-    const bz=(id,pat)=>{ if(k[id]) return; k[id]=1; try{ navigator.vibrate&&navigator.vibrate(pat); }catch(e){} };
-    if(flTemp(p)&&p.reading.hot&&t>=FL_HOT) bz('hot',200); if(flTemp(p)&&p.reading.cold&&t>=FL_COLD) bz('cold',200);
-    if(t>=b.lo) bz('lo',[200,100,200]); if(t>=b.hi) bz('hi'+Math.floor((t-b.hi)/30),[400,100,400,100,400]); });
+  outs.forEach(p=>flTaps(p).forEach(t=>{ const f=flRun(p,t[0]); if(!f||!f.t0||f.t1) return; live=true;
+    const s=flRan(f,now), b=flBr(p), k=f.buzz=f.buzz||{}, bz=id=>{ if(k[id]) return; k[id]=1; try{ navigator.vibrate&&navigator.vibrate(FL_BUZZ); }catch(e){} };
+    if(flDue(p,t[0])&&s>=FL_AT[t[0]]&&!flFigOk(f)) bz('fig'); if(s>=b.lo) bz('lo'); if(s>=b.hi) bz('hi'+Math.floor((s-b.hi)/30)); }));
   if(!live) flWake();
   if(st.screen!=='flush'||st.sheet||st.scanFor||!live) return;
-  const z=app.querySelector('[data-flz]'); if(!z) return;
-  z.innerHTML=flZone(outs,F,now);
-  const op=F.open&&outs.find(p=>p.id===F.open), key=op?[op.id,flPh(op,F.runs[op.id],now),flAsk(op,F.runs[op.id],now)].join():'';
-  const typing=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.flk;
-  if(key!==_flKey&&!typing){ app.querySelector('[data-fll]').innerHTML=outs.map(p=>flRow(p,F,now)).join(''); _flKey=key; }
-  else outs.forEach(p=>{ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(p.id)+'"]'); if(!r) return; const x=flBits(p,F.runs[p.id],now);
-    const bb=r.querySelector('[data-b]'); bb.textContent=x.big; bb.className='n '+x.bc; r.querySelector('[data-i]').textContent=x.word;
-    const sb=r.querySelector('[data-sub]'); sb.innerHTML=x.sub; sb.className='sub '+x.cls; r.querySelector('[data-s3]').style.background=x.stripe||'transparent';
-    ['fl-run','fl-done','fl-over'].forEach(c=>r.classList.toggle(c,x.tint===' '+c)); });
-  app.querySelector('[data-flf]').innerHTML=flFoot(outs,F,now);
+  if(document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.flk) return;   // the caret stays
+  const z=app.querySelector('[data-flz]'), l=app.querySelector('[data-fll]'); if(!z||!l) return;
+  z.innerHTML=flZone(outs,F,now); l.innerHTML=outs.map(p=>flRow(p,F,now)).join('');
 }
-// The screen stays on while any tap runs (rule 3).
+// The screen stays on while any tap runs (DEC-0374 rule 3).
 let _flWL=null;
 function flWake(){
-  const live=!!(st.fl&&Object.values(st.fl.runs).some(f=>f.t0&&!f.t1));
+  const live=!!(st.fl&&Object.values(st.fl.runs).some(r=>r&&Object.values(r).some(f=>f&&f.t0&&!f.t1)));
   if(live&&!_flWL&&navigator.wakeLock&&document.visibilityState==='visible'){ _flWL='asking';
     navigator.wakeLock.request('screen').then(w=>{ _flWL=w; w.addEventListener('release',()=>{ if(_flWL===w) _flWL=null; }); }).catch(()=>{ _flWL=null; }); }
   if(!live&&_flWL&&_flWL!=='asking'){ _flWL.release().catch(()=>{}); _flWL=null; }
 }
-// The relay holds each open flush and alerts this phone if it is still open at the bracket's top (rules 4 and 8).
-function flRelay(op,id){
-  const a=ls.get('wl_alerts',null), f=st.fl.runs[id], p=flById(id);
+// The relay holds each open tap and alerts this phone if it is still open at the bracket's top (DEC-0374 rules 4 and 8).
+function flRelay(op,id,k){
+  const a=ls.get('wl_alerts',null), f=((st.fl.runs[id]||{})[k])||null, p=flById(id);
   if(!a||!a.token||!STORE||!STORE.ask||!f) return;
-  STORE.ask({op:op,token:a.token,id:id+'@'+f.t0,name:p?p.name:id,due:f.t0+flBr(p).hi*1000}).catch(()=>{});
+  const nm=(p?p.name:id)+(p&&flTaps(p).length>1?', '+(k==='hot'?'hot':'cold')+' tap':'');
+  STORE.ask({op:op,token:a.token,id:id+':'+k+'@'+f.t0,name:nm,due:f.t0+flBr(p).hi*1000}).catch(()=>{});
 }
-function flStart(id){
-  const F=flState(); F.runs[id]={t0:Date.now(),t1:0,hot:'',cold:''}; flKeep(); flRelay('flushOpen',id); flWake();
+function flStart(id,k){
+  const F=flState(); (F.runs[id]=F.runs[id]||{})[k]={t0:Date.now(),t1:0,fig:'',figAt:null}; flKeep(); flRelay('flushOpen',id,k); flWake();
   if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
 }
-function flStop(id){ const F=flState(), f=F.runs[id]; if(!f||!f.t0||f.t1) return; f.t1=Date.now(); flKeep(); flRelay('flushClosed',id); flWake(); }
+function flStop(id,k){ const F=flState(), f=(F.runs[id]||{})[k]; if(!f||!f.t0||f.t1) return; f.t1=Date.now(); flKeep(); flRelay('flushClosed',id,k); flWake();
+  const p=flById(id); if(p) flMaybeSave(p); }
 function flTapPoint(pt){
   const p=flOfPoint(pt);
   if(!p) return toast((pt?pt.name:'That tag')+' is not an outlet on the flush round.');
@@ -4378,43 +4514,18 @@ async function flLinkSend(o,s){
   const k=ls.get('wl_links',{}); k['rec:'+o.id]={serial:s,at:new Date().toISOString(),cap:c.id}; ls.set('wl_links',k);
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); return ok;
 }
-// Send Round: one reading per outlet run, as Take a Reading sends it, with how long it ran (rule 5).
-async function flSend(b){
-  if(st.busy||b.disabled) return;
-  const F=flState(), now=Date.now(), outs=flOutlets(), done=outs.filter(p=>{ const f=F.runs[p.id]; return f&&f.t0&&f.t1; });
-  // Never with a tap running; never unfinished without its reason (rules 10 and 11). The button says so too.
-  if(!done.length||outs.some(p=>{ const f=F.runs[p.id]; return f&&f.t0&&!f.t1; })) return;
-  const left=flLeft(outs,F,now); if(left&&!flWhyOk(F)) return;
-  const wl=(WFM_CAPTURE_SHAPE.earlyWhy.find(x=>x.id===(F.why||{}).id)||{}).label||'';
-  const note=left?'Flush round sent with '+left+' of '+outs.length+' not flushed: '+(F.why.id==='other'?String(F.why.note).trim():wl)+'.':'';
-  st.busy=true; render();
-  const cs=[];
-  try{
-    for(const p of done){
-      const f=F.runs[p.id], br=flBr(p), ran=Math.round((f.t1-f.t0)/1000), short=ran<br.lo, rd={unit:p.reading.unit||'°C'};
-      if(p.reading.hot&&num(f.hot)) rd.hot=num(f.hot); if(p.reading.cold&&num(f.cold)) rd.cold=num(f.cold);
-      cs.push(await makeCapture('reading',{point:p.point||undefined,record:p.point?undefined:{reg:'waterOutlets',id:p.id},note:note,outcome:short?'Flush stopped short':'Run and flushed',reading:(rd.hot||rd.cold)?rd:null,
-        taken:new Date(f.t0).toISOString(),flush:{start:new Date(f.t0).toISOString(),stop:new Date(f.t1).toISOString(),ran:ran,lo:br.lo,hi:br.hi}},[]));
-    }
-  }catch(e){ st.busy=false; toast('Nothing was sent. ('+(e.message||e)+')'); return render(); }
-  done.forEach(p=>{ delete F.runs[p.id]; }); F.open=null; F.q=''; F.why=null; flKeep();
-  st.capSend={state:'sending'}; go('due');
-  let ok=true; for(const c of cs) ok=(await send(c))&&ok;
-  st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  const me=st.capSend={state:ok?'sent':''}; capDraw();
-  if(ok) setTimeout(()=>{ if(st.capSend===me){ st.capSend=null; capDraw(); } },1800);
-  else toast('Waiting for signal. It sends by itself.');
-}
-// Typing a figure keeps the caret; the search hides rows and never re-sorts them.
+// Typing a figure keeps the caret and says the verdict as it is typed; the search hides rows and never re-sorts them.
 app.addEventListener('input',e=>{
   const t=e.target, F=st.fl; if(!F) return;
   if(t.hasAttribute('data-flq')){ F.q=t.value; flKeep(); const outs=flOutlets(), q=F.q;
     outs.forEach(p=>{ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(p.id)+'"]'); if(r){ r.classList.toggle('hide',!flHit(p,q)); const o=r.nextElementSibling; if(o&&o.classList.contains('fopen')) o.classList.toggle('hide',!flHit(p,q)); } });
-    const g=app.querySelector('[data-flg]'), n=outs.filter(p=>flHit(p,q)).length; if(g) g.textContent=q?n+' of '+outs.length+' outlets':'This week · walk order'; return; }
-  if(t.hasAttribute('data-flwhy')){ F.why=Object.assign({},F.why,{note:t.value}); flKeep(); const ft=app.querySelector('[data-flf]'); if(ft) ft.innerHTML=flFoot(flOutlets(),F,Date.now()); return; }
-  if(t.dataset.flk){ const f=F.runs[t.dataset.flid]; if(f){ f[t.dataset.flk]=t.value; flKeep(); } }
+    const g=app.querySelector('[data-flg]'), n=outs.filter(p=>flHit(p,q)).length; if(g) g.textContent=q?n+' of '+outs.length+' outlets':'Walk order · each sends as it is done'; return; }
+  if(t.dataset.flk){ const id=t.dataset.flid, k=t.dataset.flk, f=(F.runs[id]||{})[k], p=flById(id); if(!f||!p) return;
+    f.fig=t.value; f.figAt=t.value?Math.floor(flRan(f,Date.now())):null; flKeep();
+    const h=app.querySelector('[data-flh="'+CSS.escape(id+'|'+k)+'"]'), x=flFigHelp(p,k,f,Date.now()); if(h){ h.className='help '+x.cls; h.innerHTML=x.txt; } }
 });
-app.addEventListener('change',e=>{ if(e.target.dataset&&e.target.dataset.flk&&st.screen==='flush'){ _flKey=''; const y=window.scrollY; render(); window.scrollTo(0,y); } });
+// A figure finished: the outlet sends itself if nothing else is missing.
+app.addEventListener('change',e=>{ if(e.target.dataset&&e.target.dataset.flk&&st.screen==='flush'){ const p=flById(e.target.dataset.flid); const y=window.scrollY; if(p) flMaybeSave(p); render(); window.scrollTo(0,y); } });
 async function doSend(){
   const F=st.form; if(st.busy) return;
   st.busy=true; render();
