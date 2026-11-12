@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v549.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v552.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -14,6 +14,9 @@ const WFM_CAPTURE_SHAPE={
     job:        {direction:'operational', label:'Job update'},
     // An NFC tag linked to a point by its own serial, read on the phone and never written (DEC-0345).
     tag:        {direction:'setup',       label:'Tag linked'},
+    // An outlet's name, type or area changed on the flush round (job 015, slice FY): filed onto the outlet at once,
+    // the old values kept in the audit (John, 10 Nov 2026: "it applies to the desk too").
+    outletchange:{direction:'setup',      label:'Outlet changed'},
     // Messages on the phone (DEC-0288, DEC-0348): a notice from the FM or the Notice Sender, a read of one (opened or
     // confirmed), and the shift handover. Each is a record: who wrote, who read, when. Only its writer changes one, by a
     // msgchange, and the original stays in the record (DEC-0353 rule 5).
@@ -34,7 +37,7 @@ const WFM_CAPTURE_SHAPE={
   // '' when it is not a serial. Read by the desk and the phone alike.
   serialOf:function(s){ var h=String(s||'').toUpperCase().replace(/[^0-9A-F]/g,''); return (h.length>=8&&h.length%2===0)?h.match(/../g).join(':'):''; },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','chatGroup','pauses','early','allOk','noScan','flush','signedIn'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
+  fields:['format','version','id','kind','taken','person','change','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','chatGroup','pauses','early','allOk','noScan','flush','signedIn'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
   earlyWhy:[{id:'incident',label:'Called to an incident'},{id:'time',label:'Out of time'},{id:'access',label:'Area not accessible'},{id:'other',label:'Something else'}],
   // Why a walk signed off with no point scanned has none (DEC-0372 rule 3): its lines are done but Claimed. Other takes a sentence.
   noScanWhy:[{id:'battery',label:'Phone died'},{id:'nophone',label:'Forgot the phone'},{id:'tags',label:'Tags would not scan'},{id:'other',label:'Something else'}],
