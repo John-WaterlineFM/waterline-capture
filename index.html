@@ -1125,6 +1125,9 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .flnote textarea{width:100%;min-height:64px;font:400 16px/1.4 'DM Sans',sans-serif;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--white);color:var(--text)}
 .fopen>.flnote,.fopen>.fledit{padding:12px 16px 0}
 .fledit select,.fledit input{width:100%}
+.fltools{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px 0}
+.fltools .ib{width:44px;height:44px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--accentD);display:inline-flex;align-items:center;justify-content:center}
+.fltools .ib svg{width:20px;height:20px}
 .r .sub .flni{width:12px;height:12px;vertical-align:-2px}
 .wk{display:inline-block;font:700 11px/20px Outfit;letter-spacing:1px;text-transform:uppercase;color:var(--textMid)}
 /* A row with its timer running is shaded in its state's colour, left running hardest, and its stripe is wider (DEC-0374 rule 13:
@@ -3655,8 +3658,9 @@ function sendBtn(label,ok,why){
 // (DEC-0303 rule 7: a fault reported at reception has none). The group stays as P2 asked it (audit G3, open).
 function vFault(){
   const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim();
-  return '<div class="body">'+formZone('home','Capture','Report a Fault','Say what is wrong in your own words. It goes to the desk as a job.')
+  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Fault','Say what is wrong in your own words. It goes to the desk as a job.')
     +'<div class="field"><label for="note">What is wrong</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
+    +(F.back==='flush'?'<p class="para">The flush round keeps running. Sending this takes you back to it.</p>':'')
     +whereField({suggest:true})+faultHistory()+groupSelect()+photosField('Photo, if you are there',true)+'<div style="height:24px"></div></div>'
     +sendBtn('Send',said&&where,!said?'Say what is wrong first.':'Say where it is, or scan its tag.');
 }
@@ -3973,7 +3977,7 @@ app.addEventListener('click',async e=>{
   if(MSG_ACTS.indexOf(a)>=0) return msgAct(a,b);
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
-  if(a==='flush'){ st.sheet=false; flState(); return go('flush'); }
+  if(a==='flush'){ st.sheet=false; if(st.form&&st.form.back==='flush') st.form=null; flState(); return go('flush'); }
   if(a==='flRow'){ const F=flState(), z=!!b.closest('.zone'); F.open=z||F.open!==b.dataset.id?b.dataset.id:null; flKeep(); render(); if(z){ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(b.dataset.id)+'"]'); if(r) r.scrollIntoView({block:'center',behavior:'instant'}); } return; }
   if(a==='flStart'||a==='flAgain'){ flStart(b.dataset.id,b.dataset.t); return render(); }
   if(a==='flStop'){ flStop(b.dataset.id,b.dataset.t); return render(); }
@@ -3986,6 +3990,12 @@ app.addEventListener('click',async e=>{
   if(a==='flNoteSend'){ const p=flById(b.dataset.id); if(p) flNoteSend(p); return; }
   if(a==='flEdit'){ const F=flState(), p=flById(b.dataset.id); if(!p) return; F.editing=p.id; F.ed={name:p.name,kind:flKind(p),area:flArea(p)}; return render(); }
   if(a==='flEditCancel'){ const F=flState(); F.editing=null; F.ed=null; return render(); }
+  // A leak found mid-flush is reported there and then (John, 12 Nov 2026: "we should encourage the shorter route to seeing
+  // the problem and saying it"): Report a Fault opens with the outlet as its place, and sending it comes back to the round,
+  // where every clock has kept running.
+  if(a==='flFault'){ const p=flById(b.dataset.id); if(!p) return; const f=blank('fault');
+    if(p.point&&pointById(p.point)) f.point=p.point; else f.place=p.name+(p.where?' · '+p.where:'');
+    f.back='flush'; st.form=f; return go('fault'); }
   if(a==='flEditSave'){ const p=flById(b.dataset.id); if(p) flEditSend(p); return; }
   if(a==='flSave'){ const p=flById(b.dataset.id); if(p) flSave(p); return; }
   if(a==='flFlushed'){ const p=flById(b.dataset.id); if(p) flFlushed(p); return; }
@@ -4373,7 +4383,7 @@ function flBits(p,now){
     else { big=flMS(t); word=nm+'left running'; stripe='var(--jTodo)'; bc='bad'; c2='bad'; }
     tint=' fl-'+(ph==='pause'?'run':ph);
   } else if(held){ sub2=esc(held); c2='amb'; }
-  if(note&&!ph) sub2+=' · '+I.msg.replace('<svg','<svg class="flni"')+' note';
+  if(note&&!ph) sub2+=' · '+I.edit.replace('<svg','<svg class="flni"')+' note';
   return {top:top,sub:sub,sub2:sub2,c2:c2,stripe:stripe,big:big,word:word,bc:bc,tint:tint};
 }
 // A search matches the start of a word (John, 28 Oct 2026: typing "ice" still left him scrolling).
@@ -4433,8 +4443,16 @@ function flTapBox(p,t,now){
 }
 function flNoteBox(p,F){
   const n=(F.notes||{})[p.id], open=n!=null;
-  if(!open) return '<div class="row2"><button class="gh" data-act="flNote" data-id="'+esc(p.id)+'">'+I.msg+'Add a Note</button></div>';
+  if(!open) return '';
   return '<div class="field flnote"><label for="fl-note">Note</label><textarea id="fl-note" rows="2" data-flnote="'+esc(p.id)+'" placeholder="Tap broken, TMV needs calibrating, leak found">'+esc(n)+'</textarea><div class="help">Goes with this outlet’s flush.</div></div>';
+}
+// A note and the outlet's settings, as two symbols at the foot of the opened row (John, 12 Nov 2026: "simple symbols would
+// have been better"; "a pencil is to write… to edit anything in this world there's a settings icon").
+function flTools(p,F){
+  const n=(F.notes||{})[p.id]!=null, e=F.editing===p.id;
+  return '<div class="fltools">'+(n?'':'<button class="ib" data-act="flNote" data-id="'+esc(p.id)+'" aria-label="Write a note" title="Write a note">'+I.edit+'</button>')
+    +(e?'':'<button class="ib" data-act="flEdit" data-id="'+esc(p.id)+'" aria-label="Outlet settings" title="Outlet settings">'+I.gear+'</button>')
+    +'<button class="ib" data-act="flFault" data-id="'+esc(p.id)+'" aria-label="Report a fault here" title="Report a fault here">'+I.fault+'</button></div>';
 }
 function flOpened(p,F,now,x){
   const ts=flTaps(p), du=(p.reading||{}).due||{}, L=flLast(p);
@@ -4444,13 +4462,13 @@ function flOpened(p,F,now,x){
   if(!ts.length){
     const m=(F.done||{})[p.id], today=m&&m.date===flToday();
     return h+'<div class="row2">'+(today?'<button class="gh" data-act="flFlushed" data-id="'+esc(p.id)+'">'+I.tick+'Flushed Again</button>':'<button class="btn p" data-act="flFlushed" data-id="'+esc(p.id)+'">'+I.tick+'Flushed</button>')+'</div>'
-      +flNoteBox(p,F)+flEditBox(p,F)+'</div>';
+      +flNoteBox(p,F)+flEditBox(p,F)+flTools(p,F)+'</div>';
   }
   if(p.sentinel&&!du.temp&&L.temp) h+='<div class="say">This month’s temperature taken '+esc(flShort(L.temp.date))+': <b>'+esc(flTempText(L.temp,p))+'</b>.</div>';
   h+='<div class="taps'+(ts.length>1?' two':'')+'">'+ts.map(t=>flTapBox(p,t,now)).join('')+'</div>';
   const held=flHeld(p,now);
   if(held) h+='<div class="say amb">'+esc(held)+'</div><div class="row2"><button class="gh" data-act="flSave" data-id="'+esc(p.id)+'">'+I.send+esc(flSaveLabel(p,now))+'</button></div>';
-  return h+flNoteBox(p,F)+noteOnly+flEditBox(p,F)+'</div>';
+  return h+flNoteBox(p,F)+noteOnly+flEditBox(p,F)+flTools(p,F)+'</div>';
 }
 
 // ── Saving an outlet ─────────────────────────────────────────────────────────────────────────────────────
@@ -4607,7 +4625,7 @@ const FL_KINDS0=[['sink','Sink — hot and cold taps'],['pou','Sink — under-si
 const flKinds=()=>Array.isArray(SITE().outletKinds)&&SITE().outletKinds.length?SITE().outletKinds.map(k=>[k.id,k.label]):FL_KINDS0;
 function flEditBox(p,F){
   const e=F.editing===p.id;
-  if(!e) return '<div class="row2"><button class="gh" data-act="flEdit" data-id="'+esc(p.id)+'">'+I.edit+'Edit This Outlet</button></div>';
+  if(!e) return '';
   const v=F.ed||{}, areas=flAreas(flOutlets()).map(x=>x.a).filter(a=>a!=='No area');
   return '<div class="fledit"><div class="field"><label for="fl-ename">Name</label><input id="fl-ename" type="text" data-fled="name" value="'+esc(v.name)+'"></div>'
     +'<div class="field"><label for="fl-ekind">Type</label><select id="fl-ekind" data-fled="kind">'+flKinds().map(k=>'<option value="'+esc(k[0])+'"'+(k[0]===v.kind?' selected':'')+'>'+esc(k[1])+'</option>').join('')+'</select></div>'
@@ -4740,7 +4758,7 @@ async function doSend(){
   }
   catch(e){ st.busy=false; F.err='Nothing was sent. Take the photos again and send it again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   // Back to Due at once; Capture shows the sending, then Sent (DEC-0369 rule 1). A capture that waits says so (Design 9.11).
-  st.form=null; st.capSend={state:'sending'}; go('due');
+  st.form=null; st.capSend={state:'sending'}; go(F.back==='flush'?'flush':'due');
   const ok=await send(c);
   st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
   if(F.kind==='round'){ ls.del('wl_walk'); const w=walksSent(); w.push({round:F.round,at:new Date().toISOString(),for:F.walkFor||''}); ls.set('wl_walksSent',w); }
