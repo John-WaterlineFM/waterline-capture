@@ -117,6 +117,20 @@ function doPost(e){
     }
     // A flush started on a phone (DEC-0374 rules 4 and 8): the relay holds it and alerts that phone if the tap is still
     // open at the bracket's top. One every-minute trigger sweeps them while any is open, and removes itself after.
+    // The phone's own list of the taps it has running (John, 12 Nov 2026: six alerts for a tap he could not say was
+    // still on). Any open flush the relay holds for this phone and not on the list is dropped, so a stop that never
+    // reached the relay cannot keep alerting.
+    if(b.op === 'flushSync'){
+      const t = String(b.token || ''), keep = Array.isArray(b.ids) ? b.ids.map(String) : [];
+      if(!devices()[t]) return out({ok:false, code:'bad', why:'This phone is not registered for alerts.'});
+      const lock = LockService.getScriptLock(); lock.waitLock(20000);
+      try{
+        const f = flushes(); let gone = 0;
+        Object.keys(f).forEach(id => { if(f[id].token === t && keep.indexOf(id) < 0){ delete f[id]; gone++; } });
+        PROPS.setProperty('FLUSHES', JSON.stringify(f)); flushTrigger(Object.keys(f).length > 0);
+        return out({ok:true, dropped:gone});
+      } finally { lock.releaseLock(); }
+    }
     if(b.op === 'flushOpen' || b.op === 'flushClosed'){
       const t = String(b.token || ''), id = String(b.id || '').slice(0, 160);
       if(!devices()[t]) return out({ok:false, code:'bad', why:'This phone is not registered for alerts.'});
@@ -240,8 +254,13 @@ function flushSweep(){
       const x = f[id];
       if(now - x.due > 2 * 3600000){ delete f[id]; return; }
       if(now < x.due) return;
-      // The alert opens the flush round on that outlet (John, 12 Nov 2026); the id is the outlet's, then :tap@start.
-      const r = pushSend(x.token, 'Tap still running', x.name + ': the tap is still running. Turn it off.', PAGE + '?flush=' + encodeURIComponent(String(id).replace(/[:@].*$/, '')), true);
+      // Once at the bracket's top, then every five minutes, as ONE alert per tap that replaces itself (its tag), not a
+      // new one each minute (John, 12 Nov 2026: "six messages… a minute apart"). It opens the round on that outlet.
+      if(x.last && now - x.last < 5 * 60000) return;
+      x.last = now;
+      const mins = Math.max(1, Math.round((now - x.due) / 60000));
+      const r = pushSend(x.token, 'Tap still running', x.name + (now - x.due < 60000 ? ': the tap is still running. Turn it off.' : ': still running, ' + mins + ' minutes past its time. Turn it off.'),
+        PAGE + '?flush=' + encodeURIComponent(String(id).replace(/[:@].*$/, '')), true, 'flush-' + id);
       if(r.code === 'gone') delete f[id];
     });
     PROPS.setProperty('FLUSHES', JSON.stringify(f));
@@ -278,11 +297,11 @@ function fcmToken(){
 }
 // One alert to one phone, opening the page at link (the home page when none). A phone that has gone (uninstalled,
 // alerts turned off) is dropped.
-function pushSend(token, title, body, link, loud){
+function pushSend(token, title, body, link, loud, tag){
   const sa = JSON.parse(PROPS.getProperty('SERVICE_ACCOUNT') || '{}');
   const res = UrlFetchApp.fetch('https://fcm.googleapis.com/v1/projects/' + sa.project_id + '/messages:send', {
     method:'post', contentType:'application/json', muteHttpExceptions:true, headers:{Authorization:'Bearer ' + fcmToken()},
-    payload:JSON.stringify({message:{token:token, webpush:{notification:{title:title, body:body}, data:loud ? {link:link || PAGE, loud:'1'} : {link:link || PAGE}, fcm_options:{link:link || PAGE}}}})});
+    payload:JSON.stringify({message:{token:token, webpush:{notification:{title:title, body:body}, data:Object.assign({link:link || PAGE}, loud ? {loud:'1'} : {}, tag ? {tag:String(tag).slice(0, 120)} : {}), fcm_options:{link:link || PAGE}}}})});
   const code = res.getResponseCode();
   if(code === 200) return {ok:true};
   if(code === 404 || /UNREGISTERED/.test(res.getContentText())){

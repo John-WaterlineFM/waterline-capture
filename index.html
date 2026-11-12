@@ -1126,6 +1126,8 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .flnote textarea{width:100%;min-height:64px;font:400 16px/1.4 'DM Sans',sans-serif;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--white);color:var(--text)}
 .fopen>.flnote,.fopen>.fledit{padding:12px 16px 0}
 .fledit select,.fledit input{width:100%}
+.r.fl-iso{background:var(--cream)}
+.r.fl-iso .w{color:var(--textMid)}
 .flrun{display:flex;flex-direction:column;gap:6px;margin-top:12px}
 .flrunr{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border-radius:8px;border-left:6px solid var(--jDoing);background:color-mix(in srgb,var(--jDoing) 14%,var(--white));color:var(--text);text-align:left;width:100%}
 .flrunr .m{flex:1;min-width:0;font:500 15px 'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -3987,7 +3989,7 @@ app.addEventListener('click',async e=>{
   if(MSG_ACTS.indexOf(a)>=0) return msgAct(a,b);
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
-  if(a==='flush'){ st.sheet=false; if(st.form&&st.form.back==='flush') st.form=null; flState(); return go('flush'); }
+  if(a==='flush'){ st.sheet=false; if(st.form&&st.form.back==='flush') st.form=null; flState(); flSync(); return go('flush'); }
   if(a==='flRow'){ const F=flState(), z=!!b.closest('.zone'); F.open=z||F.open!==b.dataset.id?b.dataset.id:null; flKeep(); render(); if(z){ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(b.dataset.id)+'"]'); if(r) r.scrollIntoView({block:'center',behavior:'instant'}); } return; }
   if(a==='flStart'||a==='flAgain'){ flStart(b.dataset.id,b.dataset.t); return render(); }
   if(a==='flStop'){ flStop(b.dataset.id,b.dataset.t); return render(); }
@@ -4006,6 +4008,11 @@ app.addEventListener('click',async e=>{
   if(a==='flFault'){ const p=flById(b.dataset.id); if(!p) return; const f=blank('fault');
     if(p.point&&pointById(p.point)) f.point=p.point; else f.place=p.name+(p.where?' · '+p.where:'');
     f.back='flush'; st.form=f; return go('fault'); }
+  if(a==='flBack'){ const p=flById(b.dataset.id); if(!p) return; const F=flState(); F.ed={}; F.editing=null;
+    (async()=>{ let c; try{ c=await makeCapture('outletchange',{record:{reg:'waterOutlets',id:p.id},change:{reinstate:true},note:''},[]); }catch(e){ return toast('Nothing was sent. ('+(e.message||e)+')'); }
+      F.edits=F.edits||{}; F.edits[p.id]=Object.assign({},F.edits[p.id]||{},{reinstate:true,isolate:undefined,on:flToday()}); flKeep(); render();
+      toast(p.name+' is back in use. Flush it and take its temperature.'); const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.'); })();
+    return; }
   if(a==='flEditSave'){ const p=flById(b.dataset.id); if(p) flEditSend(p); return; }
   if(a==='flSave'){ const p=flById(b.dataset.id); if(p) flSave(p); return; }
   if(a==='flFlushed'){ const p=flById(b.dataset.id); if(p) flFlushed(p); return; }
@@ -4332,7 +4339,7 @@ function flLast(p){
   return {flush:m.ok&&(!f||m.date>=f.date)?{date:m.date,by:'You'}:f, temp:m.temp&&(!t||m.date>=t.date)?Object.assign({date:m.date,by:'You'},m.temp):t};
 }
 function flAge(p){ const l=flLast(p).flush; if(!l||!l.date) return null; const a=new Date(flToday()+'T00:00:00'), b=new Date(l.date+'T00:00:00'); return Math.round((a-b)/864e5); }
-function flDueState(p){ const a=flAge(p); return a==null||a>7?'over':a>=6?'due':'ok'; }
+function flDueState(p){ if(p.isolated) return 'iso'; const a=flAge(p); return a==null||a>7?'over':a>=6?'due':'ok'; }
 const flAgeWords=a=>a==null?['Never','flushed']:a<=0?['Today','flushed']:a===1?['1 day','ago']:a<14?[a+' days','ago']:[Math.floor(a/7)+' wks','ago'];
 const flShort=iso=>{ const d=new Date(iso+'T00:00:00'); return d.getDate()+' '+MON[d.getMonth()]; };
 function flTempText(t,p){ if(!t) return ''; const k=flKind(p), mix=k==='tmv'||k==='shower';
@@ -4351,7 +4358,7 @@ function flSeq(outs){
   if(F.seq&&F.seq.o===o&&F.seq.n===outs.length) return F.seq.ids.map(id=>outs.find(p=>p.id===id)).filter(Boolean);
   let s=outs.slice();
   if(o==='area'){ const first={}; outs.forEach((p,i)=>{ const a=flArea(p); if(first[a]==null) first[a]=i; }); s.sort((a,b)=>first[flArea(a)]-first[flArea(b)]); }
-  if(o==='oldest'){ const g=p=>{ const a=flAge(p); return a==null?1e9:a; }; s.sort((a,b)=>g(b)-g(a)); }
+  if(o==='oldest'){ const g=p=>{ if(p.isolated) return -1; const a=flAge(p); return a==null?1e9:a; }; s.sort((a,b)=>g(b)-g(a)); }
   F.seq={o:o,n:outs.length,ids:s.map(p=>p.id)};
   return s;
 }
@@ -4383,6 +4390,9 @@ function flBits(p,now){
   let stripe=d==='over'?'var(--red)':d==='due'?'var(--amber)':'var(--jDone)', bc=d==='over'?'bad':d==='due'?'amb':'', c2='', tint='';
   let [big,word]=flAgeWords(a); if(d==='due') word='due'; if(d==='over'&&a!=null) word='overdue';
   const held=flHeld(p,now), note=(st.fl.notes||{})[p.id];
+  // Isolated (slice FI): grey, its date and reason, never counted late. Back in use: flush it now, said until it is.
+  if(p.isolated&&!ph){ stripe='var(--textMuted)'; big='Isolated'; word='since '+flShort(p.isolated.on); bc=''; sub2=esc(p.isolated.why)+(p.isolated.by?' · '+esc(p.isolated.by):''); c2=''; }
+  else if(p.back&&!ph&&(!L.flush||L.flush.date<p.back)){ sub2='Back in use '+esc(flShort(p.back))+': flush it and take its temperature'; c2='amb'; }
   if(ph){
     const ts=flTaps(p), fs=ts.map(t=>[t,flRun(p,t[0])]).filter(x=>flOpenPh(flPh(p,x[1],now)));
     const w=fs.find(x=>flPh(p,x[1],now)==='over')||fs.find(x=>flPh(p,x[1],now)==='done')||fs.find(x=>flPh(p,x[1],now)==='run')||fs[0], wp=flPh(p,w[1],now), t=flRan(w[1],now), b=flBr(p,w[0][0]);
@@ -4393,6 +4403,7 @@ function flBits(p,now){
     else { big=flMS(t); word=nm+'left running'; stripe='var(--jTodo)'; bc='bad'; c2='bad'; }
     tint=' fl-'+(ph==='pause'?'run':ph);
   } else if(held){ sub2=esc(held); c2='amb'; }
+  if(p.isolated&&!ph) tint=' fl-iso';
   if(note&&!ph) sub2+=' · '+I.edit.replace('<svg','<svg class="flni"')+' note';
   return {top:top,sub:sub,sub2:sub2,c2:c2,stripe:stripe,big:big,word:word,bc:bc,tint:tint};
 }
@@ -4469,6 +4480,10 @@ function flOpened(p,F,now,x){
   let h='<div class="fopen"><span class="s3d" style="--c:'+x.stripe+';--sw:'+(x.tint?'6px':'3px')+'"></span>';
   const runAny=ts.some(t=>{ const f=flRun(p,t[0]); return f&&f.t0; }), note=(F.notes||{})[p.id];
   const noteOnly=String(note||'').trim()&&!runAny&&ts.length?'<div class="row2"><button class="gh" data-act="flNoteSend" data-id="'+esc(p.id)+'">'+I.send+'Send the Note Only</button></div>':'';
+  if(p.isolated){
+    return h+'<div class="say">Isolated since <b>'+esc(flShort(p.isolated.on))+'</b>: '+esc(p.isolated.why)+'. Not counted as missed.</div>'
+      +'<div class="row2"><button class="gh" data-act="flBack" data-id="'+esc(p.id)+'">'+I.play+'Back in Use</button></div>'+flNoteBox(p,F)+noteOnly+flEditBox(p,F)+flTools(p,F)+'</div>';
+  }
   if(!ts.length){
     const m=(F.done||{})[p.id], today=m&&m.date===flToday();
     return h+'<div class="row2">'+(today?'<button class="gh" data-act="flFlushed" data-id="'+esc(p.id)+'">'+I.tick+'Flushed Again</button>':'<button class="btn p" data-act="flFlushed" data-id="'+esc(p.id)+'">'+I.tick+'Flushed</button>')+'</div>'
@@ -4554,7 +4569,7 @@ function flOld(){
 
 // ── The screen ───────────────────────────────────────────────────────────────────────────────────────────
 function flZone(outs,F,now){
-  const over=outs.filter(p=>flDueState(p)==='over').length, dueN=outs.filter(p=>flDueState(p)==='due').length, ok=outs.length-over-dueN;
+  const iso=outs.filter(p=>p.isolated).length, over=outs.filter(p=>flDueState(p)==='over').length, dueN=outs.filter(p=>flDueState(p)==='due').length, ok=outs.length-over-dueN-iso;
   const live=outs.filter(p=>flOutPh(p,now)), left=outs.filter(p=>flOutPh(p,now)==='over');
   const say=left.length?'<b class="bad">'+left.length+' left running.</b>':live.length?live.length+' running.':dueN?dueN+' due in the next two days.':'';
   // Every running tap as a row of its own, shaded by its state, its clock live (John, 12 Nov 2026: "its just text. you
@@ -4563,7 +4578,7 @@ function flZone(outs,F,now){
     return '<button class="flrunr fr-'+q+'" data-act="flRow" data-id="'+esc(p.id)+'"><span class="m">'+flDots(p)+esc(p.name)+'</span><span class="c"><b data-flzc="'+esc(p.id)+'">'+x.big+'</b><i data-flzw="'+esc(p.id)+'">'+x.word+'</i></span></button>'; }).join('');
   return '<div class="zone"><div class="ztop">'+backBtn('home')+'<span class="eb">Flush Round</span></div>'
     +'<div class="row1"><span class="num n'+(over?' bad':'')+'">'+over+'</span><span class="what">overdue</span></div>'
-    +'<p><b>'+ok+' of '+outs.length+'</b> flushed in the last 7 days. '+say+'</p>'+(rows?'<div class="flrun">'+rows+'</div>':'')
+    +'<p><b>'+ok+' of '+(outs.length-iso)+'</b> flushed in the last 7 days. '+say+(iso?' '+iso+' isolated.':'')+'</p>'+(rows?'<div class="flrun">'+rows+'</div>':'')
     +'<button class="gh" data-act="flScan" data-for="flush">'+I.scan+'Scan the Next Tag</button></div>';
 }
 const flAlertsOn=()=>{ const a=ls.get('wl_alerts',null); return !!(a&&a.token); };
@@ -4622,6 +4637,13 @@ function flRelay(op,id,k){
   STORE.ask({op:op,token:a.token,id:id+':'+k+'@'+f.t0,name:nm,due:due})
     .catch(e=>{ if(op==='flushOpen') toast('The relay did not take this tap ('+(e&&e.message||e)+'). If Waterline closes, nothing will warn you it is running.'); });
 }
+// The taps this phone really has running, sent to the relay so it drops any it holds that are not (a stop that never
+// arrived). On each open of the round and of the app. Quiet: it fixes, it does not ask.
+function flSync(){
+  const a=ls.get('wl_alerts',null), F=st.fl||ls.get('wl_flush',null); if(!a||!a.token||!STORE||!STORE.ask||!F) return;
+  const ids=[]; Object.keys(F.runs||{}).forEach(id=>{ const r=F.runs[id]||{}; Object.keys(r).forEach(k=>{ const f=r[k]; if(f&&f.t0&&!f.t1&&!f.pAt) ids.push(id+':'+k+'@'+f.t0); }); });
+  STORE.ask({op:'flushSync',token:a.token,ids:ids}).catch(()=>{});
+}
 function flStart(id,k){
   const F=flState(); (F.runs[id]=F.runs[id]||{})[k]={k:k,t0:Date.now(),t1:0,paused:0,pAt:0,fig:'',figAt:null}; flKeep(); flRelay('flushOpen',id,k); flWake();
   if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
@@ -4644,6 +4666,7 @@ function flEditBox(p,F){
   return '<div class="fledit"><div class="field"><label for="fl-ename">Name</label><input id="fl-ename" type="text" data-fled="name" value="'+esc(v.name)+'"></div>'
     +'<div class="field"><label for="fl-ekind">Type</label><select id="fl-ekind" data-fled="kind">'+flKinds().map(k=>'<option value="'+esc(k[0])+'"'+(k[0]===v.kind?' selected':'')+'>'+esc(k[1])+'</option>').join('')+'</select></div>'
     +'<div class="field"><label for="fl-earea">Area</label><select id="fl-earea" data-fled="area">'+areas.map(a=>'<option'+(a===v.area?' selected':'')+'>'+esc(a)+'</option>').join('')+'</select><div class="help">An area not on the list is added on the desk.</div></div>'
+    +(p.isolated?'':'<div class="field"><label for="fl-eiso">Out of use? Say why to isolate it</label><input id="fl-eiso" type="text" data-fled="iso" value="'+esc(v.iso||'')+'" placeholder="e.g. Valve isolated, awaiting repair"><div class="help">Its weeks out of use are not counted as missed.</div></div>')
     +'<div class="row2"><button class="btn p" data-act="flEditSave" data-id="'+esc(p.id)+'">'+I.send+'Save the Change</button><button class="gh" data-act="flEditCancel">Cancel</button></div></div>';
 }
 async function flEditSend(p){
@@ -4651,10 +4674,11 @@ async function flEditSend(p){
   if(String(v.name||'').trim()&&String(v.name).trim()!==p.name) ch.name=String(v.name).trim();
   if(v.kind&&v.kind!==flKind(p)) ch.kind=v.kind;
   if(v.area&&v.area!==flArea(p)) ch.area=v.area;
+  if(String(v.iso||'').trim()&&!p.isolated) ch.isolate=String(v.iso).trim();
   if(!Object.keys(ch).length){ F.editing=null; F.ed=null; flKeep(); return render(); }
   let c; try{ c=await makeCapture('outletchange',{record:{reg:'waterOutlets',id:p.id},change:ch,note:''},[]); }
   catch(e){ toast('Nothing was sent. ('+(e.message||e)+')'); return; }
-  F.edits=F.edits||{}; F.edits[p.id]=Object.assign({},F.edits[p.id]||{},ch); F.editing=null; F.ed=null; F.seq=null; flKeep(); render();
+  F.edits=F.edits||{}; F.edits[p.id]=Object.assign({},F.edits[p.id]||{},ch,{on:flToday()}); F.editing=null; F.ed=null; F.seq=null; flKeep(); render();
   toast(p.name+' changed. The desk files it.');
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.');
 }
@@ -4662,8 +4686,11 @@ async function flEditSend(p){
 function flEdited(o){
   const e=((st.fl||{}).edits||{})[o.id]; if(!e) return o;
   const k=e.kind&&o.reading?Object.assign({},o.reading,{kind:e.kind}):o.reading;
-  if((!e.name||e.name===o.name)&&(!e.area||e.area===o.where)&&(!e.kind||e.kind===(o.reading||{}).kind)){ delete st.fl.edits[o.id]; flKeep(); return o; }
-  return Object.assign({},o,{name:e.name||o.name,where:e.area||o.where,reading:k});
+  if((!e.name||e.name===o.name)&&(!e.area||e.area===o.where)&&(!e.kind||e.kind===(o.reading||{}).kind)&&(!e.isolate||o.isolated)&&(!e.reinstate||(!o.isolated&&o.back))){ delete st.fl.edits[o.id]; flKeep(); return o; }
+  const x={name:e.name||o.name,where:e.area||o.where,reading:k};
+  if(e.isolate&&!o.isolated) x.isolated={on:e.on||flToday(),why:e.isolate,by:'You'};
+  if(e.reinstate){ x.isolated=null; x.back=o.back||e.on||flToday(); }   // until the desk's site file says it is back
+  return Object.assign({},o,x);
 }
 
 function flTapPoint(pt){
@@ -5429,7 +5456,7 @@ async function boot(){
   await home();
   if(LINK_JOB) jobFromLink(LINK_JOB);
   if(LINK_FLUSH) flushFromLink(LINK_FLUSH);
-  alertsKeep();
+  alertsKeep(); setTimeout(flSync,3000);
 }
 const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
 // A tap left running: its alert opens the flush round on that outlet (John, 12 Nov 2026: "go to the actual tap point").

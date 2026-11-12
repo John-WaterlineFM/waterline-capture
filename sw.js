@@ -1,7 +1,7 @@
 // Keeps the phone page itself on the phone, so it opens with no signal (Work 015 P2; DEC-0287 rule 3).
 // Network first: a fresh page whenever there is signal, the kept copy when there is none. Only this
 // site's own files are kept; the relay (Google) and captures are never cached here.
-const KEEP = 'waterline-phone-7';
+const KEEP = 'waterline-phone-8';
 // The scanner's libraries (slice SP), pinned by version so a kept copy never goes stale: kept apart from the page's
 // own files, fetched with CORS so a failure is never kept, and served from the phone once kept.
 const LIBS = 'waterline-libs-1';
@@ -39,9 +39,12 @@ self.addEventListener('push', e => {
   // Quiet out of hours (Settings): the alert still comes, without sound or vibration. A tap left running is never
   // quiet (DEC-0374 rule 8): the relay marks it loud.
   const loud = !!(d.data && d.data.loud);
-  e.waitUntil(quietNow().then(silent => self.registration.showNotification(n.title || 'Waterline', {
+  // A tag (a tap left running) is one alert that replaces itself and buzzes again, staying until it is dealt with; a loud
+  // alert asks for its own buzz rather than leaving it to the phone's setting (John, 12 Nov 2026: "i dont recall any buzzing").
+  const tag = d.data && d.data.tag;
+  e.waitUntil(quietNow().then(silent => self.registration.showNotification(n.title || 'Waterline', Object.assign({
     body: n.body || '', icon: 'push/icon-192.png', badge: 'badge-96.png', silent: silent && !loud, data: {link: (d.data && d.data.link) || (d.fcmOptions && d.fcmOptions.link) || './'}
-  })));
+  }, loud ? {vibrate: [400, 200, 400, 200, 400], requireInteraction: true} : {}, tag ? {tag: tag, renotify: true} : {}))));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();
