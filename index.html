@@ -1128,6 +1128,13 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .fledit select,.fledit input{width:100%}
 .r.fl-iso{background:var(--cream)}
 .r.fl-iso .w{color:var(--textMid)}
+.flsent{display:flex;align-items:center;gap:12px;margin:12px 16px 0;padding:12px 14px;border-radius:10px;border-left:6px solid var(--jDoing);background:color-mix(in srgb,var(--jDoing) 14%,var(--white));color:var(--text)}
+.flsent.fs-sent{border-left-color:var(--jDone);background:color-mix(in srgb,var(--jDone) 16%,var(--white))}
+.flsent.fs-refused{border-left-color:var(--jTodo);background:color-mix(in srgb,var(--jTodo) 14%,var(--white))}
+.flsent svg{width:24px;height:24px;flex:none}
+.flsent b{display:block;font:700 15px 'DM Sans',sans-serif}
+.flsent i{display:block;font:400 13px/1.4 'DM Sans',sans-serif;font-style:normal}
+.r .sub .flsj{font-weight:700;color:var(--text)}
 .flrun{display:flex;flex-direction:column;gap:6px;margin-top:12px}
 .flrunr{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border-radius:8px;border-left:6px solid var(--jDoing);background:color-mix(in srgb,var(--jDoing) 14%,var(--white));color:var(--text);text-align:left;width:100%}
 .flrunr .m{flex:1;min-width:0;font:500 15px 'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1546,7 +1553,23 @@ async function makeCapture(kind,fields,photos){
 
 // ── Screens ──────────────────────────────────────────────────────────────────────────────────
 const app=document.getElementById('app');
-function go(screen,extra){ st.screen=screen; if(extra) Object.assign(st,extra); render(); window.scrollTo(0,0); }
+function go(screen,extra){ st.screen=screen; if(extra) Object.assign(st,extra); hereKeep(); render(); window.scrollTo(0,0); }
+// A refresh opens the screen you were on (DEC-0423; John, 12 Nov 2026): kept for this tab only (sessionStorage), so opening
+// the app afresh still starts on Due. Lists and records come back; a form half filled does not.
+const HERE_OK=['due','jobs','msgs','flush','rounds','walks','me','job','chat'];
+function hereKeep(){ try{ const s=st.screen; if(HERE_OK.indexOf(s)<0) return;
+  const ref=s==='job'?(st.form&&st.form.id):s==='chat'?(st.form&&st.form.chat):'';
+  sessionStorage.setItem('wl_here',JSON.stringify({s:s,ref:ref||''})); }catch(e){} }
+// Read once as the page loads, before starting up passes through Due and writes over it.
+const HERE_WAS=(()=>{ try{ return JSON.parse(sessionStorage.getItem('wl_here')||'null'); }catch(e){ return null; } })();
+function hereBack(){
+  const h=HERE_WAS;
+  if(!h||!h.s||h.s==='due'||st.screen!=='due') return;
+  if(h.s==='job'){ if(h.ref&&jobById(h.ref)) jobFromLink(h.ref); return; }
+  if(h.s==='chat'){ if(h.ref){ st.form=chatForm(h.ref); go('chat'); chatBottom(); } return; }
+  if(h.s==='flush'){ flState(); flSync(); }
+  go(h.s);
+}
 // A cream top for the tag list inside the scanner: back, the title, nothing else.
 function bar(title,back){ return '<div class="top"><button class="ibtn" data-act="'+(back||'home')+'" aria-label="'+(back==='home'||!back?'Close':'Back')+'">'+(back&&back!=='home'?I.back:I.close)+'</button><div class="t">'+esc(title)+'</div><div style="width:44px"></div></div>'; }
 // Round 12's parts. Every screen has one navy zone (Design 21.1): on a place it carries the dominant number and its
@@ -4007,7 +4030,7 @@ app.addEventListener('click',async e=>{
   // where every clock has kept running.
   if(a==='flFault'){ const p=flById(b.dataset.id); if(!p) return; const f=blank('fault');
     if(p.point&&pointById(p.point)) f.point=p.point; else f.place=p.name+(p.where?' · '+p.where:'');
-    f.back='flush'; st.form=f; return go('fault'); }
+    f.back='flush'; f.flId=p.id; st.form=f; return go('fault'); }
   if(a==='flBack'){ const p=flById(b.dataset.id); if(!p) return; const F=flState(); F.ed={}; F.editing=null;
     (async()=>{ let c; try{ c=await makeCapture('outletchange',{record:{reg:'waterOutlets',id:p.id},change:{reinstate:true},note:''},[]); }catch(e){ return toast('Nothing was sent. ('+(e.message||e)+')'); }
       F.edits=F.edits||{}; F.edits[p.id]=Object.assign({},F.edits[p.id]||{},{reinstate:true,isolate:undefined,on:flToday()}); flKeep(); render();
@@ -4405,6 +4428,7 @@ function flBits(p,now){
   } else if(held){ sub2=esc(held); c2='amb'; }
   if(p.isolated&&!ph) tint=' fl-iso';
   if(note&&!ph) sub2+=' · '+I.edit.replace('<svg','<svg class="flni"')+' note';
+  const js=(st.fl.sent||{})[p.id]; if(js&&!ph){ const t=new Date(js.at); sub2+=' · <b class="flsj">'+(js.state==='sent'?'Job sent ':js.state==='waiting'?'Job waiting for signal ':'Job ')+String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+'</b>'; }
   return {top:top,sub:sub,sub2:sub2,c2:c2,stripe:stripe,big:big,word:word,bc:bc,tint:tint};
 }
 // A search matches the start of a word (John, 28 Oct 2026: typing "ice" still left him scrolling).
@@ -4568,6 +4592,14 @@ function flOld(){
 }
 
 // ── The screen ───────────────────────────────────────────────────────────────────────────────────────────
+// What was sent from the round as a job, for the visit (not kept): sending, sent, or waiting for signal.
+function flSentBanner(outs,F){
+  const ks=Object.keys(F.sent||{}).filter(id=>Date.now()-F.sent[id].at<8000); if(!ks.length) return '';
+  return ks.map(id=>{ const x=F.sent[id], p=outs.find(o=>o.id===id), nm=p?p.name:'';
+    const head=x.state==='sent'?'Job sent to the desk':x.state==='sending'?'Sending the job…':x.state==='refused'?'Not sent':'Waiting for signal';
+    const sub=x.state==='waiting'?'It sends by itself when there is signal.':x.state==='refused'?'It is kept on this phone.':esc(nm)+(x.text?': “'+esc(x.text.length>70?x.text.slice(0,67)+'…':x.text)+'”':'');
+    return '<div class="flsent fs-'+x.state+'" role="status">'+(x.state==='sent'?I.tick:I.send)+'<span><b>'+head+'</b><i>'+sub+'</i></span></div>'; }).join('');
+}
 function flZone(outs,F,now){
   const iso=outs.filter(p=>p.isolated).length, over=outs.filter(p=>flDueState(p)==='over').length, dueN=outs.filter(p=>flDueState(p)==='due').length, ok=outs.length-over-dueN-iso;
   const live=outs.filter(p=>flOutPh(p,now)), left=outs.filter(p=>flOutPh(p,now)==='over');
@@ -4587,7 +4619,8 @@ function vFlush(){
   if(!outs.length) return '<div class="body">'+formZone('home','Flush Round','No outlets from the desk','The desk has not published any water outlets yet. Add them on the desk, and the round shows here.')+'</div>';
   const shown=outs.filter(p=>flShown(p,F)).length;
   _flShape=flShape(outs,now);   // the tick starts from what this drawing shows, so it does not redraw it again
-  return '<div class="body"><div data-flz>'+flZone(outs,F,now)+'</div>'
+  if(Object.keys(F.sent||{}).some(id=>Date.now()-F.sent[id].at<8000)) setTimeout(()=>{ if(st.screen==='flush'&&!(st.fl&&st.fl.pick)) render(); },8200);
+  return '<div class="body">'+flSentBanner(outs,F)+'<div data-flz>'+flZone(outs,F,now)+'</div>'
     +'<div class="field"><label for="flq">Find an outlet</label><input type="search" id="flq" data-flq autocomplete="off" placeholder="Name or where" value="'+esc(F.q||'')+'"></div>'
     +flBar(outs,F)
     +'<div class="grp" data-flg>'+(F.q||F.area?shown+' of '+outs.length+' outlets':'Each sends as it is done')+'</div><div class="list" data-fll>'+flList(outs,F,now)+'</div>'
@@ -4799,8 +4832,14 @@ async function doSend(){
   }
   catch(e){ st.busy=false; F.err='Nothing was sent. Take the photos again and send it again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   // Back to Due at once; Capture shows the sending, then Sent (DEC-0369 rule 1). A capture that waits says so (Design 9.11).
-  st.form=null; st.capSend={state:'sending'}; go(F.back==='flush'?'flush':'due');
+  st.form=null; st.capSend={state:'sending'}; 
+  // From the flush round (John, 12 Nov 2026: "when its sent it just vanishes… i need a more visual confirmation"): the
+  // round shows what was sent, sending then sent, and the outlet's row keeps it for the visit.
+  const fromFl=F.back==='flush'&&F.flId&&st.fl, said=String(F.note||'').trim();
+  if(fromFl){ st.fl.sent=st.fl.sent||{}; st.fl.sent[F.flId]={at:Date.now(),text:said,state:'sending'}; }
+  go(F.back==='flush'?'flush':'due');
   const ok=await send(c);
+  if(fromFl){ const x=st.fl.sent[F.flId]; if(x){ x.state=ok?'sent':(c.errCode==='refused'?'refused':'waiting'); if(st.screen==='flush') render(); } }
   st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
   if(F.kind==='round'){ ls.del('wl_walk'); const w=walksSent(); w.push({round:F.round,at:new Date().toISOString(),for:F.walkFor||''}); ls.set('wl_walksSent',w); }
   F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url));
@@ -5456,6 +5495,7 @@ async function boot(){
   await home();
   if(LINK_JOB) jobFromLink(LINK_JOB);
   if(LINK_FLUSH) flushFromLink(LINK_FLUSH);
+  if(!LINK_JOB&&!LINK_FLUSH) hereBack();
   alertsKeep(); setTimeout(flSync,3000);
 }
 const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
