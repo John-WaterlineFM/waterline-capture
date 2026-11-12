@@ -1105,12 +1105,13 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .fldot{width:12px;height:12px;flex:none;display:inline-block;vertical-align:-1px;margin-right:6px}
 .r .w .fldot+.fldot{margin-left:-2px}
 .tap .lb .fldot{width:10px;height:10px;margin-right:5px;vertical-align:0}
-.flbar{display:flex;gap:8px;padding:0 16px 8px}
+.flbar{display:flex;gap:8px;padding:12px 16px 8px}   /* 12 below the search (Design 4.6; John, 12 Nov: glued on) */
 .flsel{flex:1;min-width:0;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--accentD);font:600 13px Outfit}
 .flsel span{flex:1;min-width:0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
 .flsel svg{width:18px;height:18px;flex:none}
 .flsel.on{border-color:var(--accentD)}
-.flarea{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:20px 16px 8px;border-bottom:1px solid var(--border)}
+.flarea{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:10px 16px;margin-top:16px;background:var(--stone);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}   /* a band, not only words (John, 12 Nov) */
+.flarea:first-child{margin-top:0}
 .flarea b{font:700 11px Outfit;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
 .flarea>span{font:400 12px 'DM Sans',sans-serif;color:var(--textMS)}
 .flarea .bad{color:var(--redText)}
@@ -1125,6 +1126,15 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .flnote textarea{width:100%;min-height:64px;font:400 16px/1.4 'DM Sans',sans-serif;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--white);color:var(--text)}
 .fopen>.flnote,.fopen>.fledit{padding:12px 16px 0}
 .fledit select,.fledit input{width:100%}
+.flrun{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.flrunr{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border-radius:8px;border-left:6px solid var(--jDoing);background:color-mix(in srgb,var(--jDoing) 14%,var(--white));color:var(--text);text-align:left;width:100%}
+.flrunr .m{flex:1;min-width:0;font:500 15px 'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.flrunr .c{flex:none;text-align:right}
+.flrunr .c b{display:block;font:800 17px Sora;font-variant-numeric:tabular-nums}
+.flrunr .c i{display:block;font:400 12px 'DM Sans',sans-serif;font-style:normal}
+.flrunr.fr-done{border-left-color:var(--jDone);background:color-mix(in srgb,var(--jDone) 16%,var(--white))}
+.flrunr.fr-over{border-left-color:var(--jTodo);background:color-mix(in srgb,var(--jTodo) 18%,var(--white))}
+.flrunr.fr-over .c b,.flrunr.fr-over .c i{color:var(--redText)}
 .fltools{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px 0}
 .fltools .ib{width:44px;height:44px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--accentD);display:inline-flex;align-items:center;justify-content:center}
 .fltools .ib svg{width:20px;height:20px}
@@ -4546,11 +4556,14 @@ function flOld(){
 function flZone(outs,F,now){
   const over=outs.filter(p=>flDueState(p)==='over').length, dueN=outs.filter(p=>flDueState(p)==='due').length, ok=outs.length-over-dueN;
   const live=outs.filter(p=>flOutPh(p,now)), left=outs.filter(p=>flOutPh(p,now)==='over');
-  const say=left.length?'<b class="bad">Left running:</b> '+left.map(p=>'<button class="lnk" data-act="flRow" data-id="'+esc(p.id)+'">'+esc(p.name)+'</button>').join(', ')+'.'
-    :live.length?live.length+' running.':dueN?dueN+' due in the next two days.':'';
+  const say=left.length?'<b class="bad">'+left.length+' left running.</b>':live.length?live.length+' running.':dueN?dueN+' due in the next two days.':'';
+  // Every running tap as a row of its own, shaded by its state, its clock live (John, 12 Nov 2026: "its just text. you
+  // easily ignore it"). The one left running comes first; pressing a row opens that outlet.
+  const rank={over:0,done:1,run:2,pause:3}, rows=live.slice().sort((a,b)=>rank[flOutPh(a,now)]-rank[flOutPh(b,now)]).map(p=>{ const x=flBits(p,now), q=flOutPh(p,now);
+    return '<button class="flrunr fr-'+q+'" data-act="flRow" data-id="'+esc(p.id)+'"><span class="m">'+flDots(p)+esc(p.name)+'</span><span class="c"><b data-flzc="'+esc(p.id)+'">'+x.big+'</b><i data-flzw="'+esc(p.id)+'">'+x.word+'</i></span></button>'; }).join('');
   return '<div class="zone"><div class="ztop">'+backBtn('home')+'<span class="eb">Flush Round</span></div>'
     +'<div class="row1"><span class="num n'+(over?' bad':'')+'">'+over+'</span><span class="what">overdue</span></div>'
-    +'<p><b>'+ok+' of '+outs.length+'</b> flushed in the last 7 days. '+say+'</p>'
+    +'<p><b>'+ok+' of '+outs.length+'</b> flushed in the last 7 days. '+say+'</p>'+(rows?'<div class="flrun">'+rows+'</div>':'')
     +'<button class="gh" data-act="flScan" data-for="flush">'+I.scan+'Scan the Next Tag</button></div>';
 }
 const flAlertsOn=()=>{ const a=ls.get('wl_alerts',null); return !!(a&&a.token); };
@@ -4584,6 +4597,7 @@ function flTick(){
   if(shape!==_flShape&&!typing){ _flShape=shape; z.innerHTML=flZone(outs,F,now); l.innerHTML=flList(outs,F,now); return; }
   outs.forEach(p=>{ const ph=flOutPh(p,now); if(!ph) return; const x=flBits(p,now);
     const bb=l.querySelector('[data-flbig="'+CSS.escape(p.id)+'"]'), ww=l.querySelector('[data-flword="'+CSS.escape(p.id)+'"]'); if(bb) bb.textContent=x.big; if(ww) ww.textContent=x.word;
+    const zb=z.querySelector('[data-flzc="'+CSS.escape(p.id)+'"]'), zw=z.querySelector('[data-flzw="'+CSS.escape(p.id)+'"]'); if(zb) zb.textContent=x.big; if(zw) zw.textContent=x.word;
     flTaps(p).forEach(t=>{ const f=flRun(p,t[0]), c=l.querySelector('[data-flclk="'+CSS.escape(p.id+'|'+t[0])+'"]'); if(!c||!f||!f.t0) return;
       const tt=flRan(f,now), b=flBr(p,t[0]), q=flPh(p,f,now); c.textContent=q==='run'?flMS(b.lo-tt):q==='done'?flMS(b.hi-tt):q==='pause'&&tt<b.lo?flMS(b.lo-tt):flMS(tt); }); });
 }
@@ -5414,9 +5428,18 @@ async function boot(){
   if(!st.pos) return go('whopos');
   await home();
   if(LINK_JOB) jobFromLink(LINK_JOB);
+  if(LINK_FLUSH) flushFromLink(LINK_FLUSH);
   alertsKeep();
 }
 const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
+// A tap left running: its alert opens the flush round on that outlet (John, 12 Nov 2026: "go to the actual tap point").
+const LINK_FLUSH=new URLSearchParams(location.search).get('flush')||'';
+function flushFromLink(id){
+  try{ if(/[?&]flush=/.test(location.search)) history.replaceState(null,'',location.pathname); }catch(e){}
+  if(['start','setup','signin','who','whopos','whotype'].indexOf(st.screen)>=0) return;
+  const p=flById(id); if(!p) return toast('That outlet is not on the flush round.');
+  st.sheet=false; flState(); go('flush'); flTapOutlet(p); render();
+}
 // Opens the job an alert names, with the permit to review on top for whoever can issue it. The address is put back to the
 // page's own, so a reload opens Due.
 function jobFromLink(id){
@@ -5426,7 +5449,7 @@ function jobFromLink(id){
   st.form={id:j.id,prwhy:''}; st.place='due'; st.sheet=canIssue()&&permAsk(j)?'jreview':false; go('job');
 }
 if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message',e=>{ const l=e.data&&e.data.open; if(!l) return;
-  try{ const id=new URL(l,location.href).searchParams.get('job'); if(id) jobFromLink(id); }catch(x){} });
+  try{ const u=new URL(l,location.href), id=u.searchParams.get('job'), fl=u.searchParams.get('flush'); if(id) jobFromLink(id); else if(fl) flushFromLink(fl); }catch(x){} });
 // For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
 if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh,msgRefresh:msgRefresh};
 // Keeps the page itself on the phone so it opens with no signal (DEC-0287 rule 3). Not in the check.

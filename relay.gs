@@ -240,7 +240,8 @@ function flushSweep(){
       const x = f[id];
       if(now - x.due > 2 * 3600000){ delete f[id]; return; }
       if(now < x.due) return;
-      const r = pushSend(x.token, 'Tap still running', x.name + ': the tap is still running. Turn it off.', PAGE, true);
+      // The alert opens the flush round on that outlet (John, 12 Nov 2026); the id is the outlet's, then :tap@start.
+      const r = pushSend(x.token, 'Tap still running', x.name + ': the tap is still running. Turn it off.', PAGE + '?flush=' + encodeURIComponent(String(id).replace(/[:@].*$/, '')), true);
       if(r.code === 'gone') delete f[id];
     });
     PROPS.setProperty('FLUSHES', JSON.stringify(f));
