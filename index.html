@@ -3041,6 +3041,11 @@ async function alertsOn(quiet){
     if(!fb.apps.length) fb.initializeApp(c.config);
     const token=await fb.messaging().getToken({vapidKey:c.vapidKey,serviceWorkerRegistration:reg});
     if(!token) throw new Error('The phone gave no alert address. Try again in a minute.');
+    // The browser can replace a phone's alert address (an app reinstalled, Chrome updated) while Google still accepts
+    // alerts sent to the old one and drops them: "Test sent", and nothing comes (John, 12 Nov 2026). So the address is
+    // read fresh on every open and before every test, and the relay is told only when it, or who holds the phone, changed.
+    const was=ls.get('wl_alerts',null);
+    if(quiet&&was&&was.token===token&&was.pid===me.id&&was.name===st.walker&&(was.dept||'')===myDept()&&!!was.mgr===isMgr()&&Date.now()-Date.parse(was.at||0)<7*864e5) return;
     // The holder's position and department, and whether they are a manager, decide what alerts this phone (DEC-0351).
     await STORE.ask({op:'pushRegister',token:token,name:st.walker,pid:me.id,role:'phone',pos:myPosId(),dept:myDept(),mgr:isMgr(),ev:!!ls.get('wl_evAlert',false)});
     ls.set('wl_alerts',{token:token,pid:me.id,name:st.walker,dept:myDept(),mgr:isMgr(),at:new Date().toISOString()});
@@ -3051,10 +3056,12 @@ async function alertsOn(quiet){
 function alertsKeep(){
   const a=ls.get('wl_alerts',null), me=meP();
   if(!me||alertsCan()||Notification.permission!=='granted') return;
-  if(!a||a.pid!==me.id||a.name!==st.walker||(a.dept||'')!==myDept()||!!a.mgr!==isMgr()||Date.now()-Date.parse(a.at||0)>7*864e5) alertsOn(true);
+  alertsOn(true);   // every open: the address is read fresh, and sent on only when it changed (alertsOn)
 }
 async function alertsTest(){
-  const a=ls.get('wl_alerts',null); if(!a||!STORE||AL.busy) return;
+  if(!STORE||AL.busy) return;
+  await alertsOn(true);   // the phone's current alert address, not the one kept from last week
+  const a=ls.get('wl_alerts',null); if(!a||AL.busy) return;
   AL.busy=true; AL.err=''; AL.said=''; render();
   try{ await STORE.ask({op:'pushTest',token:a.token}); AL.said='Test sent at '+hm(Date.now())+'.'; }
   catch(e){ AL.err=String(e&&e.message||e); if(e&&(e.code==='gone'||e.code==='bad')) ls.del('wl_alerts'); }
@@ -4462,9 +4469,13 @@ function flWake(){
 // The relay holds each open tap and alerts this phone if it is still open at the bracket's top (DEC-0374 rules 4 and 8).
 function flRelay(op,id,k){
   const a=ls.get('wl_alerts',null), f=((st.fl.runs[id]||{})[k])||null, p=flById(id);
-  if(!a||!a.token||!STORE||!STORE.ask||!f) return;
+  if(!f) return;
+  // A tap left running only reaches a closed phone through the relay, so a phone that cannot ask says so at the start
+  // (John, 10 Nov 2026: "if the webpage isnt open theres no message sent").
+  if(!a||!a.token||!STORE||!STORE.ask){ if(op==='flushOpen') toast('Alerts are off on this phone. If Waterline closes, nothing will warn you this tap is running. Turn alerts on in Settings.'); return; }
   const nm=(p?p.name:id)+(p&&flTaps(p).length>1?', '+(k==='hot'?'hot':'cold')+' tap':'');
-  STORE.ask({op:op,token:a.token,id:id+':'+k+'@'+f.t0,name:nm,due:f.t0+flBr(p).hi*1000}).catch(()=>{});
+  STORE.ask({op:op,token:a.token,id:id+':'+k+'@'+f.t0,name:nm,due:f.t0+flBr(p).hi*1000})
+    .catch(e=>{ if(op==='flushOpen') toast('The relay did not take this tap ('+(e&&e.message||e)+'). If Waterline closes, nothing will warn you it is running.'); });
 }
 function flStart(id,k){
   const F=flState(); (F.runs[id]=F.runs[id]||{})[k]={t0:Date.now(),t1:0,fig:'',figAt:null}; flKeep(); flRelay('flushOpen',id,k); flWake();
