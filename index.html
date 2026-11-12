@@ -4261,9 +4261,9 @@ const FL_BUZZ=[200,100,200];                                  // one buzz for ev
 LUCIDE['circle-stop']='<circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6" rx="1"/>';
 LUCIDE['arrow-up-down']='<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>';
 const FLI={stop:ICO('circle-stop'),order:ICO('arrow-up-down')};
-const FL_TAPS={sink:[['hot','Hot tap'],['cold','Cold tap']],tmv:[['mix','Blended tap']],shower:[['mix','Shower']],
+const FL_TAPS={sink:[['hot','Hot tap'],['cold','Cold tap']],pou:[['hot','Hot tap'],['cold','Cold tap']],tmv:[['mix','Blended tap']],shower:[['mix','Shower']],
   hot:[['hot','Hot tap']],store:[['hot','Hot tap']],cold:[['cold','Cold tap']],flush:[]};
-const FL_SAY={sink:'Sink',tmv:'Blended tap (TMV)',shower:'Shower (TMV)',hot:'Hot point',store:'Hot point',cold:'Cold point',flush:'Toilet'};
+const FL_SAY={sink:'Sink',pou:'Sink · under-sink heater',tmv:'Blended tap (TMV)',shower:'Shower (TMV)',hot:'Hot point',store:'Hot point',cold:'Cold point',flush:'Toilet'};
 const FL_ORDER=[['walk','Walk order'],['area','By area'],['oldest','Oldest flush first']];
 function flState(){
   if(!st.fl){ st.fl=Object.assign({runs:{},open:null,q:'',done:{},notes:{},order:'walk',area:''},ls.get('wl_flush',null)||{});
@@ -4283,7 +4283,8 @@ function flOutlets(){
 }
 const flById=id=>flOutlets().find(o=>o.id===id)||null;
 const flOfPoint=p=>p?flOutlets().find(o=>(o.point&&o.point===p.id)||(p.rec&&p.rec.reg==='waterOutlets'&&o.id===p.rec.id))||null:null;
-const flBr=p=>Object.assign({},FL0,(p&&p.reading&&p.reading.flush)||{});
+// Each side its own flush time (DEC-0374 rule 2, amended 12 Nov 2026): the tap's side, else the outlet's, else 2 to 5.
+const flBr=(p,k)=>{ const fl=(p&&p.reading&&p.reading.flush)||{}, sd=k?fl[flSide(k)]:null; return Object.assign({},FL0,{lo:fl.lo||FL0.lo,hi:fl.hi||FL0.hi},sd&&sd.lo?{lo:sd.lo,hi:sd.hi||FL0.hi}:{}); };
 const flKind=p=>(p.reading||{}).kind;
 const flTaps=p=>FL_TAPS[flKind(p)]||(p.reading.hot&&p.reading.cold?FL_TAPS.sink:p.reading.cold?FL_TAPS.cold:FL_TAPS.hot);
 const flSide=k=>k==='cold'?'cold':'hot';                       // a blended figure is the desk's hot figure (its TMV band)
@@ -4293,7 +4294,7 @@ function flDue(p,k){ const d=(p.reading||{}).due||{}; if(!d.temp) return false; 
 // Running time: from start to stop, less any pause. A paused tap's clock stands still.
 const flRan=(f,now)=>f&&f.t0?((f.t1||f.pAt||now)-f.t0-(f.paused||0))/1000:null;
 const flMS=sec=>{ sec=Math.max(0,Math.floor(sec)); return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0'); };
-function flPh(p,f,now){ if(!f||!f.t0) return 'idle'; const t=flRan(f,now), b=flBr(p); if(f.t1) return t<b.lo?'short':'off'; if(f.pAt) return 'pause'; return t<b.lo?'run':t<b.hi?'done':'over'; }
+function flPh(p,f,now){ if(!f||!f.t0) return 'idle'; const t=flRan(f,now), b=flBr(p,f.k); if(f.t1) return t<b.lo?'short':'off'; if(f.pAt) return 'pause'; return t<b.lo?'run':t<b.hi?'done':'over'; }
 const flLive=ph=>ph==='run'||ph==='done'||ph==='over';
 const flOpenPh=ph=>flLive(ph)||ph==='pause';
 const flRun=(p,k)=>((st.fl.runs[p.id]||{})[k])||null;
@@ -4320,7 +4321,7 @@ function flTempText(t,p){ if(!t) return ''; const k=flKind(p), mix=k==='tmv'||k=
 const FL_DOT=c=>'<svg class="fldot" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="var('+c+')"/></svg>';
 const FL_MIX='<svg class="fldot" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="var(--coldT)"/><path d="M6 0A6 6 0 0 1 6 12A3 3 0 0 1 6 6A3 3 0 0 0 6 0Z" fill="var(--hotT)"/></svg>';
 function flDots(p){ const k=flKind(p);
-  return k==='sink'?FL_DOT('--hotT')+FL_DOT('--coldT'):k==='tmv'||k==='shower'?FL_MIX:k==='cold'?FL_DOT('--coldT'):k==='flush'?'':FL_DOT('--hotT'); }
+  return k==='sink'||k==='pou'?FL_DOT('--hotT')+FL_DOT('--coldT'):k==='tmv'||k==='shower'?FL_MIX:k==='cold'?FL_DOT('--coldT'):k==='flush'?'':FL_DOT('--hotT'); }
 const flTapDot=k=>k==='mix'?FL_MIX:FL_DOT(k==='cold'?'--coldT':'--hotT');
 
 // ── The order and the area (points 1 and 2 of John's 10 Nov list) ──────────────────────────────────────────
@@ -4364,7 +4365,7 @@ function flBits(p,now){
   const held=flHeld(p,now), note=(st.fl.notes||{})[p.id];
   if(ph){
     const ts=flTaps(p), fs=ts.map(t=>[t,flRun(p,t[0])]).filter(x=>flOpenPh(flPh(p,x[1],now)));
-    const w=fs.find(x=>flPh(p,x[1],now)==='over')||fs.find(x=>flPh(p,x[1],now)==='done')||fs.find(x=>flPh(p,x[1],now)==='run')||fs[0], wp=flPh(p,w[1],now), t=flRan(w[1],now), b=flBr(p);
+    const w=fs.find(x=>flPh(p,x[1],now)==='over')||fs.find(x=>flPh(p,x[1],now)==='done')||fs.find(x=>flPh(p,x[1],now)==='run')||fs[0], wp=flPh(p,w[1],now), t=flRan(w[1],now), b=flBr(p,w[0][0]);
     const nm=ts.length>1?w[0][1].split(' ')[0].toLowerCase()+' ':'';
     if(wp==='run'){ big=flMS(b.lo-t); word=nm+'to go'; stripe='var(--jDoing)'; bc=''; }
     else if(wp==='done'){ big=flMS(b.hi-t); word=nm+'turn off'; stripe='var(--jDone)'; bc=''; }
@@ -4415,7 +4416,7 @@ function flFigHelp(p,k,f,now){
   return {cls:j.s==='ACTION'?'amb':'bad',v:j.s==='ACTION'?'amb':'bad',txt:'<b>'+(j.s==='ACTION'?'Just out':'Out of range')+'</b>'+(j.target?' · '+esc(j.target):'')};
 }
 function flTapBox(p,t,now){
-  const k=t[0], f=flRun(p,k), ph=flPh(p,f,now), tt=flRan(f,now), b=flBr(p), due=flDue(p,k), id=esc(p.id);
+  const k=t[0], f=flRun(p,k), ph=flPh(p,f,now), tt=flRan(f,now), b=flBr(p,k), due=flDue(p,k), id=esc(p.id);
   let clk='–', cc='', wd=flMS(b.lo)+' to '+flMS(b.hi), wc='', tint='', stripe='transparent';
   if(ph==='run'){ clk=flMS(b.lo-tt); wd='to go'; tint=' fl-run'; stripe='var(--jDoing)'; }
   if(ph==='pause'){ clk=flMS(b.lo-tt); wd='paused'; tint=' fl-run'; stripe='var(--jDoing)'; if(tt>=b.lo){ clk=flMS(tt); wd='paused, ran'; } }
@@ -4471,11 +4472,14 @@ const flNoteOf=p=>String((st.fl.notes||{})[p.id]||'').trim();
 // One reading per outlet, as Take a Reading sends it, with each tap's own times (DEC-0374 rule 5). A sink is a flush
 // only when both its taps ran the bracket's lower figure: one short or not run makes the outlet's flush short.
 async function flSave(p){
-  const F=flState(), ts=flTaps(p), b=flBr(p), rs=F.runs[p.id]||{}, run=ts.filter(t=>rs[t[0]]&&rs[t[0]].t0&&rs[t[0]].t1);
+  const F=flState(), ts=flTaps(p), rs=F.runs[p.id]||{}, run=ts.filter(t=>rs[t[0]]&&rs[t[0]].t0&&rs[t[0]].t1);
   if(!run.length) return;
   const tap=t=>{ const f=rs[t[0]]; return {tap:t[0],start:new Date(f.t0).toISOString(),stop:new Date(f.t1).toISOString(),ran:Math.round(flRan(f)),
     paused:f.paused?Math.round(f.paused/1000):undefined,fig:flFigOk(f)?num(f.fig):undefined,figAt:flFigOk(f)?f.figAt:undefined}; };
-  const taps=run.map(tap), ran=ts.length===run.length?Math.min.apply(null,taps.map(x=>x.ran)):0, short=ran<b.lo;
+  // Each tap against its own side's time: the outlet is short when any tap is, and the record carries the tap that was
+  // nearest to short (a tap not run counts as nought against its time), so the desk's one test still reads it right.
+  const taps=run.map(tap), m=ts.map(t=>{ const x=taps.find(y=>y.tap===t[0]), bb=flBr(p,t[0]); return {ran:x?x.ran:0,lo:bb.lo,hi:bb.hi}; }).sort((a,c)=>(a.ran-a.lo)-(c.ran-c.lo))[0];
+  const b={lo:m.lo,hi:m.hi}, ran=m.ran, short=ran<b.lo;
   const rd={unit:p.reading.unit||'°C'}; run.forEach(t=>{ const f=rs[t[0]]; if(flFigOk(f)) rd[flSide(t[0])]=num(f.fig); });
   const notRun=ts.filter(t=>run.indexOf(t)<0).map(t=>t[1].toLowerCase()), lateFig=run.filter(t=>flDue(p,t[0])&&!flFigOk(rs[t[0]])).map(t=>t[0]==='mix'?'blended':t[0]);
   const note=[flNoteOf(p),notRun.length?'The '+notRun.join(' and ')+' was not run.':'',lateFig.length?'The '+lateFig.join(' and ')+' temperature was due and not taken.':''].filter(Boolean).join(' ');
@@ -4553,7 +4557,7 @@ function flShape(outs,now){ return outs.map(p=>flTaps(p).map(t=>{ const f=flRun(
 function flTick(){
   const F=st.fl; if(!F) return; const now=Date.now(), outs=flOutlets(); let live=false;
   outs.forEach(p=>flTaps(p).forEach(t=>{ const f=flRun(p,t[0]); if(!f||!f.t0||f.t1||f.pAt) return; live=true;
-    const s=flRan(f,now), b=flBr(p), k=f.buzz=f.buzz||{}, bz=id=>{ if(k[id]) return; k[id]=1; try{ navigator.vibrate&&navigator.vibrate(FL_BUZZ); }catch(e){} };
+    const s=flRan(f,now), b=flBr(p,t[0]), k=f.buzz=f.buzz||{}, bz=id=>{ if(k[id]) return; k[id]=1; try{ navigator.vibrate&&navigator.vibrate(FL_BUZZ); }catch(e){} };
     if(flDue(p,t[0])&&s>=FL_AT[t[0]]&&!flFigOk(f)) bz('fig'); if(s>=b.lo) bz('lo'); if(s>=b.hi) bz('hi'+Math.floor((s-b.hi)/30)); }));
   if(!live) flWake();
   if(st.screen!=='flush'||st.sheet||st.scanFor||!live||F.pick) return;
@@ -4563,7 +4567,7 @@ function flTick(){
   outs.forEach(p=>{ const ph=flOutPh(p,now); if(!ph) return; const x=flBits(p,now);
     const bb=l.querySelector('[data-flbig="'+CSS.escape(p.id)+'"]'), ww=l.querySelector('[data-flword="'+CSS.escape(p.id)+'"]'); if(bb) bb.textContent=x.big; if(ww) ww.textContent=x.word;
     flTaps(p).forEach(t=>{ const f=flRun(p,t[0]), c=l.querySelector('[data-flclk="'+CSS.escape(p.id+'|'+t[0])+'"]'); if(!c||!f||!f.t0) return;
-      const tt=flRan(f,now), b=flBr(p), q=flPh(p,f,now); c.textContent=q==='run'?flMS(b.lo-tt):q==='done'?flMS(b.hi-tt):q==='pause'&&tt<b.lo?flMS(b.lo-tt):flMS(tt); }); });
+      const tt=flRan(f,now), b=flBr(p,t[0]), q=flPh(p,f,now); c.textContent=q==='run'?flMS(b.lo-tt):q==='done'?flMS(b.hi-tt):q==='pause'&&tt<b.lo?flMS(b.lo-tt):flMS(tt); }); });
 }
 // The screen stays on while any tap runs (DEC-0374 rule 3).
 let _flWL=null;
@@ -4582,12 +4586,12 @@ function flRelay(op,id,k){
   // (John, 10 Nov 2026: "if the webpage isnt open theres no message sent").
   if(!a||!a.token||!STORE||!STORE.ask){ if(op==='flushOpen') toast('Alerts are off on this phone. If Waterline closes, nothing will warn you this tap is running. Turn alerts on in Settings.'); return; }
   const nm=(p?p.name:id)+(p&&flTaps(p).length>1?', '+(k==='hot'?'hot':'cold')+' tap':'');
-  const due=Date.now()+Math.max(0,flBr(p).hi-(flRan(f,Date.now())||0))*1000;
+  const due=Date.now()+Math.max(0,flBr(p,k).hi-(flRan(f,Date.now())||0))*1000;
   STORE.ask({op:op,token:a.token,id:id+':'+k+'@'+f.t0,name:nm,due:due})
     .catch(e=>{ if(op==='flushOpen') toast('The relay did not take this tap ('+(e&&e.message||e)+'). If Waterline closes, nothing will warn you it is running.'); });
 }
 function flStart(id,k){
-  const F=flState(); (F.runs[id]=F.runs[id]||{})[k]={t0:Date.now(),t1:0,paused:0,pAt:0,fig:'',figAt:null}; flKeep(); flRelay('flushOpen',id,k); flWake();
+  const F=flState(); (F.runs[id]=F.runs[id]||{})[k]={k:k,t0:Date.now(),t1:0,paused:0,pAt:0,fig:'',figAt:null}; flKeep(); flRelay('flushOpen',id,k); flWake();
   if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
 }
 function flPause(id,k){ const f=((flState().runs[id]||{})[k]); if(!f||!f.t0||f.t1||f.pAt) return; f.pAt=Date.now(); flKeep(); flRelay('flushClosed',id,k); flWake(); }
@@ -4599,7 +4603,7 @@ function flStop(id,k){ const F=flState(), f=(F.runs[id]||{})[k]; if(!f||!f.t0||f
 // ── Editing an outlet on the walk (point 3; desk v552 files it) ─────────────────────────────────────────────
 // Name, type and area, the area picked from the site's own areas so one cannot be misspelt into two (point 11). Sent at
 // once as an outletchange; shown here until the desk's next site file carries it.
-const FL_KINDS0=[['sink','Sink — hot and cold taps'],['tmv','TMV-fitted tap'],['shower','Shower — thermostatic'],['hot','Hot only'],['cold','Cold only'],['flush','WC or urinal — flush only']];
+const FL_KINDS0=[['sink','Sink — hot and cold taps'],['pou','Sink — under-sink or point-of-use heater'],['tmv','TMV-fitted tap'],['shower','Shower — thermostatic'],['hot','Hot only'],['cold','Cold only'],['flush','WC or urinal — flush only']];
 const flKinds=()=>Array.isArray(SITE().outletKinds)&&SITE().outletKinds.length?SITE().outletKinds.map(k=>[k.id,k.label]):FL_KINDS0;
 function flEditBox(p,F){
   const e=F.editing===p.id;

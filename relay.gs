@@ -501,3 +501,48 @@ function pushTestAll(){
   if(!ts.length) Logger.log('No phone has turned alerts on yet.');
   ts.forEach(t => Logger.log(d[t].name + ' (' + d[t].role + '): ' + JSON.stringify(pushSend(t, 'Waterline test alert', 'Sent from the relay editor.'))));
 }
+
+// ── New and assigned jobs (job 015, point 14; John, 12 Nov 2026: new jobs should alert) ──────────────────
+// The relay does not hear the desk publish, so every five minutes it reads the site file and compares each open job with
+// what it saw last time. A job new to it, or with someone newly on it, alerts: the people assigned, by their position or
+// name; with nobody assigned, the phones whose position takes that job group. Never the person who raised it, never a
+// test phone. Planned work (a walk, a check on the plan) does not alert: it is on Due at its time (DEC-0312 rule 4).
+// The first sweep only learns what is there, so turning it on does not alert every open job at once.
+function jobSweep(){
+  const lock = LockService.getScriptLock(); if(!lock.tryLock(20000)) return;
+  try{
+    const ws = DriveApp.getFolderById(PROPS.getProperty('WORKSPACE_ID')), site = siteFile(ws);
+    if(!site || !Array.isArray(site.jobs)) return;
+    let seen = null; try{ seen = JSON.parse(PROPS.getProperty('JOBS_SEEN') || 'null'); }catch(e){}
+    const first = !seen, d = devices(), now = {}, groups = {};
+    (site.positions || []).forEach(p => { groups[p.id] = p.groups || []; });
+    const key = a => String((a && (a.id || nameKey(a.name))) || '');
+    const isOn = (t, a) => sameAs(d[t], a.name, a.id) || (a.id && d[t].pos === a.id);
+    site.jobs.forEach(j => {
+      if(!j || !j.id || j.planned || j.state === 'done') return;
+      const on = (j.assignees || []).map(key).filter(Boolean).sort();
+      now[j.id] = on.join(',');
+      if(first) return;
+      const was = seen[j.id];
+      if(was === now[j.id]) return;
+      const before = was ? was.split(',') : [], fresh = (j.assignees || []).filter(a => key(a) && before.indexOf(key(a)) < 0);
+      const raiser = String(((j.thread || [])[0] || {}).by || '');
+      let ts, title;
+      if(fresh.length){ ts = Object.keys(d).filter(t => d[t].role !== 'test' && fresh.some(a => isOn(t, a))); title = was === undefined ? 'New job for you' : 'Job assigned to you'; }
+      else if(was === undefined && !on.length){ ts = Object.keys(d).filter(t => d[t].role !== 'test' && (groups[d[t].pos] || []).indexOf(j.group) >= 0); title = 'New job'; }
+      else return;
+      ts = ts.filter(t => !sameAs(d[t], raiser, ''));
+      const body = (j.no ? '#' + j.no + ' ' : '') + String(j.title || '').slice(0, 110) + (j.place ? ' · ' + j.place : '');
+      if(!ts.length) Logger.log('Job ' + j.id + ', no alert: no phone for it has turned alerts on.');
+      ts.forEach(t => Logger.log('Job alert to ' + d[t].name + ': ' + JSON.stringify(pushSend(t, title, body, jobLink(j.id)))));
+    });
+    PROPS.setProperty('JOBS_SEEN', JSON.stringify(now));
+  } finally { lock.releaseLock(); }
+}
+// Run once from the editor after deploying: the five-minute sweep, started; it learns the open jobs without alerting.
+function jobAlertsOn(){
+  ScriptApp.getProjectTriggers().filter(x => x.getHandlerFunction() === 'jobSweep').forEach(x => ScriptApp.deleteTrigger(x));
+  ScriptApp.newTrigger('jobSweep').timeBased().everyMinutes(5).create();
+  jobSweep();
+  Logger.log('Job alerts are on: the relay looks for new and assigned jobs every five minutes.');
+}
