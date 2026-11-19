@@ -1140,6 +1140,8 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .flsent b{display:block;font:700 15px 'DM Sans',sans-serif}
 .flsent i{display:block;font:400 13px/1.4 'DM Sans',sans-serif;font-style:normal}
 .r .sub .flsj{font-weight:700;color:var(--text)}
+.fphoto .thumbs .th.add{width:100%;height:120px;border-width:2px}
+.fphoto .thumbs .th.add svg{width:36px;height:36px}
 .fltime{display:flex;align-items:center;gap:8px;margin-top:8px}
 .fltime span{font:400 15px 'DM Sans',sans-serif;color:var(--textMid)}
 .fltime span:first-child{width:64px}
@@ -3714,15 +3716,18 @@ function sendBtn(label,ok,why){
   const tried=st.form&&st.form.sendTried&&!ok&&why;
   return '<div class="foot" role="status"><button class="btn p" data-act="send" data-ok="'+(ok?1:0)+'"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':I.send+esc(label))+'</button>'+(tried?'<div class="unans" role="alert" style="margin:0">'+esc(why)+'</div>':'')+(st.form&&st.form.err?'<div class="note" role="alert"><span class="eb">Not made</span>'+esc(st.form.err)+'</div>':'')+'</div>';
 }
-// Report a Fault: the sentence first, the place from the site's list with its floor, the photo optional and last
-// (DEC-0303 rule 7: a fault reported at reception has none). The group stays as P2 asked it (audit G3, open).
+// Report a Fault: the photo first and enough with its place; the sentence optional with a photo, needed without one, so a
+// fault reported at reception still goes (DEC-0303 rule 7, amended 19 Nov 2026). The group stays as P2 asked it (audit G3, open).
 function vFault(){
-  const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim();
-  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Fault','Say what is wrong in your own words. It goes to the desk as a job.')
-    +'<div class="field"><label for="note">What is wrong</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
+  // A photo first (John, 19 Nov 2026: "report a fault should lead with taking a photo first. some times thats all thats
+  // needed"): a photo and where it is are enough to send; the words are there for when they are wanted.
+  const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim(), pics=F.photos.length>0;
+  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Fault','Take a photo of it. Add words if the photo does not say it all. It goes to the desk as a job.')
     +(F.back==='flush'?'<p class="para">The flush round keeps running. Sending this takes you back to it.</p>':'')
-    +whereField({suggest:true})+faultHistory()+groupSelect()+photosField('Photo, if you are there',true)+'<div style="height:24px"></div></div>'
-    +sendBtn('Send',said&&where,!said?'Say what is wrong first.':'Say where it is, or scan its tag.');
+    +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
+    +'<div class="field"><label for="note">What is wrong'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
+    +whereField({suggest:true})+faultHistory()+groupSelect()+'<div style="height:24px"></div></div>'
+    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what is wrong.':'Say where it is, or scan its tag.');
 }
 // A reading is taken at an outlet's or a meter's tag. The figures it takes and the sentence it is judged by come from
 // the desk; the verdict stays on the desk (Design 7.1). The meter or outlet is the record in the zone; the figure is
@@ -4840,7 +4845,9 @@ async function doSend(){
   if(F.duty) fields.duty=F.duty;
   if(F.kind==='proof'&&F.duty&&F.plan) fields.plan=true;
   const kind=F.kind==='proof'?F.what:F.kind;
-  if(F.kind==='fault') fields.group=F.group||'maintenance';
+  if(F.kind==='fault'){ fields.group=F.group||'maintenance';
+    // A photo with no words: the desk titles the job from this (its title is the words, else the outcome).
+    if(!fields.note&&F.photos.length) fields.outcome='Fault seen in the photo'; }
   if(F.kind==='reading'){
     const p=F.point?pointById(F.point):meterAsPoint(F.meter), r=p.reading;
     // Named figures (Work 015 plan, D2b). The desk's reader takes them from v458.
