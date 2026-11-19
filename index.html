@@ -1119,6 +1119,10 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .tap .ctl{display:flex;gap:8px;padding:8px 0 0 4px;margin-top:auto}
 .tap .ctl .flb{flex:1;min-width:0;min-height:48px;justify-content:center;padding:0 6px;margin-top:0;gap:6px}
 .taps.two .tap .ctl .flb span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tap .ctl{gap:16px}
+.tap .ctl .flb.fsm{flex:0 0 44px;width:44px;padding:0}
+.tap .ctl .flb.fstop{flex:1;font:700 15px Outfit;min-height:52px}
+.taps.two .tap .ctl .flb.fstop span{position:static;width:auto;height:auto;clip:auto}
 .taps.two .tap .ctl .flb:only-child span{position:static;width:auto;height:auto;clip:auto}
 .fig.v-ok{border-color:var(--jDone);background:color-mix(in srgb,var(--jDone) 12%,var(--white))}
 .fig.v-amb{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 14%,var(--white))}
@@ -1126,6 +1130,7 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .flnote textarea{width:100%;min-height:64px;font:400 16px/1.4 'DM Sans',sans-serif;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--white);color:var(--text)}
 .fopen>.flnote,.fopen>.fledit{padding:12px 16px 0}
 .fledit select,.fledit input{width:100%}
+.list.flhasopen>.r:not(.open),.list.flhasopen>.flarea{opacity:.38;transition:opacity .15s}
 .r.fl-iso{background:var(--cream)}
 .r.fl-iso .w{color:var(--textMid)}
 .flsent{display:flex;align-items:center;gap:12px;margin:12px 16px 0;padding:12px 14px;border-radius:10px;border-left:6px solid var(--jDoing);background:color-mix(in srgb,var(--jDoing) 14%,var(--white));color:var(--text)}
@@ -1135,6 +1140,10 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 .flsent b{display:block;font:700 15px 'DM Sans',sans-serif}
 .flsent i{display:block;font:400 13px/1.4 'DM Sans',sans-serif;font-style:normal}
 .r .sub .flsj{font-weight:700;color:var(--text)}
+.fltime{display:flex;align-items:center;gap:8px;margin-top:8px}
+.fltime span{font:400 15px 'DM Sans',sans-serif;color:var(--textMid)}
+.fltime span:first-child{width:64px}
+.fltime input{width:76px;min-height:44px;font-size:16px;text-align:center}
 .flrun{display:flex;flex-direction:column;gap:6px;margin-top:12px}
 .flrunr{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border-radius:8px;border-left:6px solid var(--jDoing);background:color-mix(in srgb,var(--jDoing) 14%,var(--white));color:var(--text);text-align:left;width:100%}
 .flrunr .m{flex:1;min-width:0;font:500 15px 'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1391,7 +1400,23 @@ function t5MarkBind(L,M,say,after){ L=L||app.querySelector('.tf .pgq'); if(!L) r
 let t5Hist=false, t5Skip=false;
 function t5HistSync(){ if(st.sheet==='take5'&&!t5Hist){ history.pushState({t5:1},''); t5Hist=true; }
   else if(st.sheet!=='take5'&&t5Hist){ t5Hist=false; t5Skip=true; history.back(); } }
-window.addEventListener('popstate',()=>{ if(t5Skip){ t5Skip=false; return; } if(t5Hist&&st.sheet==='take5'){ t5Hist=false; t5Act('t5Back',{dataset:{}}); } });
+window.addEventListener('popstate',()=>{ if(t5Skip){ t5Skip=false; return; } if(t5Hist&&st.sheet==='take5'){ t5Hist=false; t5Act('t5Back',{dataset:{}}); return; } wlBack(); });
+// The phone's own Back (John, 19 Nov 2026: "i keep hitting back and it takes me out of the app"): one history entry is kept
+// under the app, and Back spends it on a step inside: an open sheet or outlet closes, a screen goes to where its own back
+// arrow goes. On Due it asks once ("Press Back again to leave") and lets the second press out.
+let _wlGuard=false, _wlLeave=0;
+function wlGuard(){ if(_wlGuard) return; try{ history.pushState({wl:1},''); _wlGuard=true; }catch(e){} }
+function wlBack(){
+  _wlGuard=false;
+  const F=st.fl;
+  if(st.screen==='flush'&&F&&F.pick){ F.pick=null; render(); return wlGuard(); }
+  if(st.sheet){ st.sheet=false; render(); return wlGuard(); }
+  if(st.screen==='flush'&&F&&(F.open||F.editing)){ F.open=null; F.editing=null; F.ed=null; flKeep(); render(); return wlGuard(); }
+  const bk=app.querySelector('.ztop [aria-label="Back"]');
+  if(st.screen!=='due'&&['start','setup','signin','who','whopos','whotype'].indexOf(st.screen)<0){ if(bk) bk.click(); else go('due'); return wlGuard(); }
+  if(st.screen==='due'&&Date.now()-_wlLeave>2500){ _wlLeave=Date.now(); toast('Press Back again to leave Waterline.'); return wlGuard(); }
+  try{ history.back(); }catch(e){}
+}
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
 const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),alert:ICO('circle-alert')};
 
@@ -4480,7 +4505,10 @@ function flTapBox(p,t,now){
   if(ph==='off'){ clk=flMS(tt); wd='ran'; wc='ok'; stripe='var(--jDone)'; if(due&&!flFigOk(f)){ wd='temperature due'; wc='bad'; } }
   if(ph==='short'){ clk=flMS(tt); cc='bad'; wd='short of '+flMS(b.lo); wc='bad'; stripe='var(--jTodo)'; }
   const btn=(act,ic,lab,cls)=>'<button class="'+(cls||'gh')+' flb" data-act="'+act+'" data-id="'+id+'" data-t="'+k+'" aria-label="'+lab+'">'+ic+'<span>'+lab+'</span></button>';
-  const ctl=ph==='idle'?btn('flStart',I.play,'Start'):ph==='pause'?btn('flResume',I.play,'Go')+btn('flStop',FLI.stop,'Stop'):flLive(ph)?btn('flPause',I.pause,'Pause')+btn('flStop',FLI.stop,'Stop'):btn('flAgain',I.again,'Again');
+  // Stop is the big filled button with its word; Pause (or Go) a small symbol well apart from it (John, 19 Nov 2026:
+  // "still to easy to hit pause and not stop").
+  const sm=(act,ic,lab)=>'<button class="gh flb fsm" data-act="'+act+'" data-id="'+id+'" data-t="'+k+'" aria-label="'+lab+'" title="'+lab+'">'+ic+'</button>';
+  const ctl=ph==='idle'?btn('flStart',I.play,'Start'):ph==='pause'?sm('flResume',I.play,'Go on')+btn('flStop',FLI.stop,'Stop','btn p fstop'):flLive(ph)?sm('flPause',I.pause,'Pause')+btn('flStop',FLI.stop,'Stop','btn p fstop'):btn('flAgain',I.again,'Again');
   const h=ph!=='idle'?flFigHelp(p,k,f,now):null, tl=k==='mix'?'Blended':k==='hot'?'Hot':'Cold';
   const fig=h?'<div class="field'+(h.now?' now':'')+'"><label for="fl-'+k+'">'+tl+' °C'+(due?' · due':'')+'</label><label class="fig'+(h.v?' v-'+h.v:'')+'" data-flfig="'+id+'|'+k+'"><input id="fl-'+k+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(f&&f.fig||'')+'" data-flk="'+k+'" data-flid="'+id+'"></label><div class="help '+h.cls+'" data-flh="'+id+'|'+k+'">'+h.txt+'</div></div>':'';
   return '<div class="tap k-'+k+tint+'"><span class="s3" style="background:'+stripe+'"></span><div class="hd"><span class="lb">'+flTapDot(k)+esc(t[1])+'</span><span class="clk '+cc+'" data-flclk="'+id+'|'+k+'">'+clk+'</span></div>'
@@ -4623,7 +4651,7 @@ function vFlush(){
   return '<div class="body">'+flSentBanner(outs,F)+'<div data-flz>'+flZone(outs,F,now)+'</div>'
     +'<div class="field"><label for="flq">Find an outlet</label><input type="search" id="flq" data-flq autocomplete="off" placeholder="Name or where" value="'+esc(F.q||'')+'"></div>'
     +flBar(outs,F)
-    +'<div class="grp" data-flg>'+(F.q||F.area?shown+' of '+outs.length+' outlets':'Each sends as it is done')+'</div><div class="list" data-fll>'+flList(outs,F,now)+'</div>'
+    +'<div class="grp" data-flg>'+(F.q||F.area?shown+' of '+outs.length+' outlets':'Each sends as it is done')+'</div><div class="list'+(F.open&&outs.some(p=>p.id===F.open&&flShown(p,F))?' flhasopen':'')+'" data-fll>'+flList(outs,F,now)+'</div>'
     +(F.q&&!shown?'<p class="para">No outlet matches “'+esc(F.q)+'”.</p>':'')
     +(flAlertsOn()?'':'<p class="para">Alerts are off on this phone, so a tap left running only buzzes while Waterline is open. Turn alerts on in Settings.</p>')
     +'<div style="height:24px"></div></div>'+flPickSheet(outs,F);
@@ -4699,8 +4727,16 @@ function flEditBox(p,F){
   return '<div class="fledit"><div class="field"><label for="fl-ename">Name</label><input id="fl-ename" type="text" data-fled="name" value="'+esc(v.name)+'"></div>'
     +'<div class="field"><label for="fl-ekind">Type</label><select id="fl-ekind" data-fled="kind">'+flKinds().map(k=>'<option value="'+esc(k[0])+'"'+(k[0]===v.kind?' selected':'')+'>'+esc(k[1])+'</option>').join('')+'</select></div>'
     +'<div class="field"><label for="fl-earea">Area</label><select id="fl-earea" data-fled="area">'+areas.map(a=>'<option'+(a===v.area?' selected':'')+'>'+esc(a)+'</option>').join('')+'</select><div class="help">An area not on the list is added on the desk.</div></div>'
+    +flEditTimes(p,v)
     +(p.isolated?'':'<div class="field"><label for="fl-eiso">Out of use? Say why to isolate it</label><input id="fl-eiso" type="text" data-fled="iso" value="'+esc(v.iso||'')+'" placeholder="e.g. Valve isolated, awaiting repair"><div class="help">Its weeks out of use are not counted as missed.</div></div>')
     +'<div class="row2"><button class="btn p" data-act="flEditSave" data-id="'+esc(p.id)+'">'+I.send+'Save the Change</button><button class="gh" data-act="flEditCancel">Cancel</button></div></div>';
+}
+// How long each side runs, in minutes, from and to: blank keeps what the desk has (the side's own, else the site's).
+function flEditTimes(p,v){
+  const sides=[...new Set(flTaps(p).map(t=>flSide(t[0])))]; if(!sides.length) return '';
+  const row=sd=>{ const b=flBr(p,sd==='hot'?'hot':'cold'), k=sd==='hot'?'Hot':'Cold', lo=v['lo'+k]!=null?v['lo'+k]:'', hi=v['hi'+k]!=null?v['hi'+k]:'';
+    return '<div class="fltime"><span>'+(flKind(p)==='tmv'||flKind(p)==='shower'?'Blended':k)+'</span><input type="number" inputmode="decimal" min="0.5" step="0.5" data-fled="lo'+k+'" value="'+esc(lo)+'" placeholder="'+(b.lo/60)+'" aria-label="'+k+' flush at least, minutes"><span>to</span><input type="number" inputmode="decimal" min="0.5" step="0.5" data-fled="hi'+k+'" value="'+esc(hi)+'" placeholder="'+(b.hi/60)+'" aria-label="'+k+' left running after, minutes"><span>min</span></div>'; };
+  return '<div class="field"><label>Flush time</label>'+sides.map(row).join('')+'<div class="help">A longer pipe run needs longer. Blank keeps the time it has now.</div></div>';
 }
 async function flEditSend(p){
   const F=flState(), v=F.ed||{}, ch={};
@@ -4708,6 +4744,10 @@ async function flEditSend(p){
   if(v.kind&&v.kind!==flKind(p)) ch.kind=v.kind;
   if(v.area&&v.area!==flArea(p)) ch.area=v.area;
   if(String(v.iso||'').trim()&&!p.isolated) ch.isolate=String(v.iso).trim();
+  for(const k of ['Hot','Cold']){ const lo=parseFloat(v['lo'+k]), hi=parseFloat(v['hi'+k]);
+    if(!isNaN(lo)||!isNaN(hi)){ const b=flBr(p,k.toLowerCase()), L=!isNaN(lo)?lo:b.lo/60, H=!isNaN(hi)?hi:b.hi/60;
+      if(L<=0||H<L){ return toast('The '+k.toLowerCase()+' flush time runs from the lower figure to the higher one.'); }
+      ch['flush'+k]={lo:L,hi:H}; } }
   if(!Object.keys(ch).length){ F.editing=null; F.ed=null; flKeep(); return render(); }
   let c; try{ c=await makeCapture('outletchange',{record:{reg:'waterOutlets',id:p.id},change:ch,note:''},[]); }
   catch(e){ toast('Nothing was sent. ('+(e.message||e)+')'); return; }
@@ -4715,12 +4755,14 @@ async function flEditSend(p){
   toast(p.name+' changed. The desk files it.');
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.');
 }
+const flTimesMatch=(o,e)=>['Hot','Cold'].every(k=>{ const w=e['flush'+k]; if(!w) return true; const h=(((o.reading||{}).flush||{})[k.toLowerCase()])||{}; return Math.round(w.lo*60)===h.lo&&Math.round(w.hi*60)===h.hi; });
 // This phone's own changes over the desk's outlet, until the desk's site file says the same.
 function flEdited(o){
   const e=((st.fl||{}).edits||{})[o.id]; if(!e) return o;
   const k=e.kind&&o.reading?Object.assign({},o.reading,{kind:e.kind}):o.reading;
-  if((!e.name||e.name===o.name)&&(!e.area||e.area===o.where)&&(!e.kind||e.kind===(o.reading||{}).kind)&&(!e.isolate||o.isolated)&&(!e.reinstate||(!o.isolated&&o.back))){ delete st.fl.edits[o.id]; flKeep(); return o; }
+  if((!e.name||e.name===o.name)&&(!e.area||e.area===o.where)&&(!e.kind||e.kind===(o.reading||{}).kind)&&(!e.isolate||o.isolated)&&(!e.reinstate||(!o.isolated&&o.back))&&flTimesMatch(o,e)){ delete st.fl.edits[o.id]; flKeep(); return o; }
   const x={name:e.name||o.name,where:e.area||o.where,reading:k};
+  if(e.flushHot||e.flushCold){ const fl=Object.assign({},(k||{}).flush||{}); if(e.flushHot) fl.hot={lo:Math.round(e.flushHot.lo*60),hi:Math.round(e.flushHot.hi*60)}; if(e.flushCold) fl.cold={lo:Math.round(e.flushCold.lo*60),hi:Math.round(e.flushCold.hi*60)}; x.reading=Object.assign({},k,{flush:fl}); }
   if(e.isolate&&!o.isolated) x.isolated={on:e.on||flToday(),why:e.isolate,by:'You'};
   if(e.reinstate){ x.isolated=null; x.back=o.back||e.on||flToday(); }   // until the desk's site file says it is back
   return Object.assign({},o,x);
@@ -5496,7 +5538,7 @@ async function boot(){
   if(LINK_JOB) jobFromLink(LINK_JOB);
   if(LINK_FLUSH) flushFromLink(LINK_FLUSH);
   if(!LINK_JOB&&!LINK_FLUSH) hereBack();
-  alertsKeep(); setTimeout(flSync,3000);
+  alertsKeep(); setTimeout(flSync,3000); wlGuard();
 }
 const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
 // A tap left running: its alert opens the flush round on that outlet (John, 12 Nov 2026: "go to the actual tap point").
