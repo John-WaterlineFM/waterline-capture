@@ -5634,6 +5634,7 @@ boot();
     an(cl,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],{delay:K.dr,duration:K.drD});
   }
   (function wait(){
+    wait.n=wait.n||0;
     // where it lands: Due's head wave, the sign-in head's tide line, or the wave under the first block of Who Are You
     // (a ::after on the zone)
     let r=null, ra=null;
@@ -5642,7 +5643,11 @@ boot();
     else { const z=document.querySelector('.body>.zone:first-child');
       if(z&&!document.querySelector('.splash')){ const b=z.getBoundingClientRect(); r={left:b.left,top:b.bottom-22,width:b.width,height:22};
         ra=z.getAnimations({subtree:true}).find(a=>a.effect&&a.effect.pseudoElement==='::after')||null; } }
-    if(!r){ return setTimeout(wait,40); }
+    if(!r){
+      // Opened on another screen (a tap alert's link, a refresh: DEC-0423), there is no Due wave to land on: once the
+      // page has drawn its first screen, the opening simply fades (John, 19 Nov 2026: "it just gets stuck on loading").
+      if(++wait.n>25&&typeof st!=='undefined'&&st.screen&&['start','due'].indexOf(st.screen)<0){ fade(iv,now(),300,1,0); return setTimeout(()=>{ iv.remove(); },340); }
+      return setTimeout(wait,40); }
     const at=Math.max(K.up,now()), DY=r.top-(Y0-5.5);
     if(RM){ wv.style.transform='translateY('+DY+'px)'; fade(iv,at,440,1,0); }
     else {
