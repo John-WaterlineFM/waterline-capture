@@ -4428,7 +4428,7 @@ function peRow(d,P){
   const shown=(!P.area||peArea(d)===P.area)&&wordHit(d.name+' '+(d.where||''),P.q);
   return '<button class="r'+(open?' open':'')+(shown?'':' hide')+'" data-act="pestRow" data-id="'+esc(d.id)+'" aria-expanded="'+open+'">'
     +'<span class="s3" style="background:'+stripe+'"></span>'
-    +'<span class="m"><span class="w">'+esc(d.name)+'</span>'+(P.order==='area'?'':'<span class="sub">'+esc(d.where||'')+'</span>')
+    +'<span class="m"><span class="w">'+esc(d.name)+'</span>'+(d.where?'<span class="sub">'+esc(d.where)+'</span>':'')
     +'<span class="sub'+(f==='bait'||f==='trap'?' amb':'')+'">'+esc(peFillSay(d))+(h[0]&&!open?' · last '+esc(h[0][1].toLowerCase())+' '+esc(flShort(h[0][0])):'')+'</span></span>'
     +'<span class="st"><b class="'+(x&&!peCalm(x)?'amb':'')+'">'+esc(big)+'</b><i>'+esc(word)+'</i></span></button>'
     +(open?peOpened(d,P,stripe):'');
@@ -4509,7 +4509,7 @@ function peEditBox(d,P){
 // Open a Case Here (rule 5): asked once, the ERA's date, who was told, and the station labels the Harmonix label requires.
 function peAskBox(d,P){
   const v=P.askv||{}, X=PX();
-  return '<div class="fledit"><div class="say"><b>Open a case at '+esc(d.name)+'</b>. Toxic bait or a trap goes in here until the case closes.</div>'
+  return '<div class="fledit"><div class="say"><b>Open a case at '+esc(d.name)+(d.where?' · '+esc(d.where):'')+'</b>. Toxic bait or a trap goes in here until the case closes.</div>'
     +peIn('a-name','Name of the case',v.name,'A pest and a place, as you would say it.')
     +peGroup('What goes in','pe-afill',[['bait',X.fills.bait],['trap',X.fills.trap]].map(x=>peRing(v.fill===x[0],x[1],'pestAskFill',x[0])).join(''))
     +'<div class="field"><label for="pe-a-era">Environmental risk assessment checked on</label><input id="pe-a-era" type="date" style="min-height:44px" data-pein="a-era" value="'+esc(v.era||'')+'"></div>'
