@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v598.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v599.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -37,7 +37,10 @@ const WFM_CAPTURE_SHAPE={
     pestround:  {direction:'proof',       label:'Pest round'},
     pestcase:   {direction:'operational', label:'Pest case opened'},
     pestchange: {direction:'setup',       label:'Pest device changed'},
-    sighting:   {direction:'operational', label:'Pest sighting'}
+    sighting:   {direction:'operational', label:'Pest sighting'},
+    // A hazard seen by anyone on the phone (DEC-0467 rule 5): a risk of an incident, not an incident. Filed on the Risk
+    // Register as a risk nobody has scored or signed yet, so the register reads it as never reviewed.
+    hazard:     {direction:'operational', label:'Hazard'}
   },
   // A tag's serial as Waterline keeps it: upper case, two hex digits a pair, colons between (DEC-0345).
   // '' when it is not a serial. Read by the desk and the phone alike.

@@ -165,7 +165,7 @@ svg{width:24px;height:24px;flex:none;display:block}
 .field{padding:16px 16px 0}
 .field>label,.field>.fl{display:block;font:600 12px Outfit;color:var(--text);margin-bottom:8px}
 .field .opt-w{color:var(--textMuted)}
-textarea,input[type=text],input[type=url],input[type=email],input[type=password],input[type=search],input[type=number],input[type=time],select{width:100%;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:12px;font-size:16px;line-height:1.4;min-height:48px;color:var(--text)}
+textarea,input[type=text],input[type=url],input[type=email],input[type=password],input[type=search],input[type=number],input[type=time],input[type=date],select{width:100%;background:var(--white);border:1.5px solid var(--accentD);border-radius:8px;padding:12px;font-size:16px;line-height:1.4;min-height:48px;color:var(--text)}
 textarea{min-height:96px;resize:vertical}
 ::placeholder{color:var(--textMuted);opacity:1}
 .help{font-size:12px;line-height:1.4;color:var(--textMuted);margin-top:8px}
@@ -1193,7 +1193,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
   </div>
 </div>
 <main id="app"></main>
-<script src="shapes.js?v=e4be5ba45a"></script>
+<script src="shapes.js?v=4473bcdc20"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1325,6 +1325,8 @@ const LUCIDE={'eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 1
   'rotate-ccw':'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
   'timer':'<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
   'route':'<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
+  'shield-alert':'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+  'rat':'<path d="M17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .8.3 1.5.8 2H11c-3.9 0-7 3.1-7 7c0 2.2 1.8 4 4 4"/><path d="M16.8 3.9c.3-.3.6-.5 1-.7 1.5-.6 3.3.1 3.9 1.6.6 1.5-.1 3.3-1.6 3.9l1.6 2.8c.2.3.2.7.2 1-.2.8-.9 1.2-1.7 1.1 0 0-1.6-.3-2.7-.6H17c-1.7 0-3 1.3-3 3"/><path d="M13.2 18a3 3 0 0 0-2.2-5"/><path d="M13 22H4a2 2 0 0 1 0-4h12"/><path d="M16 9h.01"/>',
   'scan-line':'<path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
   'settings':'<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
   'thermometer':'<path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>',
@@ -1420,7 +1422,7 @@ function wlBack(){
   try{ history.back(); }catch(e){}
 }
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),alert:ICO('circle-alert')};
+const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),rat:ICO('rat'),hazard:ICO('shield-alert'),alert:ICO('circle-alert')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -1622,7 +1624,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,hazard:vHazard,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -1932,12 +1934,12 @@ function sheet(){
   const rs=SITE().rounds||[], hasReading=points().some(p=>p.reading)||meters().length>0;
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Capture"><div class="sh"><b>Capture</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +v('fault','fault','Report a Fault','')
+    +v('hazard','hazard','Report a Hazard','Something that could hurt someone')
     +v('sighting','eye','Report a Sighting','A pest seen, or a catch on a bedroom monitor')
-    +v('proof','cert','Send Proof','A photo or a PDF first')
     +v('reading','meter','Take a Reading',hasReading?'':'No outlets or meters from the desk yet',!hasReading)
     +v('flush','timer','Flush Round',flOutlets().length?flOutlets().length+' outlets, several at once':'No tagged outlets from the desk yet',!flOutlets().length)
-    +v('pest','round','Pest Round',(SITE().pest&&(SITE().pest.devices||[]).length)?SITE().pest.devices.length+' devices, any order':'No devices from the desk yet',!(SITE().pest&&(SITE().pest.devices||[]).length))
-    +v('rounds','round','Walk a Round',rs.length?'':'No walks set up on the desk yet',!rs.length)
+    +v('pest','rat','Pest Round',(SITE().pest&&(SITE().pest.devices||[]).length)?SITE().pest.devices.length+' devices, any order':'No devices from the desk yet',!(SITE().pest&&(SITE().pest.devices||[]).length))
+    +v('rounds','round','Fire Walk',rs.length?'':'No fire walks set up on the desk yet',!rs.length)
     +'</div><div style="height:24px"></div></div>';
 }
 function grp(t,n){ return '<div class="grp">'+esc(t)+(n==null?'':' · <span class="n">'+n+'</span>')+'</div>'; }
@@ -3426,7 +3428,7 @@ async function linkSend(p,s){
 }
 function vRounds(){
   const rs=SITE().rounds||[];
-  return '<div class="body">'+formZone('home','Capture','Walk a Round','Choose the walk. Scan its points in any order.')
+  return '<div class="body">'+formZone('home','Capture','Fire Walk','Choose the walk. Scan its points in any order.')
     +'<div class="list" style="border-top:none">'+rs.map(r=>'<button class="r" data-act="roundStart" data-id="'+esc(r.id)+'"><span class="m"><span class="w">'+esc(r.name)+'</span><span class="sub">'+esc(plural((r.points||[]).length,'point'))+(r.walker?' · '+esc(r.walker):'')+((r.times||[]).length?' · '+esc(r.times.join(', ')):'')+'</span></span></button>').join('')+'</div></div>';
 }
 // ── A walk: points are scans (DEC-0294 rule 1), in the order set on the desk (DEC-0300 rule 2). The next point leads,
@@ -3731,6 +3733,17 @@ function vFault(){
     +'<div class="field"><label for="note">What is wrong'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
     +whereField({suggest:true})+faultHistory()+groupSelect()+'<div style="height:24px"></div></div>'
     +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what is wrong.':'Say where it is, or scan its tag.');
+}
+// Report a Hazard (DEC-0467 rule 5): a risk of an incident, not an incident, and not a fault to fix. Shaped as Report a
+// Fault: the photo first, and with where it is that is enough; the words for what could happen. The desk puts it on the
+// Risk Register, not yet scored.
+function vHazard(){
+  const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim(), pics=F.photos.length>0;
+  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Hazard','Take a photo of it. Say what could happen if the photo does not show it. It goes to the desk’s Risk Register.')
+    +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
+    +'<div class="field"><label for="note">What could happen'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="Who could be hurt, and how">'+esc(F.note||'')+'</textarea></div>'
+    +whereField({suggest:true})+'<div style="height:24px"></div></div>'
+    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what could happen.':'Say where it is, or scan a tag near it.');
 }
 // A reading is taken at an outlet's or a meter's tag. The figures it takes and the sentence it is judged by come from
 // the desk; the verdict stays on the desk (Design 7.1). The meter or outlet is the record in the zone; the figure is
@@ -4037,7 +4050,7 @@ app.addEventListener('click',async e=>{
   if(a==='whosin'){ st.sheet='whosin'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); return; }
   if(a==='sheet'){ st.sheet=true; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
   if(a==='sheetClose'){ const was=st.sheet; st.sheet=false; render(); const f=app.querySelector(was==='whosin'?'[data-act="whosin"]':'.nv.cap'); if(f) f.focus(); return; }
-  if(['fault','reading','proof'].indexOf(a)>=0){ st.sheet=false; st.form=blank(a); return go(a); }
+  if(['fault','hazard','reading','proof'].indexOf(a)>=0){ st.sheet=false; st.form=blank(a); return go(a); }
   if(a.indexOf('ds')===0||a.indexOf('doc')===0){ if(dsAct(a,b)!==false) return; }
   if(a==='proofFor'){ st.form=Object.assign(blank('proof'),{duty:b.dataset.id,what:'certificate'}); return go('proof'); }
   if(a==='proofWhat'){ F.what=b.dataset.v; return render(); }
@@ -4488,7 +4501,7 @@ function peEditBox(d,P){
   return '<div class="fledit">'+peIn('e-name','Name',v.name)+peIn('e-where','Where',v.where)
     +'<div class="field"><label for="pe-e-kind">Kind</label><select id="pe-e-kind" data-pein="e-kind">'+Object.keys(X.kinds).map(k=>'<option value="'+k+'"'+(k===v.kind?' selected':'')+'>'+esc(X.kinds[k])+'</option>').join('')+'</select></div>'
     +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-pein="e-insect"'+(v.insect?' checked':'')+'><span style="min-width:0;white-space:normal">An insect monitor is attached</span></label></div>'
-    +'<div class="field"><label>What is in it</label><div class="help" style="margin-top:0">'+esc(peFillSay(d))+'. Toxic bait and traps go in from a case, and come out when it closes.</div></div>'
+    +'<div class="field"><label>What is in it</label><div class="help" style="margin-top:0">'+esc(peFillSay(d))+'. Toxic bait and traps go in from a case, and come out when it closes.</div>'+(!d.caseId&&(d.fill||'paste')==='paste'&&!d.out?'<div style="padding-top:12px"><button class="gh" data-act="pestCase" data-id="'+esc(d.id)+'">Put in Bait or a Trap</button></div>':'')+'</div>'
     +(d.out?'<div class="row2"><button class="gh" data-act="pestBack" data-id="'+esc(d.id)+'">'+I.play+'Back in Use</button></div>'
       :peIn('e-out','Out of use? Say why to take it off the round',v.out,'Its rounds out of use are not counted as missed.'))
     +'<div class="row2"><button class="btn p" data-act="pestEditSave" data-id="'+esc(d.id)+'">'+I.send+'Save the Change</button><button class="gh" data-act="pestEditCancel">Cancel</button></div></div>';
@@ -4502,7 +4515,7 @@ function peAskBox(d,P){
     +'<div class="field"><label for="pe-a-era">Environmental risk assessment checked on</label><input id="pe-a-era" type="date" style="min-height:44px" data-pein="a-era" value="'+esc(v.era||'')+'"></div>'
     +peIn('a-told','Who was told',v.told,'The manager on duty, the kitchen, the residents in the area.')
     +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-pein="a-labels"'+(v.labels?' checked':'')+'><span style="min-width:0;white-space:normal">The station is labelled as the Harmonix label requires</span></label></div>'
-    +'<div class="row2"><button class="btn p" data-act="pestAskSend" data-id="'+esc(d.id)+'"'+(v.name&&v.fill&&v.era&&v.told&&v.labels?'':' disabled')+'>'+I.send+'Open the Case</button><button class="gh" data-act="pestAskCancel">Cancel</button></div></div>';
+    +'<div class="row2"><button class="btn p" data-act="pestAskSend" data-id="'+esc(d.id)+'"'+(v.name&&v.fill&&v.era&&v.told&&v.labels?'':' disabled')+'>'+I.send+'Open the Case</button><button class="gh" data-act="pestAskCancel">Cancel</button></div>'+(v.name&&v.fill&&v.era&&v.told&&v.labels?'':'<div class="help" style="padding:0 16px">Answer each question above, and tick the label, to open the case.</div>')+'</div>';
 }
 const PE_ORDER=[['walk','Round order'],['area','By area']];
 function pePickSheet(ds,P){
@@ -4627,7 +4640,7 @@ function peAct(a,b){
   if(a==='pestBack'&&d){ P.edits[id]=Object.assign({},P.edits[id]||{},{back:true,out:undefined,on:flToday()}); P.editing=''; peKeep(); render();
     pestSend('pestchange',{pest:{device:id,change:{back:true}},note:''},d.name+' is back on the round.'); return; }
   if(a==='pestFault'&&d){ const f=blank('fault'); f.place=d.name+(d.where?' · '+d.where:''); f.back='pest'; st.form=f; return go('fault'); }
-  if(a==='pestCase'&&d){ P.ask=id; P.askv={name:(D.sp?peOf(PX().pests,D.sp):'Rodent')+', '+(d.where||d.name),fill:'bait',era:'',told:'',labels:false}; return render(); }
+  if(a==='pestCase'&&d){ P.editing=null; P.ask=id; P.askv={name:(D.sp?peOf(PX().pests,D.sp):'Rodent')+', '+(d.where||d.name),fill:'bait',era:'',told:'',labels:false}; return render(); }
   if(a==='pestAskFill'){ P.askv.fill=b.dataset.v; return render(); }
   if(a==='pestAskCancel'){ P.ask=null; return render(); }
   if(a==='pestAskSend'&&d){ const v=P.askv||{};
@@ -5209,6 +5222,7 @@ async function doSend(){
   if(F.kind==='fault'){ fields.group=F.group||'maintenance';
     // A photo with no words: the desk titles the job from this (its title is the words, else the outcome).
     if(!fields.note&&F.photos.length) fields.outcome='Fault seen in the photo'; }
+  if(F.kind==='hazard'&&!fields.note&&F.photos.length) fields.outcome='Hazard seen in the photo';
   if(F.kind==='sighting'){ fields.pest={what:F.what||'',from:F.from==='monitor'?'monitor':'seen',room:String(F.room||'').trim()};
     if(!F.point&&!fields.place&&fields.pest.room) fields.place='Room '+fields.pest.room;
     if(!fields.note&&F.photos.length&&!F.what) fields.outcome='Sighting in the photo'; }
