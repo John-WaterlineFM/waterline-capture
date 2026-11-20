@@ -1193,7 +1193,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
   </div>
 </div>
 <main id="app"></main>
-<script src="shapes.js?v=1876225cc6"></script>
+<script src="shapes.js?v=e4be5ba45a"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -1583,7 +1583,7 @@ const app=document.getElementById('app');
 function go(screen,extra){ st.screen=screen; if(extra) Object.assign(st,extra); hereKeep(); render(); window.scrollTo(0,0); }
 // A refresh opens the screen you were on (DEC-0423; John, 12 Nov 2026): kept for this tab only (sessionStorage), so opening
 // the app afresh still starts on Due. Lists and records come back; a form half filled does not.
-const HERE_OK=['due','jobs','msgs','flush','rounds','walks','me','job','chat'];
+const HERE_OK=['due','jobs','msgs','flush','pest','rounds','walks','me','job','chat'];
 function hereKeep(){ try{ const s=st.screen; if(HERE_OK.indexOf(s)<0) return;
   const ref=s==='job'?(st.form&&st.form.id):s==='chat'?(st.form&&st.form.chat):'';
   sessionStorage.setItem('wl_here',JSON.stringify({s:s,ref:ref||''})); }catch(e){} }
@@ -1622,7 +1622,7 @@ function render(){
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
-  const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
+  const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
@@ -1932,9 +1932,11 @@ function sheet(){
   const rs=SITE().rounds||[], hasReading=points().some(p=>p.reading)||meters().length>0;
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Capture"><div class="sh"><b>Capture</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +v('fault','fault','Report a Fault','')
+    +v('sighting','eye','Report a Sighting','A pest seen, or a catch on a bedroom monitor')
     +v('proof','cert','Send Proof','A photo or a PDF first')
     +v('reading','meter','Take a Reading',hasReading?'':'No outlets or meters from the desk yet',!hasReading)
     +v('flush','timer','Flush Round',flOutlets().length?flOutlets().length+' outlets, several at once':'No tagged outlets from the desk yet',!flOutlets().length)
+    +v('pest','round','Pest Round',(SITE().pest&&(SITE().pest.devices||[]).length)?SITE().pest.devices.length+' devices, any order':'No devices from the desk yet',!(SITE().pest&&(SITE().pest.devices||[]).length))
     +v('rounds','round','Walk a Round',rs.length?'':'No walks set up on the desk yet',!rs.length)
     +'</div><div style="height:24px"></div></div>';
 }
@@ -3724,6 +3726,7 @@ function vFault(){
   const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim(), pics=F.photos.length>0;
   return '<div class="body">'+formZone(F.back||'home','Capture','Report a Fault','Take a photo of it. Add words if the photo does not say it all. It goes to the desk as a job.')
     +(F.back==='flush'?'<p class="para">The flush round keeps running. Sending this takes you back to it.</p>':'')
+    +(F.back==='pest'?'<p class="para">Your pest round is kept. Sending this takes you back to it.</p>':'')
     +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
     +'<div class="field"><label for="note">What is wrong'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
     +whereField({suggest:true})+faultHistory()+groupSelect()+'<div style="height:24px"></div></div>'
@@ -4043,6 +4046,10 @@ app.addEventListener('click',async e=>{
   if(a==='openLine'||a==='openJob'||a==='openMissed'){ st.form={id:b.dataset.id}; return go({openLine:'line',openJob:'job',openMissed:'missed'}[a]); }
   if(a==='rounds'){ st.sheet=false; return go('rounds'); }
   if(a==='flush'){ st.sheet=false; if(st.form&&st.form.back==='flush') st.form=null; flState(); flSync(); return go('flush'); }
+  if(/^pest/.test(a)&&peAct(a,b)!==false) return;
+  if(a==='sighting'){ st.sheet=false; st.form=Object.assign(blank('sighting'),{from:'seen'}); return go('sighting'); }
+  if(a==='sgWhat'){ F.what=b.dataset.v; return render(); }
+  if(a==='sgFrom'){ F.from=b.dataset.v; return render(); }
   if(a==='flRow'){ const F=flState(), z=!!b.closest('.zone'); F.open=z||F.open!==b.dataset.id?b.dataset.id:null; flKeep(); render(); if(z){ const r=app.querySelector('.r[data-act="flRow"][data-id="'+CSS.escape(b.dataset.id)+'"]'); if(r) r.scrollIntoView({block:'center',behavior:'instant'}); } return; }
   if(a==='flStart'||a==='flAgain'){ flStart(b.dataset.id,b.dataset.t); return render(); }
   if(a==='flStop'){ flStop(b.dataset.id,b.dataset.t); return render(); }
@@ -4326,6 +4333,360 @@ setInterval(siteRefresh,60000);
 setInterval(msgRefresh,60000);
 setInterval(flTick,500);
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') flWake(); });
+
+// ── The pest round (job 018, slice K; DEC-0465) ──────────────────────────────────────────────────────────────────
+// Walked as the Flush Round is, from its own parts (the zone, Find, the order and area controls, the row with its stripe
+// and right-hand state, the opened row with the dashed stripe, the three symbols, the settings box): one list in any order,
+// a row opens in place, each device is kept on this phone as it is saved (wl_pest), a saved one reopens with Change It.
+// Finish and Sign Off sends the round as one signed service inspection report. A device holds monitoring paste unless a
+// case has put toxic bait or a trap in it, and what it offers follows what it holds. The words and codes are the desk's,
+// in companion/shapes.js (WFM_CAPTURE_SHAPE.pest; rule 8). A case visit is the same list, narrowed to the case's points.
+const PX=()=>WFM_CAPTURE_SHAPE.pest;
+const PE=()=>SITE().pest||null;
+function peState(){
+  if(!st.pe){ st.pe=Object.assign({res:{},open:'',d:{},q:'',area:'',order:'walk',pick:null,started:'',caseId:'',fin:false,notes:{},editing:'',ed:{},edits:{},local:{},ask:null,changing:'',sign:{}},ls.get('wl_pest',null)||{});
+    ['res','d','notes','ed','edits','local','sign'].forEach(k=>{ if(!st.pe[k]||typeof st.pe[k]!=='object') st.pe[k]={}; }); st.pe.pick=null; }
+  return st.pe;
+}
+const peKeep=()=>{ const k=Object.assign({},st.pe); delete k.pick; ls.set('wl_pest',k); };
+// A case visit keeps its own results, so a round in progress is still there when the visit is signed or left: the two
+// swap places (the one not on screen is kept in `other`).
+const PE_OWN=['res','started','notes','sign','caseId','open','area','q','d','changing','editing','ask','fin'];
+function peSwap(){ const P=st.pe, o=P.other||{}, keep={}; PE_OWN.forEach(k=>{ keep[k]=P[k]; P[k]=o[k]!=null?o[k]:({res:{},notes:{},sign:{},d:{}}[k]||(k==='fin'?false:'')); }); P.other=keep; }
+// This phone's own changes and cases over the desk's device, until the desk's site file says the same.
+function peDev(d){
+  const P=st.pe||{}, e=(P.edits||{})[d.id]||{}, l=(P.local||{})[d.id];
+  const x=Object.assign({},d);
+  if(e.name&&e.name!==d.name) x.name=e.name; else if(e.name) delete e.name;
+  if(e.where!=null&&e.where!==d.where) x.where=e.where;
+  if(e.kind&&e.kind!==d.kind) x.kind=e.kind;
+  if(e.insect!=null) x.insect=e.insect;
+  if(e.out&&!d.out) x.out={on:e.on,why:e.out}; if(e.back) x.out=null;
+  if(l&&!d.caseId) { x.fill=l.fill; x.caseId=l.caseId||'here'; x.caseName=l.name; }
+  return x;
+}
+// Photos at a device (John, 20 Nov 2026: "a report should also include evidence if needed so id like to be able to capture
+// photos"). Kept on this phone in IndexedDB until the round or visit is signed, so a reload loses none; sent with it, filed
+// in the Pest Control folder on the desk, and printed at the back of the service inspection report.
+const PEF={};
+const peFk=id=>((st.pe&&st.pe.caseId)||'round')+'|'+id;
+const peFiles=id=>PEF[peFk(id)]||[];
+function peDb(){ return new Promise((ok,no)=>{ const r=indexedDB.open('waterline-pest-photos',1); r.onupgradeneeded=()=>r.result.createObjectStore('p'); r.onsuccess=()=>ok(r.result); r.onerror=()=>no(r.error); }); }
+async function pePhotosPut(){ try{ const db=await peDb(), o={}; Object.keys(PEF).forEach(k=>{ if(PEF[k].length) o[k]=PEF[k].map(x=>x.file); }); db.transaction('p','readwrite').objectStore('p').put(o,'all'); }catch(e){} }
+let _pePhotosRead=false;
+async function pePhotosLoad(){ if(_pePhotosRead) return; _pePhotosRead=true;
+  try{ const db=await peDb(), v=await new Promise(ok=>{ const q=db.transaction('p').objectStore('p').get('all'); q.onsuccess=()=>ok(q.result||{}); q.onerror=()=>ok({}); });
+    Object.keys(v).forEach(k=>{ if(!PEF[k]) PEF[k]=(v[k]||[]).map(f=>({file:f,url:URL.createObjectURL(f)})); }); if(st.screen==='pest') render(); }catch(e){} }
+function pePhotoBox(d){
+  const fs=peFiles(d.id);
+  return '<div class="field"><span class="fl">Photos <span class="opt-w">(optional)</span></span><div class="thumbs">'
+    +fs.map((p,i)=>'<div class="th" style="background-image:url('+p.url+')"><button class="x" data-act="pestPhotoDel" data-id="'+esc(d.id)+'" data-i="'+i+'" aria-label="Remove this photo"><i>'+I.close+'</i></button></div>').join('')
+    +'<label class="th add" aria-label="Take a photo at '+esc(d.name)+'">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-pefile="'+esc(d.id)+'"></label></div><div class="help">Printed at the back of the round’s report, under this device.</div></div>';
+}
+const peAll=()=>(Array.isArray((PE()||{}).devices)?PE().devices:[]).map(peDev);
+const peCase=()=>{ const P=peState(); return P.caseId?((PE()||{}).cases||[]).find(c=>c.id===P.caseId)||null:null; };
+// The round's devices: every one in use, the fly units only when they are due; a case visit, the case's points.
+function peDue(){ const P=peState(), cs=peCase(), efk=!!(PE()||{}).efkDue;
+  return peAll().filter(d=>cs?cs.devices.indexOf(d.id)>=0:(!d.out&&(d.kind!=='efk'||efk))); }
+const peArea=d=>d.kind==='ext'?'Outside':d.kind==='efk'?'Fly units':(d.plan||'Inside');
+const peFill=d=>d.kind==='efk'?'efk':(d.fill||'paste');
+const peFillSay=d=>{ const f=peFill(d); return (f==='bait'||f==='trap'?PX().fills[f].replace(', under a case','')+', under '+(d.caseName||'the case'):PX().fills[f])+(d.insect?' and an insect monitor':''); };
+const peOf=(list,v)=>{ const x=(list||[]).find(r=>r[0]===v); return x?x[1]:''; };
+function peLabel(c){ const R=PX().results; let all=[]; Object.keys(R).forEach(k=>{ all=all.concat(R[k]); }); all.push(PX().reach); const x=all.find(r=>r[0]===c); return x?x[1]:''; }
+const peCalm=x=>!!(x&&x.c&&PX().calm.indexOf(x.c)>=0&&(!x.ik||PX().calm.indexOf(x.ik)>=0));
+const peNow=()=>{ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
+function peSaid(x){
+  if(!x) return '';
+  let t=x.lv?peOf(PX().levels,x.lv)+(x.c==='S'?', signs':', paste eaten'):peLabel(x.c);
+  if(x.sp) t+=', '+peOf(PX().pests,x.sp).toLowerCase();
+  if(x.c==='BT') t+=', '+(x.bo||0)+' g out, '+(x.bi||0)+' g in';
+  if(x.c===PX().reach[0]&&x.why) t+=': '+peOf(PX().reachWhy,x.why).toLowerCase();
+  if(x.ik==='IY') t+='; insects '+peOf(PX().insectLevels,x.il).toLowerCase()+', '+peOf(PX().insects,x.is).toLowerCase();
+  else if(x.ik&&x.ik!=='IN') t+='; '+peLabel(x.ik).toLowerCase();
+  return t;
+}
+
+// ── The row, as flRow draws an outlet ──
+function peRow(d,P){
+  const x=P.res[d.id], open=P.open===d.id, f=peFill(d), h=d.hist||[];
+  const stripe=!x?'var(--textMuted)':peCalm(x)?'var(--jDone)':'var(--amber)';
+  const big=x?(x.lv?peOf(PX().levels,x.lv):(peLabel(x.c).split(' ')[0])):'To check';
+  const word=x?(x.lv?(x.sp?peOf(PX().pests,x.sp).toLowerCase():'')+(x.c==='S'?' signs':''):x.sp?peOf(PX().pests,x.sp).toLowerCase():(peLabel(x.c).split(' ').slice(1).join(' '))):'';
+  const shown=(!P.area||peArea(d)===P.area)&&wordHit(d.name+' '+(d.where||''),P.q);
+  return '<button class="r'+(open?' open':'')+(shown?'':' hide')+'" data-act="pestRow" data-id="'+esc(d.id)+'" aria-expanded="'+open+'">'
+    +'<span class="s3" style="background:'+stripe+'"></span>'
+    +'<span class="m"><span class="w">'+esc(d.name)+'</span>'+(P.order==='area'?'':'<span class="sub">'+esc(d.where||'')+'</span>')
+    +'<span class="sub'+(f==='bait'||f==='trap'?' amb':'')+'">'+esc(peFillSay(d))+(h[0]&&!open?' · last '+esc(h[0][1].toLowerCase())+' '+esc(flShort(h[0][0])):'')+'</span></span>'
+    +'<span class="st"><b class="'+(x&&!peCalm(x)?'amb':'')+'">'+esc(big)+'</b><i>'+esc(word)+'</i></span></button>'
+    +(open?peOpened(d,P,stripe):'');
+}
+const peRing=(on,t,act,v)=>'<button class="lr'+(on?' lrno':'')+'" style="background:transparent" role="radio" aria-checked="'+on+'" data-act="'+act+'" data-v="'+esc(v)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(t)+'</span></button>';
+const peGroup=(lab,id,rows)=>'<div class="field" style="padding-bottom:0"><label id="'+id+'">'+esc(lab)+'</label></div><div class="list" role="radiogroup" aria-labelledby="'+id+'" style="border-top:none;background:transparent">'+rows+'</div>';
+// A chosen answer folds its group to the one chosen, with Choose Another (rule 10).
+const peFold=(xs,on)=>on?xs.filter(x=>x[0]===on):xs;
+const peIn=(k,lab,val,help,num)=>'<div class="field"><label for="pe-'+k+'">'+esc(lab)+'</label><input id="pe-'+k+'" type="text"'+(num?' inputmode="decimal"':'')+' autocomplete="off" data-pein="'+k+'" value="'+esc(val||'')+'">'+(help?'<div class="help">'+help+'</div>':'')+'</div>';
+function peChoices(d,D){
+  const X=PX(), f=peFill(d), p=D.c;
+  const opts=X.results[f==='efk'?'efk':f].filter(o=>o[0]!=='C').concat([X.reach]);
+  let h='<div class="list" role="radiogroup" aria-label="What you found" style="border-top:none;background:transparent">'+peFold(opts,p).map(o=>{ const on=p===o[0]; let r=peRing(on,o[1],'pestCode',o[0]);
+    if(on&&(o[0]==='E'||o[0]==='S')) r+=peGroup('How much','pe-lv',peFold(X.levels,D.lv).map(x=>peRing(D.lv===x[0],x[1]+': '+x[2],'pestLv',x[0])).join(''));
+    if(on&&(o[0]==='E'||o[0]==='S'||o[0]==='TT')) r+=peGroup('Which pest','pe-sp',peFold(X.pests,D.sp).map(x=>peRing(D.sp===x[0],x[1],'pestSp',x[0])).join(''));
+    if(on&&(o[0]==='N'||o[0]==='TN')) r+=peIn('nt','What animal',D.nt);
+    if(on&&o[0]==='BT') r+=peIn('bo','Taken out, old or spilled (g)',D.bo,'',true)+peIn('bi','Put in (g)',D.bi,X.product+'.',true);
+    if(on&&o[0]===X.reach[0]) r+=peGroup('Why','pe-why',peFold(X.reachWhy,D.why).map(x=>peRing(D.why===x[0],x[1],'pestWhy',x[0])).join(''))
+      +(D.why==='other'?peIn('whyText','Say why',D.whyText):'')+'<div class="say">It is checked again next round. A device not reached twice running goes to the desk.</div>';
+    return r; }).join('')+'</div>';
+  if(p) h+='<div class="row2"><button class="lnk" data-act="pestRepick">Choose Another</button></div>';
+  return h;
+}
+function peInsect(d,D){
+  if(!d.insect) return '';
+  const X=PX(), k=D.ik||'';
+  let h=peGroup('Insect monitor','pe-in',peFold(X.results.insect,k).map(o=>peRing(k===o[0],o[1],'pestIk',o[0])).join(''));
+  if(k==='IY') h+=peGroup('Which insect','pe-is',peFold(X.insects,D.is).map(x=>peRing(D.is===x[0],x[1],'pestIs',x[0])).join(''))
+    +peGroup('How many','pe-il',peFold(X.insectLevels,D.il).map(x=>peRing(D.il===x[0],x[1]+': '+x[2],'pestIl',x[0])).join(''));
+  if(k) h+='<div class="row2"><button class="lnk" data-act="pestIkRepick">Choose Another</button></div>';
+  return h;
+}
+// What still stops a choice saving: the questions its answer asks.
+function peMissing(D){ if(!D.c&&!D.ik) return 'Choose what you found.';
+  if((D.c==='E'||D.c==='S')&&!D.lv) return 'Say how much: low or high.';
+  if((D.c==='E'||D.c==='S'||D.c==='TT')&&!D.sp) return 'Say which pest, or Not sure.';
+  if(D.c===PX().reach[0]&&!D.why) return 'Say why it could not be reached.';
+  if(D.ik==='IY'&&(!D.is||!D.il)) return 'Say which insect and how many.';
+  return ''; }
+function peOpened(d,P,stripe){
+  const x=P.res[d.id], D=P.d||{}, hist=d.hist||[], f=peFill(d);
+  let h='<div class="fopen"><span class="s3d" style="--c:'+stripe+';--sw:3px"></span>';
+  if(hist.length&&P.editing!==d.id) h+='<div class="field" style="padding-bottom:0"><label>Last '+hist.length+(hist.length===1?' round':' rounds')+' here</label></div><div class="say" style="padding-top:4px">'+hist.map(e=>esc(flShort(e[0]))+' · <b>'+esc(e[1])+'</b>').join('<br>')+'</div>';
+  if(P.ask===d.id) h+=peAskBox(d,P);
+  else if(P.editing===d.id){ /* the settings stand alone while open, as flEditBox does */ }
+  else if(x&&P.changing!==d.id){
+    h+='<div class="say">Saved at <b class="n">'+esc(x.at)+'</b>: <b>'+esc(peSaid(x))+'</b>.'+(peFiles(d.id).length?' '+peFiles(d.id).length+(peFiles(d.id).length===1?' photo.':' photos.'):'')+'</div><div class="row2"><button class="gh" data-act="pestChange" data-id="'+esc(d.id)+'">'+I.edit+'Change It</button></div>';
+  } else {
+    const found=D.c==='E'||D.c==='S', miss=peMissing(D);
+    if(D.c||D.ik) h+='<div class="row2"><button class="btn p" data-act="pestSave" data-id="'+esc(d.id)+'"'+(miss?' disabled':'')+'>'+I.tick+'Save</button>'+(found&&f==='paste'?'<button class="gh" data-act="pestCase" data-id="'+esc(d.id)+'">'+I.alert+'Open a Case Here</button>':'')+'</div>'
+      +(miss?'<div class="say">'+esc(miss)+'</div>':found&&f==='paste'?'<div class="say">Past your watch level? Open a case. Toxic bait goes in only under a case.</div>':'');
+    else if(f==='paste') h+='<div class="row2"><button class="btn p" data-act="pestClear" data-id="'+esc(d.id)+'">'+I.tick+(d.insect?'Both Clear':'Clear')+'</button></div>';
+    if(D.ik&&!D.c) h+='<div class="say">Paste: nothing found, saved as clear unless you choose below.</div>';
+    h+=(d.insect?'<div class="field" style="padding-bottom:0"><label>Rodent monitor</label></div>':'')
+      +'<div class="say">'+(f==='efk'?'The catch on the board, and anything done:':D.c||f!=='paste'?'What you found:':'Or what you found:')+'</div>'+peChoices(d,D)+peInsect(d,D);
+  }
+  if(P.ask!==d.id&&P.editing!==d.id) h+=pePhotoBox(d);
+  const n=P.notes[d.id];
+  if(n!=null) h+='<div class="field flnote"><label for="pe-note">Note</label><textarea id="pe-note" rows="2" data-penote="'+esc(d.id)+'" placeholder="Lid loose, station moved, ivy growing over it">'+esc(n)+'</textarea><div class="help">Goes with this device’s result.</div></div>';
+  if(P.editing===d.id) h+=peEditBox(d,P);
+  h+='<div class="fltools">'+(n!=null?'':'<button class="ib" data-act="pestNote" data-id="'+esc(d.id)+'" aria-label="Write a note" title="Write a note">'+I.edit+'</button>')
+    +(P.editing===d.id?'':'<button class="ib" data-act="pestEdit" data-id="'+esc(d.id)+'" aria-label="Device settings" title="Device settings">'+I.gear+'</button>')
+    +'<button class="ib" data-act="pestFault" data-id="'+esc(d.id)+'" aria-label="Report a fault here" title="Report a fault here">'+I.fault+'</button></div>';
+  return h+'</div>';
+}
+// The device's settings, as flEditBox: its name, where, kind, an insect monitor, out of use with why. What is in it is
+// changed only by a case (rule 5), so it is said, not offered.
+function peEditBox(d,P){
+  const v=P.ed||{}, X=PX();
+  return '<div class="fledit">'+peIn('e-name','Name',v.name)+peIn('e-where','Where',v.where)
+    +'<div class="field"><label for="pe-e-kind">Kind</label><select id="pe-e-kind" data-pein="e-kind">'+Object.keys(X.kinds).map(k=>'<option value="'+k+'"'+(k===v.kind?' selected':'')+'>'+esc(X.kinds[k])+'</option>').join('')+'</select></div>'
+    +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-pein="e-insect"'+(v.insect?' checked':'')+'><span style="min-width:0;white-space:normal">An insect monitor is attached</span></label></div>'
+    +'<div class="field"><label>What is in it</label><div class="help" style="margin-top:0">'+esc(peFillSay(d))+'. Toxic bait and traps go in from a case, and come out when it closes.</div></div>'
+    +(d.out?'<div class="row2"><button class="gh" data-act="pestBack" data-id="'+esc(d.id)+'">'+I.play+'Back in Use</button></div>'
+      :peIn('e-out','Out of use? Say why to take it off the round',v.out,'Its rounds out of use are not counted as missed.'))
+    +'<div class="row2"><button class="btn p" data-act="pestEditSave" data-id="'+esc(d.id)+'">'+I.send+'Save the Change</button><button class="gh" data-act="pestEditCancel">Cancel</button></div></div>';
+}
+// Open a Case Here (rule 5): asked once, the ERA's date, who was told, and the station labels the Harmonix label requires.
+function peAskBox(d,P){
+  const v=P.askv||{}, X=PX();
+  return '<div class="fledit"><div class="say"><b>Open a case at '+esc(d.name)+'</b>. Toxic bait or a trap goes in here until the case closes.</div>'
+    +peIn('a-name','Name of the case',v.name,'A pest and a place, as you would say it.')
+    +peGroup('What goes in','pe-afill',[['bait',X.fills.bait],['trap',X.fills.trap]].map(x=>peRing(v.fill===x[0],x[1],'pestAskFill',x[0])).join(''))
+    +'<div class="field"><label for="pe-a-era">Environmental risk assessment checked on</label><input id="pe-a-era" type="date" style="min-height:44px" data-pein="a-era" value="'+esc(v.era||'')+'"></div>'
+    +peIn('a-told','Who was told',v.told,'The manager on duty, the kitchen, the residents in the area.')
+    +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-pein="a-labels"'+(v.labels?' checked':'')+'><span style="min-width:0;white-space:normal">The station is labelled as the Harmonix label requires</span></label></div>'
+    +'<div class="row2"><button class="btn p" data-act="pestAskSend" data-id="'+esc(d.id)+'"'+(v.name&&v.fill&&v.era&&v.told&&v.labels?'':' disabled')+'>'+I.send+'Open the Case</button><button class="gh" data-act="pestAskCancel">Cancel</button></div></div>';
+}
+const PE_ORDER=[['walk','Round order'],['area','By area']];
+function pePickSheet(ds,P){
+  const k=P.pick; if(!k) return '';
+  const row=(v,nm,ln,on)=>'<button class="verb" data-act="pestPick" data-k="'+k+'" data-v="'+esc(v)+'" aria-pressed="'+on+'"><span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span>'+(on?I.tick:'')+'</button>';
+  const areas=[]; ds.forEach(d=>{ const a=peArea(d), x=areas.find(y=>y.a===a); if(x) x.n++; else areas.push({a:a,n:1}); });
+  const rows=k==='order'?PE_ORDER.map(x=>row(x[0],x[1],'',P.order===x[0])).join(''):row('','All areas',ds.length+' devices',!P.area)+areas.map(x=>row(x.a,x.a,x.n+(x.n===1?' device':' devices'),P.area===x.a)).join('');
+  return '<div class="scrim" data-act="pestPickClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="'+(k==='order'?'Order':'Area')+'"><div class="sh"><b>'+(k==='order'?'Order':'Area')+'</b><button class="ib" data-act="pestPickClose" aria-label="Close">'+I.close+'</button></div><div class="list">'+rows+'</div><div style="height:24px"></div></div>';
+}
+function peList(ds,P){
+  if(P.order!=='area') return ds.map(d=>peRow(d,P)).join('');
+  let h='', cur=null; const s=ds.slice().sort((a,b)=>{ const ai=ds.findIndex(x=>peArea(x)===peArea(a)), bi=ds.findIndex(x=>peArea(x)===peArea(b)); return ai-bi; });
+  s.forEach(d=>{ const a=peArea(d); if(a!==cur){ cur=a; const n=s.filter(x=>peArea(x)===a), done=n.filter(x=>P.res[x.id]).length; h+='<div class="flarea"><b>'+esc(a)+'</b><span>'+done+' of '+n.length+' done</span></div>'; } h+=peRow(d,P); });
+  return h;
+}
+function vPest(){
+  const P=peState(), S0=PE(); pePhotosLoad();
+  if(!S0||!Array.isArray(S0.devices)||!S0.devices.length) return '<div class="body">'+formZone('home','Pest Round','No devices from the desk','The desk has not published the pest devices yet. Open the Pest Control page on the desk once, and the round shows here.')+'</div>';
+  if(P.fin) return vPestSign();
+  const ds=peDue(), cs=peCase(), n=ds.filter(d=>P.res[d.id]).length, found=ds.filter(d=>P.res[d.id]&&!peCalm(P.res[d.id])).length;
+  const shown=ds.filter(d=>(!P.area||peArea(d)===P.area)&&wordHit(d.name+' '+(d.where||''),P.q)).length;
+  const z=cs
+    ?'<div class="zone"><div class="ztop">'+backBtn('pestLeave')+'<span class="eb">Case visit · '+esc(cs.name)+'</span></div>'
+      +'<div class="row1"><span class="num n">'+(ds.length-n)+'</span><span class="what">'+(ds.length-n===1?'point to visit':'points to visit')+'</span></div>'
+      +'<p>Visit <b class="n">'+(cs.visits+1)+'</b>, day <b class="n">'+cs.day+'</b> of <b class="n">35</b>. Due every 1 to 2 days at first, then at least weekly, as the Harmonix label says.</p>'
+      +'<button class="gh" data-act="pestFin">'+I.stop+'Finish the Visit</button></div>'
+    :'<div class="zone"><div class="ztop">'+backBtn('pestLeave')+'<span class="eb">Pest Round</span></div>'
+      +'<div class="row1"><span class="num n">'+(ds.length-n)+'</span><span class="what">to check</span></div>'
+      +'<p><b class="n">'+n+' of '+ds.length+'</b> done'+(P.started?' since <b class="n">'+esc(P.started)+'</b>':'')+(found?', <b class="n">'+found+'</b> with something found':'')+'. Each is kept as it is saved.'+(S0.efkDue?'':' The fly units are not due this round.')+'</p>'
+      +'<button class="gh" data-act="pestFin">'+I.stop+'Finish and Sign Off</button></div>';
+  const cases=cs?'':((S0.cases||[]).length?grp('Case visits')+'<div class="list">'+S0.cases.map(c=>{ const late=c.due&&c.due<flToday();
+      return '<button class="r" data-act="pestVisit" data-id="'+esc(c.id)+'"><span class="s3" style="background:'+(late?'var(--red)':'var(--amber)')+'"></span><span class="m"><span class="w">'+esc(c.name)+'</span><span class="sub">'+c.devices.length+(c.devices.length===1?' point':' points')+' · day '+c.day+' of 35</span></span><span class="st"><b class="'+(late?'bad':'')+'">'+esc(flShort(c.due))+'</b><i>'+(late?'overdue':'due')+'</i></span></button>'; }).join('')+'</div>':'');
+  return '<div class="body">'+z+cases
+    +'<div class="field"><label for="peq">Find a device</label><input type="search" id="peq" data-peq autocomplete="off" placeholder="Number or where" value="'+esc(P.q||'')+'"></div>'
+    +'<div class="flbar"><button class="flsel" data-act="pestPickOpen" data-k="order" aria-haspopup="dialog">'+FLI.order+'<span>'+esc(peOf(PE_ORDER,P.order)||'Round order')+'</span>'+I.down+'</button>'
+    +'<button class="flsel'+(P.area?' on':'')+'" data-act="pestPickOpen" data-k="area" aria-haspopup="dialog">'+I.pin+'<span>'+esc(P.area?P.area+' · '+ds.filter(d=>peArea(d)===P.area).length:'All areas')+'</span>'+I.down+'</button></div>'
+    +'<div class="grp" data-peg>'+(P.q||P.area?shown+' of '+ds.length+' devices':cs?'The case’s points':'Each is kept as it is saved')+'</div>'
+    +'<div class="list'+(P.open?' flhasopen':'')+'">'+peList(ds,P)+'</div>'
+    +(P.q&&!shown?'<p class="para">No device matches “'+esc(P.q)+'”.</p>':'')+'<div style="height:24px"></div></div>'+pePickSheet(ds,P);
+}
+// Sign-off asks only what the codes cannot give (rule 7); a case visit asks only the carcasses (rule 6).
+function vPestSign(){
+  const P=peState(), ds=peDue(), cs=peCase(), n=ds.filter(d=>P.res[d.id]).length, miss=ds.length-n, g=P.sign||{};
+  const recs=Array.isArray(g.recs)?g.recs:[];
+  const ok=g.carc==='0'||(g.carc==='1'&&String(g.carcHow||'').trim());
+  return '<div class="body"><div class="zone"><div class="ztop">'+backBtn('pestUnfin')+'<span class="eb">Sign off</span></div><h1>'+(cs?'Case Visit':'Pest Round')+'</h1>'
+    +'<p><b class="n">'+n+'</b> of <b class="n">'+ds.length+'</b> '+(cs?'points':'devices')+(P.started?', <b class="n">'+esc(P.started)+'</b> to <b class="n">'+peNow()+'</b>':'')+'.'+(miss?' <b class="n">'+miss+'</b> not checked.':'')+'</p>'
+    +'<button class="btn" data-act="pestSign"'+(ok&&n?'':' disabled')+'>'+(cs?'Sign Off the Visit':'Sign Off the Round')+'</button></div>'
+    +grp('Carcasses found in the area')+'<div class="list" role="radiogroup" aria-label="Carcasses">'+peRing(g.carc==='0','None found','pestCarc','0')+peRing(g.carc==='1','Found, and disposed of','pestCarc','1')+'</div>'
+    +(g.carc==='1'?'<div class="field"><label for="pe-carcHow">How many, and how they were disposed of</label><input id="pe-carcHow" type="text" data-pesign="carcHow" value="'+esc(g.carcHow||'')+'"></div>':'')
+    +(cs?'':grp('What draws pests in')+'<div class="field"><label for="pe-draws">Proofing, hygiene or harbourage you saw</label><textarea id="pe-draws" rows="2" data-pesign="draws">'+esc(g.draws||'')+'</textarea></div>'
+      +grp('Recommendations, each to Corrective Actions')+(recs.length?'<div class="list">'+recs.map((r,i)=>'<div class="r" style="min-height:56px"><span class="m"><span class="w">'+esc(r.t)+'</span><span class="sub">Priority '+r.pri+' · '+esc(PX().priority[r.pri]||'')+'</span></span><button class="ib" data-act="pestRecDel" data-i="'+i+'" aria-label="Take this recommendation off">'+I.trash+'</button></div>').join('')+'</div>':'')
+      +'<div class="field"><label for="pe-rec">A recommendation</label><input id="pe-rec" type="text" data-pesign="rec" value="'+esc(g.rec||'')+'" placeholder="Cut back the ivy by EBP 4 to 6"></div>'
+      +'<div class="field"><label for="pe-pri">Priority</label><select id="pe-pri" data-pesign="pri">'+[1,2,3].map(k=>'<option value="'+k+'"'+(String(g.pri||'2')===String(k)?' selected':'')+'>'+k+' · '+esc(PX().priority[k])+'</option>').join('')+'</select></div>'
+      +'<div class="pad"><button class="gh" data-act="pestRecAdd">'+I.plus+'Add the Recommendation</button></div>')
+    +'<p class="para">Signed off, '+(cs?'the visit goes to the desk with the case':'the round goes to the desk as your service inspection report')+', with your name'+((PE()||{}).pmu?' and PMU number '+esc(PE().pmu):'')+'. A fault reported from a device has already gone as a job.</p><div style="height:24px"></div></div>';
+}
+async function pestSend(kind,fields,okMsg){
+  let c; try{ c=await makeCapture(kind,fields,[]); }catch(e){ toast('Nothing was sent. ('+(e.message||e)+')'); return false; }
+  toast(okMsg); const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.'); return true;
+}
+async function pestSignSend(){
+  const P=peState(), ds=peDue(), cs=peCase(), g=P.sign||{}, res={};
+  ds.forEach(d=>{ const x=P.res[d.id]; if(x) res[d.id]=x; });
+  const body={caseId:cs?cs.id:'',points:cs?cs.devices.slice():[],efk:!cs&&!!(PE()||{}).efkDue,started:P.started||'',finished:peNow(),pmu:(PE()||{}).pmu||'',results:res,
+    carcasses:g.carc==='1'?String(g.carcHow||'').trim():'None found',draws:cs?'':String(g.draws||'').trim(),recs:cs?[]:(g.recs||[])};
+  // Each device's photos travel with the round; the record names them, device by device.
+  const photos=[], at={};
+  Object.keys(res).forEach(id=>{ peFiles(id).forEach(p=>{ (at[id]=at[id]||[]).push(photos.length); photos.push({file:p.file}); }); });
+  let c; try{ c=await makeCapture('pestround',{pest:body,note:'',outcome:cs?'Case visit signed':'Pest round signed'},photos); }
+  catch(e){ toast('Nothing was sent. ('+(e.message||e)+')'); return; }
+  Object.keys(at).forEach(id=>{ c.record.pest.results[id]=Object.assign({},c.record.pest.results[id],{photos:at[id].map(i=>c.files[i].name)}); });
+  toast(cs?'Case visit signed and sent.':'Round signed and sent.');
+  send(c).then(async ok=>{ st.outbox=await obAll().catch(()=>st.outbox); if(!ok) toast('Waiting for signal. It sends by itself.'); });
+  Object.keys(res).forEach(id=>{ const k=peFk(id); (PEF[k]||[]).forEach(x=>x.url&&URL.revokeObjectURL(x.url)); delete PEF[k]; }); pePhotosPut();
+  // Signed: this one is done. A case visit hands back to the round that was in progress; a round leaves any visit kept.
+  PE_OWN.forEach(k=>{ P[k]=({res:{},notes:{},sign:{},d:{}}[k]||(k==='fin'?false:'')); });
+  if(cs&&P.other){ peSwap(); P.other=null; }
+  peKeep(); go(cs?'pest':'due');
+}
+function peSaveDev(id,D){
+  const P=peState(), x=Object.assign({},D,{at:peNow()});
+  if(!x.c&&x.ik) x.c='C';   // only insects found: the paste is saved as clear (rule 10)
+  const nt=String(P.notes[id]||'').trim(); if(nt) x.note=nt; delete P.notes[id];
+  Object.keys(x).forEach(k=>{ if(x[k]===''||x[k]==null) delete x[k]; });
+  if(!P.started) P.started=x.at;
+  P.res[id]=x; P.d={}; P.changing=''; P.open=''; peKeep(); render();
+}
+function peAct(a,b){
+  const P=peState(), id=b.dataset.id, D=P.d||(P.d={});
+  const d=id?peAll().find(x=>x.id===id):null;
+  if(a==='pest'){ st.sheet=false; if(st.form&&st.form.back==='pest') st.form=null; return go('pest'); }
+  if(a==='pestLeave'){ if(P.caseId){ peSwap(); peKeep(); render(); return window.scrollTo(0,0); } return go('due'); }
+  if(a==='pestRow'){ P.open=P.open===id?'':id; P.d={}; P.changing=''; P.editing=''; P.ask=null; peKeep(); render();
+    if(P.open){ const r=app.querySelector('.r[data-act="pestRow"][data-id="'+CSS.escape(id)+'"]'); if(r) r.scrollIntoView({block:'start',behavior:'instant'}); } return; }
+  if(a==='pestClear'){ peSaveDev(id,{c:'C'}); return; }
+  if(a==='pestSave'){ if(peMissing(D)) return render(); peSaveDev(id,D); return; }
+  if(a==='pestChange'){ P.changing=id; P.d=Object.assign({},P.res[id]); delete P.d.at; return render(); }
+  if(a==='pestCode'){ const v=b.dataset.v; if(D.c===v) return render(); P.d=Object.assign({ik:D.ik,is:D.is,il:D.il},{c:v}); return render(); }
+  if(a==='pestRepick'){ P.d={ik:D.ik,is:D.is,il:D.il}; return render(); }
+  if(a==='pestLv'){ D.lv=b.dataset.v; return render(); }
+  if(a==='pestSp'){ D.sp=b.dataset.v; return render(); }
+  if(a==='pestWhy'){ D.why=b.dataset.v; return render(); }
+  if(a==='pestIk'){ D.ik=b.dataset.v; if(D.ik!=='IY'){ delete D.is; delete D.il; } return render(); }
+  if(a==='pestIs'){ D.is=b.dataset.v; return render(); }
+  if(a==='pestIl'){ D.il=b.dataset.v; return render(); }
+  if(a==='pestIkRepick'){ delete D.ik; delete D.is; delete D.il; return render(); }
+  if(a==='pestPhotoDel'){ const k=peFk(id), L=PEF[k]||[], x=L.splice(+b.dataset.i,1)[0]; if(x&&x.url) URL.revokeObjectURL(x.url); pePhotosPut(); return render(); }
+  if(a==='pestNote'){ P.notes[id]=''; peKeep(); render(); const t=document.getElementById('pe-note'); if(t) t.focus(); return; }
+  if(a==='pestEdit'&&d){ P.editing=id; P.ed={name:d.name,where:d.where||'',kind:d.kind,insect:!!d.insect,out:''}; return render(); }
+  if(a==='pestEditCancel'){ P.editing=''; P.ed={}; return render(); }
+  if(a==='pestEditSave'&&d){ const v=P.ed||{}, ch={};
+    if(String(v.name||'').trim()&&v.name.trim()!==d.name) ch.name=v.name.trim();
+    if(v.where!=null&&String(v.where).trim()!==(d.where||'')) ch.where=String(v.where).trim();
+    if(v.kind&&v.kind!==d.kind) ch.kind=v.kind;
+    if(!!v.insect!==!!d.insect) ch.insect=!!v.insect;
+    if(String(v.out||'').trim()&&!d.out) ch.out=String(v.out).trim();
+    P.editing=''; P.ed={};
+    if(!Object.keys(ch).length){ peKeep(); return render(); }
+    P.edits[id]=Object.assign({},P.edits[id]||{},ch,{on:flToday()}); peKeep(); render();
+    pestSend('pestchange',{pest:{device:id,change:ch},note:''},d.name+' changed. The desk files it.'); return; }
+  if(a==='pestBack'&&d){ P.edits[id]=Object.assign({},P.edits[id]||{},{back:true,out:undefined,on:flToday()}); P.editing=''; peKeep(); render();
+    pestSend('pestchange',{pest:{device:id,change:{back:true}},note:''},d.name+' is back on the round.'); return; }
+  if(a==='pestFault'&&d){ const f=blank('fault'); f.place=d.name+(d.where?' · '+d.where:''); f.back='pest'; st.form=f; return go('fault'); }
+  if(a==='pestCase'&&d){ P.ask=id; P.askv={name:(D.sp?peOf(PX().pests,D.sp):'Rodent')+', '+(d.where||d.name),fill:'bait',era:'',told:'',labels:false}; return render(); }
+  if(a==='pestAskFill'){ P.askv.fill=b.dataset.v; return render(); }
+  if(a==='pestAskCancel'){ P.ask=null; return render(); }
+  if(a==='pestAskSend'&&d){ const v=P.askv||{};
+    // The result found here is kept with the round, and the case goes to the desk at once.
+    if(!peMissing(D)) peSaveDev(id,D);
+    P.local[id]={fill:v.fill,name:v.name,caseId:'here'}; P.ask=null; peKeep(); render();
+    pestSend('pestcase',{pest:{name:v.name,pest:D.sp||'U',fill:v.fill,devices:[id],era:v.era,told:v.told,labels:!!v.labels},note:''},'Case opened and sent. '+(v.fill==='trap'?'Set the trap':'Put the bait in')+' at '+d.name+'.'); return; }
+  if(a==='pestVisit'){ peSwap(); if(P.caseId!==id){ P.res={}; P.notes={}; P.sign={}; P.started=''; P.d={}; } P.caseId=id; P.open=''; P.area=''; P.q=''; peKeep(); render(); return window.scrollTo(0,0); }
+  if(a==='pestFin'){ P.fin=true; P.sign=P.sign||{}; peKeep(); render(); return window.scrollTo(0,0); }
+  if(a==='pestUnfin'){ P.fin=false; peKeep(); return render(); }
+  if(a==='pestCarc'){ P.sign.carc=b.dataset.v; peKeep(); return render(); }
+  if(a==='pestRecAdd'){ const g=P.sign, t=String(g.rec||'').trim(); if(!t){ toast('Write the recommendation first.'); return; }
+    g.recs=(g.recs||[]).concat([{t:t,pri:+(g.pri||2)}]); g.rec=''; peKeep(); return render(); }
+  if(a==='pestRecDel'){ P.sign.recs.splice(+b.dataset.i,1); peKeep(); return render(); }
+  if(a==='pestSign'){ pestSignSend(); return; }
+  if(a==='pestPickOpen'){ P.pick=b.dataset.k; return render(); }
+  if(a==='pestPickClose'){ P.pick=null; return render(); }
+  if(a==='pestPick'){ if(b.dataset.k==='order') P.order=b.dataset.v; else P.area=b.dataset.v; P.pick=null; P.open=''; peKeep(); render(); return window.scrollTo({top:0,behavior:'instant'}); }
+  return false;
+}
+// Typing keeps the caret: what is typed goes into the state without drawing the screen again.
+app.addEventListener('input',e=>{
+  const t=e.target; if(!st.pe||st.screen!=='pest') return;
+  const P=st.pe;
+  if(t.hasAttribute('data-peq')){ P.q=t.value; peKeep(); const q=P.q, ds=peDue();
+    ds.forEach(d=>{ const r=app.querySelector('.r[data-act="pestRow"][data-id="'+CSS.escape(d.id)+'"]'); if(r){ const on=(!P.area||peArea(d)===P.area)&&wordHit(d.name+' '+(d.where||''),q); r.classList.toggle('hide',!on); const o=r.nextElementSibling; if(o&&o.classList.contains('fopen')) o.classList.toggle('hide',!on); } });
+    const g=app.querySelector('[data-peg]'); if(g) g.textContent=q?ds.filter(d=>wordHit(d.name+' '+(d.where||''),q)).length+' of '+ds.length+' devices':'Each is kept as it is saved'; return; }
+  if(t.dataset.penote!=null){ P.notes[t.dataset.penote]=t.value; peKeep(); return; }
+  if(t.dataset.pesign){ P.sign[t.dataset.pesign]=t.value; peKeep(); if(t.dataset.pesign==='carcHow'){ const b=app.querySelector('[data-act="pestSign"]'); if(b) b.disabled=!String(t.value).trim(); } return; }
+  const k=t.dataset.pein; if(!k) return;
+  const v=t.type==='checkbox'?t.checked:t.value;
+  if(k.indexOf('e-')===0){ P.ed=Object.assign({},P.ed,{[k.slice(2)]:v}); return; }
+  if(k.indexOf('a-')===0){ P.askv=Object.assign({},P.askv,{[k.slice(2)]:v}); const s=app.querySelector('[data-act="pestAskSend"]'), w=P.askv; if(s) s.disabled=!(w.name&&w.fill&&w.era&&w.told&&w.labels); return; }
+  P.d=Object.assign({},P.d,{[k]:v});
+});
+app.addEventListener('change',e=>{
+  const t=e.target; if(!st.pe||st.screen!=='pest'||!t.dataset) return;
+  if(t.dataset.pefile){ const k=peFk(t.dataset.pefile); PEF[k]=(PEF[k]||[]).concat([...(t.files||[])].map(f=>({file:f,url:URL.createObjectURL(f)}))); t.value=''; pePhotosPut(); const y=window.scrollY; render(); window.scrollTo(0,y); return; }
+  const k=t.dataset.pein, v=t.type==='checkbox'?t.checked:t.value;
+  if(t.dataset.pesign){ st.pe.sign[t.dataset.pesign]=t.value; peKeep(); return; }
+  if(!k) return;
+  if(k.indexOf('e-')===0){ st.pe.ed=Object.assign({},st.pe.ed,{[k.slice(2)]:v}); return; }
+  if(k.indexOf('a-')===0){ st.pe.askv=Object.assign({},st.pe.askv,{[k.slice(2)]:v}); const s=app.querySelector('[data-act="pestAskSend"]'), w=st.pe.askv; if(s) s.disabled=!(w.name&&w.fill&&w.era&&w.told&&w.labels); return; }
+});
+
+// ── Report a Sighting (DEC-0466 rule 4): shaped as Report a Fault; a photo and a place are enough. A catch on a bedroom
+// insect monitor is reported here, with the room (rule 3). It files in Cases and Sightings on the desk.
+function vSighting(){
+  const F=st.form, where=F.point||String(F.place||'').trim(), pics=F.photos.length>0, X=PX();
+  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Sighting','Take a photo of it, or of the board. Say where. It goes to the desk’s sighting log.')
+    +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
+    +grp('What you saw')+'<div class="list" role="radiogroup" aria-label="What you saw">'+peFold(X.sightWhat,F.what).map(x=>peRing(F.what===x[0],x[1],'sgWhat',x[0])).join('')+'</div>'
+    +(F.what?'<div class="row2"><button class="lnk" data-act="sgWhat" data-v="">Choose Another</button></div>':'')
+    +grp('Where it was')+'<div class="list" role="radiogroup" aria-label="Seen, or on a monitor">'+peRing(F.from!=='monitor','Seen','sgFrom','seen')+peRing(F.from==='monitor','On a bedroom insect monitor','sgFrom','monitor')+'</div>'
+    +(F.from==='monitor'?'<div class="field"><label for="sg-room">Room</label><input id="sg-room" type="text" data-in="room" value="'+esc(F.room||'')+'"></div>':'')
+    +'<div class="field"><label for="note">Anything to add <span class="opt-w">(optional)</span></label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
+    +whereField({suggest:true})+'<div style="height:24px"></div></div>'
+    +sendBtn('Send',(pics||F.what)&&(where||(F.from==='monitor'&&String(F.room||'').trim())),!(pics||F.what)?'Take a photo, or say what you saw.':'Say where it was, or the room.');
+}
 
 // ── The flush round (job 015, slices FX and FY; DEC-0374, DEC-0413 to DEC-0415) ───────────────────────────────────
 // A list of the outlets on the round, each by its last flush: green within 5 days, amber on days 6 and 7, red after or
@@ -4848,6 +5209,9 @@ async function doSend(){
   if(F.kind==='fault'){ fields.group=F.group||'maintenance';
     // A photo with no words: the desk titles the job from this (its title is the words, else the outcome).
     if(!fields.note&&F.photos.length) fields.outcome='Fault seen in the photo'; }
+  if(F.kind==='sighting'){ fields.pest={what:F.what||'',from:F.from==='monitor'?'monitor':'seen',room:String(F.room||'').trim()};
+    if(!F.point&&!fields.place&&fields.pest.room) fields.place='Room '+fields.pest.room;
+    if(!fields.note&&F.photos.length&&!F.what) fields.outcome='Sighting in the photo'; }
   if(F.kind==='reading'){
     const p=F.point?pointById(F.point):meterAsPoint(F.meter), r=p.reading;
     // Named figures (Work 015 plan, D2b). The desk's reader takes them from v458.
@@ -4886,7 +5250,7 @@ async function doSend(){
   // round shows what was sent, sending then sent, and the outlet's row keeps it for the visit.
   const fromFl=F.back==='flush'&&F.flId&&st.fl, said=String(F.note||'').trim();
   if(fromFl){ st.fl.sent=st.fl.sent||{}; st.fl.sent[F.flId]={at:Date.now(),text:said,state:'sending'}; }
-  go(F.back==='flush'?'flush':'due');
+  go(F.back==='flush'||F.back==='pest'?F.back:'due');
   const ok=await send(c);
   if(fromFl){ const x=st.fl.sent[F.flId]; if(x){ x.state=ok?'sent':(c.errCode==='refused'?'refused':'waiting'); if(st.screen==='flush') render(); } }
   st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;

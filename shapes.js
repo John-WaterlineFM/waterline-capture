@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v595.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v598.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -31,16 +31,47 @@ const WFM_CAPTURE_SHAPE={
     chatgroup:  {direction:'message',     label:'Chat group'},
     // Your own message edited or deleted (DEC-0353 rule 5, DEC-0354 rule 4): the change is its own record, filed onto the
     // message; the words as sent stay.
-    msgchange:  {direction:'message',     label:'Message changed'}
+    msgchange:  {direction:'message',     label:'Message changed'},
+    // The pest round (DEC-0465): a signed round or case visit, a case opened at a point, a device's settings changed on
+    // the round, and a sighting (DEC-0466 rules 3 and 4). Each carries its body in `pest`.
+    pestround:  {direction:'proof',       label:'Pest round'},
+    pestcase:   {direction:'operational', label:'Pest case opened'},
+    pestchange: {direction:'setup',       label:'Pest device changed'},
+    sighting:   {direction:'operational', label:'Pest sighting'}
   },
   // A tag's serial as Waterline keeps it: upper case, two hex digits a pair, colons between (DEC-0345).
   // '' when it is not a serial. Read by the desk and the phone alike.
   serialOf:function(s){ var h=String(s||'').toUpperCase().replace(/[^0-9A-F]/g,''); return (h.length>=8&&h.length%2===0)?h.match(/../g).join(':'):''; },
   // Every field of version 1. Required: format, version, id, kind, taken, person.
-  fields:['format','version','id','kind','taken','person','change','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','chatGroup','pauses','early','allOk','noScan','flush','signedIn'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
+  fields:['format','version','id','kind','taken','person','change','account','place','loc','note','outcome','reading','duty','plan','device','files','round','started','walkFor','scans','point','group','record','answers','unscanned','complete','signedOff','job','act','msgKind','flag','assign','secs','entry','check','parts','permit','finish','sig','stopped','serial','notice','remind','ref','pos','handover','msg','chat','chatGroup','pauses','early','allOk','noScan','flush','signedIn','pest'], // Why a walk was stopped before every point was scanned or named (DEC-0362 rule 2). Other takes a sentence.
   earlyWhy:[{id:'incident',label:'Called to an incident'},{id:'time',label:'Out of time'},{id:'access',label:'Area not accessible'},{id:'other',label:'Something else'}],
   // Why a walk signed off with no point scanned has none (DEC-0372 rule 3): its lines are done but Claimed. Other takes a sentence.
   noScanWhy:[{id:'battery',label:'Phone died'},{id:'nophone',label:'Forgot the phone'},{id:'tags',label:'Tags would not scan'},{id:'other',label:'Something else'}],
+  // The pest round's words and codes, set once for the desk and the phone (DEC-0465 rule 8; Law 3). What a device offers
+  // follows what is in it (rule 4); the trap codes are CRRU Ireland's (Rodent Pest Management Records, 2018); Low and High
+  // are his (rule 9); Could not reach is on every device (rule 11). A case visit is due every earlyDays for the first
+  // earlyFor days after bait goes down, then every thenDays, with the evaluation at evalDays (the Harmonix label, IE/BPA 70695).
+  pest:{
+    kinds:{ext:'Outside bait point',int:'Inside monitor',efk:'Fly unit',trap:'Trap'},
+    fills:{paste:'Monitoring paste',bait:'Toxic bait, under a case',trap:'Trap, under a case',efk:'Glue board and tube'},
+    results:{
+      paste:[['C','Clear'],['E','Paste eaten'],['S','Droppings or other signs'],['N','Non-target animal'],['P','Paste replaced'],['D','Damaged'],['M','Missing']],
+      bait:[['BT','Bait checked'],['D','Damaged'],['M','Missing']],
+      trap:[['T0','Set, nothing caught'],['TE','Set off, empty'],['TT','Rat or mouse caught'],['TN','Non-target animal caught']],
+      efk:[['K0','No catch'],['K1','A few on the board'],['K2','Many on the board'],['R','Tube changed'],['D','Damaged']],
+      insect:[['IN','Nothing on the board'],['IY','Insects on the board'],['IB','Board replaced'],['ID','Damaged or missing']]},
+    reach:['X','Could not reach'],
+    reachWhy:[['blocked','Blocked'],['flooded','Flooded'],['locked','Locked'],['other','Something else']],
+    pests:[['M','Mouse'],['R','Rat'],['U','Not sure']],
+    insects:[['C','Cockroach'],['A','Ant'],['F','Fly'],['B','Bed bug'],['O','Other or not sure']],
+    levels:[['L','Low','a little paste eaten, or a few signs'],['H','High','most of the paste gone, or heavy signs']],
+    insectLevels:[['L','Low','one or a few'],['H','High','many']],
+    calm:['C','P','T0','K0','R','BT','IN','IB'],
+    activity:['E','S','TT'],
+    priority:{1:'urgent',2:'important, scheduled',3:'advisory'},
+    sightWhat:[['rat','A rat'],['mouse','A mouse'],['droppings','Droppings or gnawing'],['cockroach','Cockroaches'],['bedbug','Bed bugs'],['flies','Flies'],['ants','Ants'],['other','Something else']],
+    visit:{earlyDays:2,earlyFor:7,thenDays:7,evalDays:35},
+    product:'Harmonix Rodent Paste, IE/BPA 70695'},
   required:['format','version','id','kind','taken','person'],
   // Records 7.5: an observational photo proves presence, time and person, and nothing else. Say exactly that.
   photoSays:'This photo proves who was there, where and when, and nothing else.',
