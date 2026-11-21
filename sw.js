@@ -5,7 +5,9 @@ const KEEP = 'waterline-phone-8';
 // The scanner's libraries (slice SP), pinned by version so a kept copy never goes stale: kept apart from the page's
 // own files, fetched with CORS so a failure is never kept, and served from the phone once kept.
 const LIBS = 'waterline-libs-1';
-const LIB_URLS = ['https://cdn.jsdelivr.net/npm/jscanify@1.4.3/src/jscanify.js', 'https://cdn.jsdelivr.net/npm/jscanify@1.4.3/src/opencv.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'];
+const LIB_URLS = ['https://cdn.jsdelivr.net/npm/jscanify@1.4.3/src/jscanify.js', 'https://cdn.jsdelivr.net/npm/jscanify@1.4.3/src/opencv.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+  // The photo editor's (DEC-0467 rule 3), the same way.
+  'https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js', 'https://cdn.jsdelivr.net/npm/tui-code-snippet@1.5.2/dist/tui-code-snippet.min.js', 'https://cdn.jsdelivr.net/npm/tui-image-editor@3.15.3/dist/tui-image-editor.min.js'];
 const FILES = ['./', 'index.html', 'shapes.js', 'manifest.webmanifest', 'push/icon-192.png', 'push/icon-512.png', 'waterline-logo.png',
   // The wallpaper (DEC-0410), one copy per ground.
   'wallpaper-light.webp', 'wallpaper-night.webp', 'wallpaper-chat-light.webp'].concat(

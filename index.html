@@ -354,8 +354,8 @@ body.t-ni .brand{background:#FFFFFF;border-radius:8px;padding:8px}
    page's own text colour on its cream, so it reads as a passing note in every theme. */
 /* A pop-up (DEC-0369 rule 2; Design 9.10): the white sheet with the theme's words, bottom-left, its foot clear of Capture's
    top (the bar is 80 and Capture rises 24 above it), or 16 above a screen's own foot bar. Never black, never over Capture. */
-.toast{position:fixed;left:16px;transform:translateY(8px);width:max-content;max-width:calc(100% - 32px);bottom:calc(120px + env(safe-area-inset-bottom));z-index:30;background:var(--white);color:var(--text);border:1px solid var(--border);box-shadow:0 6px 18px rgba(13,31,45,.22);border-radius:16px;min-height:44px;padding:10px 16px;display:flex;align-items:center;font:500 15px/1.4 'DM Sans',sans-serif;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
-.toast.on{opacity:1;transform:translateY(0)}
+.toast{position:fixed;left:50%;transform:translate(-50%,8px);text-align:center;justify-content:center;width:max-content;max-width:calc(100% - 32px);bottom:calc(120px + env(safe-area-inset-bottom));z-index:30;background:var(--white);color:var(--text);border:1px solid var(--border);box-shadow:0 6px 18px rgba(13,31,45,.22);border-radius:16px;min-height:44px;padding:10px 16px;display:flex;align-items:center;font:500 15px/1.4 'DM Sans',sans-serif;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 /* Sending on Capture (DEC-0369 rule 1): a turning spiral while it sends, then the arrow lifts off with one ring. */
 .nv.cap .capb{position:relative}
 .nv.cap .capb .sp{width:30px;height:30px;animation:spR 1.1s linear infinite}
@@ -544,12 +544,30 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .th .mk{position:absolute;bottom:-8px;right:-8px;width:44px;height:44px;display:grid;place-items:center;color:var(--accentD)}
 .th .mk i{display:grid;place-items:center;width:32px;height:32px;border-radius:16px;background:var(--white);border:1px solid var(--accentD)}
 .th .mk svg{width:18px;height:18px}
-.th.sk{background:var(--white);border:1px solid var(--accentD);color:var(--accentD)}
+.th.sk{background:var(--white);border:1px solid var(--accentD);color:var(--accentD);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 13px Outfit}
+.tk{display:contents}
+.fphoto .tk{display:flex;gap:8px;width:100%}
+.fphoto .thumbs .tk .th.add{flex:1;width:auto}
+.fphoto .thumbs .th.sk{height:120px}
+.comp .th .mk{right:auto;left:-8px}
+.ds.mu .dfoot .lnks{min-height:44px;align-items:center}
 .ds.mu{z-index:30}
 .ds.mu .stage{touch-action:none}
 .ds.mu .mued{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.ds.mu .looks button{gap:8px}
-.ds.mu .looks svg{width:20px;height:20px}
+.ds.mu .dtop .eb{flex:1}
+.ds.mu .dtop .ok{width:44px;height:44px;display:grid;place-items:center;margin-right:8px}
+.ds.mu .dtop .ok i{display:grid;place-items:center;width:36px;height:36px;border-radius:18px;background:var(--accentOnInk);color:var(--zBtnText)}
+.ds.mu .mt{display:flex;align-items:center;justify-content:space-between}
+.ds.mu .mt .g{display:flex;align-items:center}
+.ds.mu .mt .g.t{gap:8px}
+.ds.mu .tb{width:44px;height:44px;border-radius:22px;display:grid;place-items:center;color:var(--accentOnInk)}
+.ds.mu .tb.on{background:var(--accentOnInk);color:var(--zBtnText)}
+.ds.mu .dfoot .tb.gd.on{background:transparent;color:var(--accentOnInk);box-shadow:inset 0 0 0 2px var(--accentOnInk)}
+.ds.mu .dfoot .cb,.ds.mu .dfoot .tb{background:transparent;border:0;outline-offset:2px}
+.ds.mu .dfoot .tb.on{background:var(--accentOnInk)}
+.ds.mu .cb{width:44px;height:44px;display:grid;place-items:center}
+.ds.mu .cb i{width:24px;height:24px;border-radius:50%;border:2px solid var(--onInk);box-sizing:border-box}
+.ds.mu .cb.on i{width:30px;height:30px;box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--accentOnInk)}
 .pv{position:fixed;inset:0;z-index:25;background:var(--ink);display:flex;flex-direction:column}
 .pv .ib{color:var(--accentOnInk);margin:calc(4px + env(safe-area-inset-top)) 4px 0}
 .pv img{flex:1;min-height:0;width:100%;object-fit:contain}
@@ -1316,7 +1334,7 @@ const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}}
 
 // One icon set on every screen (John, 20 Oct 2026; DEC-0303 rule 8): Lucide (lucide.dev, ISC licence), each
 // icon's own path data on its 24px grid at one stroke. The names on the left are what this page calls them.
-const LUCIDE={'pen-line':'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>','move-up-right':'<path d="M13 5H19V11"/><path d="M19 5L5 19"/>','circle':'<circle cx="12" cy="12" r="10"/>','undo-2':'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>','eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+const LUCIDE={'grid-3x3':'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>','signature':'<path d="m21 17-2.156-1.868A.5.5 0 0 0 18 15.5v.5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1c0-2.545-3.991-3.97-8.5-4a1 1 0 0 0 0 5c4.153 0 4.745-11.295 5.708-13.5a2.5 2.5 0 1 1 3.31 3.284"/><path d="M3 21h18"/>','pen-line':'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>','move-up-right':'<path d="M13 5H19V11"/><path d="M19 5L5 19"/>','circle':'<circle cx="12" cy="12" r="10"/>','undo-2':'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>','eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
 'circle-alert':'<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
 'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
   'arrow-up':'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
@@ -2411,7 +2429,7 @@ function jBar(F){
   const w=!!(String(F.note||'').trim()||F.photos.length);
   return '<div class="jbar comp'+(w?' w':'')+'">'+err
     +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
-    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label><button class="ib" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button>'
+    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label><button class="ib" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('signature')+'</button>'
     +'<div class="fw">'+ktag('jnote')+'<textarea id="jnote" rows="1" data-in="note" placeholder="Message" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea></div>'
     +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="rcan" data-act="vdiscard">Cancel</button></div>'
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
@@ -2936,7 +2954,7 @@ function vFinish(){
     +(nw?'<div class="field" style="padding:16px 0 0"><label for="t5found">'+esc(nw.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')
     +'<div class="field" style="padding:20px 0 0"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
     +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'dphotos',i)+'<button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
-    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label><button class="th sk" data-act="muSketch" data-l="dphotos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button></div></div>'
+    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label><button class="th sk" data-act="muSketch" data-l="dphotos" aria-label="Draw a sketch">'+ICO('signature')+'Sketch</button></div></div>'
     +'<div class="field" style="padding:16px 0 0"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
     +'<div style="margin:0 -16px">'+partsPart(F,'Parts and materials used',true)+'</div>'
     +'<div class="field sigw" style="padding:20px 0 0"><span class="fl" id="t5sigl">Sign with your finger</span><div class="sigp"><canvas id="t5sig" role="img" aria-labelledby="t5sigl"></canvas><span class="who">'+esc((st.walker||'')+(D.strokes.length?' · '+hm(D.at||new Date().toISOString()):''))+'</span>'
@@ -3770,8 +3788,10 @@ function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document
 // libraries are; it reports nothing to its maker (usageStatistics off). The marked-up photo takes the photo's place: the
 // unmarked one is not kept (rule 4). A sketch is the same editor on a blank page.
 const MARK_LIB=['https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js','https://cdn.jsdelivr.net/npm/tui-code-snippet@1.5.2/dist/tui-code-snippet.min.js','https://cdn.jsdelivr.net/npm/tui-image-editor@3.15.3/dist/tui-image-editor.min.js'];
-const MU_TOOLS=[['pen','Line','pen-line'],['arrow','Arrow','move-up-right'],['circle','Circle','circle']];
-const MU_RED='#E5281E';
+const MU_TOOLS=[['pen','Draw a line','pencil'],['arrow','Draw an arrow','move-up-right'],['circle','Draw a circle','circle']];
+// Not every colour shows on every photo (John, 21 Nov 2026): four to choose from, red first.
+// White is left off a sketch: it cannot be seen on the white page.
+const MU_COLS=[['Red','#E5281E'],['Yellow','#FFD60A'],['White','#FFFFFF'],['Black','#111111']];
 let _muLibs=null, _mu=null;
 function muLibs(){ if(_muLibs) return _muLibs;
   _muLibs=(window.tui&&tui.ImageEditor?Promise.resolve():MARK_LIB.reduce((p,u)=>p.then(()=>dsScript(u)),Promise.resolve())).catch(e=>{ _muLibs=null; throw e; });
@@ -3782,28 +3802,36 @@ const muBtn=(p,l,i)=>muCan(p)?'<button class="mk" data-act="muOpen" data-l="'+l+
 const muList=(F,l)=>l==='dphotos'?(F.dphotos=F.dphotos||[]):(F.photos=F.photos||[]);
 const muMarked=()=>!!(_mu&&_mu.ed&&!_mu.ed.isEmptyUndoStack());
 function muFoot(){ const M=_mu, f=M.el.querySelector('.dfoot'); if(!f) return;
-  f.innerHTML='<div class="looks" role="radiogroup" aria-label="What to draw">'+MU_TOOLS.map(t=>'<button role="radio" aria-checked="'+(M.tool===t[0])+'" class="'+(M.tool===t[0]?'on':'')+'" data-mu="tool" data-v="'+t[0]+'">'+ICO(t[2])+t[1]+'</button>').join('')+'</div>'
-    +(M.ask?'<div class="lnks" role="alert"><span>Close and lose the marks?</span><button class="lnk" data-mu="askYes">Lose Them</button><button class="lnk" data-mu="askNo">Keep Drawing</button></div>':'')
-    +'<div class="two"><button class="gh" data-mu="undo">'+ICO('undo-2')+'Undo</button><button class="btn" data-mu="done">Done</button></div>'; }
+  // The question takes the tools' place, so the photo does not move under the eye.
+  f.innerHTML=M.ask?'<div class="lnks" role="alert"><span>Close and lose the marks?</span><button class="lnk" data-mu="askYes">Lose Them</button><button class="lnk" data-mu="askNo">Keep Drawing</button></div>'
+    :'<div class="mt"><div class="g t" role="radiogroup" aria-label="What to draw">'+MU_TOOLS.map(t=>'<button role="radio" aria-checked="'+(M.tool===t[0])+'" class="tb'+(M.tool===t[0]?' on':'')+'" data-mu="tool" data-v="'+t[0]+'" aria-label="'+t[1]+'">'+ICO(t[2])+'</button>').join('')+'</div>'
+    +(M.i==null?'<button class="tb gd'+(M.grid?' on':'')+'" data-mu="grid" aria-pressed="'+!!M.grid+'" aria-label="Grid on the page">'+ICO('grid-3x3')+'</button>':'')
+    +'<div class="g" role="radiogroup" aria-label="Colour">'+MU_COLS.filter(c=>M.i!=null||c[0]!=='White').map(c=>'<button role="radio" aria-checked="'+(M.col===c[1])+'" class="cb'+(M.col===c[1]?' on':'')+'" data-mu="col" data-v="'+c[1]+'" aria-label="'+c[0]+'"><i style="background:'+c[1]+'"></i></button>').join('')+'</div></div>'; }
 function muDraw(stage,say){ const M=_mu, sk=M.i==null;
-  const top='<div class="dtop"><button class="ib" data-mu="close" aria-label="Close">'+I.close+'</button><span class="eb">'+(sk?'Sketch':'Mark Up the Photo')+'</span></div>';
+  const top='<div class="dtop"><button class="ib" data-mu="close" aria-label="Close">'+I.close+'</button><span class="eb">'+(sk?'Sketch':'Mark Up the Photo')+'</span>'+(stage==='edit'?'<button class="ib" data-mu="undo" aria-label="Undo">'+ICO('undo-2')+'</button><button class="ok" data-mu="done" aria-label="Done"><i>'+I.tick+'</i></button>':'')+'</div>';
   if(stage!=='edit'){ M.el.innerHTML=top+'<div class="stage"><div class="wait" role="status">'+(stage==='wait'?ICO('pen-line'):'')+'<span>'+esc(say)+'</span></div></div>'; return; }
   M.el.innerHTML=top+'<p class="say">'+(sk?'Draw with a finger.':'Draw on the photo with a finger.')+'</p><div class="stage"><div class="mued"></div></div><div class="dfoot"></div>'; muFoot(); }
+// A sketch's page: white, or white with a faint grid of squares (John, 21 Nov 2026), a heavier line every fifth.
+function muPage(grid){ const c=document.createElement('canvas'); c.width=1200; c.height=1600; const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,1200,1600);
+  if(grid) for(let k=1;k<32;k++){ g.fillStyle=k%5?'#E4EEF4':'#C9D9E4'; const w=k%5?2:3; if(k<24) g.fillRect(k*50-w/2,0,w,1600); g.fillRect(0,k*50-w/2,1200,w); }
+  return c; }
+// The grid goes on and off under what is already drawn: the page's picture is swapped, the marks stay.
+function muGrid(){ const M=_mu, G=M.ed._graphics; M.grid=!M.grid; G.canvasImage.setElement(muPage(M.grid)); G.getCanvas().renderAll(); muFoot(); }
 function muTool(t){ const M=_mu, ed=M.ed; M.tool=t; ed.stopDrawingMode();
-  if(t==='pen') ed.startDrawingMode('FREE_DRAWING',{width:M.w,color:MU_RED});
-  if(t==='arrow') ed.startDrawingMode('LINE_DRAWING',{width:M.w,color:MU_RED,arrowType:{tail:'chevron'}});
-  if(t==='circle'){ ed.startDrawingMode('SHAPE'); ed.setDrawingShape('circle',{fill:'transparent',stroke:MU_RED,strokeWidth:M.w}); }
+  if(t==='pen') ed.startDrawingMode('FREE_DRAWING',{width:M.w,color:M.col});
+  if(t==='arrow') ed.startDrawingMode('LINE_DRAWING',{width:M.w,color:M.col,arrowType:{tail:'chevron'}});
+  if(t==='circle'){ ed.startDrawingMode('SHAPE'); ed.setDrawingShape('circle',{fill:'transparent',stroke:M.col,strokeWidth:M.w}); }
   muFoot(); }
 async function muOpen(l,i){
   if(_mu||!st.form) return;
   const el=document.createElement('div'); el.className='ds mu'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label',i==null?'Draw a sketch':'Mark up the photo');
-  const M=_mu={l:l,i:i,el:el,tool:'pen',ask:false,ed:null,form:st.form,w:12,tmp:''};
+  const M=_mu={l:l,i:i,el:el,tool:'pen',col:MU_COLS[0][1],ask:false,ed:null,form:st.form,w:12,tmp:''};
   el.addEventListener('click',muClick); document.body.appendChild(el);
   muDraw('wait',window.tui&&tui.ImageEditor?'Opening…':'Getting the editor ready. The first time takes a few seconds; after that it works with no signal.');
   try{
     await muLibs(); if(_mu!==M) return;
     let src;
-    if(i==null){ const c=document.createElement('canvas'); c.width=1200; c.height=1600; const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,1200,1600); src=c.toDataURL('image/png'); }
+    if(i==null) src=muPage(false).toDataURL('image/png');
     else{ const p=muList(M.form,l)[i], b=await shrink(p.file); if(_mu!==M) return; M.tmp=URL.createObjectURL(b); src=M.tmp; }
     muDraw('edit');
     const stg=el.querySelector('.stage'), ed=new tui.ImageEditor(el.querySelector('.mued'),{cssMaxWidth:stg.clientWidth-32,cssMaxHeight:stg.clientHeight,usageStatistics:false});
@@ -3833,6 +3861,8 @@ function muClick(e){ const b=e.target.closest('[data-mu]'), M=_mu; if(!b||!M) re
   if(a==='close') return M.ed?(M.ask?muClose():muBack()):muClose();
   if(!M.ed) return;
   if(a==='tool') return muTool(b.dataset.v);
+  if(a==='col'){ M.col=b.dataset.v; return muTool(M.tool); }
+  if(a==='grid') return muGrid();
   if(a==='undo'){ if(muMarked()) M.ed.undo(); return; }
   if(a==='askNo'){ M.ask=false; return muFoot(); }
   if(a==='askYes') return muClose();
@@ -3842,8 +3872,8 @@ function photosField(label,opt,accept){
   const F=st.form;
   return '<div class="field"><span class="fl">'+esc(label)+(opt?' <span class="opt-w">(optional)</span>':'')+'</span><div class="thumbs">'
     +F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+(p.url?'':esc(extOf(p.file,p.file.name).toUpperCase()))+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove"><i>'+I.close+'</i></button></div>').join('')
-    +'<label class="th add" aria-label="Add">'+(accept?I.clip:I.photo)+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
-    +(accept||opt?'':'<button class="th sk" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button>')
+    +'<span class="tk"><label class="th add" aria-label="Add">'+(accept?I.clip:I.photo)+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
+    +(accept||opt?'':'<button class="th sk" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('signature')+'Sketch</button>')+'</span>'
     +'</div></div>';
 }
 // Where (DEC-0479 rule 1): a tag scanned, or one of the site's places found by typing a few letters. A place not on the
