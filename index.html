@@ -2393,8 +2393,8 @@ function jBar(F){
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
 }
 // A pest case's job (DEC-0480): the case's clock says when the next visit is due (DEC-0465, DEC-0478 rule 3), said once.
-function jPestDue(j){ const c=j.pest; if(!c||c.closed||!c.due) return null; const d=Math.round((new Date(flToday()+'T12:00:00')-new Date(c.due+'T12:00:00'))/864e5);
-  return {late:d>0?d:0,say:(c.kind==='insect'?'Next follow-up ':'Next visit ')+(d>0?'was due ':d===0?'due today, ':'due in '+(-d)+(d===-1?' day, ':' days, '))+day(c.due+'T12:00:00')+(c.kind==='insect'?'':' · day '+c.day+' of 35')}; }
+function jPestDue(j){ const c=j.pest; if(!c||c.closed) return null; if(!c.due) return c.visits?null:{late:0,say:'No visit yet'}; const d=Math.round((new Date(flToday()+'T12:00:00')-new Date(c.due+'T12:00:00'))/864e5);
+  return {late:d>0?d:0,say:(c.kind==='insect'?'Next follow-up ':'Next visit ')+(d>0?'was due ':d===0?'due today, ':'due in '+(-d)+(d===-1?' day, ':' days, '))+day(c.due+'T12:00:00')+(c.kind==='insect'||!c.points?'':' · day '+c.day+' of 35')}; }
 function vJob(){
   const j=jobById(st.form.id); if(!j) return '<div class="body">'+formZone(st.place||'due','Job','No Longer on the Phone','This job is no longer in the site details from the desk. Done jobs stay '+doneDays()+' days; older ones are on the desk’s Jobs page.')+'</div>';
   const F=st.form; if(!F.kind) F.kind='Note'; F.photos=F.photos||[]; if(F.note==null) F.note='';
@@ -2461,19 +2461,21 @@ function jpVisitSheet(){
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Record a visit"><div class="sh"><b>Record a Visit</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<div class="field'+(bad('pvw')?' bad':'')+'"><label for="pvw">What was done</label><textarea id="pvw" data-in="pvw" placeholder="Second spray, or a monitor inspection">'+esc(F.pvw||'')+'</textarea>'+(bad('pvw')?'<div class="help err" role="alert">Say what was done at the visit.</div>':'')+'</div>'
     +'<div class="field"><label for="pvf">What was found <span class="opt-w">(optional)</span></label><textarea id="pvf" data-in="pvf">'+esc(F.pvf||'')+'</textarea></div>'
+    +(jobById(F.id)&&jobById(F.id).pest&&jobById(F.id).pest.kind==='insect'?'<div class="field"><label for="pvb">Who did it</label><input id="pvb" type="text" data-in="pvb" value="'+esc(F.pvb||'')+'"><div class="help">In-house, or the contractor\u2019s name.</div></div>'
+      +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-in="pvo"'+(F.pvo?' checked':'')+'><span style="min-width:0;white-space:normal">The room is out of use until the case closes</span></label></div>':'')
     +'<div class="field'+(bad('pvn')?' bad':'')+'"><label for="pvn">Next follow-up</label><input id="pvn" type="date" style="min-height:44px" min="'+flToday()+'" data-in="pvn" value="'+esc(F.pvn||'')+'">'
     +(bad('pvn')?'<div class="help err" role="alert">Set the date of the next follow-up. If the room is clear, close the case instead, under More.</div>':'<div class="help">Photos and notes go in the message bar, as on any job.</div>')+'</div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpVisitSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Record the Visit</button></div></div>';
 }
 // Close the Case (DEC-0478 rules 2 and 3, DEC-0480 rule 4): the case's own closing questions; the job closes with it.
 function jpCloseSheet(){
-  const F=st.form, j=jobById(F.id), ins=!!(j&&j.pest&&j.pest.kind==='insect'), t=F.pct;
+  const F=st.form, j=jobById(F.id), ins=!!(j&&j.pest&&(j.pest.kind==='insect'||!j.pest.points)), t=F.pct;
   const bad=k=>t&&!String(F[k]||'').trim();
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Close the case"><div class="sh"><b>Close the Case</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<div class="field'+(bad('pcd')?' bad':'')+'"><label for="pcd">'+(ins?'Found clear on':'Bait or traps taken up on')+'</label><input id="pcd" type="date" style="min-height:44px" max="'+flToday()+'" data-in="pcd" value="'+esc(F.pcd||'')+'">'
     +(bad('pcd')?'<div class="help err" role="alert">'+(ins?'Set the date the room was found clear.':'Set the day the bait or traps were taken up.')+'</div>':'')+'</div>'
     +'<div class="field'+(bad('pcr')?' bad':'')+'"><label for="pcr">What let them in, and what stops it coming back</label><textarea id="pcr" data-in="pcr">'+esc(F.pcr||'')+'</textarea>'
-    +(bad('pcr')?'<div class="help err" role="alert">Say what let them in, and what stops it coming back.</div>':'<div class="help">'+(ins?'The room goes back into use.':'The points go back to monitoring paste.')+' The job closes with the case.</div>')+'</div>'
+    +(bad('pcr')?'<div class="help err" role="alert">Say what let them in, and what stops it coming back.</div>':'<div class="help">'+(j&&j.pest&&j.pest.kind==='insect'?'The room goes back into use.':ins?'Nothing was put in at the points.':'The points go back to monitoring paste.')+' The job closes with the case.</div>')+'</div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpCloseSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Close the Case</button></div></div>';
 }
 // Start, Pause and Stop (DEC-0360 rule 7): always in the same three places. Teal is what can be pressed, the filled one is
@@ -2501,7 +2503,7 @@ function jMoreSheet(){
   const j=jobById(st.form.id); if(!j) return ''; const S0=jState(j), fl=S0.fl, n=holders(j).length;
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
-    +(j.pest&&!S0.done&&!S0.pD&&st.walker&&inGroup(j)?v('jpClose','tick','Close the Case',j.pest.kind==='insect'?'When the room is found clear':'When the bait or traps are taken up'):'')
+    +(j.pest&&!S0.done&&!S0.pD&&st.walker&&inGroup(j)?v('jpClose','tick','Close the Case',j.pest.kind==='insect'?'When the room is found clear':j.pest.points?'When the bait or traps are taken up':'When it is found clear'):'')
     +(!S0.pD&&st.walker&&!j.pest?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
     +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
@@ -3054,8 +3056,8 @@ async function jobSend(act){
   // The position goes with it, so the desk can judge a role with no named person on the Organisation Structure (DEC-0373).
   const fields={job:j.id,act:V?'note':act==='pvisit'?'note':act==='pclose'?'done':act,pos:st.pos||''}; let photos=[]; F.pa=null;
   if(act==='pvisit'){ const w=String(F.pvw||'').trim(), f=String(F.pvf||'').trim(), n=String(F.pvn||'').trim();
-    fields.msgKind='Note'; fields.note=w+(/[.!?]$/.test(w)?'':'.')+(f?' Found: '+f+(/[.!?]$/.test(f)?'':'.'):'')+(n?' Next follow-up '+day(n+'T12:00:00')+'.':''); fields.pest={visit:{what:w,found:f,next:n}}; }
-  if(act==='pclose'){ const ins=!!(j.pest&&j.pest.kind==='insect'); fields.note=''; fields.pest={close:ins?{clearOn:String(F.pcd||''),root:String(F.pcr||'').trim()}:{baitUp:String(F.pcd||''),root:String(F.pcr||'').trim()}}; }
+    fields.msgKind='Note'; fields.note=w+(/[.!?]$/.test(w)?'':'.')+(f?' Found: '+f+(/[.!?]$/.test(f)?'':'.'):'')+(n?' Next follow-up '+day(n+'T12:00:00')+'.':''); fields.pest={visit:{what:w,found:f,next:n}}; if(j.pest&&j.pest.kind==='insect'){ const _b=String(F.pvb||'').trim(); if(_b){ fields.pest.visit.who=_b; fields.note+=' By '+_b+'.'; } fields.pest.visit.out=!!F.pvo; fields.note+=F.pvo?' The room is out of use.':' The room is in use.'; } }
+  if(act==='pclose'){ const ins=!!(j.pest&&(j.pest.kind==='insect'||!j.pest.points)); fields.note=''; fields.pest={close:ins?{clearOn:String(F.pcd||''),root:String(F.pcr||'').trim()}:{baitUp:String(F.pcd||''),root:String(F.pcr||'').trim()}}; }
   if(act==='note'){ fields.msgKind=F.kind||'Note'; fields.note=String(F.note||'').trim(); photos=F.photos; }
   if(act==='edit'){ fields.entry=F.mid; fields.note=String(F.etext||'').trim(); }
   if(act==='delete') fields.entry=F.mid;
@@ -3089,7 +3091,7 @@ async function jobSend(act){
   if(act==='edit'||act==='delete'){ F.mid=''; F.etext=''; F.eerr=''; }
   if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; st.twEnd=true; }   // the kind is chosen for each entry, so a note is never filed under the last one's
   if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.ptext=''; F.ptried=false; F.fin=null; F.t5found=''; }
-  if(act==='pvisit'){ F.pvw=''; F.pvf=''; F.pvn=''; F.pvt=false; st.twEnd=true; }
+  if(act==='pvisit'){ F.pvw=''; F.pvf=''; F.pvn=''; F.pvt=false; F.pvb=null; F.pvo=null; st.twEnd=true; }
   if(act==='pclose'){ F.pcd=''; F.pcr=''; F.pct=false; }
   if(act==='stop'){ F.ck=null; F.t5word=''; }
   if(act==='start'||act==='restart'||act==='permit'){ F.ck=null; F.pf={}; F.pfrom=''; F.pto=''; }
@@ -4259,8 +4261,8 @@ app.addEventListener('click',async e=>{
   if(a==='jmore'){ st.sheet='jmore'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
   // A pest case (DEC-0480): a rodent case's visit is its case visit of the points (DEC-0465); an insect case's, the sheet.
   if(a==='jpVisit'){ const j=jobById(F.id); if(!j||!j.pest) return;
-    if(j.pest.kind!=='insect'){ st.sheet=false; go('pest'); return peAct('pestVisit',{dataset:{id:j.pest.id}}); }
-    F.pvt=false; st.sheet='jpvisit'; render(); const v=document.getElementById('pvw'); if(v) v.focus(); return; }
+    if(j.pest.kind!=='insect'&&j.pest.points){ st.sheet=false; go('pest'); return peAct('pestVisit',{dataset:{id:j.pest.id}}); }
+    F.pvt=false; if(F.pvb==null) F.pvb=j.pest.treatedBy||st.walker||''; if(F.pvo==null) F.pvo=!!j.pest.roomOut; st.sheet='jpvisit'; render(); const v=document.getElementById('pvw'); if(v) v.focus(); return; }
   if(a==='jpVisitSend'){ if(!String(F.pvw||'').trim()||!String(F.pvn||'').trim()){ F.pvt=true; render(); const e=document.querySelector('.sheet .bad textarea,.sheet .bad input'); if(e) e.focus(); return; } return jobSend('pvisit'); }
   if(a==='jpClose'){ F.pct=false; if(!F.pcd) F.pcd=flToday(); st.sheet='jpclose'; render(); const v=document.getElementById('pcr'); if(v) v.focus(); return; }
   if(a==='jpCloseSend'){ if(!String(F.pcd||'').trim()||!String(F.pcr||'').trim()){ F.pct=true; render(); const e=document.querySelector('.sheet .bad textarea,.sheet .bad input'); if(e) e.focus(); return; } return jobSend('pclose'); }
@@ -4560,7 +4562,7 @@ function peEditBox(d,P){
   return '<div class="fledit">'+peIn('e-name','Name',v.name)+peIn('e-where','Where',v.where)
     +'<div class="field"><label for="pe-e-kind">Kind</label><select id="pe-e-kind" data-pein="e-kind">'+Object.keys(X.kinds).map(k=>'<option value="'+k+'"'+(k===v.kind?' selected':'')+'>'+esc(X.kinds[k])+'</option>').join('')+'</select></div>'
     +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-pein="e-insect"'+(v.insect?' checked':'')+'><span style="min-width:0;white-space:normal">An insect monitor is attached</span></label></div>'
-    +'<div class="field"><label>What is in it</label><div class="help" style="margin-top:0">'+esc(peFillSay(d))+'. Toxic bait and traps go in from a case, and come out when it closes.</div>'+(!d.caseId&&(d.fill||'paste')==='paste'&&!d.out?'<div style="padding-top:12px"><button class="gh" data-act="pestCase" data-id="'+esc(d.id)+'">Put in Bait or a Trap</button></div>':'')+'</div>'
+    +'<div class="field"><label>What is in it</label><div class="help" style="margin-top:0">'+esc(peFillSay(d))+'. Toxic bait and traps go in from a case, and come out when it closes.</div>'+(!d.caseId&&(d.fill||'paste')==='paste'&&!d.out?'<div style="padding-top:12px"><button class="gh" data-act="pestCase" data-id="'+esc(d.id)+'">Put In Bait or a Trap</button></div>':'')+'</div>'
     +(d.out?'<div class="row2"><button class="gh" data-act="pestBack" data-id="'+esc(d.id)+'">'+I.play+'Back in Use</button></div>'
       :peIn('e-out','Out of use? Say why to take it off the round',v.out,'Its rounds out of use are not counted as missed.'))
     +'<div class="row2"><button class="btn p" data-act="pestEditSave" data-id="'+esc(d.id)+'">'+I.send+'Save the Change</button><button class="gh" data-act="pestEditCancel">Cancel</button></div></div>';
@@ -4568,13 +4570,14 @@ function peEditBox(d,P){
 // Open a Case Here (rule 5): asked once, the ERA's date, who was told, and the station labels the Harmonix label requires.
 function peAskBox(d,P){
   const v=P.askv||{}, X=PX();
-  return '<div class="fledit"><div class="say"><b>Open a case at '+esc(d.name)+(d.where?' · '+esc(d.where):'')+'</b>. Toxic bait or a trap goes in here until the case closes.</div>'
-    +peIn('a-name','Name of the case',v.name,'A pest and a place, as you would say it.')
+  const RC=((PE()||{}).rodentCases||[]), ok=v.fill&&v.era&&v.told&&v.labels;
+  return '<div class="fledit"><div class="say"><b>Put in bait or a trap at '+esc(d.name)+(d.where?' · '+esc(d.where):'')+'</b>. It stays in until the case closes.</div>'
+    +peGroup('Under which case','pe-acase',RC.map(c=>peRing(v.caseId===c.id,c.name+(c.points?' · '+c.points+(c.points===1?' point':' points'):' · no points yet'),'pestAskCase',c.id)).join('')+peRing(!v.caseId,'A new case here','pestAskCase',''))
     +peGroup('What goes in','pe-afill',[['bait',X.fills.bait],['trap',X.fills.trap]].map(x=>peRing(v.fill===x[0],x[1],'pestAskFill',x[0])).join(''))
     +'<div class="field"><label for="pe-a-era">Environmental risk assessment checked on</label><input id="pe-a-era" type="date" style="min-height:44px" data-pein="a-era" value="'+esc(v.era||'')+'"></div>'
     +peIn('a-told','Who was told',v.told,'The manager on duty, the kitchen, the residents in the area.')
     +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-pein="a-labels"'+(v.labels?' checked':'')+'><span style="min-width:0;white-space:normal">The station is labelled as the Harmonix label requires</span></label></div>'
-    +'<div class="row2"><button class="btn p" data-act="pestAskSend" data-id="'+esc(d.id)+'"'+(v.name&&v.fill&&v.era&&v.told&&v.labels?'':' disabled')+'>'+I.send+'Open the Case</button><button class="gh" data-act="pestAskCancel">Cancel</button></div>'+(v.name&&v.fill&&v.era&&v.told&&v.labels?'':'<div class="help" style="padding:0 16px">Answer each question above, and tick the label, to open the case.</div>')+'</div>';
+    +'<div class="row2"><button class="btn p" data-act="pestAskSend" data-id="'+esc(d.id)+'"'+(ok?'':' disabled')+'>'+I.send+(v.caseId?'Put In Bait or a Trap':'Open a Case')+'</button><button class="gh" data-act="pestAskCancel">Cancel</button></div>'+(ok?'':'<div class="help" style="padding:0 16px">Answer each question above, and tick the label, to put it in.</div>')+'</div>';
 }
 const PE_ORDER=[['walk','Round order'],['area','By area']];
 function pePickSheet(ds,P){
@@ -4699,14 +4702,16 @@ function peAct(a,b){
   if(a==='pestBack'&&d){ P.edits[id]=Object.assign({},P.edits[id]||{},{back:true,out:undefined,on:flToday()}); P.editing=''; peKeep(); render();
     pestSend('pestchange',{pest:{device:id,change:{back:true}},note:''},d.name+' is back on the round.'); return; }
   if(a==='pestFault'&&d){ const f=blank('fault'); f.place=d.name+(d.where?' · '+d.where:''); f.back='pest'; st.form=f; return go('fault'); }
-  if(a==='pestCase'&&d){ P.editing=null; P.ask=id; P.askv={name:(D.sp?peOf(PX().pests,D.sp):'Rodent')+', '+(d.where||d.name),fill:'bait',era:'',told:'',labels:false}; return render(); }
+  if(a==='pestCase'&&d){ P.editing=null; P.ask=id; const _rc=(PE()||{}).rodentCases||[]; P.askv={caseId:_rc.length?_rc[_rc.length-1].id:'',fill:'bait',era:'',told:'',labels:false}; return render(); }
+  if(a==='pestAskCase'){ P.askv.caseId=b.dataset.v||''; return render(); }
   if(a==='pestAskFill'){ P.askv.fill=b.dataset.v; return render(); }
   if(a==='pestAskCancel'){ P.ask=null; return render(); }
   if(a==='pestAskSend'&&d){ const v=P.askv||{};
     // The result found here is kept with the round, and the case goes to the desk at once.
     if(!peMissing(D)) peSaveDev(id,D);
-    P.local[id]={fill:v.fill,name:v.name,caseId:'here'}; P.ask=null; peKeep(); render();
-    pestSend('pestcase',{pest:{name:v.name,pest:D.sp||'U',fill:v.fill,devices:[id],era:v.era,told:v.told,labels:!!v.labels},note:''},'Case opened and sent. '+(v.fill==='trap'?'Set the trap':'Put the bait in')+' at '+d.name+'.'); return; }
+    const _cn=v.caseId?(((PE()||{}).rodentCases||[]).find(c=>c.id===v.caseId)||{}).name||'the case':'a new case';
+    P.local[id]={fill:v.fill,name:_cn,caseId:v.caseId||'here'}; P.ask=null; peKeep(); render();
+    pestSend('pestcase',{pest:{caseId:v.caseId||'',pest:D.sp||'U',fill:v.fill,devices:[id],era:v.era,told:v.told,labels:!!v.labels},note:''},(v.caseId?'Sent, under '+_cn+'. ':'Case opened and sent. ')+(v.fill==='trap'?'Set the trap':'Put the bait in')+' at '+d.name+'.'); return; }
   if(a==='pestVisit'){ peSwap(); if(P.caseId!==id){ P.res={}; P.notes={}; P.sign={}; P.started=''; P.d={}; } P.caseId=id; P.open=''; P.area=''; P.q=''; peKeep(); render(); return window.scrollTo(0,0); }
   if(a==='pestFin'){ P.fin=true; P.sign=P.sign||{}; peKeep(); render(); return window.scrollTo(0,0); }
   if(a==='pestUnfin'){ P.fin=false; peKeep(); return render(); }
@@ -4732,7 +4737,7 @@ app.addEventListener('input',e=>{
   const k=t.dataset.pein; if(!k) return;
   const v=t.type==='checkbox'?t.checked:t.value;
   if(k.indexOf('e-')===0){ P.ed=Object.assign({},P.ed,{[k.slice(2)]:v}); return; }
-  if(k.indexOf('a-')===0){ P.askv=Object.assign({},P.askv,{[k.slice(2)]:v}); const s=app.querySelector('[data-act="pestAskSend"]'), w=P.askv; if(s) s.disabled=!(w.name&&w.fill&&w.era&&w.told&&w.labels); return; }
+  if(k.indexOf('a-')===0){ P.askv=Object.assign({},P.askv,{[k.slice(2)]:v}); const s=app.querySelector('[data-act="pestAskSend"]'), w=P.askv; if(s) s.disabled=!(w.fill&&w.era&&w.told&&w.labels); return; }
   P.d=Object.assign({},P.d,{[k]:v});
 });
 app.addEventListener('change',e=>{
@@ -4742,7 +4747,7 @@ app.addEventListener('change',e=>{
   if(t.dataset.pesign){ st.pe.sign[t.dataset.pesign]=t.value; peKeep(); return; }
   if(!k) return;
   if(k.indexOf('e-')===0){ st.pe.ed=Object.assign({},st.pe.ed,{[k.slice(2)]:v}); return; }
-  if(k.indexOf('a-')===0){ st.pe.askv=Object.assign({},st.pe.askv,{[k.slice(2)]:v}); const s=app.querySelector('[data-act="pestAskSend"]'), w=st.pe.askv; if(s) s.disabled=!(w.name&&w.fill&&w.era&&w.told&&w.labels); return; }
+  if(k.indexOf('a-')===0){ st.pe.askv=Object.assign({},st.pe.askv,{[k.slice(2)]:v}); const s=app.querySelector('[data-act="pestAskSend"]'), w=st.pe.askv; if(s) s.disabled=!(w.fill&&w.era&&w.told&&w.labels); return; }
 });
 
 // ── Report a Sighting (DEC-0466 rule 4): shaped as Report a Fault; a photo and a place are enough. A catch on a bedroom
@@ -4755,7 +4760,10 @@ function vSighting(){
     +(F.what?'<div class="row2"><button class="lnk" data-act="sgWhat" data-v="">Choose Another</button></div>':'')
     +grp('Where it was')+'<div class="list" role="radiogroup" aria-label="Seen, or on a monitor">'+peRing(F.from!=='monitor','Seen','sgFrom','seen')+peRing(F.from==='monitor','On a bedroom insect monitor','sgFrom','monitor')+'</div>'
     +'<div class="field"><label for="note">Anything to add <span class="opt-w">(optional)</span></label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
-    +whereField({suggest:true})+'<div style="height:24px"></div></div>'
+    +whereField({suggest:true})
+    +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-in="openCase"'+(F.openCase?' checked':'')+'><span style="min-width:0;white-space:normal">Open a case for this</span></label>'
+    +'<div class="help">The case opens with what you saw and where. Its visits, and any bait or traps, are recorded on it as they happen.</div></div>'
+    +'<div style="height:24px"></div></div>'
     +sendBtn('Send',(pics||F.what)&&where,!(pics||F.what)?'Take a photo, or say what you saw.':'Pick where it was from the site’s places'+(F.from==='monitor'?': the room the monitor is in.':', or scan a tag.'));
 }
 
@@ -5283,7 +5291,7 @@ async function doSend(){
     // A photo with no words: the desk titles the job from this (its title is the words, else the outcome).
     if(!fields.note&&F.photos.length) fields.outcome='Fault seen in the photo'; }
   if(F.kind==='hazard'&&!fields.note&&F.photos.length) fields.outcome='Hazard seen in the photo';
-  if(F.kind==='sighting'){ fields.pest={what:F.what||'',from:F.from==='monitor'?'monitor':'seen',room:''};
+  if(F.kind==='sighting'){ fields.pest={what:F.what||'',from:F.from==='monitor'?'monitor':'seen',room:''}; if(F.openCase) fields.pest.openCase=true;
     if(!fields.note&&F.photos.length&&!F.what) fields.outcome='Sighting in the photo'; }
   if(F.kind==='reading'){
     const p=F.point?pointById(F.point):meterAsPoint(F.meter), r=p.reading;
