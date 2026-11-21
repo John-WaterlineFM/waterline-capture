@@ -993,6 +993,14 @@ body.s-jobs,body.s-msgs{background-image:var(--wall);background-size:960px 960px
 .s-jobs .list{background:none;border:0;display:flex;flex-direction:column;gap:8px;padding:0 12px}
 .s-jobs .list>.ra{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);border-left:1px solid var(--border);border-radius:12px}
 .s-jobs .list>.ra:not(.jt):not(.jd):not(.jx):not(.jc){border-right:1px solid var(--border)}
+/* A flagged job glows in its level's colour (DEC-0488; Design 21.3, its fourth exception): Urgent red, As soon as possible
+   amber, This week teal. A ring and a halo, never a fill, so the stripe on the right keeps saying where the job stands.
+   When able and When planned have no rule here, so they carry the flag and its words alone. */
+/* On the light grounds the ring's amber is a step darker than --amber, which is 2.97:1 on the page: 3.21:1 (Design 5.10). */
+body.t-wl,body.t-li{--amberRing:#D07205}
+.g-urgent{--g:var(--red)}.g-asap{--g:var(--amberRing,var(--amber))}.g-week{--g:var(--accentD)}
+.ra.g-urgent,.ra.g-asap,.ra.g-week,.cb.g-urgent,.cb.g-asap,.cb.g-week{position:relative;z-index:1;box-shadow:0 0 0 1.5px var(--g),0 0 16px 3px color-mix(in srgb,var(--g) 55%,transparent)}
+.g-urgent .flg svg,.g-asap .flg svg,.g-week .flg svg{color:var(--g)}
 .s-msgs .c-list{background:none;display:flex;flex-direction:column;gap:8px;padding:8px 12px}
 .s-msgs .c-ch{border:1px solid var(--border);border-radius:12px}
 .s-msgs .c-ch .c-m{border-bottom:none}
@@ -2191,7 +2199,8 @@ function jSquare(j){
 }
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
-const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):j.state==='doing'?' jd':' jt';
+// An open job's flag level goes on its row, card and tile as a class; the styles say which levels glow (DEC-0488).
+const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):(j.state==='doing'?' jd':' jt')+(j.flag&&/^[a-z]+$/.test(j.flag.level||'')?' g-'+j.flag.level:'');
 function jobRowP(j,showGroup,own){ if(j.state==='done'||jDoneHere(j)) return jobRowDone(j,showGroup);
   const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
   return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
