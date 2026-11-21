@@ -4419,18 +4419,26 @@ function peSaid(x){
   return t;
 }
 
+// A point's own state, from the desk (DEC-0477): late is overdue or never checked.
+const peLate=d=>!!d.due&&(d.due.state==='over'||d.due.state==='never');
+function peAge(d){ const u=d.due||{}; if(u.state==='never') return ['Never','checked']; if(!u.last) return ['To check',''];
+  const a=Math.round((new Date(flToday()+'T00:00:00')-new Date(u.last+'T00:00:00'))/864e5);
+  const w=a<=0?['Today','checked']:a===1?['1 day','ago']:a<14?[a+' days','ago']:[Math.floor(a/7)+' wks','ago'];
+  if(u.state==='over') w[1]='overdue'; else if(u.state==='due') w[1]='due'; return w; }
 // ── The row, as flRow draws an outlet ──
 function peRow(d,P){
   const x=P.res[d.id], open=P.open===d.id, f=peFill(d), h=d.hist||[];
-  const stripe=!x?'var(--textMuted)':peCalm(x)?'var(--jDone)':'var(--amber)';
-  const big=x?(x.lv?peOf(PX().levels,x.lv):(peLabel(x.c).split(' ')[0])):'To check';
-  const word=x?(x.lv?(x.sp?peOf(PX().pests,x.sp).toLowerCase():'')+(x.c==='S'?' signs':''):x.sp?peOf(PX().pests,x.sp).toLowerCase():(peLabel(x.c).split(' ').slice(1).join(' '))):'';
+  const ds=(d.due||{}).state, ag=peAge(d);
+  const stripe=!x?(peLate(d)?'var(--red)':ds==='due'?'var(--amber)':ds==='ok'?'var(--jDone)':'var(--textMuted)'):peCalm(x)?'var(--jDone)':'var(--amber)';
+  const big=x?(x.lv?peOf(PX().levels,x.lv):(peLabel(x.c).split(' ')[0])):ag[0];
+  const word=x?(x.lv?(x.sp?peOf(PX().pests,x.sp).toLowerCase():'')+(x.c==='S'?' signs':''):x.sp?peOf(PX().pests,x.sp).toLowerCase():(peLabel(x.c).split(' ').slice(1).join(' '))):ag[1];
+  const bc=x?(!peCalm(x)?'amb':''):peLate(d)?'bad':ds==='due'?'amb':'';
   const shown=(!P.area||peArea(d)===P.area)&&wordHit(d.name+' '+(d.where||''),P.q);
   return '<button class="r'+(open?' open':'')+(shown?'':' hide')+'" data-act="pestRow" data-id="'+esc(d.id)+'" aria-expanded="'+open+'">'
     +'<span class="s3" style="background:'+stripe+'"></span>'
     +'<span class="m"><span class="w">'+esc(d.name)+'</span>'+(d.where?'<span class="sub">'+esc(d.where)+'</span>':'')
     +'<span class="sub'+(f==='bait'||f==='trap'?' amb':'')+'">'+esc(peFillSay(d))+(h[0]&&!open?' · last '+esc(h[0][1].toLowerCase())+' '+esc(flShort(h[0][0])):'')+'</span></span>'
-    +'<span class="st"><b class="'+(x&&!peCalm(x)?'amb':'')+'">'+esc(big)+'</b><i>'+esc(word)+'</i></span></button>'
+    +'<span class="st"><b class="'+bc+'">'+esc(big)+'</b><i>'+esc(word)+'</i></span></button>'
     +(open?peOpened(d,P,stripe):'');
 }
 const peRing=(on,t,act,v)=>'<button class="lr'+(on?' lrno':'')+'" style="background:transparent" role="radio" aria-checked="'+on+'" data-act="'+act+'" data-v="'+esc(v)+'"><span class="ring'+(on?' ring-ok':'')+'">'+(on?I.tick:'')+'</span><span class="w">'+esc(t)+'</span></button>';
@@ -4528,7 +4536,7 @@ function pePickSheet(ds,P){
 function peList(ds,P){
   if(P.order!=='area') return ds.map(d=>peRow(d,P)).join('');
   let h='', cur=null; const s=ds.slice().sort((a,b)=>{ const ai=ds.findIndex(x=>peArea(x)===peArea(a)), bi=ds.findIndex(x=>peArea(x)===peArea(b)); return ai-bi; });
-  s.forEach(d=>{ const a=peArea(d); if(a!==cur){ cur=a; const n=s.filter(x=>peArea(x)===a), done=n.filter(x=>P.res[x.id]).length; h+='<div class="flarea"><b>'+esc(a)+'</b><span>'+done+' of '+n.length+' done</span></div>'; } h+=peRow(d,P); });
+  s.forEach(d=>{ const a=peArea(d); if(a!==cur){ cur=a; const n=s.filter(x=>peArea(x)===a), done=n.filter(x=>P.res[x.id]).length, o=n.filter(x=>!P.res[x.id]&&peLate(x)).length; h+='<div class="flarea"><b>'+esc(a)+'</b><span>'+done+' of '+n.length+' done'+(o?' · <span class="bad">'+o+' overdue</span>':'')+'</span></div>'; } h+=peRow(d,P); });
   return h;
 }
 function vPest(){
@@ -4543,8 +4551,8 @@ function vPest(){
       +'<p>Visit <b class="n">'+(cs.visits+1)+'</b>, day <b class="n">'+cs.day+'</b> of <b class="n">35</b>. Due every 1 to 2 days at first, then at least weekly, as the Harmonix label says.</p>'
       +'<button class="gh" data-act="pestFin">'+I.stop+'Finish the Visit</button></div>'
     :'<div class="zone"><div class="ztop">'+backBtn('pestLeave')+'<span class="eb">Pest Round</span></div>'
-      +'<div class="row1"><span class="num n">'+(ds.length-n)+'</span><span class="what">to check</span></div>'
-      +'<p><b class="n">'+n+' of '+ds.length+'</b> done'+(P.started?' since <b class="n">'+esc(P.started)+'</b>':'')+(found?', <b class="n">'+found+'</b> with something found':'')+'. Each is kept as it is saved.'+(S0.efkDue?'':' The fly units are not due this round.')+'</p>'
+      +'<div class="row1"><span class="num n">'+ds.filter(d=>!P.res[d.id]&&peLate(d)).length+'</span><span class="what">overdue</span></div>'
+      +'<p>'+(n?'<b class="n">'+n+'</b> checked'+(P.started?' since <b class="n">'+esc(P.started)+'</b>':'')+(found?', <b class="n">'+found+'</b> with something found':'')+'. ':'')+'Any point, any order: each falls due on its own.'+(S0.efkDue?'':' The fly units are in date.')+'</p>'
       +'<button class="gh" data-act="pestFin">'+I.stop+'Finish and Sign Off</button></div>';
   const cases=cs?'':((S0.cases||[]).length?grp('Case visits')+'<div class="list">'+S0.cases.map(c=>{ const late=c.due&&c.due<flToday();
       return '<button class="r" data-act="pestVisit" data-id="'+esc(c.id)+'"><span class="s3" style="background:'+(late?'var(--red)':'var(--amber)')+'"></span><span class="m"><span class="w">'+esc(c.name)+'</span><span class="sub">'+c.devices.length+(c.devices.length===1?' point':' points')+' · day '+c.day+' of 35</span></span><span class="st"><b class="'+(late?'bad':'')+'">'+esc(flShort(c.due))+'</b><i>'+(late?'overdue':'due')+'</i></span></button>'; }).join('')+'</div>':'');
