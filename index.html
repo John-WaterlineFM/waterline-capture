@@ -1001,6 +1001,8 @@ body.t-wl,body.t-li{--amberRing:#D07205}
 .g-urgent{--g:var(--red)}.g-asap{--g:var(--amberRing,var(--amber))}.g-week{--g:var(--accentD)}
 .ra.g-urgent,.ra.g-asap,.ra.g-week,.cb.g-urgent,.cb.g-asap,.cb.g-week{position:relative;z-index:1;box-shadow:0 0 0 1.5px var(--g),0 0 16px 3px color-mix(in srgb,var(--g) 55%,transparent)}
 .g-urgent .flg svg,.g-asap .flg svg,.g-week .flg svg{color:var(--g)}
+/* A glowing card carries no state stripe on its right (DEC-0488 rule 3, as amended): the glow is its one colour. */
+.ra.g-urgent,.ra.g-asap,.ra.g-week{border-right:0}.s-jobs .list>.ra.g-urgent,.s-jobs .list>.ra.g-asap,.s-jobs .list>.ra.g-week,.cb.g-urgent,.cb.g-asap,.cb.g-week{border-right:1px solid var(--border)}
 .s-msgs .c-list{background:none;display:flex;flex-direction:column;gap:8px;padding:8px 12px}
 .s-msgs .c-ch{border:1px solid var(--border);border-radius:12px}
 .s-msgs .c-ch .c-m{border-bottom:none}
@@ -2144,9 +2146,17 @@ const jWhere=j=>{ const l=LOC(j.loc); return l?(/^\d+$/.test(l.name)?'Room ':'')
 const jAge=j=>{ const d=Math.floor((Date.now()-Date.parse(j.raised))/864e5); return isNaN(d)?'':d<1?'today':plural(d,'day')+' ago'; };
 const jLate=j=>{ const e=Date.parse(j.end); return e&&e<=Date.now()?overMs(Date.now()-e):null; };
 const words=(j,c)=>'<span class="pic '+c+'"><span>“'+esc(j.title||'Job')+'”</span><i>No photo</i></span>';
-const flagRank=j=>{ if(!j.flag) return 99; const i=WFM_CAPTURE_SHAPE.flagLevels.findIndex(l=>l.id===j.flag.level); return i<0?98:i; };
+// A job's flag as it stands now: the desk's, or the latest flag or unflag sent from this phone and not yet filed, so a
+// change shows on the list, the card and the job the moment it is sent (John, 21 Nov 2026: "it still takes too long to show
+// change of flag on the list - makes me have to go back and double check"). Every place that reads a flag reads it here.
+let _pf=null;
+function pendFlags(){ if(_pf) return _pf; const m={}; jSent().forEach(x=>{ if(x.act==='flag'||x.act==='unflag') (m[x.job]=m[x.job]||[]).push(x); }); _pf=m; Promise.resolve().then(()=>{ _pf=null; }); return m; }
+function jFlag(j){ if(!j) return null; if(!pendFlags()[j.id]||j.state==='done') return j.flag||null;
+  const p=jPending(j).filter(x=>x.act==='flag'||x.act==='unflag').sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop();
+  if(!p) return j.flag||null; if(p.act==='unflag'||!p.flag) return null; return {level:p.flag.level,why:p.flag.why||'',by:p.by,at:p.at}; }
+const flagRank=j=>{ const f=jFlag(j); if(!f) return 99; const i=WFM_CAPTURE_SHAPE.flagLevels.findIndex(l=>l.id===f.level); return i<0?98:i; };
 const flagLabel=f=>f?(f.label||(WFM_CAPTURE_SHAPE.flagLevels.find(l=>l.id===f.level)||{}).label||f.level||''):'';
-const flagLine=j=>j.flag?'<span class="flg">'+I.flag+'<span><b>'+esc(flagLabel(j.flag))+'</b>'+(j.flag.why?' · '+esc(j.flag.why):'')+'</span></span>':'';
+const flagLine=j=>{ const f=jFlag(j); return f?'<span class="flg">'+I.flag+'<span><b>'+esc(flagLabel(f))+'</b>'+(f.why?' · '+esc(f.why):'')+'</span></span>':''; };
 // Who holds a job: the list (v476); a site file from before it carries one assignee.
 const holders=j=>Array.isArray(j.assignees)?j.assignees.filter(a=>a&&a.name):(j.assignee&&j.assignee.name?[j.assignee]:[]);
 const isMe=a=>{ const m=meP(); return !!(a&&((m&&a.id&&a.id===m.id)||(st.walker&&nk(a.name)===nk(st.walker)))); };
@@ -2200,7 +2210,7 @@ function jSquare(j){
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
 // An open job's flag level goes on its row, card and tile as a class; the styles say which levels glow (DEC-0488).
-const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):(j.state==='doing'?' jd':' jt')+(j.flag&&/^[a-z]+$/.test(j.flag.level||'')?' g-'+j.flag.level:'');
+const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):(j.state==='doing'?' jd':' jt')+(f=>f&&/^[a-z]+$/.test(f.level||'')?' g-'+f.level:'')(jFlag(j));
 function jobRowP(j,showGroup,own){ if(j.state==='done'||jDoneHere(j)) return jobRowDone(j,showGroup);
   const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
   return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
@@ -2372,7 +2382,7 @@ const youOr=n=>(!!st.walker&&nk(n)===nk(st.walker))?'you':(n||'someone not named
 // Where a job stands on this phone: the site file's job with what was sent from here and not yet filed.
 function jState(j){
   const pend=jPending(j), pS=pend.find(x=>x.act==='start'), pD=pend.find(x=>x.act==='done');
-  const fl=pend.some(x=>x.act==='unflag')?null:j.flag, doing=j.state==='doing'||!!pS;
+  const fl=jFlag(j), doing=j.state==='doing'||!!pS;
   // A paused job is still in progress (DEC-0311 rule 1): the latest pause or restart sent from here, else the desk's. A stop
   // sent on a job in progress pauses it, as the desk's stop writer does (DEC-0341 rule 5, DEC-0360 rule 7).
   const pPR=pend.filter(x=>x.act==='pause'||x.act==='restart'||(x.act==='stop'&&doing)).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).pop(), paused=pPR?pPR.act!=='restart':!!j.paused;
@@ -2438,7 +2448,7 @@ function jBar(F){
   const w=!!(String(F.note||'').trim()||F.photos.length);
   return '<div class="jbar comp'+(w?' w':'')+'">'+err
     +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
-    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label><button class="ib" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('signature')+'</button>'
+    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label><button class="ib" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button>'
     +'<div class="fw">'+ktag('jnote')+'<textarea id="jnote" rows="1" data-in="note" placeholder="Message" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea></div>'
     +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="rcan" data-act="vdiscard">Cancel</button></div>'
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
@@ -2963,7 +2973,7 @@ function vFinish(){
     +(nw?'<div class="field" style="padding:16px 0 0"><label for="t5found">'+esc(nw.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')
     +'<div class="field" style="padding:20px 0 0"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
     +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'dphotos',i)+'<button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
-    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label><button class="th sk" data-act="muSketch" data-l="dphotos" aria-label="Draw a sketch">'+ICO('signature')+'Sketch</button></div></div>'
+    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label><button class="th sk" data-act="muSketch" data-l="dphotos" aria-label="Draw a sketch">'+ICO('pen-line')+'Sketch</button></div></div>'
     +'<div class="field" style="padding:16px 0 0"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
     +'<div style="margin:0 -16px">'+partsPart(F,'Parts and materials used',true)+'</div>'
     +'<div class="field sigw" style="padding:20px 0 0"><span class="fl" id="t5sigl">Sign with your finger</span><div class="sigp"><canvas id="t5sig" role="img" aria-labelledby="t5sigl"></canvas><span class="who">'+esc((st.walker||'')+(D.strokes.length?' · '+hm(D.at||new Date().toISOString()):''))+'</span>'
@@ -3884,7 +3894,7 @@ function photosField(label,opt,accept){
   return '<div class="field"><span class="fl">'+esc(label)+(opt?' <span class="opt-w">(optional)</span>':'')+'</span><div class="thumbs">'
     +F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+(p.url?'':esc(extOf(p.file,p.file.name).toUpperCase()))+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove"><i>'+I.close+'</i></button></div>').join('')
     +'<span class="tk"><label class="th add" aria-label="Add">'+(accept?I.clip:I.photo)+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
-    +(accept||opt?'':'<button class="th sk" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('signature')+'Sketch</button>')+'</span>'
+    +(accept||opt?'':'<button class="th sk" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'Sketch</button>')+'</span>'
     +'</div></div>';
 }
 // Where (DEC-0479 rule 1): a tag scanned, or one of the site's places found by typing a few letters. A place not on the
@@ -4482,7 +4492,7 @@ app.addEventListener('click',async e=>{
   if(a==='jasg'){ const v0=b.dataset.v, i=F.asg.indexOf(v0); if(i>=0) F.asg.splice(i,1); else F.asg.push(v0); render(); const v=app.querySelector('.sheet .opt[data-v="'+CSS.escape(v0)+'"]'); if(v) v.focus(); return; }
   if(a==='jobAssignSend'){ const j=jobById(F.id), base=j?asgNow(j):[], on=F.asg.filter(x=>base.indexOf(x)<0), off=base.filter(x=>F.asg.indexOf(x)<0);
     if(!on.length&&!off.length){ F.atried=true; render(); return; } F.asgSend={on:on,off:off}; return jobSend('assign'); }
-  if(a==='jobFlag'){ const j=jobById(F.id); if(j&&j.flag){ if(!F.level) F.level=j.flag.level; if(!F.why) F.why=j.flag.why||''; } F.ftried=false; st.sheet='jflag'; render(); const v=app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
+  if(a==='jobFlag'){ const j=jobById(F.id), jf=jFlag(j); if(jf){ if(!F.level) F.level=jf.level; if(!F.why) F.why=jf.why||''; } F.ftried=false; st.sheet='jflag'; render(); const v=app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jlevel'){ F.level=b.dataset.v; render(); const v=app.querySelector('.sheet .opt.on'); if(v) v.focus(); return; }
   if(a==='jobFlagSend'){ if(!F.level){ F.ftried=true; render(); const t=app.querySelector('.sheet .opt'); if(t) t.focus(); return; } return jobSend('flag'); }
   if(a==='dphotoDel'){ const p=F.dphotos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
