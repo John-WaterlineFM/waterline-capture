@@ -271,10 +271,11 @@ img.pl{object-fit:cover;padding:0}
 .gr .cts{display:flex;gap:16px;margin-top:4px;font-size:12px;color:var(--textMid)}
 .gr .cts span{display:inline-flex;align-items:center;gap:4px}
 .tp.q span{font:600 15px/1.3 'DM Sans';color:var(--text);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.gcs{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 16px}
-.gc{display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left;padding:14px;border-radius:12px;background:var(--white);border:1px solid var(--border);min-height:132px;min-width:0}
+.gcs{display:grid;grid-template-columns:1fr;gap:8px;padding:12px 16px}
+.gc{display:flex;flex-direction:row;gap:12px;align-items:center;text-align:left;padding:10px 14px;border-radius:12px;background:var(--white);border:1px solid var(--border);min-height:68px;min-width:0}
+.gc .w{flex:1;min-width:0}
 .gc .w{font:700 15px/1.3 Sora;color:var(--text);overflow-wrap:anywhere}
-.gc .cs{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}.gc .cs span{display:inline-flex;align-items:center;gap:4px;font:800 15px Sora;color:var(--text)}
+.gc .cs{display:flex;flex-wrap:nowrap;gap:10px;margin-left:auto;flex:none}.gc .cs span{display:inline-flex;align-items:center;gap:4px;font:800 15px Sora;color:var(--text)}
 .gc .cs .sm{width:16px;height:16px;flex:none}.gc .cs .s-todo{color:var(--sTodo)}.gc .cs .s-doing{color:var(--sDoing)}.gc .cs .s-done{color:var(--sDone)}
 .gr .cts b{font:800 15px Sora;color:var(--text)}
 .gr .chev,.ra .chev{color:var(--accentD);flex:none}
@@ -540,6 +541,15 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .ds .lnks>span{color:var(--onInk);align-self:center}
 .ds .lnk input{position:absolute;opacity:0;width:1px;height:1px}
 .ds .wait{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--navMid);text-align:center;padding:0 32px}
+.th .mk{position:absolute;bottom:-8px;right:-8px;width:44px;height:44px;display:grid;place-items:center;color:var(--accentD)}
+.th .mk i{display:grid;place-items:center;width:32px;height:32px;border-radius:16px;background:var(--white);border:1px solid var(--accentD)}
+.th .mk svg{width:18px;height:18px}
+.th.sk{background:var(--white);border:1px solid var(--accentD);color:var(--accentD)}
+.ds.mu{z-index:30}
+.ds.mu .stage{touch-action:none}
+.ds.mu .mued{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.ds.mu .looks button{gap:8px}
+.ds.mu .looks svg{width:20px;height:20px}
 .pv{position:fixed;inset:0;z-index:25;background:var(--ink);display:flex;flex-direction:column}
 .pv .ib{color:var(--accentOnInk);margin:calc(4px + env(safe-area-inset-top)) 4px 0}
 .pv img{flex:1;min-height:0;width:100%;object-fit:contain}
@@ -1306,7 +1316,7 @@ const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}}
 
 // One icon set on every screen (John, 20 Oct 2026; DEC-0303 rule 8): Lucide (lucide.dev, ISC licence), each
 // icon's own path data on its 24px grid at one stroke. The names on the left are what this page calls them.
-const LUCIDE={'eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+const LUCIDE={'pen-line':'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>','move-up-right':'<path d="M13 5H19V11"/><path d="M19 5L5 19"/>','circle':'<circle cx="12" cy="12" r="10"/>','undo-2':'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>','eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
 'circle-alert':'<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
 'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
   'arrow-up':'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
@@ -1408,20 +1418,26 @@ window.addEventListener('popstate',()=>{ if(t5Skip){ t5Skip=false; return; } if(
 // The phone's own Back (John, 19 Nov 2026: "i keep hitting back and it takes me out of the app"): one history entry is kept
 // under the app, and Back spends it on a step inside: an open sheet or outlet closes, a screen goes to where its own back
 // arrow goes. On Due it asks once ("Press Back again to leave") and lets the second press out.
-let _wlGuard=false, _wlLeave=0;
-function wlGuard(){ if(_wlGuard) return; try{ history.pushState({wl:1},''); _wlGuard=true; }catch(e){} }
+// Chrome skips, on Back, entries a page added with no touch since (its history intervention), so the entries are added only
+// on a touch or a key, up to four in hand, and Back spends one each; nothing is pushed inside popstate (21 Nov 2026).
+let _wlDepth=0, _wlLeave=0;
+const WL_HOLD=4;
+function wlGuard(){ try{ while(_wlDepth<WL_HOLD){ history.pushState({wl:1},''); _wlDepth++; } }catch(e){} }
+['pointerdown','keydown'].forEach(t=>document.addEventListener(t,()=>{ if(_wlDepth<WL_HOLD) wlGuard(); },true));
 function wlBack(){
-  _wlGuard=false;
-  if(st.sheet==='leave'){ leaveStay(); return wlGuard(); }
-  if(leaveAsk({phone:true})) return wlGuard();
+  _wlDepth=Math.max(0,_wlDepth-1);
+  if(_mu){ muBack(); return; }
+  if(st.sheet==='leave'){ leaveStay(); return; }
+  if(leaveAsk({phone:true})) return;
   const F=st.fl;
-  if(st.screen==='flush'&&F&&F.pick){ F.pick=null; render(); return wlGuard(); }
-  if(st.sheet){ st.sheet=false; render(); return wlGuard(); }
-  if(st.screen==='flush'&&F&&(F.open||F.editing)){ F.open=null; F.editing=null; F.ed=null; flKeep(); render(); return wlGuard(); }
+  if(st.screen==='flush'&&F&&F.pick){ F.pick=null; render(); return; }
+  if(st.sheet){ st.sheet=false; render(); return; }
+  if(st.screen==='flush'&&F&&(F.open||F.editing)){ F.open=null; F.editing=null; F.ed=null; flKeep(); render(); return; }
   const bk=app.querySelector('.ztop [aria-label="Back"]');
-  if(st.screen!=='due'&&['start','setup','signin','who','whopos','whotype'].indexOf(st.screen)<0){ if(bk) bk.click(); else go('due'); return wlGuard(); }
-  if(st.screen==='due'&&Date.now()-_wlLeave>2500){ _wlLeave=Date.now(); toast('Press Back again to leave Waterline.'); return wlGuard(); }
-  try{ history.back(); }catch(e){}
+  if(st.screen!=='due'&&['start','setup','signin','who','whopos','whotype'].indexOf(st.screen)<0){ if(bk) bk.click(); else go('due'); return; }
+  if(st.screen==='due'&&Date.now()-_wlLeave>2500){ _wlLeave=Date.now(); toast('Press Back again to leave Waterline.'); return; }
+  // Leaving: back past every entry still in hand, and the one under the app.
+  try{ const n=_wlDepth+1; _wlDepth=0; history.go(-n); }catch(e){}
 }
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
 const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),rat:ICO('rat'),hazard:ICO('shield-alert'),alert:ICO('circle-alert')};
@@ -2210,7 +2226,8 @@ function vJobs(){
   if(st.J.grp) return vGroup();
   const J=st.J, all=jobsAll(), done=jobsDone(), p=myPos(), fm=isFM(p), nb=all.filter(nobody);
   const gids=(fm?(SITE().groups||[]).map(g=>g.id):(p&&p.groups)||[]).filter(g=>!(SITE().jobs||[]).some(j=>j.group===g&&j.round));
-  const cnt=g=>all.filter(j=>j.group===g).length, G=gids.slice().sort((a,b)=>cnt(b)-cnt(a)||GROUP(a).localeCompare(GROUP(b)));
+  // The group last opened on this phone first, then the one before; groups never opened here after, by open jobs then name (DEC-0484).
+  const seen=ls.get('wl_grpSeen',{})||{}, cnt=g=>all.filter(j=>j.group===g).length, G=gids.slice().sort((a,b)=>(seen[b]||0)-(seen[a]||0)||cnt(b)-cnt(a)||GROUP(a).localeCompare(GROUP(b)));
   const oldest=oldestDays(all);
   let h='<div class="body">'+pageHead('Jobs')+'<div class="zone"><span class="eb">'+(fm?'Every group':'Your groups')+'</span>'
     +'<div class="row1"><span class="num n">'+all.length+'</span><span class="what">open</span></div>'
@@ -2393,8 +2410,8 @@ function jBar(F){
   const ktag=id=>'<button class="ktag" data-act="jkinds" aria-haspopup="dialog" aria-controls="'+id+'" aria-label="Kind of entry: '+esc(F.kind)+'. Change it">'+esc(F.kind)+I.down+'</button>';
   const w=!!(String(F.note||'').trim()||F.photos.length);
   return '<div class="jbar comp'+(w?' w':'')+'">'+err
-    +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
-    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label>'
+    +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
+    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label><button class="ib" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button>'
     +'<div class="fw">'+ktag('jnote')+'<textarea id="jnote" rows="1" data-in="note" placeholder="Message" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea></div>'
     +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="rcan" data-act="vdiscard">Cancel</button></div>'
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
@@ -2918,8 +2935,8 @@ function vFinish(){
     +'<p class="pgc pgd" aria-live="polite" style="margin-top:8px">'+t5FinSay(qs,M)+'</p>'
     +(nw?'<div class="field" style="padding:16px 0 0"><label for="t5found">'+esc(nw.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')
     +'<div class="field" style="padding:20px 0 0"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
-    +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'"><button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
-    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label></div></div>'
+    +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'dphotos',i)+'<button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
+    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label><button class="th sk" data-act="muSketch" data-l="dphotos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button></div></div>'
     +'<div class="field" style="padding:16px 0 0"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
     +'<div style="margin:0 -16px">'+partsPart(F,'Parts and materials used',true)+'</div>'
     +'<div class="field sigw" style="padding:20px 0 0"><span class="fl" id="t5sigl">Sign with your finger</span><div class="sigp"><canvas id="t5sig" role="img" aria-labelledby="t5sigl"></canvas><span class="who">'+esc((st.walker||'')+(D.strokes.length?' · '+hm(D.at||new Date().toISOString()):''))+'</span>'
@@ -3747,11 +3764,86 @@ function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document
   const ft=app.querySelector('.foot')||app.querySelector('.jbar'); el.style.bottom=ft?(ft.offsetHeight+16)+'px':'';
   el.textContent=t; el.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove('on'),4000); }
 
+// ── Marking up a photo, and a sketch (DEC-0467 rules 3 and 4; DEC-0486) ──────────────────────────────────────────
+// A published, free editor, not one written here (John, 20 and 21 Nov 2026): the TOAST UI Image Editor (MIT) on fabric (MIT),
+// run with no toolbar of its own under this page's buttons. Pinned by version and kept on the phone by sw.js, as the scanner's
+// libraries are; it reports nothing to its maker (usageStatistics off). The marked-up photo takes the photo's place: the
+// unmarked one is not kept (rule 4). A sketch is the same editor on a blank page.
+const MARK_LIB=['https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js','https://cdn.jsdelivr.net/npm/tui-code-snippet@1.5.2/dist/tui-code-snippet.min.js','https://cdn.jsdelivr.net/npm/tui-image-editor@3.15.3/dist/tui-image-editor.min.js'];
+const MU_TOOLS=[['pen','Line','pen-line'],['arrow','Arrow','move-up-right'],['circle','Circle','circle']];
+const MU_RED='#E5281E';
+let _muLibs=null, _mu=null;
+function muLibs(){ if(_muLibs) return _muLibs;
+  _muLibs=(window.tui&&tui.ImageEditor?Promise.resolve():MARK_LIB.reduce((p,u)=>p.then(()=>dsScript(u)),Promise.resolve())).catch(e=>{ _muLibs=null; throw e; });
+  return _muLibs; }
+// A photo, not a PDF, a signature or anything kept as it was made.
+const muCan=p=>!!(p&&p.url&&!p.keep&&!p.sig&&p.file&&/^image\/(jpeg|png|webp)$/.test(p.file.type));
+const muBtn=(p,l,i)=>muCan(p)?'<button class="mk" data-act="muOpen" data-l="'+l+'" data-i="'+i+'" aria-label="Mark up the photo"><i>'+ICO('pen-line')+'</i></button>':'';
+const muList=(F,l)=>l==='dphotos'?(F.dphotos=F.dphotos||[]):(F.photos=F.photos||[]);
+const muMarked=()=>!!(_mu&&_mu.ed&&!_mu.ed.isEmptyUndoStack());
+function muFoot(){ const M=_mu, f=M.el.querySelector('.dfoot'); if(!f) return;
+  f.innerHTML='<div class="looks" role="radiogroup" aria-label="What to draw">'+MU_TOOLS.map(t=>'<button role="radio" aria-checked="'+(M.tool===t[0])+'" class="'+(M.tool===t[0]?'on':'')+'" data-mu="tool" data-v="'+t[0]+'">'+ICO(t[2])+t[1]+'</button>').join('')+'</div>'
+    +(M.ask?'<div class="lnks" role="alert"><span>Close and lose the marks?</span><button class="lnk" data-mu="askYes">Lose Them</button><button class="lnk" data-mu="askNo">Keep Drawing</button></div>':'')
+    +'<div class="two"><button class="gh" data-mu="undo">'+ICO('undo-2')+'Undo</button><button class="btn" data-mu="done">Done</button></div>'; }
+function muDraw(stage,say){ const M=_mu, sk=M.i==null;
+  const top='<div class="dtop"><button class="ib" data-mu="close" aria-label="Close">'+I.close+'</button><span class="eb">'+(sk?'Sketch':'Mark Up the Photo')+'</span></div>';
+  if(stage!=='edit'){ M.el.innerHTML=top+'<div class="stage"><div class="wait" role="status">'+(stage==='wait'?ICO('pen-line'):'')+'<span>'+esc(say)+'</span></div></div>'; return; }
+  M.el.innerHTML=top+'<p class="say">'+(sk?'Draw with a finger.':'Draw on the photo with a finger.')+'</p><div class="stage"><div class="mued"></div></div><div class="dfoot"></div>'; muFoot(); }
+function muTool(t){ const M=_mu, ed=M.ed; M.tool=t; ed.stopDrawingMode();
+  if(t==='pen') ed.startDrawingMode('FREE_DRAWING',{width:M.w,color:MU_RED});
+  if(t==='arrow') ed.startDrawingMode('LINE_DRAWING',{width:M.w,color:MU_RED,arrowType:{tail:'chevron'}});
+  if(t==='circle'){ ed.startDrawingMode('SHAPE'); ed.setDrawingShape('circle',{fill:'transparent',stroke:MU_RED,strokeWidth:M.w}); }
+  muFoot(); }
+async function muOpen(l,i){
+  if(_mu||!st.form) return;
+  const el=document.createElement('div'); el.className='ds mu'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label',i==null?'Draw a sketch':'Mark up the photo');
+  const M=_mu={l:l,i:i,el:el,tool:'pen',ask:false,ed:null,form:st.form,w:12,tmp:''};
+  el.addEventListener('click',muClick); document.body.appendChild(el);
+  muDraw('wait',window.tui&&tui.ImageEditor?'Opening…':'Getting the editor ready. The first time takes a few seconds; after that it works with no signal.');
+  try{
+    await muLibs(); if(_mu!==M) return;
+    let src;
+    if(i==null){ const c=document.createElement('canvas'); c.width=1200; c.height=1600; const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,1200,1600); src=c.toDataURL('image/png'); }
+    else{ const p=muList(M.form,l)[i], b=await shrink(p.file); if(_mu!==M) return; M.tmp=URL.createObjectURL(b); src=M.tmp; }
+    muDraw('edit');
+    const stg=el.querySelector('.stage'), ed=new tui.ImageEditor(el.querySelector('.mued'),{cssMaxWidth:stg.clientWidth-32,cssMaxHeight:stg.clientHeight,usageStatistics:false});
+    await ed.loadImageFromURL(src,'photo'); if(_mu!==M){ ed.destroy(); return; }
+    ed.clearUndoStack(); M.ed=ed;
+    // Marks about 4px wide on the screen, whatever the photo's size.
+    const up=el.querySelector('.upper-canvas'), cw=up?up.getBoundingClientRect().width:0; M.w=Math.max(6,Math.round(4*ed.getCanvasSize().width/(cw||343)));
+    muTool('pen');
+  }catch(e){ if(_mu===M) muDraw('err','The editor could not start: it needs signal the first time. Close this and try again with signal. ('+(e&&e.message||e)+')'); }
+}
+function muClose(){ const M=_mu; if(!M) return; _mu=null;
+  try{ if(M.ed) M.ed.destroy(); }catch(e){}
+  if(M.tmp) URL.revokeObjectURL(M.tmp); M.el.remove(); }
+// Close, or the phone's Back: asks once if there are marks to lose.
+function muBack(){ const M=_mu; if(!M) return; if(M.ask){ M.ask=false; return muFoot(); } if(muMarked()){ M.ask=true; return muFoot(); } muClose(); }
+async function muDone(){ const M=_mu; if(!M||!M.ed) return;
+  if(!muMarked()) return muClose();
+  M.ed.stopDrawingMode();
+  const blob=await (await fetch(M.ed.toDataURL({format:'jpeg',quality:.85}))).blob(), f=new File([blob],(M.i==null?'sketch':'photo')+'.jpg',{type:'image/jpeg'});
+  if(_mu!==M) return;
+  // Only while the form it was opened from is still the one on screen.
+  if(st.form===M.form){ const L=muList(M.form,M.l);
+    if(M.i==null) L.push({file:f,url:URL.createObjectURL(f),sketch:true});
+    else if(L[M.i]){ const p=L[M.i]; if(p.url) URL.revokeObjectURL(p.url); p.file=f; p.url=URL.createObjectURL(f); p.marked=true; } }
+  muClose(); render(); }
+function muClick(e){ const b=e.target.closest('[data-mu]'), M=_mu; if(!b||!M) return; const a=b.dataset.mu;
+  if(a==='close') return M.ed?(M.ask?muClose():muBack()):muClose();
+  if(!M.ed) return;
+  if(a==='tool') return muTool(b.dataset.v);
+  if(a==='undo'){ if(muMarked()) M.ed.undo(); return; }
+  if(a==='askNo'){ M.ask=false; return muFoot(); }
+  if(a==='askYes') return muClose();
+  if(a==='done') return muDone(); }
+
 function photosField(label,opt,accept){
   const F=st.form;
   return '<div class="field"><span class="fl">'+esc(label)+(opt?' <span class="opt-w">(optional)</span>':'')+'</span><div class="thumbs">'
-    +F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+(p.url?'':esc(extOf(p.file,p.file.name).toUpperCase()))+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove"><i>'+I.close+'</i></button></div>').join('')
+    +F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+(p.url?'':esc(extOf(p.file,p.file.name).toUpperCase()))+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove"><i>'+I.close+'</i></button></div>').join('')
     +'<label class="th add" aria-label="Add">'+(accept?I.clip:I.photo)+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
+    +(accept||opt?'':'<button class="th sk" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button>')
     +'</div></div>';
 }
 // Where (DEC-0479 rule 1): a tag scanned, or one of the site's places found by typing a few letters. A place not on the
@@ -4134,6 +4226,8 @@ app.addEventListener('click',async e=>{
   const a=b.dataset.act, F=st.form;
   if(a==='leaveStay') return leaveStay();
   if(a==='leaveGo') return leaveGo();
+  if(a==='muOpen') return muOpen(b.dataset.l,Number(b.dataset.i));
+  if(a==='muSketch') return muOpen(b.dataset.l,null);
   if((b.getAttribute('aria-label')==='Back'||(a==='sheetClose'&&st.sheet==='jdone'))&&leaveAsk({act:a,label:b.getAttribute('aria-label')})) return;
   if(a==='home'||a==='due'){ st.form=null; st.sheet=false; return go('due'); }
   if(a==='me'){ st.form=null; st.sheet=false; return go('me'); }
@@ -4282,7 +4376,7 @@ app.addEventListener('click',async e=>{
   if(a==='jtab'){ st.J.tab=b.dataset.v; ls.set('wl_jtab',b.dataset.v); return render(); }
   if(a==='jsortv'){ st.J.sort=b.dataset.v; ls.set('wl_jsort',b.dataset.v); st.sheet=false; return render(); }
   if(a==='jsortOpen'){ st.sheet='jsort'; return render(); }
-  if(a==='jgrp'){ const _L=jobsAll().filter(j=>j.group===b.dataset.id); Object.assign(st.J,{grp:b.dataset.id,state:_L.length&&_L.every(j=>j.pest)?'doing':'todo',q:'',groups:[]}); return go('jobs'); }
+  if(a==='jgrp'){ const _sn=ls.get('wl_grpSeen',{})||{}; _sn[b.dataset.id]=Date.now(); ls.set('wl_grpSeen',_sn); const _L=jobsAll().filter(j=>j.group===b.dataset.id); Object.assign(st.J,{grp:b.dataset.id,state:_L.length&&_L.every(j=>j.pest)?'doing':'todo',q:'',groups:[]}); return go('jobs'); }
   if(a==='jgrpBack'){ Object.assign(st.J,{grp:'',q:''}); return go('jobs'); }
   if(a==='jview'){ st.J.view=b.dataset.v; ls.set('wl_jview',b.dataset.v); return render(); }
   if(a==='jsheet'){ st.sheet='jobs'; render(); const v=app.querySelector('.sheet button'); if(v) v.focus(); return; }
@@ -5988,12 +6082,15 @@ app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]')
 app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
 app.addEventListener('touchend',e=>{ if(!_sw) return; const S0=_sw; _sw=null; S0.el.style.transform=''; const dx=(e.changedTouches[0]||{}).clientX-S0.x;
   if(dx>64&&st.screen==='chat'){ st.form.replyTo=S0.id; st.form.mode=''; render(); chatBottom(); const t=document.getElementById('ctext'); if(t) t.focus(); } });
-// Swipe left or right in a group to move between To Do, In Progress and Done, as the tabs do (DEC-0384 rule 4).
+// Swipe left or right in a group to move between To Do, In Progress and Done, as the tabs do (DEC-0384 rule 4); on Jobs
+// itself, between Feed and Groups (DEC-0485). A card's own swipe ([data-sw]) is left to the card.
 let _gsw=null;
-app.addEventListener('touchstart',e=>{ _gsw=st.screen==='jobs'&&st.J&&st.J.grp&&!st.sheet&&e.touches.length===1&&!e.target.closest('input,textarea,.sheet')?{x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}:null; },{passive:true});
+app.addEventListener('touchstart',e=>{ _gsw=st.screen==='jobs'&&st.J&&!st.sheet&&e.touches.length===1&&!e.target.closest('input,textarea,.sheet,[data-sw]')?{x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}:null; },{passive:true});
 app.addEventListener('touchcancel',()=>{ _gsw=null; },{passive:true});
-app.addEventListener('touchend',e=>{ if(!_gsw) return; const S0=_gsw, t=e.changedTouches[0]; _gsw=null; if(!t||st.screen!=='jobs'||!st.J.grp||st.sheet) return;
+app.addEventListener('touchend',e=>{ if(!_gsw) return; const S0=_gsw, t=e.changedTouches[0]; _gsw=null; if(!t||st.screen!=='jobs'||st.sheet) return;
   const dx=t.clientX-S0.x, dy=t.clientY-S0.y; if(Math.abs(dx)<64||Math.abs(dx)<2*Math.abs(dy)||Date.now()-S0.t>800) return;
+  if(!st.J.grp){ const V=['feed','groups'], v=V[V.indexOf(st.J.tab==='groups'?'groups':'feed')+(dx<0?1:-1)]; if(!v||v===st.J.tab) return;
+    st.J.tab=v; ls.set('wl_jtab',v); return render(); }
   const T=['todo','doing','done'], i=T.indexOf(st.J.state)+(dx<0?1:-1); if(i<0||i>=T.length) return;
   st.J.state=T[i]; render(); });
 let _clp=null;
@@ -6037,7 +6134,7 @@ async function boot(){
   if(LINK_JOB) jobFromLink(LINK_JOB);
   if(LINK_FLUSH) flushFromLink(LINK_FLUSH);
   if(!LINK_JOB&&!LINK_FLUSH) hereBack();
-  alertsKeep(); setTimeout(flSync,3000); wlGuard();
+  alertsKeep(); setTimeout(flSync,3000);   // the Back guard is added on the first touch (wlGuard)
 }
 const LINK_JOB=new URLSearchParams(location.search).get('job')||'';
 // A tap left running: its alert opens the flush round on that outlet (John, 12 Nov 2026: "go to the actual tap point").
@@ -6061,7 +6158,8 @@ if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('messa
 // For the sandbox check only: lets it scan without a camera. Absent unless the page runs in the check.
 if(STORE) window.wfmPhoneTest={scanned:scanned,state:st,render:render,siteRefresh:siteRefresh,msgRefresh:msgRefresh};
 // Keeps the page itself on the phone so it opens with no signal (DEC-0287 rule 3). Not in the check.
-if('serviceWorker' in navigator&&!testStore()&&location.protocol==='https:') navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&!testStore()&&location.protocol==='https:'){ navigator.serviceWorker.register('sw.js').catch(()=>{});
+  setTimeout(()=>{ if(navigator.onLine&&navigator.serviceWorker.controller) MARK_LIB.forEach(u=>fetch(u,{mode:'cors'}).catch(()=>{})); },8000); }
 boot();
 </script>
 <script>
