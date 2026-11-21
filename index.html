@@ -1229,23 +1229,23 @@ function relayStore(){
   if(takeSetupLink(location.href)) history.replaceState(null,'',location.pathname);
   let r=null; try{ r=JSON.parse(localStorage.getItem('wl_relay')||'null'); }catch(e){}
   if(!r||!r.url) return null;
-  const post=async body=>{
+  const post=async(body,sig)=>{
     // text/plain keeps it a simple request, so the browser sends it without a preflight.
-    const res=await fetch(r.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+    const res=await fetch(r.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),signal:sig});
     let j=null; try{ j=await res.json(); }catch(e){ throw new Error('The site’s relay did not answer properly ('+res.status+')'); }
     if(!j.ok){ const e=new Error(j.why||'The site’s relay refused it'); e.code=j.code; throw e; }
     return j;
   };
   // Who is asking: the person's own sign-in, which the relay checks with Google; else, until sign-in is required, the
   // site code. The address it was called on goes too, so the relay can tell the desk where it is.
-  const call=async body=>{
+  const call=async(body,sig)=>{
     const id={self:r.url};
     if(r.acct){ const a=await fbAuth(), u=a.currentUser;
       if(!u){ const e=new Error('You are signed out. Sign in again.'); e.code='signedout'; signedOutHere(e.message); throw e; }
       id.idToken=await u.getIdToken(); id.ua=phoneKind(); }
     else if(r.code) id.code=r.code;
     else { const e=new Error('This phone is not signed in.'); e.code='signin'; throw e; }
-    try{ return await post(Object.assign(id,body)); }
+    try{ return await post(Object.assign(id,body),sig); }
     catch(e){ if(e.code==='signedout'||e.code==='signin'||e.code==='noaccess') signedOutHere(e.message); throw e; }
   };
   return {
@@ -1259,7 +1259,7 @@ function relayStore(){
       catch(e){ r=was; await a.signOut().catch(()=>{}); throw e; } },
     resetPassword:async email=>{ const a=await fbAuth(); await a.sendPasswordResetEmail(email); },
     account:async()=>null,
-    add:async(path,blob)=>{ await call({op:'add',path:path,type:blob.type||'',data:await b64(blob)}); },
+    add:async(path,blob,sig)=>{ await call({op:'add',path:path,type:blob.type||'',data:await b64(blob)},sig); },
     // Alerts (DEC-0344): pushConfig, pushRegister and pushTest, as the relay names them.
     ask:call,
     // A read gives up after 20 seconds, so a relay that does not answer never holds the page on "Reading the site
@@ -1412,6 +1412,8 @@ let _wlGuard=false, _wlLeave=0;
 function wlGuard(){ if(_wlGuard) return; try{ history.pushState({wl:1},''); _wlGuard=true; }catch(e){} }
 function wlBack(){
   _wlGuard=false;
+  if(st.sheet==='leave'){ leaveStay(); return wlGuard(); }
+  if(leaveAsk({phone:true})) return wlGuard();
   const F=st.fl;
   if(st.screen==='flush'&&F&&F.pick){ F.pick=null; render(); return wlGuard(); }
   if(st.sheet){ st.sheet=false; render(); return wlGuard(); }
@@ -1507,8 +1509,13 @@ async function obDel(id){ const d=await db(); return new Promise((ok,no)=>{ cons
 
 // Files first, the record last, so the desk lists a capture only once everything is there (slice A).
 // A file already there was sent on an earlier try: ids are new for every capture.
+// A send that gets no answer stops waiting (John, 21 Nov 2026: a sign-off's record took five minutes to land while the
+// screen said Sending). 20 seconds, and a second more for every 40 KB of a photo; the capture stays in the outbox and
+// goes again by itself. A send that did land unseen answers "exists" on the next try, which is taken as sent.
+function inTime(run,ms){ const ctl=new AbortController(); let t;
+  return Promise.race([run(ctl.signal),new Promise((_,no)=>{ t=setTimeout(()=>{ const e=new Error('The site did not answer in '+Math.round(ms/1000)+' seconds'); e.code='timeout'; try{ ctl.abort(); }catch(x){} no(e); },ms); })]).finally(()=>clearTimeout(t)); }
 async function deliver(c){
-  const put=async(path,blob)=>{ try{ await STORE.add(path,blob); }catch(e){ if(!(e&&e.code==='exists')) throw e; } };
+  const put=async(path,blob)=>{ try{ await inTime(sig=>STORE.add(path,blob,sig),20000+Math.round((blob.size||0)/40)); }catch(e){ if(!(e&&e.code==='exists')) throw e; } };
   for(const f of c.files){
     if(c.done.indexOf(f.name)>=0) continue;
     await put('Inbox/'+f.name,f.blob);
@@ -1529,7 +1536,7 @@ async function send(c){
 async function sendKept(){
   if(st.busy) return; st.busy=true;
   const all=await obAll().catch(()=>[]); let n=0;
-  for(const c of all){ if(await send(c)) n++; }
+  for(const c of all){ if(st.sending&&st.sending.has(c.id)) continue; if(await send(c)) n++; }
   st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
   return n;
 }
@@ -1626,7 +1633,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,hazard:vHazard,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jpvisit:jpVisitSheet,jpclose:jpCloseSheet,jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={leave:leaveSheet,jpvisit:jpVisitSheet,jpclose:jpCloseSheet,jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
@@ -2299,7 +2306,7 @@ const canIssue=()=>!!st.walker&&issuers().some(n=>nk(n)===nk(st.walker));
 const issuerSay=()=>(issuers().length?issuers().join(' or '):'The FM')+' issues it, from their phone or the desk.';
 function jPending(j){
   const th=j.thread||[], out=new Set(st.outbox.map(c=>c.id));
-  return jSent().filter(x=>x.job===j.id&&!(x.act==='edit'||x.act==='delete'?th.some(e=>(e.chg||[]).indexOf(x.cap)>=0):th.some(e=>Date.parse(e.at)===Date.parse(x.at)&&nk(e.by)===nk(x.by)))).map(x=>Object.assign({waiting:out.has(x.cap)},x));
+  return jSent().filter(x=>x.job===j.id&&!(x.act==='edit'||x.act==='delete'?th.some(e=>(e.chg||[]).indexOf(x.cap)>=0):th.some(e=>Date.parse(e.at)===Date.parse(x.at)&&nk(e.by)===nk(x.by)))).map(x=>Object.assign({waiting:out.has(x.cap),sending:!!(st.sending&&st.sending.has(x.cap))},x));
 }
 // Kept a week at most; gone once filed, or once its job has left the site file and it has left the outbox.
 function jSentPrune(){ if(!st.site) return; const wk=Date.now()-7*864e5, out=new Set(st.outbox.map(c=>c.id));
@@ -2354,12 +2361,12 @@ function jThread(j,pend,inStrip){
   let h=th.length>=WFM_SITE_SHAPE.threadMax?'<div class="sys">Earlier entries are on the desk’s Jobs page.</div>':'', last='';
   all.forEach(e=>{
     const dl=dayLab(e.at); if(dl&&dl!==last){ h+='<div class="dayb">'+esc(dl)+'</div>'; last=dl; }
-    const tm=isNaN(Date.parse(e.at))?'':' · <span class="n">'+hm(e.at)+'</span>', kind=e.kind||'Note', x=e.pend, ps=x?' · '+(x.waiting?'Not delivered, no signal':'Delivered'):'';
+    const tm=isNaN(Date.parse(e.at))?'':' · <span class="n">'+hm(e.at)+'</span>', kind=e.kind||'Note', x=e.pend, ps=x?' · '+(x.sending?'Sending':x.waiting?'Not delivered, no signal':'Delivered'):'';
     // What the desk wrote by itself reads as a line across the middle, as a messaging app's own notices do.
     if(!e.by||e.by==='Waterline FM'){ h+='<div class="sys"><span class="k">'+esc(kind)+'</span> '+esc(e.text)+(tm?' <span class="n">'+hm(e.at)+'</span>':'')+'</div>'; return; }
     const own=!!x||(!!st.walker&&nk(e.by)===nk(st.walker)), id=x?x.cap:(e.cap||''), c=id?chg.filter(y=>y.entry===id).pop():null;
     // Deleted (DEC-0321 rule 3): a line in its place, from the desk or sent from here.
-    if(e.deleted||(c&&c.act==='delete')){ const d=e.deleted||{by:st.walker,at:c.at}, cs=c?' · '+(c.waiting?'Not delivered, no signal':'Delivered'):'';
+    if(e.deleted||(c&&c.act==='delete')){ const d=e.deleted||{by:st.walker,at:c.at}, cs=c?' · '+(c.sending?'Sending':c.waiting?'Not delivered, no signal':'Delivered'):'';
       h+='<div class="ev">'+ICO('trash-2')+'<span>'+esc((own?'You':e.by)+' deleted a message')+(isNaN(Date.parse(d.at))?'':' · <span class="n">'+hm(d.at)+'</span>')+esc(cs)+'</span></div>'; return; }
     const ph=(e.photos||[]).filter(n=>!inStrip.has(n)), sp=x?(_sentPics[x.cap]||[]):[];
     if(EVK[kind]&&!ph.length&&!sp.length){ h+='<div class="ev">'+ICO(EVK[kind])+'<span>'+esc(evWords(kind,e.text,own?'you':e.by))+tm+esc(ps)+'</span></div>'; return; }
@@ -2400,7 +2407,7 @@ function vJob(){
   const F=st.form; if(!F.kind) F.kind='Note'; F.photos=F.photos||[]; if(F.note==null) F.note='';
   const S0=jState(j), e=Date.parse(j.end), a=jLate(j), pend=S0.pend, pD=S0.pD, pS=S0.pS, pPR=S0.pPR, paused=S0.paused, doing=S0.doing, fl=S0.fl;
   // Delivered or not (John, 21 Oct 2026, DEC-0323): delivered once it is in the site's Inbox.
-  const sent=x=>x.waiting?'Not delivered, no signal: it sends by itself.':'Delivered.';
+  const sent=x=>x.sending?'Sending.':x.waiting?'Not delivered, no signal: it sends by itself.':'Delivered.';
   const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.stopped?'Stopped: '+pPR.stopped.why+(pPR.note?'. '+pPR.note:''):pPR.note,x:pPR}:j.paused):null;
   // Where it stands, and since when.
   let sw, ss='';
@@ -2656,6 +2663,26 @@ function jEditSheet(){ const F=st.form;
     +'<div class="field"><label for="etext">Its words</label><textarea id="etext" data-in="etext">'+esc(F.etext||'')+'</textarea><div class="help">The job shows it as edited. The desk keeps what it said before.</div></div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="msgEditSend"'+(st.busy?' disabled':'')+'>'+I.send+'Save the Change</button>'
     +(F.eerr?'<div class="help err" role="alert" style="margin:0">'+esc(F.eerr)+'</div>':'')+'</div></div>'; }
+// Back with something recorded and not sent asks first (John, 21 Nov 2026: "there should be a prompt if hitting back that
+// you may have to start again as you loose all you where trying to record and submit"). Only where Back would lose it: a
+// capture's form, a note or photo not yet sent on a job, and Mark Done's marks, photo, words and signature. Its buttons
+// are verbs naming the outcome, in Title Case (Design 8.3); staying is the main one.
+function unsent(){ const F=st.form, s=st.sheet, t=x=>!!String(x==null?'':x).trim(); if(!F) return false;
+  if(s==='jdone'){ const D=F.fin||{}, M=D.marks||{}; return !!((D.strokes||[]).length||Object.keys(M).some(k=>M[k])||t(F.dnote)||(F.dphotos||[]).length||t(F.t5found)); }
+  if(s) return false;
+  if(st.screen==='job') return t(F.note)||!!(F.photos||[]).length;
+  if(['fault','hazard','proof','sighting','reading'].indexOf(st.screen)>=0) return t(F.note)||!!(F.photos||[]).length||t(F.value)||t(F.hot)||t(F.cold);
+  return false; }
+function leaveAsk(redo){ if(st.leaveOk||!unsent()) return false; st.leave=Object.assign({was:st.sheet},redo); st.sheet='leave'; render(); const k=app.querySelector('.sheet .btn[data-act="leaveStay"]'); if(k) k.focus(); return true; }
+function leaveStay(){ const L=st.leave; st.leave=null; st.sheet=L?L.was:false; render(); }
+function leaveGo(){ const L=st.leave; st.leave=null; st.sheet=L?L.was:false; render(); if(!L) return;
+  st.leaveOk=true;
+  try{ if(L.phone) wlBack(); else{ const el=[...app.querySelectorAll('[data-act="'+L.act+'"]')].find(x=>x.getAttribute('aria-label')===L.label); if(el) el.click(); } }
+  finally{ st.leaveOk=false; } }
+function leaveSheet(){
+  return '<div class="scrim" data-act="leaveStay"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Go back"><div class="sh"><b>Go Back?</b><button class="ib" data-act="leaveStay" aria-label="Close">'+I.close+'</button></div>'
+    +'<p class="para" style="padding-top:8px">What you have recorded here has not been sent. Go back and it is lost, and you start again.</p>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="leaveStay">Stay and Finish</button><button class="btn g" data-act="leaveGo">Go Back and Lose It</button></div></div>'; }
 function jDelSheet(){
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Delete your message"><div class="sh"><b>Delete Your Message?</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<p class="para" style="padding-top:8px">It goes from the job for everyone, with a line saying you deleted it. The desk keeps its words and files in the audit log.</p>'
@@ -3082,8 +3109,9 @@ async function jobSend(act){
   let c;
   try{ c=await makeCapture('job',fields,photos); }
   catch(e){ st.busy=false; st.sheet=false; F.err='Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
-  const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
-  if(!ok&&c.errCode==='notissuer'){ st.sheet=false; render(); return toast('Not sent: '+c.err); }
+  // On the job at once, its line reading Sending, and the sending goes on behind it, as a message's does (John, 21 Nov
+  // 2026: a sign-off "hangs for far too long with no sense of sending"). Nobody waits on the site to answer.
+  st.busy=false; st.sending.add(c.id);
   const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:act==='pvisit'?'Visit':fields.msgKind||'',note:act==='pclose'?'Case closed: '+String(F.pcr||'').trim():fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null,
     hz:fields.check&&!fields.check.none?fields.check.hazards.map(h=>h.id):null,stopped:fields.stopped||null,pa:F.pa||null,check:act==='start'||act==='restart'?fields.check||null:null}); ls.set('wl_jobSent',s);
   _sentPics[c.id]=V?[]:photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
@@ -3100,12 +3128,18 @@ async function jobSend(act){
   if(F.pa){ F.prwhy=''; F.pa=null; }
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
   st.sheet=false; render();
+  send(c).then(async ok=>{ st.sending.delete(c.id); st.outbox=await obAll().catch(()=>st.outbox);
+    // An answer to a permit from someone who cannot issue it is never kept (DEC-0359 rule 2): its line goes.
+    if(!ok&&c.errCode==='notissuer'){ ls.set('wl_jobSent',jSent().filter(x=>x.cap!==c.id)); jobDraw(); return toast('Not sent: '+c.err); }
+    jobDraw();
+    // Sent says itself on the job: the entry reads "Delivered" (DEC-0323). Only a problem is said here.
+    if(!ok){ toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.'); if(c.errCode!=='refused') sendSoon(); } });
   // Marked done: the job closes and the list it was opened from comes back, ready for the next (DEC-0381 rule 1).
-  if((act==='done'||act==='pclose')&&(ok||c.errCode!=='refused')){ if(st.J&&st.J.grp) st.J.state=act==='pclose'&&jobsAll().some(x=>x.group===st.J.grp&&x.pest&&x.id!==j.id)?'doing':'todo'; const bk=app.querySelector('.zone .ztop [aria-label="Back"]'); if(bk) bk.click();
-    return toast(act==='pclose'?'Case closed. Job '+(j.no?j.no+' ':'')+'closes with it.'+(ok?'':' It sends when there is signal.'):'Job '+(j.no?j.no+' ':'')+'marked done.'+(ok?'':' It sends when there is signal.')); }
-  // Sent says itself on the job: the entry reads "Delivered" (DEC-0323). Only a problem is said here.
-  if(!ok) toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
+  if(act==='done'||act==='pclose'){ if(st.J&&st.J.grp) st.J.state=act==='pclose'&&jobsAll().some(x=>x.group===st.J.grp&&x.pest&&x.id!==j.id)?'doing':'todo'; const bk=app.querySelector('.zone .ztop [aria-label="Back"]'); if(bk) bk.click();
+    return toast(act==='pclose'?'Case closed. Job '+(j.no?j.no+' ':'')+'closes with it.':'Job '+(j.no?j.no+' ':'')+'marked done.'); }
 }
+// A send finished behind the page: the job's lines are drawn again, unless a finger is signing or a check is open.
+function jobDraw(){ if(['job','jobs','due'].indexOf(st.screen)<0||st.rec||['jdone','take5','leave'].indexOf(st.sheet)>=0) return; keepRender(); }
 // Draws the screen again keeping where the page is scrolled and what is being typed.
 function keepRender(){ if(st.rec) return; const a=document.activeElement, id=a&&a.id, pos=a&&a.selectionStart, y=window.scrollY; render(); window.scrollTo({top:y,behavior:'instant'});
   const n=id&&document.getElementById(id); if(n&&n!==document.activeElement){ n.focus({preventScroll:true}); try{ if(pos!=null) n.setSelectionRange(pos,pos); }catch(x){} } }
@@ -4075,7 +4109,7 @@ document.addEventListener('keydown',e=>{
   const sh=app.querySelector('.sheet.t5o')||app.querySelector('.sheet');
   if(sh&&!app.querySelector('.scan')){
     if(e.key==='Escape'&&st.sheet==='take5'&&st.form&&st.form.ck&&st.form.ck.otherOpen){ e.preventDefault(); return t5Act('t5OtherClose',{dataset:{}}); }
-    if(e.key==='Escape'){ e.preventDefault(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobStop"]',jstop:'[data-act="jobStop"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
+    if(e.key==='Escape'){ e.preventDefault(); if(st.sheet==='leave') return leaveStay(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobStop"]',jstop:'[data-act="jobStop"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
     if(e.key==='Tab'){ const f=[...sh.querySelectorAll('button:not([disabled]),textarea,input')]; if(!f.length) return; const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1); e.preventDefault(); f[n].focus(); }
     return;
   }
@@ -4091,6 +4125,9 @@ document.addEventListener('keydown',e=>{
 app.addEventListener('click',async e=>{
   const b=e.target.closest('[data-act]'); if(!b||b.disabled) return;
   const a=b.dataset.act, F=st.form;
+  if(a==='leaveStay') return leaveStay();
+  if(a==='leaveGo') return leaveGo();
+  if((b.getAttribute('aria-label')==='Back'||(a==='sheetClose'&&st.sheet==='jdone'))&&leaveAsk({act:a,label:b.getAttribute('aria-label')})) return;
   if(a==='home'||a==='due'){ st.form=null; st.sheet=false; return go('due'); }
   if(a==='me'){ st.form=null; st.sheet=false; return go('me'); }
   if(a==='whosin'){ st.sheet='whosin'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); return; }
@@ -4381,6 +4418,8 @@ function walkKeep(F){ const o=Object.assign({},F); o.photos=[]; o.u=null; o.unsc
 // A capture that could not be sent is sent again by itself until it is (DEC-0291 rule 2).
 async function retry(){ if(!st.outbox.length||st.busy||navigator.onLine===false) return; const before=st.outbox.length; await sendKept(); if(st.outbox.length<before){ toast(st.outbox.length?'Sent '+(before-st.outbox.length)+'; '+st.outbox.length+' still waiting':'Sent'); } if(!st.form||['due','me','job'].indexOf(st.screen)>=0) keepRender(); }
 window.addEventListener('online',retry);
+// A send that timed out goes again in 15 seconds, then every minute as before.
+let _soon=0; function sendSoon(){ clearTimeout(_soon); _soon=setTimeout(retry,15000); }
 // The desk's file is read again while the page is open: every minute and on coming back to it, so what was sent turns
 // into what the desk filed without closing the app (John, 20 Oct 2026). Never redrawn under a sheet, the scanner or a
 // field in use: the new file is kept and the next screen draws it.
@@ -5331,15 +5370,16 @@ async function doSend(){
   // round shows what was sent, sending then sent, and the outlet's row keeps it for the visit.
   const fromFl=F.back==='flush'&&F.flId&&st.fl, said=String(F.note||'').trim();
   if(fromFl){ st.fl.sent=st.fl.sent||{}; st.fl.sent[F.flId]={at:Date.now(),text:said,state:'sending'}; }
+  st.busy=false; st.sending.add(c.id);
   go(F.back==='flush'||F.back==='pest'?F.back:'due');
-  const ok=await send(c);
+  const ok=await send(c); st.sending.delete(c.id);
   if(fromFl){ const x=st.fl.sent[F.flId]; if(x){ x.state=ok?'sent':(c.errCode==='refused'?'refused':'waiting'); if(st.screen==='flush') render(); } }
-  st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
+  st.outbox=await obAll().catch(()=>st.outbox);
   if(F.kind==='round'){ ls.del('wl_walk'); const w=walksSent(); w.push({round:F.round,at:new Date().toISOString(),for:F.walkFor||''}); ls.set('wl_walksSent',w); }
   F.photos.forEach(p=>p.url&&URL.revokeObjectURL(p.url));
   const me=st.capSend={state:ok?'sent':''}; capDraw();
   if(ok) setTimeout(()=>{ if(st.capSend===me){ st.capSend=null; capDraw(); } },1800);
-  else toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
+  else{ toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.'); if(c.errCode!=='refused') sendSoon(); }
 }
 
 // ── Messages: the site's chats (job 015 MS2; DEC-0354, DEC-0355, DEC-0353) ───────────────────
