@@ -1626,7 +1626,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,hazard:vHazard,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={jpvisit:jpVisitSheet,jpclose:jpCloseSheet,jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
@@ -2162,8 +2162,8 @@ function jobRowDone(j,showGroup){ const d=j.done||{}, here=jDoneHere(j);
   return '<button class="ra c'+(d.how?' jc':' jx')+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +'<span class="sub">'+esc((d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at))+'</span><span class="sub">'+esc(doneSay(j))+'</span></span></button>'; }
 // A group's icon, from its name (the site's groups are its own, DEC-0309); one set, one stroke (21.7).
-const GIC=[[/fire.?walk|walk/i,'flame'],[/fire/i,'fire-extinguisher'],[/legionella|water|tmv/i,'droplets'],[/banned/i,'ban'],[/hygiene/i,'spray-can'],[/housekeep/i,'bed-double'],[/inspect/i,'clipboard-check'],[/part|material/i,'pkg'],[/planned/i,'calendar-clock'],[/maint/i,'jobs']];
-function GICO(g){ const n=GROUP(g), m=GIC.find(x=>x[0].test(n)), k=m?m[1]:'folder'; return k==='pkg'?I.pkg:k==='jobs'?I.jobs:ICO(k); }
+const GIC=[[/pest/i,'rat'],[/fire.?walk|walk/i,'flame'],[/fire/i,'fire-extinguisher'],[/legionella|water|tmv/i,'droplets'],[/banned/i,'ban'],[/hygiene/i,'spray-can'],[/housekeep/i,'bed-double'],[/inspect/i,'clipboard-check'],[/part|material/i,'pkg'],[/planned/i,'calendar-clock'],[/maint/i,'jobs']];
+function GICO(g){ const n=GROUP(g), m=GIC.find(x=>x[0].test(n)), k=m?m[1]:'folder'; return k==='pkg'?I.pkg:k==='jobs'?I.jobs:k==='rat'?I.rat:ICO(k); }
 // The person's own order for every job list, kept on this phone (John, 22 Oct: "let the user decide").
 function jSortL(L){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code), t=j=>Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc), i=l?lv.indexOf(l.level):-1; return i<0?99:i; };
   return L.slice().sort((a,b)=>flagRank(a)-flagRank(b)||(J.sort==='old'?t(a)-t(b):J.sort==='place'?fl(a)-fl(b)||jWhere(a).localeCompare(jWhere(b)):t(b)-t(a))); }
@@ -2392,6 +2392,9 @@ function jBar(F){
     +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="rcan" data-act="vdiscard">Cancel</button></div>'
     +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
 }
+// A pest case's job (DEC-0480): the case's clock says when the next visit is due (DEC-0465, DEC-0478 rule 3), said once.
+function jPestDue(j){ const c=j.pest; if(!c||c.closed||!c.due) return null; const d=Math.round((new Date(flToday()+'T12:00:00')-new Date(c.due+'T12:00:00'))/864e5);
+  return {late:d>0?d:0,say:(c.kind==='insect'?'Next follow-up ':'Next visit ')+(d>0?'was due ':d===0?'due today, ':'due in '+(-d)+(d===-1?' day, ':' days, '))+day(c.due+'T12:00:00')+(c.kind==='insect'?'':' · day '+c.day+' of 35')}; }
 function vJob(){
   const j=jobById(st.form.id); if(!j) return '<div class="body">'+formZone(st.place||'due','Job','No Longer on the Phone','This job is no longer in the site details from the desk. Done jobs stay '+doneDays()+' days; older ones are on the desk’s Jobs page.')+'</div>';
   const F=st.form; if(!F.kind) F.kind='Note'; F.photos=F.photos||[]; if(F.note==null) F.note='';
@@ -2426,10 +2429,14 @@ function vJob(){
   }
   const pmSay=pmOn.map(p=>'Permit to work, '+p.type.toLowerCase()+': issued'+(p.by?' by '+youOr(p.by):'')+'.').concat(pmRef&&!pmOn.length&&!waitT.length?['Permit to work, '+pmRef.type.toLowerCase()+': refused by '+youOr(pmRef.by)+(pmRef.why?'. '+pmRef.why.replace(/\.$/,''):'')+'.']:[]).join(' ');
   const due=j.due?'Fell due '+when(j.due)+(e&&!a?', its time runs to '+when(j.end):''):'';
+  // A pest case is in progress from the day it opens: no Start, Pause or Stop; its one action is Record a Visit (DEC-0480 rule 2).
+  const pc=j.pest||null, pdue=pc?jPestDue(j):null;
+  if(pc){ row=false; btn=null; if(!S0.done&&!pD){ if(st.walker){ btn=['jpVisit','rat','Record a Visit']; why=''; } else why='Recording a visit needs your name on this phone. Add it in Settings.'; } }
   const zone='<div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(GROUP(j.group))+(j.no?' · Job <span class="mono">'+esc(j.no)+'</span>':'')+'</span>'
       +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>'
-    +'<h1>'+esc(j.title||'Job')+'</h1>'
+    +'<h1>'+esc(pc?pc.pest:(j.title||'Job'))+'</h1>'
     +'<div class="jwh">'+I.pin+'<span>'+esc(jWhere(j))+(a?' · <b data-urg style="color:var(--inkRed)">'+esc(a.join(' '))+'</b>':'')+'</span></div>'
+    +(pdue?'<div class="jwh">'+ICO('calendar-clock')+'<span>'+esc(pdue.say)+(pdue.late?' · <b data-urg style="color:var(--inkRed)">'+pdue.late+(pdue.late===1?' day':' days')+' late</b>':'')+'</span></div>':'')
     +(fl?'<div class="jfl">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.why?'. '+esc(fl.why):'')+'</span></div>':'')
     +'<div class="zact"><div class="jst"><b>'+esc(sw)+'</b>'+(ss?'<span>'+esc(ss)+'</span>':'')+'</div>'
     +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'+(row?jRow(j,S0,pz):'')
@@ -2445,6 +2452,29 @@ function vJob(){
     +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':'')+'</span>'
     +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(hs.length?'Change who is on this job':'Give this job to someone')+'">'+(hs.length?'Change':'Assign')+'</button>':'')+'</div>':'';
   return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+jBar(F)+'</div>';
+}
+// Record a Visit on an insect case (DEC-0478 rule 3, DEC-0480 rule 2): what was done, what was found, and the next
+// follow-up date, set by the person (no interval claimed without a source). A rodent case's visit is its case visit.
+function jpVisitSheet(){
+  const F=st.form, t=F.pvt;
+  const bad=k=>t&&!String(F[k]||'').trim();
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Record a visit"><div class="sh"><b>Record a Visit</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<div class="field'+(bad('pvw')?' bad':'')+'"><label for="pvw">What was done</label><textarea id="pvw" data-in="pvw" placeholder="Second spray, or a monitor inspection">'+esc(F.pvw||'')+'</textarea>'+(bad('pvw')?'<div class="help err" role="alert">Say what was done at the visit.</div>':'')+'</div>'
+    +'<div class="field"><label for="pvf">What was found <span class="opt-w">(optional)</span></label><textarea id="pvf" data-in="pvf">'+esc(F.pvf||'')+'</textarea></div>'
+    +'<div class="field'+(bad('pvn')?' bad':'')+'"><label for="pvn">Next follow-up</label><input id="pvn" type="date" style="min-height:44px" min="'+flToday()+'" data-in="pvn" value="'+esc(F.pvn||'')+'">'
+    +(bad('pvn')?'<div class="help err" role="alert">Set the date of the next follow-up. If the room is clear, close the case instead, under More.</div>':'<div class="help">Photos and notes go in the message bar, as on any job.</div>')+'</div>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpVisitSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Record the Visit</button></div></div>';
+}
+// Close the Case (DEC-0478 rules 2 and 3, DEC-0480 rule 4): the case's own closing questions; the job closes with it.
+function jpCloseSheet(){
+  const F=st.form, j=jobById(F.id), ins=!!(j&&j.pest&&j.pest.kind==='insect'), t=F.pct;
+  const bad=k=>t&&!String(F[k]||'').trim();
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Close the case"><div class="sh"><b>Close the Case</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +'<div class="field'+(bad('pcd')?' bad':'')+'"><label for="pcd">'+(ins?'Found clear on':'Bait or traps taken up on')+'</label><input id="pcd" type="date" style="min-height:44px" max="'+flToday()+'" data-in="pcd" value="'+esc(F.pcd||'')+'">'
+    +(bad('pcd')?'<div class="help err" role="alert">'+(ins?'Set the date the room was found clear.':'Set the day the bait or traps were taken up.')+'</div>':'')+'</div>'
+    +'<div class="field'+(bad('pcr')?' bad':'')+'"><label for="pcr">What let them in, and what stops it coming back</label><textarea id="pcr" data-in="pcr">'+esc(F.pcr||'')+'</textarea>'
+    +(bad('pcr')?'<div class="help err" role="alert">Say what let them in, and what stops it coming back.</div>':'<div class="help">'+(ins?'The room goes back into use.':'The points go back to monitoring paste.')+' The job closes with the case.</div>')+'</div>'
+    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpCloseSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Close the Case</button></div></div>';
 }
 // Start, Pause and Stop (DEC-0360 rule 7): always in the same three places. Teal is what can be pressed, the filled one is
 // the next step (Design 9.1, 21.2); the stage the job is in shows its time. Start on a paused job carries on.
@@ -2471,7 +2501,8 @@ function jMoreSheet(){
   const j=jobById(st.form.id); if(!j) return ''; const S0=jState(j), fl=S0.fl, n=holders(j).length;
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
-    +(!S0.pD&&st.walker?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
+    +(j.pest&&!S0.done&&!S0.pD&&st.walker&&inGroup(j)?v('jpClose','tick','Close the Case',j.pest.kind==='insect'?'When the room is found clear':'When the bait or traps are taken up'):'')
+    +(!S0.pD&&st.walker&&!j.pest?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
     +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
     +(S0.canAsg?v('jobAssign','users','Change Who Is on It',n?n+' on it':'No one on it yet'):'')
@@ -3021,7 +3052,10 @@ async function jobSend(act){
   const F=st.form, j=F&&jobById(F.id); if(!j||st.busy) return;
   const V=act==='voice'?F.voice:null; if(act==='voice'&&!V) return;
   // The position goes with it, so the desk can judge a role with no named person on the Organisation Structure (DEC-0373).
-  const fields={job:j.id,act:V?'note':act,pos:st.pos||''}; let photos=[]; F.pa=null;
+  const fields={job:j.id,act:V?'note':act==='pvisit'?'note':act==='pclose'?'done':act,pos:st.pos||''}; let photos=[]; F.pa=null;
+  if(act==='pvisit'){ const w=String(F.pvw||'').trim(), f=String(F.pvf||'').trim(), n=String(F.pvn||'').trim();
+    fields.msgKind='Note'; fields.note=w+(/[.!?]$/.test(w)?'':'.')+(f?' Found: '+f+(/[.!?]$/.test(f)?'':'.'):'')+(n?' Next follow-up '+day(n+'T12:00:00')+'.':''); fields.pest={visit:{what:w,found:f,next:n}}; }
+  if(act==='pclose'){ const ins=!!(j.pest&&j.pest.kind==='insect'); fields.note=''; fields.pest={close:ins?{clearOn:String(F.pcd||''),root:String(F.pcr||'').trim()}:{baitUp:String(F.pcd||''),root:String(F.pcr||'').trim()}}; }
   if(act==='note'){ fields.msgKind=F.kind||'Note'; fields.note=String(F.note||'').trim(); photos=F.photos; }
   if(act==='edit'){ fields.entry=F.mid; fields.note=String(F.etext||'').trim(); }
   if(act==='delete') fields.entry=F.mid;
@@ -3048,13 +3082,15 @@ async function jobSend(act){
   catch(e){ st.busy=false; st.sheet=false; F.err='Nothing was sent. Try again; if it happens twice, tell the desk. ('+(e.message||e)+')'; return render(); }
   const ok=await send(c); st.outbox=await obAll().catch(()=>st.outbox); st.busy=false;
   if(!ok&&c.errCode==='notissuer'){ st.sheet=false; render(); return toast('Not sent: '+c.err); }
-  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:fields.msgKind||'',note:fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null,
+  const s=jSent(); s.push({cap:c.id,job:j.id,act:fields.act,kind:act==='pvisit'?'Visit':fields.msgKind||'',note:act==='pclose'?'Case closed: '+String(F.pcr||'').trim():fields.note||'',flag:fields.flag||null,assign:fields.assign||null,at:c.record.taken,by:st.walker,n:c.files.length,au:V?V.secs:0,entry:fields.entry||'',parts:fields.parts||null,types:act==='permit'?F.ckNeed||[]:null,
     hz:fields.check&&!fields.check.none?fields.check.hazards.map(h=>h.id):null,stopped:fields.stopped||null,pa:F.pa||null,check:act==='start'||act==='restart'?fields.check||null:null}); ls.set('wl_jobSent',s);
   _sentPics[c.id]=V?[]:photos.map(p=>p.url).filter(Boolean);   // shown in its bubble while the page is open
   if(V){ _sentAudio[c.id]={url:V.url,secs:V.secs}; F.voice=null; F.kind='Note'; st.twEnd=true; }
   if(act==='edit'||act==='delete'){ F.mid=''; F.etext=''; F.eerr=''; }
   if(act==='note'){ F.note=''; F.photos=[]; F.kind='Note'; st.twEnd=true; }   // the kind is chosen for each entry, so a note is never filed under the last one's
   if(act==='done'||act==='parts'){ F.dnote=''; F.dphotos=[]; F.ptext=''; F.ptried=false; F.fin=null; F.t5found=''; }
+  if(act==='pvisit'){ F.pvw=''; F.pvf=''; F.pvn=''; F.pvt=false; st.twEnd=true; }
+  if(act==='pclose'){ F.pcd=''; F.pcr=''; F.pct=false; }
   if(act==='stop'){ F.ck=null; F.t5word=''; }
   if(act==='start'||act==='restart'||act==='permit'){ F.ck=null; F.pf={}; F.pfrom=''; F.pto=''; }
   if(act==='flag'){ F.why=''; F.level=''; F.ftried=false; }
@@ -3063,8 +3099,8 @@ async function jobSend(act){
   if(act==='assign'){ F.asg=[]; F.asgSend=null; F.atried=false; }
   st.sheet=false; render();
   // Marked done: the job closes and the list it was opened from comes back, ready for the next (DEC-0381 rule 1).
-  if(act==='done'&&(ok||c.errCode!=='refused')){ if(st.J&&st.J.grp) st.J.state='todo'; const bk=app.querySelector('.zone .ztop [aria-label="Back"]'); if(bk) bk.click();
-    return toast('Job '+(j.no?j.no+' ':'')+'marked done.'+(ok?'':' It sends when there is signal.')); }
+  if((act==='done'||act==='pclose')&&(ok||c.errCode!=='refused')){ if(st.J&&st.J.grp) st.J.state=act==='pclose'&&jobsAll().some(x=>x.group===st.J.grp&&x.pest&&x.id!==j.id)?'doing':'todo'; const bk=app.querySelector('.zone .ztop [aria-label="Back"]'); if(bk) bk.click();
+    return toast(act==='pclose'?'Case closed. Job '+(j.no?j.no+' ':'')+'closes with it.'+(ok?'':' It sends when there is signal.'):'Job '+(j.no?j.no+' ':'')+'marked done.'+(ok?'':' It sends when there is signal.')); }
   // Sent says itself on the job: the entry reads "Delivered" (DEC-0323). Only a problem is said here.
   if(!ok) toast(c.errCode==='refused'?'Not sent: '+(c.err||'the site refused it')+' It is kept on this phone.':'Waiting for signal. It sends by itself.');
 }
@@ -4200,7 +4236,7 @@ app.addEventListener('click',async e=>{
   if(a==='jtab'){ st.J.tab=b.dataset.v; ls.set('wl_jtab',b.dataset.v); return render(); }
   if(a==='jsortv'){ st.J.sort=b.dataset.v; ls.set('wl_jsort',b.dataset.v); st.sheet=false; return render(); }
   if(a==='jsortOpen'){ st.sheet='jsort'; return render(); }
-  if(a==='jgrp'){ Object.assign(st.J,{grp:b.dataset.id,state:'todo',q:'',groups:[]}); return go('jobs'); }
+  if(a==='jgrp'){ const _L=jobsAll().filter(j=>j.group===b.dataset.id); Object.assign(st.J,{grp:b.dataset.id,state:_L.length&&_L.every(j=>j.pest)?'doing':'todo',q:'',groups:[]}); return go('jobs'); }
   if(a==='jgrpBack'){ Object.assign(st.J,{grp:'',q:''}); return go('jobs'); }
   if(a==='jview'){ st.J.view=b.dataset.v; ls.set('wl_jview',b.dataset.v); return render(); }
   if(a==='jsheet'){ st.sheet='jobs'; render(); const v=app.querySelector('.sheet button'); if(v) v.focus(); return; }
@@ -4221,6 +4257,13 @@ app.addEventListener('click',async e=>{
   // P6: the kind tag, More, a photo full screen, the microphone and send, a voice note played, checked, sent or thrown away.
   if(a==='jkinds'){ st.sheet='jkinds'; render(); const v=app.querySelector('.sheet .opt.on')||app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jmore'){ st.sheet='jmore'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
+  // A pest case (DEC-0480): a rodent case's visit is its case visit of the points (DEC-0465); an insect case's, the sheet.
+  if(a==='jpVisit'){ const j=jobById(F.id); if(!j||!j.pest) return;
+    if(j.pest.kind!=='insect'){ st.sheet=false; go('pest'); return peAct('pestVisit',{dataset:{id:j.pest.id}}); }
+    F.pvt=false; st.sheet='jpvisit'; render(); const v=document.getElementById('pvw'); if(v) v.focus(); return; }
+  if(a==='jpVisitSend'){ if(!String(F.pvw||'').trim()||!String(F.pvn||'').trim()){ F.pvt=true; render(); const e=document.querySelector('.sheet .bad textarea,.sheet .bad input'); if(e) e.focus(); return; } return jobSend('pvisit'); }
+  if(a==='jpClose'){ F.pct=false; if(!F.pcd) F.pcd=flToday(); st.sheet='jpclose'; render(); const v=document.getElementById('pcr'); if(v) v.focus(); return; }
+  if(a==='jpCloseSend'){ if(!String(F.pcd||'').trim()||!String(F.pcr||'').trim()){ F.pct=true; render(); const e=document.querySelector('.sheet .bad textarea,.sheet .bad input'); if(e) e.focus(); return; } return jobSend('pclose'); }
   if(a==='pvOpen'){ st.pv=b.dataset.cap?{u:(_sentPics[b.dataset.cap]||[])[Number(b.dataset.i)]}:{n:b.dataset.n}; render(); const c=app.querySelector('.pv .ib'); if(c) c.focus(); return; }
   if(a==='pvClose'){ st.pv=null; render(); return; }
   if(a==='sndPress'){ if(Date.now()-_ptrAt<700) return;   // a press the microphone's own handlers took
