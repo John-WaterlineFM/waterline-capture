@@ -1,4 +1,4 @@
-// Written by tools/companion_shapes.py from Carnbeg_v599.html. Do not edit: run the tool again.
+// Written by tools/companion_shapes.py from Carnbeg_v603.html. Do not edit: run the tool again.
 // The desk app owns these shapes (Principles, Law 3; DEC-0271 rule 2).
 const WFM_CAPTURE_SHAPE={
   format:'waterline-capture', version:1,
@@ -58,7 +58,7 @@ const WFM_CAPTURE_SHAPE={
     kinds:{ext:'Outside bait point',int:'Inside monitor',efk:'Fly unit',trap:'Trap'},
     fills:{paste:'Monitoring paste',bait:'Toxic bait, under a case',trap:'Trap, under a case',efk:'Glue board and tube'},
     results:{
-      paste:[['C','Clear'],['E','Paste eaten'],['S','Droppings or other signs'],['N','Non-target animal'],['P','Paste replaced'],['D','Damaged'],['M','Missing']],
+      paste:[['C','No pest activity'],['E','Paste eaten'],['S','Droppings or other signs'],['N','Non-target animal'],['P','Paste replaced'],['D','Damaged'],['M','Missing']],
       bait:[['BT','Bait checked'],['D','Damaged'],['M','Missing']],
       trap:[['T0','Set, nothing caught'],['TE','Set off, empty'],['TT','Rat or mouse caught'],['TN','Non-target animal caught']],
       efk:[['K0','No catch'],['K1','A few on the board'],['K2','Many on the board'],['R','Tube changed'],['D','Damaged']],
