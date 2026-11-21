@@ -1193,7 +1193,7 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
   </div>
 </div>
 <main id="app"></main>
-<script src="shapes.js?v=ede3e9e437"></script>
+<script src="shapes.js?v=de3710ea23"></script>
 <script>
 'use strict';
 // ── Where captures go ────────────────────────────────────────────────────────────────────────
@@ -3204,14 +3204,14 @@ function vMe(){
 // ── Send Proof: photo first, then what it is (DEC-0286 rule 3) ───────────────────────────────
 // ── Send Proof: the photo or PDF first, then what it is and the line it proves (DEC-0286 rule 3) ──
 function vProof(){
-  const F=st.form, where=F.point||String(F.place||'').trim();
+  const F=st.form, where=whereOk(F);
   let h='<div class="body">'+formZone(F.back||'home','Capture','Send Proof','The desk files it on the line it proves.');
   h+=proofWhatField();
   if(F.what==='photo') h+='<div class="note"><span class="eb">What a photo proves</span>'+esc(WFM_CAPTURE_SHAPE.photoSays)+'</div>'+whereField({suggest:true});
   h+=lineSelect(F.what==='photo');
   h+=planOffer();
   h+='<div class="field"><label for="note">Note <span class="opt-w">(optional)</span></label><input id="note" type="text" data-in="note" value="'+esc(F.note||'')+'" placeholder="Anything the desk should know"></div><div style="height:24px"></div></div>';
-  const miss=!F.photos.length?'Scan the document, choose a PDF or take a photo first.':(F.what!=='photo'&&!F.duty)?'Say which line it proves.':(F.what==='photo'&&!where)?'Say where it was taken, or scan the tag.':'';
+  const miss=!F.photos.length?'Scan the document, choose a PDF or take a photo first.':(F.what!=='photo'&&!F.duty)?'Say which line it proves.':(F.what==='photo'&&!where)?'Pick where it was taken from the site’s places, or scan the tag.':'';
   return h+sendBtn('Send Proof',!miss,miss);
 }
 // What the proof is, asked first: a scan, a PDF already on the phone, or a photo of the work (DEC-0338).
@@ -3675,21 +3675,29 @@ function photosField(label,opt,accept){
     +'<label class="th add" aria-label="Add">'+(accept?I.clip:I.photo)+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
     +'</div></div>';
 }
-// Where: a tag scanned, one of the site's places picked (with its floor), or words typed (Law 6).
+// Where (DEC-0479 rule 1): a tag scanned, or one of the site's places found by typing a few letters. A place not on the
+// list is sent as a new place for the desk to confirm; the person's own words are never sent as a place.
+const plk=t=>String(t||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+function exactLoc(w){ const k=plk(w), r=k.replace(/^(room|rm) /,''); if(!k) return null; const L=SITE().locations||[];
+  return L.find(l=>plk(l.name)===k)||L.find(l=>plk(l.name)===r)||null; }
+function whereOk(F){ return !!(F.point||(F.loc&&LOC(F.loc))||exactLoc(F.place)||(F.newPlace&&String(F.place||'').trim())); }
 function whereField(opts){
-  const F=st.form, p=F.point?pointById(F.point):null;
+  const F=st.form, p=F.point?pointById(F.point):null, L=F.loc?LOC(F.loc):null;
+  if(F.newPlace) return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+esc(F.place)+'<span class="sub">A new place. The desk adds it, or matches it to one of the site’s places, before this is filed.</span></span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
+  if(L&&!F.point) return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+esc(L.name)+'<span class="sub">'+esc(lvName(L.level)||'Level not set')+' · one of the site’s places</span></span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
   if(F.point) return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+esc(p?p.name:F.point)+'<span class="sub">'+esc(p?(p.where||'Tag '+p.id):'This tag is not in the site details from the desk.')+(F.via==='qr'?' · tag scanned':' · picked from the list')+'</span></span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
-  let h='<div class="field"><label for="place">Where</label><div class="inrow"><input id="place" type="text" autocomplete="off" placeholder="Room, corridor or plant" value="'+esc(F.place||'')+'" data-in="place">'
+  let h='<div class="field"><label for="place">Where</label><div class="inrow"><input id="place" type="text" autocomplete="off" placeholder="Search the site’s places" value="'+esc(F.place||'')+'" data-in="place">'
     +'<button class="gh" data-act="scan" data-for="where">'+I.scan+'Scan</button></div>';
-  const q=String(F.place||'').trim().toLowerCase();
-  if(opts&&opts.suggest&&q.length>=2&&!F.picked){
-    const s=[];
-    (SITE().locations||[]).forEach(l=>{ if(l.name.toLowerCase().indexOf(q)>=0) s.push('<button class="opt" data-act="pickLoc" data-id="'+esc(l.id)+'"><span class="m">'+esc(l.name)+'</span><span class="rt">'+esc(lvName(l.level)||'Level not set')+'</span></button>'); });
+  const raw=String(F.place||'').trim(), q=raw.toLowerCase(), q2=plk(raw).replace(/^(room|rm) /,''), n=(SITE().locations||[]).length, s=[];
+  if(q.length>=2){
+    (SITE().locations||[]).forEach(l=>{ const nm=l.name.toLowerCase(); if(nm.indexOf(q)>=0||(q2&&plk(nm).indexOf(q2)>=0)) s.push('<button class="opt" data-act="pickLoc" data-id="'+esc(l.id)+'"><span class="m">'+esc(l.name)+'</span><span class="rt">'+esc(lvName(l.level)||'Level not set')+'</span></button>'); });
     points().forEach(pt=>{ if((pt.name+' '+pt.where).toLowerCase().indexOf(q)>=0) s.push('<button class="opt" data-act="pickPoint" data-id="'+esc(pt.id)+'"><span class="m">'+esc(pt.name)+'</span><span class="rt">'+esc(pt.where||'Tagged')+'</span></button>'); });
-    ((st.site&&st.site.faults)||[]).forEach(g=>{ if(!g.point&&g.place&&g.place.toLowerCase().indexOf(q)>=0&&g.place!==F.place) s.push('<button class="opt" data-act="pickPlace" data-key="'+esc(g.key)+'"><span class="m">'+esc(g.place)+'<span class="sub"><span class="n">'+g.count+'</span> '+(g.count===1?'fault':'faults')+' reported here in 12 months</span></span></button>'); });
-    if(s.length) h+='<div class="sugg">'+s.slice(0,6).join('')+'</div>';
+    const ex=exactLoc(raw);
+    h+='<div class="sugg">'+s.slice(0,6).join('')+(ex?'':'<button class="opt" data-act="newPlace"><span class="m">Send “'+esc(raw)+'” as a New Place<span class="sub">Not one of the site’s places. The desk confirms it.</span></span></button>')+'</div>';
   }
-  return h+'<div class="help">'+(F.loc&&LOC(F.loc)?'One of the site’s places, '+esc(lvName(LOC(F.loc).level)||LOC(F.loc).level)+'.':'Pick one of the site’s '+plural((SITE().locations||[]).length,'place')+', keep your own words, or scan the tag.')+'</div></div>';
+  const T=F.sendTried&&!whereOk(F);
+  return h+'<div class="help"'+(T?' role="alert" style="font-weight:600;color:var(--text)"':'')+'>'+(q.length>=2?(s.length?'Pick the place, or send it as a new place for the desk to confirm.':'None of the site’s places has those words. Try others, or send it as a new place for the desk to confirm.')
+    :'Type a few letters to find it in the site’s '+plural(n,'place')+', or scan the tag.')+'</div></div>';
 }
 // Faults already reported at this place: the desk's judgement, repeated, never the phone's own (DEC-0271 rule 3; Law 7).
 function faultHistory(){
@@ -3725,25 +3733,25 @@ function sendBtn(label,ok,why){
 function vFault(){
   // A photo first (John, 19 Nov 2026: "report a fault should lead with taking a photo first. some times thats all thats
   // needed"): a photo and where it is are enough to send; the words are there for when they are wanted.
-  const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim(), pics=F.photos.length>0;
+  const F=st.form, said=String(F.note||'').trim(), where=whereOk(F), pics=F.photos.length>0;
   return '<div class="body">'+formZone(F.back||'home','Capture','Report a Fault','Take a photo of it. Add words if the photo does not say it all. It goes to the desk as a job.')
     +(F.back==='flush'?'<p class="para">The flush round keeps running. Sending this takes you back to it.</p>':'')
     +(F.back==='pest'?'<p class="para">Your pest round is kept. Sending this takes you back to it.</p>':'')
     +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
     +'<div class="field"><label for="note">What is wrong'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
     +whereField({suggest:true})+faultHistory()+groupSelect()+'<div style="height:24px"></div></div>'
-    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what is wrong.':'Say where it is, or scan its tag.');
+    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what is wrong.':'Pick where it is from the site’s places, or scan its tag.');
 }
 // Report a Hazard (DEC-0467 rule 5): a risk of an incident, not an incident, and not a fault to fix. Shaped as Report a
 // Fault: the photo first, and with where it is that is enough; the words for what could happen. The desk puts it on the
 // Risk Register, not yet scored.
 function vHazard(){
-  const F=st.form, said=String(F.note||'').trim(), where=F.point||String(F.place||'').trim(), pics=F.photos.length>0;
+  const F=st.form, said=String(F.note||'').trim(), where=whereOk(F), pics=F.photos.length>0;
   return '<div class="body">'+formZone(F.back||'home','Capture','Report a Hazard','Take a photo of it. Say what could happen if the photo does not show it. It goes to the desk’s Risk Register.')
     +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
     +'<div class="field"><label for="note">What could happen'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="Who could be hurt, and how">'+esc(F.note||'')+'</textarea></div>'
     +whereField({suggest:true})+'<div style="height:24px"></div></div>'
-    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what could happen.':'Say where it is, or scan a tag near it.');
+    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what could happen.':'Pick where it is from the site’s places, or scan a tag near it.');
 }
 // A reading is taken at an outlet's or a meter's tag. The figures it takes and the sentence it is judged by come from
 // the desk; the verdict stays on the desk (Design 7.1). The meter or outlet is the record in the zone; the figure is
@@ -3990,7 +3998,7 @@ function scanned(text,via){
 }
 
 // ── Events ───────────────────────────────────────────────────────────────────────────────────
-function blank(kind){ return {kind:kind,note:'',place:'',loc:'',point:'',via:'',duty:'',what:'',photos:[],hot:'',cold:'',flushed:false,group:'maintenance'}; }
+function blank(kind){ return {kind:kind,note:'',place:'',loc:'',newPlace:false,point:'',via:'',duty:'',what:'',photos:[],hot:'',cold:'',flushed:false,group:'maintenance'}; }
 // The group a fault lands in on the desk (DEC-0280). Maintenance unless changed.
 function groupSelect(){
   const F=st.form, gs=(st.site&&st.site.groups)||[];
@@ -4137,7 +4145,8 @@ app.addEventListener('click',async e=>{
   if(a==='walkQuit'){ if(!F.started){ nfcStop(); st.form=null; return go('due'); }
     if(walkEmpty(F)){ walkDrop(F); return toast('Walk dropped. Nothing was scanned, so nothing was kept.'); }
     walkPause(F); ls.set('wl_walk',walkKeep(F)); st.form=null; go('due'); return toast('Walk paused. Carry it on from Due.'); }
-  if(a==='pickLoc'){ const l=LOC(b.dataset.id); if(l){ F.loc=l.id; F.place=l.name; F.picked=true; } return render(); }
+  if(a==='pickLoc'){ const l=LOC(b.dataset.id); if(l){ F.loc=l.id; F.place=l.name; F.picked=true; F.newPlace=false; } return render(); }
+  if(a==='newPlace'){ F.place=String(F.place||'').trim(); if(F.place){ F.newPlace=true; F.loc=''; } return render(); }
   if(a==='pickMeter'){ F.meter=b.dataset.id; F.point=''; F.scanErr=''; return render(); }
   if(a==='scan'){ if(F&&F.kind==='round'&&F.paused) walkResume(F); _scanFrom=b.dataset.for; st.scanFor={for:b.dataset.for,live:false,err:'',say:''}; return render(); }
   if(a==='scanClose') return scanClose();
@@ -4145,8 +4154,7 @@ app.addEventListener('click',async e=>{
   if(a==='scanListClose'){ st.scanFor.list=false; return render(); }
   if(a==='scanPick'){ scanStop(); st.scanFor=null; F.point=b.dataset.id; F.via='list'; F.place=''; return render(); }
   if(a==='pickPoint'){ F.point=b.dataset.id; F.via='list'; F.place=''; return render(); }
-  if(a==='pickPlace'){ const g=((st.site&&st.site.faults)||[]).find(x=>x.key===b.dataset.key); if(g){ F.place=g.place; F.picked=true; } return render(); }
-  if(a==='whereClear'){ F.point=''; F.via=''; return render(); }
+  if(a==='whereClear'){ F.point=''; F.via=''; F.loc=''; F.newPlace=false; F.place=''; F.picked=false; return render(); }
   if(a==='photoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
   if(a==='setupLink'){ const l=String(F.link||'').trim(); if(!l){ F.bad='empty'; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; } if(takeSetupLink(l)) return location.reload(); F.bad=true; render(); const i=document.getElementById('setup'); if(i) i.focus(); return; }
   if(a==='whoPick'){ const p=PEOPLE().find(x=>x.id===b.dataset.id); if(!p) return;
@@ -4264,7 +4272,7 @@ app.addEventListener('input',e=>{
   st.form[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;
   if(k==='value'){ const F=st.form, p=F.point?pointById(F.point):(F.meter?meterAsPoint(F.meter):null), dp=p&&p.reading&&p.reading.dial&&p.reading.dp>0?p.reading.dp:0;
     if(dp){ const fx=dialFix(e.target.value,dp); if(e.target.value!==fx) e.target.value=fx; F.value=fx; } }
-  if(k==='place'){ st.form.picked=false; st.form.loc=''; }
+  if(k==='place'){ st.form.picked=false; st.form.loc=''; st.form.newPlace=false; }
   if(st.form.left&&(k==='hot'||k==='cold'||k==='value')) st.form.left[k]=false;   // judged again on the next blur
   if(k==='hot'||k==='cold'||k==='value') return softRender();
   // Re-render only what depends on the typing, keeping focus and the caret where they are.
@@ -4697,16 +4705,15 @@ app.addEventListener('change',e=>{
 // ── Report a Sighting (DEC-0466 rule 4): shaped as Report a Fault; a photo and a place are enough. A catch on a bedroom
 // insect monitor is reported here, with the room (rule 3). It files in Cases and Sightings on the desk.
 function vSighting(){
-  const F=st.form, where=F.point||String(F.place||'').trim(), pics=F.photos.length>0, X=PX();
+  const F=st.form, where=whereOk(F), pics=F.photos.length>0, X=PX();
   return '<div class="body">'+formZone(F.back||'home','Capture','Report a Sighting','Take a photo of it, or of the board. Say where. It goes to the desk’s sighting log.')
     +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
     +grp('What you saw')+'<div class="list" role="radiogroup" aria-label="What you saw">'+peFold(X.sightWhat,F.what).map(x=>peRing(F.what===x[0],x[1],'sgWhat',x[0])).join('')+'</div>'
     +(F.what?'<div class="row2"><button class="lnk" data-act="sgWhat" data-v="">Choose Another</button></div>':'')
     +grp('Where it was')+'<div class="list" role="radiogroup" aria-label="Seen, or on a monitor">'+peRing(F.from!=='monitor','Seen','sgFrom','seen')+peRing(F.from==='monitor','On a bedroom insect monitor','sgFrom','monitor')+'</div>'
-    +(F.from==='monitor'?'<div class="field"><label for="sg-room">Room</label><input id="sg-room" type="text" data-in="room" value="'+esc(F.room||'')+'"></div>':'')
     +'<div class="field"><label for="note">Anything to add <span class="opt-w">(optional)</span></label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
     +whereField({suggest:true})+'<div style="height:24px"></div></div>'
-    +sendBtn('Send',(pics||F.what)&&(where||(F.from==='monitor'&&String(F.room||'').trim())),!(pics||F.what)?'Take a photo, or say what you saw.':'Say where it was, or the room.');
+    +sendBtn('Send',(pics||F.what)&&where,!(pics||F.what)?'Take a photo, or say what you saw.':'Pick where it was from the site’s places'+(F.from==='monitor'?': the room the monitor is in.':', or scan a tag.'));
 }
 
 // ── The flush round (job 015, slices FX and FY; DEC-0374, DEC-0413 to DEC-0415) ───────────────────────────────────
@@ -5224,6 +5231,8 @@ async function doSend(){
   else if(F.kind==='reading'&&F.meter) fields.record={reg:'meterItems',id:F.meter};
   else fields.place=String(F.place||'').trim();
   if(F.loc&&!F.point) fields.loc=F.loc;
+  // Words that are a place's name are that place; any other words go only as a new place for the desk (DEC-0479).
+  if(!F.point&&!F.loc&&fields.place){ const ex=exactLoc(fields.place); if(ex){ fields.loc=ex.id; fields.place=ex.name; } else if(F.newPlace) fields.newPlace=true; else fields.place=''; }
   if(F.duty) fields.duty=F.duty;
   if(F.kind==='proof'&&F.duty&&F.plan) fields.plan=true;
   const kind=F.kind==='proof'?F.what:F.kind;
@@ -5231,8 +5240,7 @@ async function doSend(){
     // A photo with no words: the desk titles the job from this (its title is the words, else the outcome).
     if(!fields.note&&F.photos.length) fields.outcome='Fault seen in the photo'; }
   if(F.kind==='hazard'&&!fields.note&&F.photos.length) fields.outcome='Hazard seen in the photo';
-  if(F.kind==='sighting'){ fields.pest={what:F.what||'',from:F.from==='monitor'?'monitor':'seen',room:String(F.room||'').trim()};
-    if(!F.point&&!fields.place&&fields.pest.room) fields.place='Room '+fields.pest.room;
+  if(F.kind==='sighting'){ fields.pest={what:F.what||'',from:F.from==='monitor'?'monitor':'seen',room:''};
     if(!fields.note&&F.photos.length&&!F.what) fields.outcome='Sighting in the photo'; }
   if(F.kind==='reading'){
     const p=F.point?pointById(F.point):meterAsPoint(F.meter), r=p.reading;
