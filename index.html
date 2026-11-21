@@ -2438,7 +2438,8 @@ function vJob(){
   const due=j.due?'Fell due '+when(j.due)+(e&&!a?', its time runs to '+when(j.end):''):'';
   // A pest case is in progress from the day it opens: no Start, Pause or Stop; its one action is Record a Visit (DEC-0480 rule 2).
   const pc=j.pest||null, pdue=pc?jPestDue(j):null;
-  if(pc){ row=false; btn=null; if(!S0.done&&!pD){ if(st.walker){ btn=['jpVisit','rat','Record a Visit']; why=''; } else why='Recording a visit needs your name on this phone. Add it in Settings.'; } }
+  if(pc){ row=false; btn=null; if(!S0.done&&!pD){ sw=''; ss=''; if(st.walker){ btn=['jpVisit','rat','Record a Visit']; why=inGroup(j)?'':'Closing the case is for the people in '+GROUP(j.group)+'. Your position is not in it on the desk\u2019s Organisation Structure.'; } else why='Recording a visit needs your name on this phone. Add it in Settings.'; }
+    else if(S0.done) sw='Closed'; }
   const zone='<div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(GROUP(j.group))+(j.no?' · Job <span class="mono">'+esc(j.no)+'</span>':'')+'</span>'
       +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>'
     +'<h1>'+esc(pc?pc.pest:(j.title||'Job'))+'</h1>'
@@ -2446,7 +2447,7 @@ function vJob(){
     +(pdue?'<div class="jwh">'+ICO('calendar-clock')+'<span>'+esc(pdue.say)+(pdue.late?' · <b data-urg style="color:var(--inkRed)">'+pdue.late+(pdue.late===1?' day':' days')+' late</b>':'')+'</span></div>':'')
     +(fl?'<div class="jfl">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.why?'. '+esc(fl.why):'')+'</span></div>':'')
     +'<div class="zact"><div class="jst"><b>'+esc(sw)+'</b>'+(ss?'<span>'+esc(ss)+'</span>':'')+'</div>'
-    +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'+(row?jRow(j,S0,pz):'')
+    +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'+(row?jRow(j,S0,pz):'')+(pc&&!S0.done&&!pD?jPestRow(j):'')
     +(due?'<p class="jwhy">'+esc(due)+'</p>':'')+(pmSay?'<p class="jwhy">'+esc(pmSay)+'</p>':'')+(why?'<p class="jwhy">'+esc(why)+'</p>':'')+'</div>';
   // The photos not in the conversation, shown once (Design 4.11): those it was raised with, and any no entry carries.
   const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
@@ -2485,6 +2486,13 @@ function jpCloseSheet(){
     +(bad('pcr')?'<div class="help err" role="alert">Say what let them in, and what stops it coming back.</div>':'<div class="help">'+(j&&j.pest&&j.pest.kind==='insect'?'The room goes back into use.':ins?'Nothing was put in at the points.':'The points go back to monitoring paste.')+' The job closes with the case.</div>')+'</div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="jpCloseSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Close the Case</button></div></div>';
 }
+// A pest case's job (John, 21 Nov 2026: "case is open or case is closed"): where it stands, in the place Start, Pause and Stop
+// sit on any job. Open since the day it opened; Close opens the case's own closing questions, for the people in its group.
+function jPestRow(j){
+  const r=j.raised&&!isNaN(Date.parse(j.raised+'T12:00:00'))?day(j.raised+'T12:00:00'):'', can=!!st.walker&&inGroup(j);
+  return '<div class="prow" style="grid-template-columns:repeat(2,1fr)"><div class="pc at"><span class="pr">'+I.rat+'</span><span class="pw">Open</span>'+(r?'<span class="ps">since '+esc(r)+'</span>':'')+'</div>'
+    +(can?'<button class="pc g" data-act="jpClose" aria-label="Close the case"'+(st.busy?' disabled':'')+'><span class="pr">'+I.stop+'</span><span class="pw">Close</span></button>'
+      :'<div class="pc x" aria-hidden="true"><span class="pr">'+I.stop+'</span><span class="pw">Close</span></div>')+'</div>'; }
 // Start, Pause and Stop (DEC-0360 rule 7): always in the same three places. Teal is what can be pressed, the filled one is
 // the next step (Design 9.1, 21.2); the stage the job is in shows its time. Start on a paused job carries on.
 function jRow(j,S0,pz){
@@ -2510,7 +2518,6 @@ function jMoreSheet(){
   const j=jobById(st.form.id); if(!j) return ''; const S0=jState(j), fl=S0.fl, n=holders(j).length;
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
-    +(j.pest&&!S0.done&&!S0.pD&&st.walker&&inGroup(j)?v('jpClose','tick','Close the Case',j.pest.kind==='insect'?'When the room is found clear':j.pest.points?'When the bait or traps are taken up':'When it is found clear'):'')
     +(!S0.pD&&st.walker&&!j.pest?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
     +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
