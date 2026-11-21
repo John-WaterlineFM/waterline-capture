@@ -3434,7 +3434,7 @@ async function dsFile(k,input){
   const F=st.form, f=input.files&&input.files[0]; input.value='';
   if(!f) return;
   if(k==='pdf'){ F.doc=null; F.what='certificate'; F.photos=[{file:f,url:''}]; return render(); }
-  if(k==='wphoto'){ F.doc=null; F.what='photo'; F.photos=[{file:f,url:URL.createObjectURL(f)}]; return render(); }
+  if(k==='wphoto'){ F.doc=null; F.what='photo'; F.photos=[{file:f,url:URL.createObjectURL(f)}]; render(); return muTaken('photos',1); }
   const D=st.ds||(st.ds={pages:F.doc?F.doc.pages.slice():[],cur:0,redo:null});
   D.stage='wait'; D.say='Finding the page…'; render();
   try{
@@ -3842,6 +3842,8 @@ async function muOpen(l,i){
     muTool('pen');
   }catch(e){ if(_mu===M) muDraw('err','The editor could not start: it needs signal the first time. Close this and try again with signal. ('+(e&&e.message||e)+')'); }
 }
+// A photo just taken opens in the editor at once, so drawing on it is offered before it is on the form (John, 21 Nov 2026).
+function muTaken(l,n){ if(n!==1||!st.form) return; const L=muList(st.form,l), i=L.length-1; if(muCan(L[i])) muOpen(l,i); }
 function muClose(){ const M=_mu; if(!M) return; _mu=null;
   try{ if(M.ed) M.ed.destroy(); }catch(e){}
   if(M.tmp) URL.revokeObjectURL(M.tmp); M.el.remove(); }
@@ -4506,8 +4508,8 @@ app.addEventListener('focusout',e=>{
 app.addEventListener('change',e=>{
   const k=e.target.dataset.file;
   if(k==='scanshot'||k==='pdf'||k==='wphoto'){ dsFile(k,e.target); return; }
-  if(k==='photos'){ Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
-  if(k==='dphotos'){ Array.from(e.target.files||[]).forEach(f=>st.form.dphotos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
+  if(k==='photos'){ const n=(e.target.files||[]).length; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); render(); return muTaken('photos',n); }
+  if(k==='dphotos'){ const n=(e.target.files||[]).length; Array.from(e.target.files||[]).forEach(f=>st.form.dphotos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); render(); return muTaken('dphotos',n); }
   if(k==='t5photo'){ const C=st.form&&st.form.ck; if(C&&C.stop) Array.from(e.target.files||[]).forEach(f=>C.stop.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
   if(k==='cphoto'){ st.sheet=false; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:URL.createObjectURL(f)})); render(); return chatBottom(); }
