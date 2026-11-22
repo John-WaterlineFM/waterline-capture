@@ -116,7 +116,10 @@ svg{width:24px;height:24px;flex:none;display:block}
 .navb{position:sticky;bottom:0;z-index:5;display:flex;align-items:flex-start;height:calc(80px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--white);border-top:1px solid var(--border)}
 .navb .side{flex:1;display:flex}
 .nv{flex:1;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:700 11px Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--accentD)}
-.nv.on span{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+/* Icons alone (DEC-0493): the word is spoken, not shown; the page you are on is a 2px line under its icon. */
+.nv .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.nv:not(.cap)>svg{width:28px;height:28px}
+.nv.on:not(.cap)::after{content:'';width:28px;height:2px;border-radius:1px;background:currentColor}
 .nv.cap{flex:none;width:88px;height:80px;justify-content:flex-start;margin-top:-24px}
 .nv.cap .capb{width:56px;height:56px;border-radius:50%;background:var(--btnFill);color:var(--btnText);display:grid;place-items:center;box-shadow:0 0 0 4px var(--white)}
 
@@ -276,6 +279,12 @@ img.pl{object-fit:cover;padding:0}
 .gc .w{flex:1;min-width:0}
 .gc .w{font:700 15px/1.3 Sora;color:var(--text);overflow-wrap:anywhere}
 .gc .cs{display:flex;flex-wrap:nowrap;gap:10px;margin-left:auto;flex:none}.gc .cs span{display:inline-flex;align-items:center;gap:4px;font:800 15px Sora;color:var(--text)}
+/* New since you last looked (DEC-0490): the Messages oval, green with a white number, on a tab and on a group's card. */
+.sw button{position:relative}
+.sw .n{position:relative}
+.sw .bd{position:absolute;bottom:calc(100% - 10px);left:calc(100% + 2px);min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--unread);color:#FFFFFF;font:800 11px/20px Sora;letter-spacing:0;text-align:center}
+.gc .gi{position:relative}
+.gc .bd{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 7px;border-radius:11px;background:var(--unread);color:#FFFFFF;font:800 12px/22px Sora;text-align:center;flex:none}
 .gc .cs .sm{width:16px;height:16px;flex:none}.gc .cs .s-todo{color:var(--sTodo)}.gc .cs .s-doing{color:var(--sDoing)}.gc .cs .s-done{color:var(--sDone)}
 .gr .cts b{font:800 15px Sora;color:var(--text)}
 .gr .chev,.ra .chev{color:var(--accentD);flex:none}
@@ -458,32 +467,15 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .wave b{width:3px;flex:none;border-radius:2px;background:var(--textMid);opacity:.4}
 .wave b.on{opacity:1}
 .dur{font:600 12px Sora;color:var(--textMid);font-variant-numeric:tabular-nums;flex:none}
-.jbar{flex:none;background:var(--white);border-top:1px solid var(--border);padding:8px 8px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
-.jbar .bl{display:flex;align-items:flex-end;gap:4px;position:relative}
-.jbar .thumbs{padding:0 8px}
-.fw{flex:1;min-width:0;min-height:44px;border-radius:8px;border:1px solid var(--textMuted);display:flex;align-items:flex-start;padding:0 4px;background:var(--white)}
-.fw:focus-within{outline:2px solid var(--accent);outline-offset:2px}
-.fw textarea{flex:1;min-width:0;border:0;border-radius:0;background:none;padding:11px 8px 11px 0;min-height:44px;height:44px;font-size:16px;line-height:1.35;resize:none;overflow-y:auto}
-.fw textarea:focus{outline:none}
 .ktag{height:44px;display:flex;align-items:center;gap:2px;padding:0 6px 0 10px;font:700 11px Outfit;letter-spacing:.06em;text-transform:uppercase;color:var(--accentD);flex:none;white-space:nowrap}
 .ktag svg{width:14px;height:14px;stroke-width:3}
-.jbar.w .fw{flex-direction:column;align-items:stretch;border:0;padding:0}
-.jbar.w .fw:focus-within{outline:none}
-.jbar.w .fw .ktag{align-self:flex-start;height:44px;margin:-6px 0;padding-left:4px}
-.jbar.w .fw textarea{flex:none;border:1px solid var(--textMuted);border-radius:8px;padding:11px 12px}
-.jbar.w .fw textarea:focus{outline:2px solid var(--accent);outline-offset:2px}
-.snd{width:44px;height:44px;border-radius:22px;border:1.5px solid var(--accentD);color:var(--accentD);display:grid;place-items:center;flex:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-.snd svg{width:20px;height:20px;stroke-width:2.1}
-.snd .i-s{display:none}
-.jbar.w .snd .i-m,.jbar.rec-on .snd .i-m{display:none}
-.jbar.w .snd .i-s,.jbar.rec-on .snd .i-s{display:block}
 /* Recording lies over the field at the field's own size, so nothing on the screen moves under the held finger and the
    keyboard is left as it is: a phone gives up a press when the page shifts under it (John, 21 Oct 2026). */
-.rec{position:absolute;left:48px;right:48px;bottom:0;height:46px;z-index:1;display:none;align-items:center;gap:10px;padding:0 4px 0 12px;border-radius:8px;border:1px solid var(--textMuted);background:var(--cream)}
-.jbar.rec-on .rec{display:flex}
-.jbar.rec-on .fw{opacity:0;pointer-events:none}
+.rec{position:absolute;left:0;right:56px;bottom:0;height:48px;z-index:1;display:none;align-items:center;gap:10px;padding:0 4px 0 16px;border-radius:24px;background:var(--white)}
+.mbar.rec-on .rec{display:flex}
+.mbar.rec-on .c-fld{opacity:0;pointer-events:none}
 .rcan{display:none;height:44px;padding:0 8px;font:600 13px Outfit;color:var(--accentD);flex:none}
-.jbar.lk .rcan{display:block}
+.mbar.lk .rcan{display:block}
 .dot{width:10px;height:10px;border-radius:5px;flex:none;background:var(--accentD);box-shadow:0 0 0 4px color-mix(in srgb,var(--accentD) 20%,transparent);animation:wlpulse 1.2s ease-in-out infinite}
 @keyframes wlpulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--accentD) 8%,transparent)}}
 @media (prefers-reduced-motion: reduce){ .dot{animation:none} }
@@ -1027,35 +1019,32 @@ body.t-wl,body.t-li{--amberRing:#D07205}
 .c-err{color:var(--text);font:600 12px 'DM Sans'}
 /* the bar at the foot: attach, the words, the camera, a microphone that becomes send (rule 4) */
 .c-foot{position:sticky;bottom:0;z-index:5;background:var(--chatBg);padding:0 8px calc(8px + env(safe-area-inset-bottom))}
-.c-stg{display:flex;gap:8px;padding:8px 4px 0;flex-wrap:wrap}
-.c-th1{width:56px;height:56px;border-radius:8px;background:var(--stone) center/cover;position:relative}
-.c-th1 .x{position:absolute;top:-10px;right:-10px;width:44px;height:44px;display:grid;place-items:center;color:var(--accentD)}
-.c-th1 .x i{display:grid;place-items:center;width:28px;height:28px;border-radius:14px;background:var(--white);border:1px solid var(--accentD)}
-.c-th1 .x svg{width:16px;height:16px}
-.c-cb{display:flex;align-items:flex-end;gap:8px;padding-top:8px}
+/* One message bar for a job and a chat (DEC-0489). On a job it sits under the conversation and carries the kind of entry. */
+.mbar.j{position:static;flex:none}
+.mbar .thumbs{padding:8px 8px 0}
+.mbar .c-fld.k{padding-left:4px}
+.mbar .ktag{height:48px}
+.c-cb{display:flex;align-items:flex-end;gap:8px;padding-top:8px;position:relative}
 .c-fld{flex:1;min-width:0;min-height:48px;border-radius:24px;background:var(--white);display:flex;align-items:center;gap:0;padding:0 2px 0 16px}
 .c-fld textarea{flex:1;min-width:0;min-height:24px;max-height:120px;border:none;background:transparent;padding:12px 0;font-size:16px;line-height:1.5;resize:none;border-radius:0}
 .c-fld textarea:focus{outline:none}
 .c-fld:focus-within{outline:2px solid var(--accent);outline-offset:2px}
-.c-fld .ib{color:var(--textMid)}
-.c-fld .ib input{position:absolute;opacity:0;width:1px;height:1px}
-.c-rec,.c-vo{flex:1;display:flex;align-items:center;gap:8px;min-height:48px;color:var(--textMid);font-size:14px}
-.c-rec svg{color:var(--red)}
-.c-vo .voice{flex:1;min-width:0}
 /* The send control (John, 25 Oct 2026: "send message is black - nothing in this is black"): teal with a white mark in every
    theme (Design 21.2), Night's teal one step deeper so the white reads at 3:1 (Design 5.10). Sent, the arrow lifts off
    and one ring goes out from it (a small send, John's words); still when the phone asks for less motion. */
-.c-go{position:relative;width:48px;height:48px;border-radius:50%;background:var(--sendFill);color:#FFFFFF;display:grid;place-items:center;flex:none}
+.c-go{position:relative;width:48px;height:48px;border-radius:50%;background:var(--sendFill);color:#FFFFFF;display:grid;place-items:center;flex:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.c-go span{display:grid;place-items:center}
+.c-go .i-s,.mbar.w .c-go .i-m,.mbar.rec-on .c-go .i-m{display:none}
+.mbar.w .c-go .i-s,.mbar.rec-on .c-go .i-s{display:grid}
 .c-go svg{width:22px;height:22px}
 .c-go .c-fly{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;animation:cFly .5s ease-in forwards}
 .c-go::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--sendFill);opacity:0;pointer-events:none}
 .c-go.fx::after{animation:cRing .6s ease-out}
-.c-go.fx>svg{animation:cBack .5s ease-out}
+.c-go.fx>span svg{animation:cBack .5s ease-out}
 @keyframes cFly{0%{transform:translateY(0);opacity:1;color:#FFFFFF}45%{color:var(--sendFill)}100%{transform:translateY(-34px);opacity:0;color:var(--sendFill)}}
 @keyframes cRing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}
 @keyframes cBack{0%,40%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){.c-go .c-fly{display:none}.c-go.fx::after,.c-go.fx>svg{animation:none}}
-.c-go.on{background:var(--red);color:#FFFFFF}
+@media (prefers-reduced-motion:reduce){.c-go .c-fly{display:none}.c-go.fx::after,.c-go.fx>span svg{animation:none}}
 .c-go[disabled]{background:var(--stone);color:var(--textMid)}
 .c-only{position:sticky;bottom:0;z-index:5;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--white);border-top:1px solid var(--border);text-align:center;color:var(--textMid);font-size:14px}
 /* a chat's info (b6) */
@@ -1209,6 +1198,28 @@ body.t-ni{--hotT:#FF8A80;--coldT:#8AB4F8}
 body.t-ni .r.fl-run{background:color-mix(in srgb,var(--jDoing) 7%,var(--white))}
 body.t-ni .r.fl-done{background:color-mix(in srgb,var(--jDone) 10%,var(--white))}
 body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))}
+
+.ds.cam{z-index:29}
+.ds.cam .dtop .eb{flex:1}
+.ds.cam .stage{padding:0}
+.ds.cam .stage video,.ds.cam .stage .still{display:block;width:100%;height:100%;object-fit:contain;background:var(--ink)}
+.ds.cam .stage .still{box-shadow:none}
+.ds.cam .tb{width:44px;height:44px;border-radius:22px;display:grid;place-items:center;color:var(--accentOnInk);background:transparent;border:0}
+.ds.cam .tb.on{background:var(--accentOnInk);color:var(--zBtnText)}
+.ds.cam .zm{display:flex;justify-content:center;gap:8px;min-height:44px}
+.ds.cam .zm button{min-width:44px;height:44px;border-radius:22px;border:0;background:transparent;color:var(--onInk);font:600 13px Outfit}
+.ds.cam .zm button.on{color:var(--accentOnInk);box-shadow:inset 0 0 0 2px var(--accentOnInk)}
+.ds.cam .shut{display:flex;justify-content:center}
+.ds.cam .shut button{width:76px;height:76px;border-radius:50%;border:4px solid var(--onInk);background:transparent;display:grid;place-items:center;padding:0}
+.ds.cam .shut button i{display:block;width:58px;height:58px;border-radius:50%;background:var(--accentOnInk)}
+.ds.cam .shut button:active i{transform:scale(.92)}
+.ds.cam .acts{display:flex;gap:8px}
+.ds.cam .acts button{flex:1;min-height:64px;border-radius:8px;border:0;background:transparent;color:var(--accentOnInk);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 13px Outfit}
+.ds.cam .acts button.p{background:var(--accentOnInk);color:var(--zBtnText)}
+.ds.cam .acts button:not(.p){box-shadow:inset 0 0 0 1px var(--accentOnInk)}
+.ds.cam .off{padding:0 24px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.ds.cam .off b{font:800 20px Sora;color:var(--onInk)}
+.ds.cam .off p{margin:0;font-size:15px;line-height:1.4;color:var(--navMid)}
 </style>
 </head>
 <body>
@@ -1344,7 +1355,7 @@ const ss={get(k){try{return sessionStorage.getItem(k)||'';}catch(e){return '';}}
 
 // One icon set on every screen (John, 20 Oct 2026; DEC-0303 rule 8): Lucide (lucide.dev, ISC licence), each
 // icon's own path data on its 24px grid at one stroke. The names on the left are what this page calls them.
-const LUCIDE={'grid-3x3':'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>','signature':'<path d="m21 17-2.156-1.868A.5.5 0 0 0 18 15.5v.5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1c0-2.545-3.991-3.97-8.5-4a1 1 0 0 0 0 5c4.153 0 4.745-11.295 5.708-13.5a2.5 2.5 0 1 1 3.31 3.284"/><path d="M3 21h18"/>','pen-line':'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>','move-up-right':'<path d="M13 5H19V11"/><path d="M19 5L5 19"/>','circle':'<circle cx="12" cy="12" r="10"/>','undo-2':'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>','eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+const LUCIDE={'flashlight':'<path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"/><line x1="6" x2="18" y1="6" y2="6"/><line x1="12" x2="12" y1="12" y2="12"/>','grid-3x3':'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>','signature':'<path d="m21 17-2.156-1.868A.5.5 0 0 0 18 15.5v.5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1c0-2.545-3.991-3.97-8.5-4a1 1 0 0 0 0 5c4.153 0 4.745-11.295 5.708-13.5a2.5 2.5 0 1 1 3.31 3.284"/><path d="M3 21h18"/>','pen-line':'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>','move-up-right':'<path d="M13 5H19V11"/><path d="M19 5L5 19"/>','circle':'<circle cx="12" cy="12" r="10"/>','undo-2':'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>','eye':'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
 'circle-alert':'<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
 'check-check':'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
   'arrow-up':'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
@@ -1454,6 +1465,7 @@ function wlGuard(){ try{ while(_wlDepth<WL_HOLD){ history.pushState({wl:1},''); 
 ['pointerdown','keydown'].forEach(t=>document.addEventListener(t,()=>{ if(_wlDepth<WL_HOLD) wlGuard(); },true));
 function wlBack(){
   _wlDepth=Math.max(0,_wlDepth-1);
+  if(_cam){ camBack(); return; }
   if(_mu){ muBack(); return; }
   if(st.sheet==='leave'){ leaveStay(); return; }
   if(leaveAsk({phone:true})) return;
@@ -1468,7 +1480,7 @@ function wlBack(){
   try{ const n=_wlDepth+1; _wlDepth=0; history.go(-n); }catch(e){}
 }
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),rat:ICO('rat'),hazard:ICO('shield-alert'),alert:ICO('circle-alert')};
+const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),image:ICO('image'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),rat:ICO('rat'),hazard:ICO('shield-alert'),alert:ICO('circle-alert')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -1677,7 +1689,7 @@ function render(){
   const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,hazard:vHazard,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
-  if(st.sheet){ const sh={leave:leaveSheet,jpvisit:jpVisitSheet,jpclose:jpCloseSheet,jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,cattach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
+  if(st.sheet){ const sh={leave:leaveSheet,jpvisit:jpVisitSheet,jpclose:jpCloseSheet,jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,attach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
   if(st.pv) app.insertAdjacentHTML('beforeend',vPhoto());
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
@@ -1972,10 +1984,10 @@ function waitLine(){ const n=st.outbox.length; if(!n) return '';
 // Capture, or the send under way on it (DEC-0369 rule 1): Sending with the spiral, then Sent as the arrow lifts off.
 const SPIRAL='<svg class="sp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path pathLength="100" d="M13.00 12.00 L13.06 12.11 L13.11 12.24 L13.14 12.37 L13.16 12.52 L13.15 12.67 L13.13 12.82 L13.09 12.98 L13.03 13.14 L12.94 13.29 L12.83 13.44 L12.71 13.58 L12.56 13.71 L12.39 13.83 L12.20 13.92 L12.00 14.00 L11.78 14.06 L11.56 14.09 L11.32 14.09 L11.08 14.07 L10.83 14.02 L10.59 13.94 L10.35 13.83 L10.12 13.70 L9.90 13.53 L9.69 13.33 L9.50 13.11 L9.34 12.87 L9.20 12.60 L9.08 12.31 L9.00 12.00 L8.95 11.68 L8.94 11.35 L8.96 11.01 L9.02 10.67 L9.11 10.33 L9.25 10.00 L9.42 9.68 L9.64 9.37 L9.88 9.09 L10.17 8.82 L10.48 8.59 L10.83 8.39 L11.20 8.22 L11.59 8.09 L12.00 8.00 L12.43 7.96 L12.86 7.96 L13.30 8.01 L13.74 8.10 L14.17 8.25 L14.59 8.44 L14.99 8.68 L15.37 8.97 L15.72 9.30 L16.04 9.67 L16.32 10.07 L16.57 10.52 L16.76 10.99 L16.91 11.48 L17.00 12.00 L17.04 12.53 L17.02 13.07 L16.95 13.61 L16.81 14.14 L16.62 14.67 L16.37 15.17 L16.06 15.66 L15.70 16.11 L15.29 16.53 L14.83 16.91 L14.33 17.24 L13.79 17.52 L13.22 17.74 L12.62 17.90 L12.00 18.00 L11.37 18.03 L10.72 18.00 L10.08 17.90 L9.45 17.72 L8.83 17.48 L8.24 17.18 L7.67 16.81 L7.14 16.37 L6.66 15.88 L6.23 15.33 L5.85 14.74 L5.53 14.10 L5.28 13.43 L5.10 12.72 L5.00 12.00 L4.97 11.26 L5.02 10.52 L5.15 9.78 L5.36 9.04 L5.65 8.33 L6.01 7.65 L6.45 7.00 L6.96 6.40 L7.53 5.85 L8.17 5.36 L8.85 4.94 L9.59 4.58 L10.36 4.31 L11.17 4.11 L12.00 4.00 L12.84 3.98 L13.69 4.04 L14.53 4.20 L15.36 4.45 L16.17 4.78 L16.94 5.20 L17.67 5.71 L18.34 6.29 L18.96 6.95 L19.51 7.67 L19.98 8.45 L20.37 9.28 L20.67 10.16 L20.88 11.07 L21.00 12.00"/></svg>';
 function capBtn(){ const k=st.capSend&&st.capSend.state;
-  return '<button class="nv cap'+(k==='sent'?' sent':'')+'" data-act="sheet"'+(k==='sending'?' aria-busy="true"':'')+'><span class="capb">'+(k==='sending'?SPIRAL:k==='sent'?ICO('arrow-up'):I.plus)+'</span><span role="status">'+(k==='sending'?'Sending':k==='sent'?'Sent':'Capture')+'</span></button>'; }
+  return '<button class="nv cap'+(k==='sent'?' sent':'')+'" data-act="sheet"'+(k==='sending'?' aria-busy="true"':'')+'><span class="capb">'+(k==='sending'?SPIRAL:k==='sent'?ICO('arrow-up'):I.plus)+'</span><span class="lab" role="status">'+(k==='sending'?'Sending':k==='sent'?'Sent':'Capture')+'</span></button>'; }
 function capDraw(){ const b=app.querySelector('.navb .nv.cap[data-act="sheet"]'); if(b) b.outerHTML=capBtn(); }
 function navBar(on){
-  const tab=(id,ic,lab,bd)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+(bd?' aria-label="'+lab+', '+bd+' to read"':'')+'>'+I[ic]+(bd?'<span class="bd n" aria-hidden="true">'+bd+'</span>':'')+'<span>'+lab+'</span></button>';
+  const tab=(id,ic,lab,bd)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+(bd?' aria-label="'+lab+', '+bd+' to read"':'')+'>'+I[ic]+(bd?'<span class="bd n" aria-hidden="true">'+bd+'</span>':'')+'<span class="lab">'+lab+'</span></button>';
   // DEC-0301, DEC-0303 rule 2: Capture is the main button, in the middle of the bar. Messages sits between it and Settings,
   // with the count of what this person has not read (DEC-0348 rule 1).
   return '<nav class="navb"><div class="side">'+tab('due','due','Due')+tab('jobs','jobs','Jobs')+'</div>'+capBtn()+'<div class="side">'+tab('msgs','msg','Messages',unread().length)+tab('me','gear','Settings')+'</div></nav>';
@@ -2135,6 +2147,15 @@ function jDoneHere(j){ if(j.state==='done') return null; const k=localStorage.ge
 function jobsAll(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>j.state!=='done'&&!jDoneHere(j)&&!j.round&&!j.planned&&(fm||gs.has(j.group))); }
 // Jobs done in the last WFM_SITE_SHAPE.doneDays, as the desk publishes them (DEC-0349 rule 1): the same groups as open jobs.
 const doneAt=j=>Date.parse(j.done&&j.done.at)||Date.parse((jDoneHere(j)||{}).at)||0;
+// New since you last looked (DEC-0490): per phone, per group, per tab. Before the first look, the day this was built on
+// the phone is the start, so nothing already there counts. The tab you are on counts from the look before this one, so
+// its number stays while you read it and is gone next time. A job you finished yourself is not news to you.
+function grpLook(){ let L=ls.get('wl_grpLook',null); if(!L||!L.start){ L={start:Date.now(),g:{}}; ls.set('wl_grpLook',L); } return L; }
+function grpSince(g,k){ const P=st.J.prev; if(P&&P.g===g&&P.k===k) return P.t; const L=grpLook(); return ((L.g||{})[g]||{})[k]||L.start; }
+function grpMark(g,k){ if(k!=='todo'&&k!=='done') return; const L=grpLook(); L.g=L.g||{}; const e=L.g[g]=L.g[g]||{}; st.J.prev={g:g,k:k,t:e[k]||L.start}; e[k]=Date.now(); ls.set('wl_grpLook',L); }
+function grpNew(g,k){ const t=grpSince(g,k);
+  if(k==='todo') return jobsAll().filter(j=>j.group===g&&j.state!=='doing'&&(Date.parse(j.raised)||0)>t).length;
+  return jobsDone().filter(j=>j.group===g&&!jDoneHere(j)&&!(j.done&&j.done.by&&st.walker&&nk(j.done.by)===nk(st.walker))&&doneAt(j)>t).length; }
 function jobsDone(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>(j.state==='done'||jDoneHere(j))&&!j.round&&!j.planned&&(fm||gs.has(j.group))).sort((a,b)=>doneAt(b)-doneAt(a)); }
 const doneMine=j=>!!(j.done&&st.walker&&nk(j.done.by)===nk(st.walker));
 const doneDays=()=>WFM_SITE_SHAPE.doneDays;
@@ -2278,7 +2299,8 @@ function vJobs(){
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   if(J.tab==='groups'){
     h+=G.length?'<div class="gcs">'+G.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, dn=done.filter(j=>j.group===g).length;
-      return '<button class="gc" data-act="jgrp" data-id="'+esc(g)+'" aria-label="'+esc(GROUP(g))+': '+(L.length-d)+' to do, '+d+' in progress, '+dn+' done"><span class="gi">'+GICO(g)+'</span><span class="w">'+esc(GROUP(g))+'</span>'
+      const nw=grpNew(g,'todo')+grpNew(g,'done');
+      return '<button class="gc" data-act="jgrp" data-id="'+esc(g)+'" aria-label="'+esc(GROUP(g))+': '+(L.length-d)+' to do, '+d+' in progress, '+dn+' done'+(nw?', '+nw+' new since you last looked':'')+'"><span class="gi">'+GICO(g)+(nw?'<span class="bd" aria-hidden="true">'+nw+'</span>':'')+'</span><span class="w">'+esc(GROUP(g))+'</span>'
         +'<span class="cs" aria-hidden="true"><span>'+SMK('todo')+(L.length-d)+'</span><span>'+SMK('doing')+d+'</span><span>'+SMK('done')+dn+'</span></span></button>'; }).join('')+'</div>'
       :'<p class="para">Jobs show here once the desk has job groups for your position.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
@@ -2291,7 +2313,8 @@ function vGroup(){
   const inState=J.state==='doing'?nDoing:J.state==='done'?nDone:nTodo, L=jobsShown(), nf=J.sort!=='new'?1:0, o=oldestDays(all), nb=all.filter(nobody).length;
   let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('jgrpBack')+'<span class="eb">Your groups</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO(J.grp)+'</span><h1 style="margin:0">'+esc(GROUP(J.grp))+'</h1></div>'
     +'<p>'+(all.length?'<b class="n">'+nb+'</b> with nobody on '+(nb===1?'it':'them')+'. The oldest was raised <b class="n">'+o+'</b> '+(o===1?'day':'days')+' ago.':'Nothing open in this group.')+'</p>'
-    +'<div class="sw" role="tablist">'+[['todo','To Do',nTodo],['doing','In Progress',nDoing],['done','Done',nDone]].map(x=>'<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"><span class="n">'+SMK(x[0])+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
+    +'<div class="sw" role="tablist">'+[['todo','To Do',nTodo],['doing','In Progress',nDoing],['done','Done',nDone]].map(x=>{ const nw=x[0]==='doing'?0:grpNew(J.grp,x[0]);
+      return '<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"'+(nw?' aria-label="'+x[1]+', '+x[2]+', '+nw+' new since you last looked"':'')+'><span class="n">'+SMK(x[0])+x[2]+(nw?'<span class="bd" aria-hidden="true">'+nw+'</span>':'')+'</span>'+x[1]+'</button>'; }).join('')+'</div></div>'
     +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search" aria-label="Search this group" value="'+esc(J.q)+'"></label>'
     +'</div>'+lh(J.state==='doing'?'In progress':J.state==='done'?'Done, last '+doneDays()+' days':'To do');
   if(J.q.trim()) h+='<div class="act"><span><span class="n">'+L.length+'</span> of <span class="n">'+inState+'</span> shown</span><button class="lnk" data-act="jclear">Clear All</button></div>';
@@ -2439,19 +2462,36 @@ function jThread(j,pend,inStrip){
   });
   return h;
 }
-// The message bar (DEC-0318 rules 2 and 3): the camera, one field with the kind as a tag in it, and the microphone,
-// which becomes send once something is written or a photo is added. While writing, the kind sits above the field.
-// A voice note is sent when the microphone is let go (DEC-0320).
-function jBar(F){
-  const err=F.err?'<div class="help err" role="alert" style="margin:0 8px">'+esc(F.err)+'</div>':'';
-  const ktag=id=>'<button class="ktag" data-act="jkinds" aria-haspopup="dialog" aria-controls="'+id+'" aria-label="Kind of entry: '+esc(F.kind)+'. Change it">'+esc(F.kind)+I.down+'</button>';
-  const w=!!(String(F.note||'').trim()||F.photos.length);
-  return '<div class="jbar comp'+(w?' w':'')+'">'+err
-    +(F.photos.length?'<div class="thumbs">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'')
-    +'<div class="bl"><label class="ib cam" aria-label="Take a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="photos"></label><button class="ib" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'</button>'
-    +'<div class="fw">'+ktag('jnote')+'<textarea id="jnote" rows="1" data-in="note" placeholder="Message" aria-label="Write on this job, as '+esc(F.kind)+'">'+esc(F.note)+'</textarea></div>'
+// The message bar (DEC-0489): one bar for a job and a chat. The words, with the kind of entry before them on a job; a
+// paperclip for everything that can be attached; and a microphone, held to record and let go to send (DEC-0320), which
+// becomes send once something is written or attached. o: {job, kind, top, id, key, val, ph, label}.
+function barHas(){ const F=st.form; if(!F) return false; const p=(F.photos||[]).length; return st.screen==='job'?!!(String(F.note||'').trim()||p):!!(String(F.ctext||'').trim()||p||F.mode); }
+function barSync(){ const bar=app.querySelector('.mbar'); if(!bar) return; const w=barHas(); if(bar.classList.contains('w')===w) return;
+  bar.classList.toggle('w',w); const g=bar.querySelector('.c-go'); if(g) g.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); }
+function msgBar(o){
+  const F=st.form, w=barHas(), fx=Date.now()-(st.sentFx||0)<600;
+  const err=F.err?'<div class="help err" role="alert" style="margin:8px 8px 0">'+esc(F.err)+'</div>':'';
+  const th=F.photos.length?'<div class="thumbs comp">'+F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')+'</div>':'';
+  return '<div class="c-foot mbar'+(o.job?' j':'')+(w?' w':'')+'">'+err+(o.top||'')+th+'<div class="c-cb"><div class="c-fld'+(o.kind?' k':'')+'">'+(o.kind||'')
+    +'<textarea id="'+o.id+'" rows="1" data-in="'+o.key+'" placeholder="'+esc(o.ph)+'" aria-label="'+esc(o.label)+'">'+esc(o.val||'')+'</textarea>'
+    +'<button class="ib" data-act="attach" aria-haspopup="dialog" aria-label="Attach">'+ICO('paperclip')+'</button></div>'
     +'<div class="rec"><span class="dot" aria-hidden="true"></span><span class="t n" aria-hidden="true">0:00</span><span class="s"></span><button class="rcan" data-act="vdiscard">Cancel</button></div>'
-    +'<button class="snd" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'><span class="i-m">'+I.mic+'</span><span class="i-s">'+I.send+'</span></button></div></div>';
+    +'<button class="c-go'+(fx?' fx':'')+'" data-act="sndPress" data-hold="1" aria-label="'+(w?'Send':'Hold to record a voice note')+'"'+(st.busy?' disabled':'')+'>'+(fx?'<i class="c-fly" aria-hidden="true">'+ICO('arrow-up')+'</i>':'')+'<span class="i-m">'+I.mic+'</span><span class="i-s">'+ICO('arrow-up')+'</span></button></div></div>';
+}
+// What the paperclip opens, on a job and in a chat: a photo taken, one already on the phone, a sketch (DEC-0486 rule 2);
+// in a chat of your own, a handover and a notice too (DEC-0354 rule 3).
+function attachSheet(){
+  const F=st.form, c=st.screen==='chat'?chatById(F.chat):null, more=!!c&&!outChat(c)&&!F.replyTo;
+  const m=(ic,w,sub)=>ic+'<span class="m"><span class="w">'+w+'</span><span class="sub">'+sub+'</span></span>';
+  const o=(act,ic,w,sub)=>'<button class="verb" data-act="'+act+'" data-l="photos">'+m(ic,w,sub)+'</button>';
+  const f=(ic,w,sub,cam)=>'<label class="verb">'+m(ic,w,sub)+'<input type="file" accept="image/*" '+(cam?'capture="environment" ':'')+'multiple data-file="photos" class="hide"></label>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Attach"><div class="sh"><b>Attach</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +f(ICO('camera'),'Take a Photo','With the camera',true)
+    +f(ICO('image'),'Photo from the Phone','One already on this phone',false)
+    +o('muSketch',ICO('pen-line'),'Draw a Sketch','A blank page to draw on')
+    +(more?o('cModeHo',ICO('arrow-right-left'),'Handover','Who, what, where, why, and what is open'):'')
+    +(more&&isSender()?o('cModeNt',ICO('megaphone'),'Notice','Asks each person to confirm they have read it'):'')
+    +'</div><div style="height:24px"></div></div>';
 }
 // A pest case's job (DEC-0480): the case's clock says when the next visit is due (DEC-0465, DEC-0478 rule 3), said once.
 function jPestDue(j){ const c=j.pest; if(!c||c.closed) return null; if(!c.due) return c.visits?null:{late:0,say:'No visit yet'}; const d=Math.round((new Date(flToday()+'T12:00:00')-new Date(c.due+'T12:00:00'))/864e5);
@@ -2513,7 +2553,8 @@ function vJob(){
   const people=(hs.length||pA.length||S0.canAsg)?'<div class="people">'+(hs.length||pA.length?'<span class="lab">On it</span>':'')+'<span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'')
     +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':'')+'</span>'
     +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(hs.length?'Change who is on this job':'Give this job to someone')+'">'+(hs.length?'Change':'Assign')+'</button>':'')+'</div>':'';
-  return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+jBar(F)+'</div>';
+  return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+msgBar({job:true,id:'jnote',key:'note',val:F.note,ph:'Message',label:'Write on this job, as '+F.kind,
+    kind:'<button class="ktag" data-act="jkinds" aria-haspopup="dialog" aria-controls="jnote" aria-label="Kind of entry: '+esc(F.kind)+'. Change it">'+esc(F.kind)+I.down+'</button>'})+'</div>';
 }
 // Record a Visit on an insect case (DEC-0478 rule 3, DEC-0480 rule 2): what was done, what was found, and the next
 // follow-up date, set by the person (no interval claimed without a source). A rodent case's visit is its case visit.
@@ -2601,9 +2642,9 @@ const HOLD_SAYS='Hold the microphone to record. Let go to send.';
 function grow(t){ const cs=getComputedStyle(t), lh=parseFloat(cs.lineHeight)||21.6, pad=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom), bd=t.offsetHeight-t.clientHeight;
   t.style.height='auto'; t.style.height=Math.min(t.scrollHeight+bd,Math.ceil(lh*4+pad+bd))+'px'; }
 function recUi(){
-  const bar=app.querySelector('.jbar'), R=st.rec; if(!bar) return;
+  const bar=app.querySelector('.mbar'), R=st.rec; if(!bar) return;
   bar.classList.toggle('rec-on',!!R); bar.classList.toggle('lk',!!(R&&R.key)); if(!R) return;
-  const n=R.live?Math.floor((Date.now()-R.t0)/1000):0, w=recWords(R), sb=bar.querySelector('.snd');
+  const n=R.live?Math.floor((Date.now()-R.t0)/1000):0, w=recWords(R), sb=bar.querySelector('.c-go');
   bar.querySelector('.rec .t').textContent=clock(n);
   bar.querySelector('.rec .s').textContent=_hold&&_hold.cancel?'Let go to cancel':!R.live?'Starting the microphone…':R.key?'Recording. Send when done.':w?(w.length>40?'…'+w.slice(-40):w):'‹ Slide left to cancel';
   if(sb) sb.setAttribute('aria-label',R.key?'Send the voice note':'Let go to send the voice note');
@@ -2635,9 +2676,9 @@ function recStop(){
   try{ R.mr.stop(); }catch(e){ R.mr.onstop(); }
   stopped.then(()=>{ R.stream.getTracks().forEach(t=>t.stop());
     const mt=String(R.mr.mimeType||(R.chunks[0]&&R.chunks[0].type)||''), type=/mp4/.test(mt)?'audio/mp4':'audio/webm', blob=new Blob(R.chunks,{type:type});
-    if(st.rec===R) st.rec=null; const F=st.form; recUi(); if(!F||st.screen!=='job') return;
+    if(st.rec===R) st.rec=null; const F=st.form, job=st.screen==='job'; recUi(); if(!F||(!job&&st.screen!=='chat')) return;
     F.voice={blob:blob,type:type,url:URL.createObjectURL(blob),secs:secs,words:(R.base+' '+R.fin+' '+R.int).replace(/\s+/g,' ').trim()};
-    jobSend('voice'); });
+    job?jobSend('voice'):chatVoice(F); });
 }
 function recDiscard(say){
   const R=st.rec; st.rec=null;
@@ -2679,8 +2720,8 @@ function vUi(){
     if(du) du.textContent=on&&!P.a.ended&&P.a.currentTime>0?clock(Math.floor(P.a.currentTime)):clock(v.dataset.s); });
 }
 app.addEventListener('pointerdown',e=>{
-  const b=e.target.closest('[data-hold]'); if(!b||b.disabled||e.button>0||st.screen!=='job') return;
-  const bar=b.closest('.jbar'); if(!bar||bar.classList.contains('w')) return;
+  const b=e.target.closest('[data-hold]'); if(!b||b.disabled||e.button>0||(st.screen!=='job'&&st.screen!=='chat')) return;
+  const bar=b.closest('.mbar'); if(!bar||bar.classList.contains('w')) return;
   e.preventDefault(); _ptrAt=Date.now();
   if(st.rec){ if(st.rec.key) recStop(); return; }
   try{ b.setPointerCapture(e.pointerId); }catch(x){}
@@ -2732,6 +2773,7 @@ function unsent(){ const F=st.form, s=st.sheet, t=x=>!!String(x==null?'':x).trim
   if(s==='jdone'){ const D=F.fin||{}, M=D.marks||{}; return !!((D.strokes||[]).length||Object.keys(M).some(k=>M[k])||t(F.dnote)||(F.dphotos||[]).length||t(F.t5found)); }
   if(s) return false;
   if(st.screen==='job') return t(F.note)||!!(F.photos||[]).length;
+  if(st.screen==='chat') return t(F.ctext)||!!(F.photos||[]).length;
   if(['fault','hazard','proof','sighting','reading'].indexOf(st.screen)>=0) return t(F.note)||!!(F.photos||[]).length||t(F.value)||t(F.hot)||t(F.cold);
   return false; }
 function leaveAsk(redo){ if(st.leaveOk||!unsent()) return false; st.leave=Object.assign({was:st.sheet},redo); st.sheet='leave'; render(); const k=app.querySelector('.sheet .btn[data-act="leaveStay"]'); if(k) k.focus(); return true; }
@@ -3360,8 +3402,10 @@ function proofWhatField(){
   const row=(icon,t,sub,input)=>'<label class="r"><span class="pi">'+icon+'</span><span class="m"><span class="w">'+t+'</span><span class="sub">'+sub+'</span></span>'+I.chev+input+'</label>';
   return '<div class="field"><span class="fl">The proof</span><div class="pick">'
     +row(I.scan,'Scan a Document','A certificate, report or sheet. Squared and cleaned like a scanner.','<input type="file" accept="image/*" capture="environment" data-file="scanshot">')
+    +row(I.image,'A Document from the Phone','A photo of a certificate or sheet already on this phone. Squared and cleaned the same way.','<input type="file" accept="image/*" data-file="scanshot">')
     +row(I.clip,'Choose a PDF','One already on this phone. Sent as it is.','<input type="file" accept="application/pdf" data-file="pdf">')
     +row(I.photo,'Take a Photo of the Work','The work itself, not a piece of paper.','<input type="file" accept="image/*" capture="environment" multiple data-file="wphoto">')
+    +row(I.image,'A Photo from the Phone','Of the work, already on this phone.','<input type="file" accept="image/*" data-file="wphoto">')
     +'</div></div>';
 }
 // What the line is for, on the line itself, read before the work (DEC-0338 rule 1): how often (the register's own
@@ -3798,7 +3842,7 @@ function needGo(i){ const n=app.querySelectorAll('.need')[i||0]; if(!n) return; 
 function sendBtnAct(act,label,ok,why){ return '<div class="foot"><button class="btn p" data-act="'+act+'"'+(ok?'':' disabled')+'>'+esc(label)+'</button>'+(ok||!why?'':'<span class="sub">'+esc(why)+'</span>')+'</div>'; }
 // ── The toast (Design 9.10): bottom, 4 s, one line, past tense ───────────────────────────────
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.className='toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
-  const ft=app.querySelector('.foot')||app.querySelector('.jbar'); el.style.bottom=ft?(ft.offsetHeight+16)+'px':'';
+  const ft=app.querySelector('.foot')||app.querySelector('.mbar'); el.style.bottom=ft?(ft.offsetHeight+16)+'px':'';
   el.textContent=t; el.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove('on'),4000); }
 
 // ── Marking up a photo, and a sketch (DEC-0467 rules 3 and 4; DEC-0486) ──────────────────────────────────────────
@@ -3862,7 +3906,7 @@ async function muOpen(l,i){
   }catch(e){ if(_mu===M) muDraw('err','The editor could not start: it needs signal the first time. Close this and try again with signal. ('+(e&&e.message||e)+')'); }
 }
 // A photo just taken opens in the editor at once, so drawing on it is offered before it is on the form (John, 21 Nov 2026).
-function muTaken(l,n){ if(n!==1||!st.form) return; const L=muList(st.form,l), i=L.length-1; if(muCan(L[i])) muOpen(l,i); }
+function muTaken(l,n){ if(_camNoEd){ _camNoEd=false; return; } if(n!==1||!st.form) return; const L=muList(st.form,l), i=L.length-1; if(muCan(L[i])) muOpen(l,i); }
 function muClose(){ const M=_mu; if(!M) return; _mu=null;
   try{ if(M.ed) M.ed.destroy(); }catch(e){}
   if(M.tmp) URL.revokeObjectURL(M.tmp); M.el.remove(); }
@@ -3888,6 +3932,99 @@ function muClick(e){ const b=e.target.closest('[data-mu]'), M=_mu; if(!b||!M) re
   if(a==='askNo'){ M.ask=false; return muFoot(); }
   if(a==='askYes') return muClose();
   if(a==='done') return muDone(); }
+
+// ── Waterline's own camera (DEC-0494) ─────────────────────────────────────────────────────────────────────────────
+// John, 22 Nov 2026: "when i take a job photo and click ok to accept it i then shouldnt be prompted to doodle on it - its a
+// needless step. that option to draw on it should be on the same step as accept." The phone's own camera has its OK and
+// nothing else, so Waterline opens the camera itself: the picture taken waits under Retake, Draw and Use.
+// It takes over every "take a photo" press except the scanner's and the tag's, which read the picture rather than keep it.
+// No markup changes: a press on a camera input's label is caught here, and the photo goes back through that input's
+// own change handler, so every form keeps its own rules for where the photo goes.
+const CAM_KEEP=new Set(['scanshot','tagphoto']);             // read, not kept: the phone's own camera, sharper and steadier
+const CAM_ED=new Set(['photos','dphotos','wphoto']);          // where the editor can take the photo (DEC-0486 Consequences)
+let _cam=null, _camOff='', _camLet=false, _camNoEd=false, _camDraw=false;
+const camFor=inp=>!!inp&&inp.type==='file'&&inp.hasAttribute('capture')&&(inp.dataset.pefile!=null||(!!inp.dataset.file&&!CAM_KEEP.has(inp.dataset.file)));
+// A test camera for the sealed harness (sandbox/companion-check), never set on the phones: ?fakecam=1 draws a made-up scene; =deny refuses; =none has no camera.
+const camFake=()=>(/[?&]fakecam=([a-z0-9]+)/.exec(location.search)||[])[1]||'';
+function camFakeStream(){ const c=document.createElement('canvas'); c.width=1080; c.height=1440; const g=c.getContext('2d'); let t=0;
+  const paint=()=>{ t++; g.fillStyle='#B9C3C7'; g.fillRect(0,0,1080,1440); g.fillStyle='#A3AFB4'; for(let y=0;y<1440;y+=90) for(let x=(y/90%2)*60;x<1080;x+=120) g.fillRect(x+4,y+4,112,82);
+    g.fillStyle='#7C8B91'; g.fillRect(0,1080,1080,360); g.fillStyle='#C9CED0'; g.fillRect(180,0,90,1080); g.fillRect(180,640,640,90); g.fillStyle='#8E979B'; g.fillRect(800,600,60,150);
+    g.fillStyle='#3E6E86'; const d=(t*14)%300; g.beginPath(); g.ellipse(830,780+d,14,22,0,0,7); g.fill(); g.beginPath(); g.ellipse(830,1150,120,26,0,0,7); g.fillStyle='rgba(62,110,134,.55)'; g.fill();
+    g.fillStyle='#0D1F2D'; g.font='700 64px sans-serif'; g.fillText('ZZ TEST CAMERA',80,1340); };
+  paint(); c._iv=setInterval(paint,66); const S=c.captureStream(15); S._canvas=c; return S; }
+function camStream(){ const f=camFake();
+  if(f==='1') return Promise.resolve(camFakeStream());
+  if(f==='deny') return Promise.reject(new DOMException('Permission denied','NotAllowedError'));
+  if(f==='none'||!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)) return Promise.reject(new DOMException('No camera','NotFoundError'));
+  return navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1440}}}); }
+function camStop(M){ M=M||_cam; if(!M||!M.s) return; M.s.getTracks().forEach(t=>t.stop()); if(M.s._canvas) clearInterval(M.s._canvas._iv); M.s=null; M.track=null; }
+// The input the photo goes back through: the one pressed, or the same one drawn again if the screen was redrawn meanwhile.
+function camInput(M){ if(M.inp.isConnected) return M.inp; const d=M.inp.dataset;
+  return [...document.querySelectorAll('input[type=file][capture]')].find(x=>x.dataset.file===d.file&&x.dataset.k===d.k&&x.dataset.pefile===d.pefile)||null; }
+async function camOpen(inp){
+  if(_cam||_mu) return;
+  const el=document.createElement('div'); el.className='ds cam'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label','Take a photo');
+  const M=_cam={inp:inp,el:el,stage:'wait',s:null,track:null,shot:null,url:'',torch:false,zoom:null,why:'',multi:inp.dataset.pefile!=null,got:[]};
+  el.addEventListener('click',camClick); document.body.appendChild(el); camDraw();
+  camLive(M); }
+async function camLive(M){
+  M.stage='wait'; camDraw();
+  try{ const s=await camStream(); if(_cam!==M){ s.getTracks().forEach(t=>t.stop()); return; }
+    M.s=s; M.track=s.getVideoTracks()[0]; const caps=M.track.getCapabilities?M.track.getCapabilities():{};
+    M.canTorch=!!caps.torch; M.zooms=caps.zoom?[1,2,caps.zoom.max>=5?5:0].filter(z=>z&&z>=caps.zoom.min&&z<=caps.zoom.max):[];
+    M.stage='live'; camDraw(); const v=M.el.querySelector('video'); v.srcObject=s; await v.play().catch(()=>{});
+  }catch(e){ if(_cam!==M) return; M.why=e&&e.name==='NotAllowedError'?'denied':'none'; _camOff=M.why; M.stage='off'; camDraw(); } }
+function camDraw(){ const M=_cam, st_=M.stage;
+  const top='<div class="dtop"><button class="ib" data-cam="close" aria-label="Close">'+I.close+'</button><span class="eb">'+(st_==='shot'?'Use This Photo?':'Take a Photo')+(M.got.length?' · '+M.got.length+' kept':'')+'</span>'
+    +(st_==='live'&&M.canTorch?'<button class="tb'+(M.torch?' on':'')+'" data-cam="torch" aria-pressed="'+M.torch+'" aria-label="Torch">'+ICO('flashlight')+'</button>':'')+'</div>';
+  const draw=CAM_ED.has(M.inp.dataset.file);
+  if(st_==='wait'){ M.el.innerHTML=top+'<div class="stage"><div class="wait" role="status">'+ICO('camera')+'<span>Opening the camera…</span></div></div><div class="dfoot"><div style="height:120px"></div></div>'; return; }
+  if(st_==='off'){ M.el.innerHTML=top+'<div class="stage"><div class="off" role="alert"><b>'+(M.why==='denied'?'The camera is not allowed':'No camera to open')+'</b><p>'
+      +(M.why==='denied'?'This phone has not let Waterline use the camera. The phone’s own camera still works.':'Waterline could not open a camera on this phone. The phone’s own camera may still work.')+'</p></div></div>'
+      +'<div class="dfoot"><button class="btn" data-cam="native">'+I.photo+'Use the Phone’s Camera</button></div>'; return; }
+  if(st_==='live'){ M.el.innerHTML=top+'<div class="stage"><video playsinline muted autoplay></video></div><div class="dfoot">'
+      +(M.zooms.length>1?'<div class="zm" role="radiogroup" aria-label="Zoom">'+M.zooms.map(z=>'<button role="radio" aria-checked="'+((M.zoom||1)===z)+'" class="'+((M.zoom||1)===z?'on':'')+'" data-cam="zoom" data-v="'+z+'">'+z+'×</button>').join('')+'</div>':'<div class="zm"></div>')
+      +'<div class="shut"><button data-cam="shoot" aria-label="Take the photo"><i></i></button></div>'+(M.got.length?'<div class="acts"><button data-cam="done">'+I.tick+'Done, '+M.got.length+' '+(M.got.length===1?'Photo':'Photos')+'</button></div>':'')+'</div>'; return; }
+  M.el.innerHTML=top+'<div class="stage"><img class="still" src="'+M.url+'" alt="The photo just taken"></div><div class="dfoot"><div class="acts">'
+    +'<button data-cam="retake">'+I.again+'Retake</button>'
+    +(draw?'<button data-cam="draw">'+ICO('pen-line')+'Draw on It</button>':'')
+    +(M.multi?'<button data-cam="more">'+I.photo+'Another</button><button class="p" data-cam="use">'+I.tick+'Done</button>':'<button class="p" data-cam="use">'+I.tick+'Use Photo</button>')+'</div></div>'; }
+async function camShoot(){ const M=_cam; if(!M||M.stage!=='live') return; const v=M.el.querySelector('video'); let b=null;
+  // Android's ImageCapture gives the camera's full picture; anywhere else, the frame on the screen.
+  if(window.ImageCapture&&!M.s._canvas) try{ b=await new ImageCapture(M.track).takePhoto(); }catch(e){ b=null; }
+  if(!b){ const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0); b=await new Promise(ok=>c.toBlob(ok,'image/jpeg',.9)); }
+  if(_cam!==M||!b) return;
+  M.shot=new File([b],'photo-'+Date.now()+'.jpg',{type:'image/jpeg'}); M.url=URL.createObjectURL(M.shot); camStop(); M.stage='shot'; camDraw(); }
+function camClose(){ const M=_cam; if(!M) return; _cam=null; camStop(M); if(M.url&&M.stage!=='done') URL.revokeObjectURL(M.url); M.el.remove(); }
+// Back: from the picture, back to the camera; from the camera, closed.
+function camBack(){ const M=_cam; if(!M) return; if(M.stage==='shot') return camRetake(); camEnd(); }
+function camEnd(){ const M=_cam; if(!M) return; if(M.got.length) return camGive(false); camClose(); }
+function camRetake(){ const M=_cam; if(M.url) URL.revokeObjectURL(M.url); M.url=''; M.shot=null; camLive(M); }
+// The photo goes through the input's own change handler, as if the phone's camera had given it.
+function camGive(draw){ const M=_cam, inp=camInput(M), F=M.got.concat(M.shot?[M.shot]:[]); if(!F.length) return;
+  if(!inp){ camClose(); return toast('The form was closed, so the photo was not kept.'); }
+  const dt=new DataTransfer(); F.forEach(f=>dt.items.add(f)); M.stage='done'; camClose();
+  _camDraw=!!draw; inp.files=dt.files; inp.dispatchEvent(new Event('change',{bubbles:true})); }
+function camClick(e){ const b=e.target.closest('[data-cam]'), M=_cam; if(!b||!M) return; const a=b.dataset.cam;
+  if(a==='close') return camEnd();
+  if(a==='shoot') return camShoot();
+  if(a==='retake') return camRetake();
+  if(a==='use'||a==='done') return camGive(false);
+  if(a==='more'){ M.got.push(M.shot); M.shot=null; M.url=''; return camLive(M); }
+  if(a==='draw') return camGive(true);
+  if(a==='torch'){ M.torch=!M.torch; M.track.applyConstraints({advanced:[{torch:M.torch}]}).catch(()=>{}); return camDraw(); }
+  if(a==='zoom'){ M.zoom=+b.dataset.v; M.track.applyConstraints({advanced:[{zoom:M.zoom}]}).catch(()=>{}); const v=M.el.querySelector('video'), s=M.s; camDraw(); const nv=M.el.querySelector('video'); nv.srcObject=s; nv.play().catch(()=>{}); return; }
+  if(a==='native'){ const inp=camInput(M); camClose(); if(inp){ _camLet=true; inp.click(); } } }
+// A press on a camera input's label opens this camera; once it is refused, the phone's own camera opens as before.
+document.addEventListener('click',e=>{
+  if(_camLet){ _camLet=false; return; }
+  const lab=e.target.closest&&e.target.closest('label'), inp=lab&&lab.querySelector('input[type=file][capture]');
+  if(!camFor(inp)||_camOff) return;
+  e.preventDefault(); e.stopPropagation(); camOpen(inp); },true);
+// Every photo that arrives says whether the editor follows: only one from Draw does (DEC-0494 rule 4).
+document.addEventListener('change',e=>{ const t=e.target; if(!t||t.type!=='file') return; _camNoEd=!_camDraw; _camDraw=false; },true);
+// The camera is let go when the phone is put away, and opened again on return.
+document.addEventListener('visibilitychange',()=>{ const M=_cam; if(!M) return; if(document.hidden){ if(M.stage==='live'){ camStop(); M.stage='wait'; } } else if(M.stage==='wait') camLive(M); });
 
 function photosField(label,opt,accept){
   const F=st.form;
@@ -4248,7 +4385,7 @@ function after(){
   if(walking&&st.form.paused&&!st.scanFor) nfcStop();
   if(st.screen==='msgs') phLoad(myChats().map(c=>c.photo).filter(Boolean));
   if((st.screen==='chat'||st.screen==='chatinfo')&&st.form){ const c=chatById(st.form.chat), L=st.screen==='chat'?chatMsgs(st.form.chat):[];
-    phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); }
+    phLoad([c&&c.photo].concat(...L.map(x=>(copyOf(x)||{}).photos||[])).filter(Boolean)); app.querySelectorAll('#ctext,.c-pw textarea').forEach(grow); if(st.rec) recUi(); }
   if(st.screen==='job'){ const j=st.form&&jobById(st.form.id); if(j) phLoad([].concat(j.photos||[],...(j.thread||[]).map(e=>e.photos||[]))); }
   if(st.screen==='jobs') phLoad((st.J.grp?jobsShown():jobsAll()).map(j=>(j.photos||[])[0]).filter(Boolean));
   if(st.screen==='job'){ ['jnote','vwords'].forEach(id=>{ const t=document.getElementById(id); if(t) grow(t); }); vUi(); if(st.rec) recUi(); }
@@ -4259,7 +4396,7 @@ document.addEventListener('keydown',e=>{
   const sh=app.querySelector('.sheet.t5o')||app.querySelector('.sheet');
   if(sh&&!app.querySelector('.scan')){
     if(e.key==='Escape'&&st.sheet==='take5'&&st.form&&st.form.ck&&st.form.ck.otherOpen){ e.preventDefault(); return t5Act('t5OtherClose',{dataset:{}}); }
-    if(e.key==='Escape'){ e.preventDefault(); if(st.sheet==='leave') return leaveStay(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobStop"]',jstop:'[data-act="jobStop"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.jbar .ktag',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
+    if(e.key==='Escape'){ e.preventDefault(); if(st.sheet==='leave') return leaveStay(); const was=st.sheet; st.sheet=false; render(); const f=app.querySelector({jdone:'[data-act="jobStop"]',jstop:'[data-act="jobStop"]',take5:'[data-act="jobStart"],[data-act="jobRestart"]',jkinds:'.mbar .ktag',attach:'.mbar [data-act="attach"]',whosin:'[data-act="whosin"]'}[was]||'.nv.cap')||app.querySelector('[data-act="jmore"]'); if(f) f.focus(); return; }
     if(e.key==='Tab'){ const f=[...sh.querySelectorAll('button:not([disabled]),textarea,input')]; if(!f.length) return; const i=f.indexOf(document.activeElement), n=e.shiftKey?(i<=0?f.length-1:i-1):(i>=f.length-1?0:i+1); e.preventDefault(); f[n].focus(); }
     return;
   }
@@ -4278,7 +4415,12 @@ app.addEventListener('click',async e=>{
   if(a==='leaveStay') return leaveStay();
   if(a==='leaveGo') return leaveGo();
   if(a==='muOpen') return muOpen(b.dataset.l,Number(b.dataset.i));
-  if(a==='muSketch') return muOpen(b.dataset.l,null);
+  if(a==='muSketch'){ if(st.sheet==='attach'){ st.sheet=false; render(); } return muOpen(b.dataset.l,null); }
+  // The message bar (DEC-0489), the same on a job and in a chat: the paperclip, and the microphone that becomes send.
+  if(a==='attach'){ st.sheet='attach'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
+  if(a==='sndPress'){ if(Date.now()-_ptrAt<700) return;   // a press the microphone's own handlers took
+    if(b.closest('.mbar.w')) return st.screen==='job'?jobSend('note'):chatSend();
+    return st.rec?recStop():recStart(true); }
   if((b.getAttribute('aria-label')==='Back'||(a==='sheetClose'&&st.sheet==='jdone'))&&leaveAsk({act:a,label:b.getAttribute('aria-label')})) return;
   if(a==='home'||a==='due'){ st.form=null; st.sheet=false; return go('due'); }
   if(a==='me'){ st.form=null; st.sheet=false; return go('me'); }
@@ -4423,12 +4565,12 @@ app.addEventListener('click',async e=>{
   // Added with the port of round 12: Jobs, a category opening in place, the walk's done list, the theme, the line found by typing.
   if(a==='jobs'){ if(st.screen==='jobs'||st.screen!=='job') Object.assign(st.J,{grp:'',q:''}); st.form=null; st.sheet=false; return go('jobs'); }
   if(a==='openCat'){ st.openCat=st.openCat===b.dataset.id?'':b.dataset.id; return render(); }
-  if(a==='jstate'){ st.J.state=b.dataset.v; return render(); }
+  if(a==='jstate'){ st.J.state=b.dataset.v; if(st.J.grp) grpMark(st.J.grp,st.J.state); return render(); }
   if(a==='jtab'){ st.J.tab=b.dataset.v; ls.set('wl_jtab',b.dataset.v); return render(); }
   if(a==='jsortv'){ st.J.sort=b.dataset.v; ls.set('wl_jsort',b.dataset.v); st.sheet=false; return render(); }
   if(a==='jsortOpen'){ st.sheet='jsort'; return render(); }
-  if(a==='jgrp'){ const _sn=ls.get('wl_grpSeen',{})||{}; _sn[b.dataset.id]=Date.now(); ls.set('wl_grpSeen',_sn); const _L=jobsAll().filter(j=>j.group===b.dataset.id); Object.assign(st.J,{grp:b.dataset.id,state:_L.length&&_L.every(j=>j.pest)?'doing':'todo',q:'',groups:[]}); return go('jobs'); }
-  if(a==='jgrpBack'){ Object.assign(st.J,{grp:'',q:''}); return go('jobs'); }
+  if(a==='jgrp'){ const _sn=ls.get('wl_grpSeen',{})||{}; _sn[b.dataset.id]=Date.now(); ls.set('wl_grpSeen',_sn); const _L=jobsAll().filter(j=>j.group===b.dataset.id); Object.assign(st.J,{grp:b.dataset.id,state:_L.length&&_L.every(j=>j.pest)?'doing':'todo',q:'',groups:[],prev:null}); grpMark(st.J.grp,st.J.state); return go('jobs'); }
+  if(a==='jgrpBack'){ Object.assign(st.J,{grp:'',q:'',prev:null}); return go('jobs'); }
   if(a==='jview'){ st.J.view=b.dataset.v; ls.set('wl_jview',b.dataset.v); return render(); }
   if(a==='jsheet'){ st.sheet='jobs'; render(); const v=app.querySelector('.sheet button'); if(v) v.focus(); return; }
   if(a==='jsort'){ st.J.sort=b.dataset.v; return render(); }
@@ -4444,7 +4586,7 @@ app.addEventListener('click',async e=>{
   if(a==='pickDuty'){ F.duty=b.dataset.id; F.dq=''; return render(); }
   if(a==='dutyClear'){ F.duty=''; return render(); }
   // A job's actions (P4): each is a capture of kind job, filed on the desk by wfmCapApplyJobUpdate.
-  if(a==='jkind'){ F.kind=b.dataset.v; st.sheet=false; render(); const t=app.querySelector('.jbar .ktag'); if(t) t.focus(); return; }
+  if(a==='jkind'){ F.kind=b.dataset.v; st.sheet=false; render(); const t=app.querySelector('.mbar .ktag'); if(t) t.focus(); return; }
   // P6: the kind tag, More, a photo full screen, the microphone and send, a voice note played, checked, sent or thrown away.
   if(a==='jkinds'){ st.sheet='jkinds'; render(); const v=app.querySelector('.sheet .opt.on')||app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jmore'){ st.sheet='jmore'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
@@ -4457,9 +4599,6 @@ app.addEventListener('click',async e=>{
   if(a==='jpCloseSend'){ if(!String(F.pcd||'').trim()||!String(F.pcr||'').trim()){ F.pct=true; render(); const e=document.querySelector('.sheet .bad textarea,.sheet .bad input'); if(e) e.focus(); return; } return jobSend('pclose'); }
   if(a==='pvOpen'){ st.pv=b.dataset.cap?{u:(_sentPics[b.dataset.cap]||[])[Number(b.dataset.i)]}:{n:b.dataset.n}; render(); const c=app.querySelector('.pv .ib'); if(c) c.focus(); return; }
   if(a==='pvClose'){ st.pv=null; render(); return; }
-  if(a==='sndPress'){ if(Date.now()-_ptrAt<700) return;   // a press the microphone's own handlers took
-    if(b.closest('.jbar.w')){ if(!String(F.note||'').trim()&&!F.photos.length) return; return jobSend('note'); }
-    return st.rec?recStop():recStart(true); }
   if(a==='vplay') return vPlay(b);
   if(a==='vdiscard') return recDiscard();
   // Your own message (DEC-0321): Edit, Delete, and a message never sent taken back.
@@ -4527,11 +4666,11 @@ app.addEventListener('focusout',e=>{
 app.addEventListener('change',e=>{
   const k=e.target.dataset.file;
   if(k==='scanshot'||k==='pdf'||k==='wphoto'){ dsFile(k,e.target); return; }
-  if(k==='photos'){ const n=(e.target.files||[]).length; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); render(); return muTaken('photos',n); }
+  if(k==='photos'){ const n=(e.target.files||[]).length; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''}));
+    if(st.sheet==='attach') st.sheet=false; render(); if(st.screen==='chat') chatBottom(); return muTaken('photos',n); }
   if(k==='dphotos'){ const n=(e.target.files||[]).length; Array.from(e.target.files||[]).forEach(f=>st.form.dphotos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); render(); return muTaken('dphotos',n); }
   if(k==='t5photo'){ const C=st.form&&st.form.ck; if(C&&C.stop) Array.from(e.target.files||[]).forEach(f=>C.stop.photos.push({file:f,url:/^image\//.test(f.type)?URL.createObjectURL(f):''})); return render(); }
   if(k==='tagphoto'){ const f=e.target.files&&e.target.files[0]; if(f) scanPhoto(f); return; }
-  if(k==='cphoto'){ st.sheet=false; Array.from(e.target.files||[]).forEach(f=>st.form.photos.push({file:f,url:URL.createObjectURL(f)})); render(); return chatBottom(); }
   if(k==='chatphoto'){ const f=e.target.files&&e.target.files[0]; if(f) cropOpen(f); return; }
   if(k==='uphoto'){ const f=e.target.files&&e.target.files[0]; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.u.photo=st.form.photos.length-1; } return render(); }
   if(k==='ansphoto'){ const f=e.target.files&&e.target.files[0], key=e.target.dataset.k; if(f){ st.form.photos.push({file:f,url:URL.createObjectURL(f)}); st.form.ans[key].photos.push(st.form.photos.length-1); } return render(); }
@@ -4544,11 +4683,11 @@ function special(k,el){
   if(st.screen==='chatgroup'&&k==='gRole'){ const t=el.value, i=F.roles.indexOf(t); if(el.checked&&i<0) F.roles.push(t); if(!el.checked&&i>=0) F.roles.splice(i,1); render(); return true; }
   if(st.screen==='job'&&(k==='note'||k==='why'||k==='dnote')){ F[k]=el.value;
     // The microphone becomes send once something is written, and the kind moves above the field (P6).
-    if(k==='note'){ const bar=el.closest('.jbar'), w=!!(el.value.trim()||F.photos.length); if(bar&&bar.classList.contains('w')!==w){ bar.classList.toggle('w',w); const sb=bar.querySelector('.snd'); if(sb) sb.setAttribute('aria-label',w?'Send':'Hold to record a voice note'); } grow(el); }
+    if(k==='note'){ barSync(); grow(el); }
     return true; }
   if(st.screen==='job'&&k==='etext'){ F.etext=el.value; return true; }
   if((st.screen==='chat'||st.screen==='replies')&&(k==='ctext'||k==='ntTitle'||k==='ntText'||/^p_/.test(k))){ F[k]=el.value; if(el.tagName==='TEXTAREA') grow(el);
-    const g=app.querySelector('.c-go'); if(k==='ctext'&&g&&!st.hoRec&&!F.voice){ const has=!!(el.value.trim()||F.photos.length||F.mode); g.setAttribute('aria-label',has?'Send':'Record a voice note'); g.innerHTML=has?ICO('arrow-up'):ICO('mic'); }
+    if(k==='ctext') barSync();
     return true; }
   if(st.screen==='job'&&(k==='t5word'||k==='t5found'||k==='t5seen')){ F[k]=el.value; return true; }
   if(st.screen==='job'&&k==='ptext'){ F.ptext=el.value; return true; }
@@ -5553,7 +5692,7 @@ async function msgRefresh(){
   const was=st.msgs&&st.msgs.updated; await loadMsgs(); msgSentPrune();
   if(!st.msgs||st.msgs.updated===was) return;
   const a=document.activeElement;
-  if(st.sheet||st.scanFor||st.rec||st.hoRec||st.pv||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
+  if(st.sheet||st.scanFor||st.rec||st.pv||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
   const y=window.scrollY; render(); window.scrollTo(0,y);
   if(st.screen==='chat'||st.screen==='replies') chatSeen();
 }
@@ -5723,7 +5862,8 @@ function vMsgs(){
 // ── A chat (b2, b4) ──
 function chatHead(c,sub,back){
   return '<div class="c-hd"><div class="c-t">'+backBtn(back||'msgs')+'<button class="c-ti" data-act="chatInfo" aria-label="About '+esc(c.name)+'">'+chatAv(c,'sm')
-    +'<span class="c-tw"><span class="c-tn">'+esc(c.name)+'</span><span class="c-s">'+esc(sub)+'</span></span></button></div>'+WAVE+'</div>';
+    +'<span class="c-tw"><span class="c-tn">'+esc(c.name)+'</span><span class="c-s">'+esc(sub)+'</span></span></button>'
+    +'<button class="ib" data-act="chatInfo" aria-label="Chat settings" title="Chat settings">'+I.gear+'</button></div>'+WAVE+'</div>';
 }
 const SH_DOING='<svg viewBox="0 0 16 16" aria-hidden="true" class="c-st"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>';
 // The handover card (rule 3; DEC-0351 rule 4): Who, What, Where, Why, then what Waterline added.
@@ -5822,22 +5962,10 @@ function vChat(){
   let th=threadHtml(L);
   if(!L.length&&!F.mode) th+='<div class="c-day">'+(out?'Write to '+esc(c.name)+'. They reply to you here. You do not see their chat.':'No messages yet')+'</div>';
   if(F.mode==='ho') th+=hoWriteCard(c); else if(F.mode==='nt') th+=ntWriteCard(c);
-  const foot=composer(c,F.replyTo?'Reply':out?'Message '+c.name:'Message',!out&&!F.replyTo);
+  const ph=F.replyTo?'Reply':out?'Message '+c.name:'Message';
+  const foot=msgBar({id:'ctext',key:'ctext',val:F.ctext,ph:F.mode==='ho'?'Add a message with it':ph,label:ph,
+    top:F.replyTo?'<div class="c-rq">'+ICO('reply')+quoteOf(F.replyTo,false)+'<button class="ib" data-act="replyOff" aria-label="Do not reply to it">'+I.close+'</button></div>':''});
   return '<div class="body c-bd">'+chatHead(c,chatSub(c))+waitLine()+'<div class="c-th">'+th+'</div></div>'+foot;
-}
-// The bar at the foot (rule 4): attach, the words, the camera, and a microphone that becomes send.
-function composer(c,ph,attach){
-  const F=st.form, rec=!!st.hoRec, has=!!(String(F.ctext||'').trim()||F.photos.length||F.voice||F.mode);
-  const stg=F.photos.length?'<div class="c-stg">'+F.photos.map((p,i)=>'<span class="c-th1" style="background-image:url('+p.url+')"><button class="x" data-act="cPhotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></span>').join('')+'</div>':'';
-  const field=rec?'<span class="c-rec" role="status">'+ICO('mic')+'Recording. Press the square to stop.</span>'
-    :F.voice?'<span class="c-vo">'+voiceEl('p:cv',F.voice.secs)+'<button class="ib" data-act="cVoiceDel" aria-label="Remove the voice note">'+I.trash+'</button></span>'
-    :'<textarea id="ctext" rows="1" data-in="ctext" placeholder="'+esc(F.mode==='ho'?'Add a message with it':ph)+'" aria-label="'+esc(ph)+'">'+esc(F.ctext||'')+'</textarea>';
-  const clip=attach?'<button class="ib" data-act="cAttach" aria-label="Attach a handover, a notice or a photo">'+ICO('paperclip')+'</button>'
-    :'<label class="ib" aria-label="Add a photo from the phone">'+ICO('paperclip')+'<input type="file" accept="image/*" multiple data-file="cphoto"></label>';
-  const go=rec?['Stop recording',I.stop]:has?['Send',ICO('arrow-up')]:['Record a voice note',ICO('mic')], fx=Date.now()-(st.sentFx||0)<600;
-  const rq=F.replyTo?'<div class="c-rq">'+ICO('reply')+quoteOf(F.replyTo,false)+'<button class="ib" data-act="replyOff" aria-label="Do not reply to it">'+I.close+'</button></div>':'';
-  return '<div class="c-foot">'+rq+stg+'<div class="c-cb"><div class="c-fld">'+field+(rec||F.voice?'':clip+'<label class="ib" aria-label="Take a photo">'+ICO('camera')+'<input type="file" accept="image/*" capture="environment" data-file="cphoto"></label>')+'</div>'
-    +'<button class="c-go'+(rec?' on':'')+(fx?' fx':'')+'" data-act="cGo" aria-label="'+go[0]+'"'+(st.busy?' disabled':'')+'>'+(fx?'<i class="c-fly" aria-hidden="true">'+ICO('arrow-up')+'</i>':'')+go[1]+'</button></div></div>';
 }
 // What Waterline adds to a handover, worked out from the site file as it is written (DEC-0348 rule 4): permits issued and not
 // closed on jobs in your groups, jobs started today and not done, jobs done today, and how many were already going.
@@ -5987,14 +6115,6 @@ function chatPickSheet(){
     +(O.length?grp('Your chats'):'')+'<div class="list">'+L.map(row).join('')+'</div>'
     +(O.length?grp('Write to a department')+'<div class="one">Only you and they see what you send and their replies. You do not see their chat.</div><div class="list">'+O.map(row).join('')+'</div>':'')+'<div style="height:16px"></div></div>';
 }
-function attachSheet(){
-  const c=chatById(st.form.chat), o=(act,ic,w,sub)=>'<button class="verb" data-act="'+act+'">'+ic+'<span class="m"><span class="w">'+w+'</span><span class="sub">'+sub+'</span></span></button>';
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Attach"><div class="sh"><b>Attach</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
-    +o('cModeHo',ICO('arrow-right-left'),'Handover','Who, what, where, why, and what is open')
-    +(isSender()?o('cModeNt',ICO('megaphone'),'Notice','Asks each person to confirm they have read it'):'')
-    +'<label class="verb">'+ICO('image')+'<span class="m"><span class="w">Photo from the Phone</span><span class="sub">Sent to '+esc(c?c.name:'the chat')+'</span></span><input type="file" accept="image/*" multiple data-file="cphoto" class="hide"></label>'
-    +'</div><div style="height:24px"></div></div>';
-}
 
 // ── Opening, reading, sending ──
 function chatForm(id,more){ return Object.assign({chat:id,ctext:'',photos:[],voice:null,mode:'',pick:{},adds:null,ntTitle:'',ntText:'',confirm:true},more||{}); }
@@ -6035,22 +6155,9 @@ async function chatSend(){
     :await msgSend('msg',{msg:{chat:c.id,text:text},secs:F.voice?F.voice.secs:null},files,false);
   if(!r) return; keep(r); return chatAfterSend();
 }
-// A voice note: press the microphone to record, the square to stop, up to soundMaxSecs; then it waits beside Send.
-async function hoVoice(){
-  const F=st.form;
-  if(st.hoRec){ const R=st.hoRec; st.hoRec=null; clearTimeout(R.cap);
-    R.mr.onstop=()=>{ R.s.getTracks().forEach(t=>t.stop()); const mt=String(R.mr.mimeType||(R.chunks[0]&&R.chunks[0].type)||''), type=/mp4/.test(mt)?'audio/mp4':'audio/webm', blob=new Blob(R.chunks,{type:type});
-      if(F.voice&&F.voice.url) URL.revokeObjectURL(F.voice.url);
-      F.voice={blob:blob,type:type,secs:Math.min(CS.soundMaxSecs,Math.max(1,Math.round((Date.now()-R.t0)/1000))),url:URL.createObjectURL(blob)}; _sentAudio.cv={url:F.voice.url}; keepRender(); };
-    try{ R.mr.stop(); }catch(e){ R.mr.onstop(); } return; }
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder) return toast('This phone cannot record sound on this page. Write it instead.');
-  let s; try{ s=await navigator.mediaDevices.getUserMedia({audio:true}); }catch(e){ return toast('The microphone is not allowed for this page. Allow it in the phone’s settings, or write it.'); }
-  const type=['audio/mp4;codecs=mp4a.40.2','audio/mp4','audio/webm;codecs=opus','audio/webm'].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||'';
-  let mr; try{ mr=new MediaRecorder(s,type?{mimeType:type}:undefined); }catch(e){ s.getTracks().forEach(t=>t.stop()); return toast('This phone would not record sound. Write it instead.'); }
-  const R={mr:mr,s:s,chunks:[],t0:Date.now()}; mr.ondataavailable=ev=>{ if(ev.data&&ev.data.size) R.chunks.push(ev.data); }; mr.start(1000); st.hoRec=R;
-  R.cap=setTimeout(()=>{ if(st.hoRec===R) hoVoice(); },CS.soundMaxSecs*1000);
-  keepRender();
-}
+// A voice note in a chat is sent when the microphone is let go, as on a job (DEC-0320, DEC-0489 rule 3). One that could
+// not be sent is not kept waiting in the bar.
+async function chatVoice(F){ await chatSend(); if(F.voice){ if(F.voice.url) URL.revokeObjectURL(F.voice.url); F.voice=null; } }
 // A chat's new photo (rule 7): sent as its own record, shown here at once; every change is a line in the chat.
 async function chatPhoto(file){
   const c=chatById(st.form.chat); if(!c||!file) return;
@@ -6087,12 +6194,12 @@ app.addEventListener('pointerdown',e=>{ if(!st.crop||!e.target.closest('.cp-st')
 app.addEventListener('pointermove',e=>{ if(!_cpd||!st.crop) return; st.crop.x=_cpd.ox+e.clientX-_cpd.x; st.crop.y=_cpd.oy+e.clientY-_cpd.y; cropPlace(); });
 app.addEventListener('pointerup',()=>{ _cpd=null; });
 app.addEventListener('input',e=>{ if(!st.crop||!e.target.hasAttribute('data-cz')) return; st.crop.z=Number(e.target.value)||1; cropPlace(); });
-const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cAttach','cModeHo','cModeNt','cModeOff','cGo','cPhotoDel','cVoiceDel','hoPick','cEdit','cEditSend','cDel','cDelSend','cReaders','grpNew','grpEdit','grpBack','grpSend','grpClose','grpCloseOff','grpCloseSend'];
+const MSG_ACTS=['cropOff','cropUse','msgs','chatOpen','chatBack','chatInfo','chatNew','chatPick','chatPicked','replyTo','replyOff','jumpTo','ntAck','hoAck','ntRemind','cModeHo','cModeNt','cModeOff','hoPick','cEdit','cEditSend','cDel','cDelSend','cReaders','grpNew','grpEdit','grpBack','grpSend','grpClose','grpCloseOff','grpCloseSend'];
 async function msgAct(a,b){
   const F=st.form;
   if(a==='cropOff'){ URL.revokeObjectURL(st.crop.url); st.crop=null; return render(); }
   if(a==='cropUse') return cropUse();
-  if(a==='msgs'){ if(st.hoRec) await hoVoice(); st.form=null; st.sheet=false; return go('msgs'); }
+  if(a==='msgs'){ if(st.rec) recDiscard(); st.form=null; st.sheet=false; return go('msgs'); }
   if(a==='chatOpen'){ st.form=chatForm(b.dataset.id); go('chat'); chatBottom(); await chatSeen(); return render(); }
   if(a==='chatBack'){ const k=st.chatLast||(F&&F.chat); st.form=chatForm(typeof k==='string'?k:(k&&k.chat)); st.chatLast=null; go('chat'); return chatBottom(); }
   if(a==='chatInfo'){ st.chatLast=F.chat; st.form={chat:F.chat}; return go('chatinfo'); }
@@ -6109,13 +6216,10 @@ async function msgAct(a,b){
   if(a==='jumpTo'){ const el=app.querySelector('.c-b[data-mid="'+CSS.escape(b.dataset.id)+'"]'); if(el){ el.scrollIntoView({block:'center',behavior:'instant'}); el.classList.add('c-hl'); setTimeout(()=>el.classList.remove('c-hl'),1200); } return; }
   if(a==='ntAck'||a==='hoAck'){ await msgSend('msgread',{ref:b.dataset.id,act:'confirmed'},[],a==='ntAck'?'Kept with the notice':'Kept with the handover'); return render(); }
   if(a==='ntRemind'){ await msgSend('notice',{remind:b.dataset.id},[],'Reminder sent to those not confirmed'); return render(); }
-  if(a==='cAttach'){ st.sheet='cattach'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
   if(a==='cModeHo'){ st.sheet=false; F.mode='ho'; F.adds=hoAdds(); F.pick={}; F.adds.permits.forEach((p,i)=>{ F.pick['pm'+i]=true; }); F.tried=false; render(); const t=document.getElementById('ho-who'); if(t) t.focus(); return; }
   if(a==='cModeNt'){ st.sheet=false; F.mode='nt'; F.tried=false; render(); const t=document.getElementById('nt-title'); if(t) t.focus(); return; }
   if(a==='cModeOff'){ F.mode=''; F.tried=false; return render(); }
   if(a==='hoPick'){ F.pick[b.dataset.k]=!F.pick[b.dataset.k]; return render(); }
-  if(a==='cPhotoDel'){ const p=F.photos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
-  if(a==='cVoiceDel'){ if(F.voice&&F.voice.url) URL.revokeObjectURL(F.voice.url); F.voice=null; return render(); }
   if(a==='cReaders'){ st.sheet='readers'; render(); const c=app.querySelector('.sheet [data-act="sheetClose"]'); if(c) c.focus(); return; }
   if(a==='cEdit'){ const x=cMine(); if(!x) return; F.etext=String((x.msg&&x.msg.text)||''); F.eerr=''; st.sheet='cedit'; render(); const t=document.getElementById('etext'); if(t) t.focus(); return; }
   if(a==='cEditSend'){ const x=cMine(); if(!x) return; const t=String(F.etext||'').trim();
@@ -6124,7 +6228,6 @@ async function msgAct(a,b){
     await msgSend('msgchange',{ref:x.id,act:'edit',chat:chatOf(x),msg:{text:t}},[],'Edited. The desk keeps what it said before.'); return render(); }
   if(a==='cDel'){ st.sheet='cdel'; render(); const v=app.querySelector('.sheet .btn.p'); if(v) v.focus(); return; }
   if(a==='cDelSend'){ const x=cMine(); if(!x) return; st.sheet=false; await msgSend('msgchange',{ref:x.id,act:'delete',chat:chatOf(x)},[],'Deleted. The desk keeps what it said.'); return render(); }
-  if(a==='cGo'){ if(st.hoRec) return hoVoice(); if(String(F.ctext||'').trim()||F.photos.length||F.voice||F.mode) return chatSend(); return hoVoice(); }
 }
 // Swipe a message to the right to reply to it (DEC-0358 rule 2); a long press on any message opens Reply, and on your own
 // Edit, Delete and Who Read It too. No message carries a Reply line (John, 25 Oct 2026).
@@ -6143,7 +6246,7 @@ app.addEventListener('touchend',e=>{ if(!_gsw) return; const S0=_gsw, t=e.change
   if(!st.J.grp){ const V=['feed','groups'], v=V[V.indexOf(st.J.tab==='groups'?'groups':'feed')+(dx<0?1:-1)]; if(!v||v===st.J.tab) return;
     st.J.tab=v; ls.set('wl_jtab',v); return render(); }
   const T=['todo','doing','done'], i=T.indexOf(st.J.state)+(dx<0?1:-1); if(i<0||i>=T.length) return;
-  st.J.state=T[i]; render(); });
+  st.J.state=T[i]; grpMark(st.J.grp,st.J.state); render(); });
 let _clp=null;
 let _clpHeld=false;
 // The click a long press ends with is not a click, however long the finger stays down: the window starts again as it lifts.
