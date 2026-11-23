@@ -510,7 +510,7 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .ds .say{padding:4px 16px 8px;color:var(--onInk);font-size:15px;line-height:1.4;min-height:29px}
 .ds .say.miss{color:var(--onInk)}
 .ds .stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:0 16px}
-.ds .stage svg{display:block;position:absolute;inset:0 16px;width:calc(100% - 32px);height:100%;touch-action:none}
+.ds .stage>svg{display:block;position:absolute;inset:0 16px;width:calc(100% - 32px);height:100%;touch-action:none}
 .ds .stage img{display:block;max-width:100%;max-height:100%;box-shadow:0 2px 12px rgba(0,0,0,.4)}
 .ds .loupe{position:absolute;top:8px;width:104px;height:104px;border-radius:50%;border:2px solid var(--accentOnInk);background:var(--ink) no-repeat;display:none;pointer-events:none}
 .ds .loupe::after{content:'';position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:2px solid var(--accentOnInk)}
@@ -1207,8 +1207,9 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 .ds.cam .tb{width:44px;height:44px;border-radius:22px;display:grid;place-items:center;color:var(--accentOnInk);background:transparent;border:0}
 .ds.cam .tb.on{background:var(--accentOnInk);color:var(--zBtnText)}
 .ds.cam .zm{display:flex;justify-content:center;gap:8px;min-height:44px}
-.ds.cam .zm button{min-width:44px;height:44px;border-radius:22px;border:0;background:transparent;color:var(--onInk);font:600 13px Outfit}
-.ds.cam .zm button.on{color:var(--accentOnInk);box-shadow:inset 0 0 0 2px var(--accentOnInk)}
+.ds.cam .zm button{width:44px;height:44px;padding:0;border:0;background:transparent;display:grid;place-items:center;color:var(--accentOnInk);font:600 13px Outfit;font-variant-numeric:tabular-nums}
+.ds.cam .zm button span{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;line-height:1}
+.ds.cam .zm button.on span{background:var(--accentOnInk);color:var(--zBtnText)}
 .ds.cam .shut{display:flex;justify-content:center}
 .ds.cam .shut button{width:76px;height:76px;border-radius:50%;border:4px solid var(--onInk);background:transparent;display:grid;place-items:center;padding:0}
 .ds.cam .shut button i{display:block;width:58px;height:58px;border-radius:50%;background:var(--accentOnInk)}
@@ -3983,7 +3984,7 @@ function camDraw(){ const M=_cam, st_=M.stage;
       +(M.why==='denied'?'This phone has not let Waterline use the camera. The phone’s own camera still works.':'Waterline could not open a camera on this phone. The phone’s own camera may still work.')+'</p></div></div>'
       +'<div class="dfoot"><button class="btn" data-cam="native">'+I.photo+'Use the Phone’s Camera</button></div>'; return; }
   if(st_==='live'){ M.el.innerHTML=top+'<div class="stage"><video playsinline muted autoplay></video></div><div class="dfoot">'
-      +(M.zooms.length>1?'<div class="zm" role="radiogroup" aria-label="Zoom">'+M.zooms.map(z=>'<button role="radio" aria-checked="'+((M.zoom||1)===z)+'" class="'+((M.zoom||1)===z?'on':'')+'" data-cam="zoom" data-v="'+z+'">'+z+'×</button>').join('')+'</div>':'<div class="zm"></div>')
+      +(M.zooms.length>1?'<div class="zm" role="radiogroup" aria-label="Zoom">'+M.zooms.map(z=>'<button role="radio" aria-checked="'+((M.zoom||1)===z)+'" class="'+((M.zoom||1)===z?'on':'')+'" data-cam="zoom" data-v="'+z+'"><span>'+z+'×</span></button>').join('')+'</div>':'<div class="zm"></div>')
       +'<div class="shut"><button data-cam="shoot" aria-label="Take the photo"><i></i></button></div>'+(M.got.length?'<div class="acts"><button data-cam="done">'+I.tick+'Done, '+M.got.length+' '+(M.got.length===1?'Photo':'Photos')+'</button></div>':'')+'</div>'; return; }
   M.el.innerHTML=top+'<div class="stage"><img class="still" src="'+M.url+'" alt="The photo just taken"></div><div class="dfoot"><div class="acts">'
     +'<button data-cam="retake">'+I.again+'Retake</button>'
@@ -4013,7 +4014,7 @@ function camClick(e){ const b=e.target.closest('[data-cam]'), M=_cam; if(!b||!M)
   if(a==='more'){ M.got.push(M.shot); M.shot=null; M.url=''; return camLive(M); }
   if(a==='draw') return camGive(true);
   if(a==='torch'){ M.torch=!M.torch; M.track.applyConstraints({advanced:[{torch:M.torch}]}).catch(()=>{}); return camDraw(); }
-  if(a==='zoom'){ M.zoom=+b.dataset.v; M.track.applyConstraints({advanced:[{zoom:M.zoom}]}).catch(()=>{}); const v=M.el.querySelector('video'), s=M.s; camDraw(); const nv=M.el.querySelector('video'); nv.srcObject=s; nv.play().catch(()=>{}); return; }
+  if(a==='zoom'){ M.zoom=+b.dataset.v; M.track.applyConstraints({advanced:[{zoom:M.zoom}]}).catch(()=>{}); M.el.querySelectorAll('.zm button').forEach(x=>{ const on=+x.dataset.v===M.zoom; x.classList.toggle('on',on); x.setAttribute('aria-checked',on); }); return; }
   if(a==='native'){ const inp=camInput(M); camClose(); if(inp){ _camLet=true; inp.click(); } } }
 // A press on a camera input's label opens this camera; once it is refused, the phone's own camera opens as before.
 document.addEventListener('click',e=>{
