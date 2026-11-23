@@ -318,6 +318,8 @@ img.pl{object-fit:cover;padding:0}
 .tl .tp b{font:800 20px/1 Sora}
 .tl .tp i{font:700 11px Outfit;font-style:normal;color:var(--textMS)}
 .tl .tp span{font:500 13px/1.3 'DM Sans'}
+.pl i.rm,.tl .tp i.rm{font:700 11px/1.2 Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMS)}
+.tl .tp b+span,.pl b+span{font:500 12px/1.2 'DM Sans';color:var(--textMid)}
 .tl img.tp{width:100%;object-fit:cover;padding:0}
 .tl .gl{display:flex;align-items:center;gap:6px;font:700 11px/1.4 Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMuted);margin-bottom:2px}
 .tl .gl svg{width:14px;height:14px;flex:none}
@@ -532,7 +534,7 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 .ds .lnk{color:var(--accentOnInk)}
 .ds .lnks>span{color:var(--onInk);align-self:center}
 .ds .lnk input{position:absolute;opacity:0;width:1px;height:1px}
-.ds .wait{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--navMid);text-align:center;padding:0 32px}
+.ds .wait{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--navMid);text-align:center;padding:0 32px;background:transparent;border:0}
 .th .mk{position:absolute;bottom:-8px;right:-8px;width:44px;height:44px;display:grid;place-items:center;color:var(--accentD)}
 .th .mk i{display:grid;place-items:center;width:32px;height:32px;border-radius:16px;background:var(--white);border:1px solid var(--accentD)}
 .th .mk svg{width:18px;height:18px}
@@ -1481,7 +1483,7 @@ function wlBack(){
   try{ const n=_wlDepth+1; _wlDepth=0; history.go(-n); }catch(e){}
 }
 const ICO=(n,cls)=>'<svg'+(cls?' class="'+cls+'"':'')+' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+LUCIDE[n]+'</svg>';
-const I={whosin:ICO('calendar-days'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),image:ICO('image'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),rat:ICO('rat'),hazard:ICO('shield-alert'),alert:ICO('circle-alert')};
+const I={whosin:ICO('users'),close:ICO('x'),back:ICO('chevron-left'),chev:ICO('chevron-right','chev'),fault:ICO('triangle-alert'),cert:ICO('file-check'),meter:ICO('gauge'),reading:ICO('thermometer'),photo:ICO('camera'),round:ICO('route'),scan:ICO('scan-line'),plus:ICO('plus'),tick:ICO('check'),wait:ICO('clock'),due:ICO('calendar-check'),me:ICO('user'),gear:ICO('settings'),image:ICO('image'),jobs:ICO('wrench'),search:ICO('search'),list:ICO('list'),grid:ICO('layout-grid'),sliders:ICO('sliders-horizontal'),send:ICO('send'),clip:ICO('paperclip'),link:ICO('link'),flag:ICO('flag'),unflag:ICO('flag-off'),play:ICO('play'),pause:ICO('pause'),mic:ICO('mic'),more:ICO('ellipsis-vertical'),pin:ICO('map-pin'),users:ICO('users'),down:ICO('chevron-down'),edit:ICO('pencil'),trash:ICO('trash-2'),shield:ICO('shield-check'),pkg:ICO('package'),permit:ICO('file-check'),msg:ICO('message-square'),notice:ICO('megaphone'),handover:ICO('arrow-right-left'),stop:ICO('square'),timer:ICO('timer'),again:ICO('rotate-ccw'),eye:ICO('eye'),rat:ICO('rat'),hazard:ICO('shield-alert'),alert:ICO('circle-alert')};
 
 // ── State ────────────────────────────────────────────────────────────────────────────────────
 // Only what this phone needs. Records live in the desk app; this page keeps the site details it
@@ -1521,6 +1523,9 @@ const pointById=id=>points().find(p=>p.id===id)||null;
 const meters=()=>(st.site&&st.site.meters)||[];
 const meterAsPoint=id=>{ const m=meters().find(x=>x.id===id); return m?{id:'',name:m.name,where:m.where,rec:{reg:'meterItems',id:m.id,ref:m.id},reading:m.reading,picked:true}:null; };
 const lineById=id=>((st.site&&st.site.lines)||[]).find(l=>l.id===id)||null;
+// A line by id, or the Due item of that id when the desk sent it on Due but not among the lines (a register, a corrective
+// action, a walk), so the item is named by its words and not by its id twice (critique P2, 22 Nov 2026).
+const lineOrDue=id=>lineById(id)||(i=>i?{id:i.id,what:i.what||i.id,section:secOf(i)}:null)((SITE().due||[]).find(x=>x.id===id));
 const roundById=id=>((st.site&&st.site.rounds)||[]).find(r=>r.id===id)||null;
 function pointLabel(p){ return p?(p.name+(p.where?' — '+p.where:'')):''; }
 
@@ -1603,7 +1608,7 @@ function kindLabel(k){ return (WFM_CAPTURE_SHAPE.kinds[k]||{}).label||k; }
 function summary(r){
   if(r.kind==='round'){ const rd=roundById(r.round); return (rd?rd.name:'Round')+', '+plural((r.scans||[]).length,'point')+' scanned'; }
   if(r.kind==='reading'){ const p=r.point?pointById(r.point):(r.record?meterAsPoint(r.record.id):null); return 'Reading at '+(p?p.name:r.place||'a tag'); }
-  if(r.kind==='certificate'){ const l=lineById(r.duty); return kindLabel('certificate')+(l?' for '+l.what:''); }
+  if(r.kind==='certificate'){ const l=lineOrDue(r.duty); return kindLabel('certificate')+(l?' for '+l.what:''); }
   const p=r.point?pointById(r.point):null;
   return kindLabel(r.kind)+(p?' at '+pointLabel(p):r.place?' at '+r.place:r.point?' at tag '+r.point:'');
 }
@@ -1936,7 +1941,7 @@ function whoDone(){
 }
 // ── Time ─────────────────────────────────────────────────────────────────────────────────────
 // Design 7.5: days over in days under three months, in years and months beyond; hours under a day.
-function overDays(d){ if(d<90) return [String(d),d===1?'day late':'days late']; const y=Math.floor(d/365), m=Math.floor((d%365)/30.44); return [(y?plural(y,'year')+(m?' '+plural(m,'month'):''):plural(m,'month')),'late']; }
+function overDays(d){ if(d<=0) return ['Today','due']; if(d<90) return [String(d),d===1?'day late':'days late']; const y=Math.floor(d/365), m=Math.floor((d%365)/30.44); return [(y?plural(y,'year')+(m?' '+plural(m,'month'):''):plural(m,'month')),'late']; }
 function overMs(ms){ const h=Math.floor(ms/36e5); if(h<24) return [String(Math.max(1,h)),h<=1?'hour over':'hours over']; return overDays(Math.floor(h/24)).map((x,i)=>i?x.replace('late','over'):x); }
 // A walk's window runs to the next walk time of any round sharing a point (DEC-0293), as the desk works it out.
 function famTimes(r){ const pts=new Set(r.points||[]); return [...new Set((SITE().rounds||[]).filter(x=>x.every==='Daily'&&(x===r||(x.points||[]).some(p=>pts.has(p)))).flatMap(x=>x.times||[]))].sort(); }
@@ -1981,7 +1986,7 @@ const LOC=id=>(SITE().locations||[]).find(l=>l.id===id)||null;
 function waitLine(){ const n=st.outbox.length; if(!n) return '';
   const ref=st.outbox.find(c=>c.errCode==='refused');
   if(ref) return '<div class="wait" role="alert"><b>'+esc(plural(n,'capture'))+' not sent:</b> '+esc(ref.err||'the site refused it')+' Kept on this phone. Open the latest set-up link from the desk.</div>';
-  return '<div class="wait" role="status"><b>'+esc(plural(n,'capture'))+' waiting for signal.</b> '+(n===1?'It sends':'They send')+' by itself.</div>'; }
+  return '<div class="wait" role="status"><b>'+esc(plural(n,'capture'))+' waiting for signal.</b> '+(n===1?'It sends by itself.':'They send by themselves.')+'</div>'; }
 // Capture, or the send under way on it (DEC-0369 rule 1): Sending with the spiral, then Sent as the arrow lifts off.
 const SPIRAL='<svg class="sp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path pathLength="100" d="M13.00 12.00 L13.06 12.11 L13.11 12.24 L13.14 12.37 L13.16 12.52 L13.15 12.67 L13.13 12.82 L13.09 12.98 L13.03 13.14 L12.94 13.29 L12.83 13.44 L12.71 13.58 L12.56 13.71 L12.39 13.83 L12.20 13.92 L12.00 14.00 L11.78 14.06 L11.56 14.09 L11.32 14.09 L11.08 14.07 L10.83 14.02 L10.59 13.94 L10.35 13.83 L10.12 13.70 L9.90 13.53 L9.69 13.33 L9.50 13.11 L9.34 12.87 L9.20 12.60 L9.08 12.31 L9.00 12.00 L8.95 11.68 L8.94 11.35 L8.96 11.01 L9.02 10.67 L9.11 10.33 L9.25 10.00 L9.42 9.68 L9.64 9.37 L9.88 9.09 L10.17 8.82 L10.48 8.59 L10.83 8.39 L11.20 8.22 L11.59 8.09 L12.00 8.00 L12.43 7.96 L12.86 7.96 L13.30 8.01 L13.74 8.10 L14.17 8.25 L14.59 8.44 L14.99 8.68 L15.37 8.97 L15.72 9.30 L16.04 9.67 L16.32 10.07 L16.57 10.52 L16.76 10.99 L16.91 11.48 L17.00 12.00 L17.04 12.53 L17.02 13.07 L16.95 13.61 L16.81 14.14 L16.62 14.67 L16.37 15.17 L16.06 15.66 L15.70 16.11 L15.29 16.53 L14.83 16.91 L14.33 17.24 L13.79 17.52 L13.22 17.74 L12.62 17.90 L12.00 18.00 L11.37 18.03 L10.72 18.00 L10.08 17.90 L9.45 17.72 L8.83 17.48 L8.24 17.18 L7.67 16.81 L7.14 16.37 L6.66 15.88 L6.23 15.33 L5.85 14.74 L5.53 14.10 L5.28 13.43 L5.10 12.72 L5.00 12.00 L4.97 11.26 L5.02 10.52 L5.15 9.78 L5.36 9.04 L5.65 8.33 L6.01 7.65 L6.45 7.00 L6.96 6.40 L7.53 5.85 L8.17 5.36 L8.85 4.94 L9.59 4.58 L10.36 4.31 L11.17 4.11 L12.00 4.00 L12.84 3.98 L13.69 4.04 L14.53 4.20 L15.36 4.45 L16.17 4.78 L16.94 5.20 L17.67 5.71 L18.34 6.29 L18.96 6.95 L19.51 7.67 L19.98 8.45 L20.37 9.28 L20.67 10.16 L20.88 11.07 L21.00 12.00"/></svg>';
 function capBtn(){ const k=st.capSend&&st.capSend.state;
@@ -2124,7 +2129,7 @@ function cats(xs){
   const order=Object.keys(by).sort((a,b)=>Math.min(...by[a].map(i=>rk[i.tier]||2))-Math.min(...by[b].map(i=>rk[i.tier]||2))||by[b].length-by[a].length);
   return order.map(c=>{ const L=by[c].sort((a,b)=>(rk[a.tier]||2)-(rk[b.tier]||2)||(b.late||0)-(a.late||0)), n={red:0,amber:0,grey:0}; L.forEach(i=>n[i.tier in n?i.tier:'grey']++);
     const lead=n.red?'red':n.amber?'amber':'grey', T=TIER[lead], word={red:'urgent',amber:'need action',grey:'to watch'}[lead], open=st.openCat===c, old=overDays(Math.max(...L.map(i=>i.late||0)));
-    let h='<button class="r cat'+(open?' open':'')+'" data-act="openCat" data-id="'+esc(c)+'" aria-expanded="'+open+'"><span class="s3" style="background:'+T[0]+'"'+(lead!=='grey'?' data-urg':'')+'></span><span class="m"><span class="w">'+esc(c)+'</span><span class="sub">'+esc(plural(L.length,'line'))+' · oldest '+esc(old.join(' '))+'</span></span>'
+    let h='<button class="r cat'+(open?' open':'')+'" data-act="openCat" data-id="'+esc(c)+'" aria-expanded="'+open+'"><span class="s3" style="background:'+T[0]+'"'+(lead!=='grey'?' data-urg':'')+'></span><span class="m"><span class="w">'+esc(c)+'</span><span class="sub">'+esc(plural(L.length,'line'))+' · '+esc(old[0]==='Today'?'due today':'oldest '+old.join(' '))+'</span></span>'
       +'<span class="st"'+(lead!=='grey'?' data-urg':'')+'><b class="n" style="color:'+T[1]+'">'+n[lead]+'</b><i style="color:'+T[1]+'">'+word+'</i></span></button>';
     if(open) h+='<div class="inner">'+L.map(i=>{ const t=TIER[i.tier]||TIER.grey, a=overDays(i.late||0), u=i.tier==='red'||i.tier==='amber'?' data-urg':'';
       const tag=i.nobody?' <span class="badge">Nobody holds this duty</span>':(!(i.duties||[]).length?' <span class="badge">Names no one</span>':'');
@@ -2223,13 +2228,16 @@ const SMK=k=>'<svg class="sm s-'+k+'" viewBox="0 0 16 16" aria-hidden="true"><ci
 function jSquare(j){
   if((j.photos||[]).length){ const n=j.photos[0], p=_ph[n]; if(p&&p!=='loading'&&p!=='missing') return '<img class="pl" src="'+p+'" alt="Photo of '+esc(j.title||'the job')+'">'; }
   let l=LOC(j.loc); if(!l&&typeof jPlace==='function'){ const q=jPlace(j); if(q) l=q.l; }
-  if(l&&/^\d+$/.test(l.name)) return '<span class="pl" aria-hidden="true"><b class="n">'+esc(l.name)+'</b></span>';
+  if(l&&/^\d+$/.test(l.name)) return '<span class="pl" aria-hidden="true">'+jRoomMark(l)+'</span>';
   if(l) return '<span class="pl" aria-hidden="true"><span>'+esc(l.name)+'</span></span>';
   if(j.place) return '<span class="pl" aria-hidden="true"><span>'+esc(j.place)+'</span></span>';
   // No photo and no place: the title beside the square is the job's words, so the square is not filled twice (Design 4.11).
   return '<span class="pl" aria-hidden="true"></span>';
 }
 const jRoom=j=>{ const l=LOC(j.loc); return !!(l&&/^\d+$/.test(l.name)); };
+// A numbered room in a job's square or tile: "Room", the number, the floor, so it reads as a place and not a count
+// (John, 22 Oct 2026: "so ive 217 tiles to be cleaned?"; critique P1). The desk's square says the number and floor.
+const jRoomMark=l=>'<i class="rm">Room</i><b class="n">'+esc(l.name)+'</b>'+(l.level&&lvName(l.level)?'<span>'+esc(lvName(l.level))+'</span>':'');
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
 // An open job's flag level goes on its row, card and tile as a class; the styles say which levels glow (DEC-0488).
 const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):(j.state==='doing'?' jd':' jt')+(f=>f&&/^[a-z]+$/.test(f.level||'')?' g-'+f.level:'')(jFlag(j));
@@ -2260,7 +2268,7 @@ const jAgeN=j=>{ const d=Math.floor((Date.now()-Date.parse(j.raised))/864e5); re
 // A job as a grid tile: its photo, or its place, on top; the group, the title and its age under it.
 function jobTile(j,showGroup){ const l=LOC(j.loc), ag=jAgeN(j); let top;
   if((j.photos||[]).length&&_ph[j.photos[0]]&&!/^(loading|missing)$/.test(_ph[j.photos[0]])) top='<img class="tp" src="'+_ph[j.photos[0]]+'" alt="Photo of '+esc(j.title||'the job')+'">';
-  else if(l&&/^\d+$/.test(l.name)) top='<span class="tp"><b class="n">'+esc(l.name)+'</b></span>';
+  else if(l&&/^\d+$/.test(l.name)) top='<span class="tp">'+jRoomMark(l)+'</span>';
   else top='<span class="tp'+(l||j.place?'':' q')+'">'+(l?'<span>'+esc(l.name)+'</span>':j.place?'<span>'+esc(j.place)+'</span>':'<span>“'+esc(j.title||'Job')+'”</span>')+'</span>';
   return '<button class="cb tl'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+(top.indexOf(' q"')>0?'':'<span class="w">'+esc(j.title||'Job')+'</span>')+'<span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
 function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="list">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
@@ -2337,7 +2345,7 @@ function vLine(){
   const T=TIER[i.tier]||TIER.grey, a=i.kind==='look'||i.kind==='soon'?null:overDays(i.late||0), u=a&&(i.tier==='red'||i.tier==='amber');
   const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
   return '<div class="body"><div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(secOf(i))+'</span></div><h1>'+esc(i.what)+'</h1>'
-    +'<p><span class="mono">'+esc(i.id)+'</span> · '+(a?'<b'+(u?' data-urg style="color:'+(i.tier==='red'?'var(--inkRed)':'var(--inkAmber)')+'"':'')+'>'+esc(a.join(' '))+'</b>':esc(i.kind==='look'?'to look at':'due soon'))+'</p>'
+    +'<p><span class="mono">'+esc(i.id)+'</span> · '+(a?'<b'+(u?' data-urg style="color:'+(i.tier==='red'?'var(--inkRed)':'var(--inkAmber)')+'"':'')+'>'+esc(a[0]==='Today'?'Due today':a.join(' '))+'</b>':esc(i.kind==='look'?'to look at':'due soon'))+'</p>'
     +'<button class="btn" data-act="proofFor" data-id="'+esc(i.id)+'">'+I.cert+'Send Proof</button></div>'
     +'<div class="list" style="border-top:none">'+f('Register',esc(i.register))+(i.due?f('Due','<span class="n">'+esc(day(i.due))+'</span>'):'')
     +(isFM(myPos())?f('Whose',(i.duties||[]).length?esc(i.duties.map(d=>{ const t=positions().filter(p=>(p.duties||[]).indexOf(d)>=0).map(p=>p.title); return t.length?t.join(', '):d; }).join(', '))+(i.nobody?'<span class="sub">Nobody holds this duty. Tick it under Duties held on the desk’s Organisation Structure.</span>':''):'Names no one, so it is shown to the FM.'):'')+'</div>'
@@ -4074,7 +4082,7 @@ function faultHistory(){
 function lineSelect(opt){
   const F=st.form, lines=(st.site&&st.site.lines)||[];
   if(!lines.length) return '<div class="field"><span class="fl">The line it proves</span><div class="help" style="margin-top:0">No lines in the site details yet. Sent without one, it waits in the Inbox until someone on the desk says where it belongs.</div></div>';
-  const cur=F.duty?lineById(F.duty):null, q=String(F.dq||'').trim().toLowerCase(), p=myPos(), held=new Set(p?p.duties:[]);
+  const cur=F.duty?lineOrDue(F.duty):null, q=String(F.dq||'').trim().toLowerCase(), p=myPos(), held=new Set(p?p.duties:[]);
   const mine=new Set((SITE().due||[]).filter(i=>(i.duties||[]).some(d=>held.has(d))).map(i=>i.id));
   let h='<div class="field"><label for="dq">The line it proves'+(opt?' <span class="opt-w">(optional)</span>':'')+'</label>';
   if(F.duty) return h+'<div class="chosen"><span class="m">'+esc(cur?cur.what:F.duty)+'<span class="sub"><span class="mono">'+esc(F.duty)+'</span>'+(cur?' · '+esc(cur.section):'')+'</span></span><button class="ib" data-act="dutyClear" aria-label="Clear">'+I.close+'</button></div></div>';
@@ -5208,7 +5216,7 @@ function flBits(p,now){
   const tt=flTempText(L.temp,p), tAt=L.temp&&L.flush&&L.temp.date!==L.flush.date?' on '+flShort(L.temp.date):'';
   let top='';
   if(p.sentinel) top='<span class="flsn">Sentinel, '+esc(p.sentinel)+' · '+(du.temp?'temp due this month':L.temp?'temp taken '+esc(flShort(L.temp.date)):'temp not due')+'</span>';
-  let sub=esc(FL_SAY[flKind(p)]||'Outlet')+((st.fl.order==='area'||st.fl.area)?'':(p.where?' · '+esc(p.where):''))+(!p.sentinel&&du.temp?' · <span class="wk">Temp week</span>':'');
+  let sub=esc(FL_SAY[flKind(p)]||'Outlet')+((st.fl.order==='area'||st.fl.area)?'':(p.where?' · '+esc(p.where):''))+(!p.sentinel&&du.temp?' · Take its temperature this week':'');
   let sub2=L.flush?'Last '+esc(flShort(L.flush.date))+(L.flush.by?' by '+esc(L.flush.by):'')+(tt?' · '+esc(tt)+esc(tAt):'')
     :'No flush on file'+(tt?' · '+esc(tt)+' on '+esc(flShort(L.temp.date)):'');
   let stripe=d==='over'?'var(--red)':d==='due'?'var(--amber)':'var(--jDone)', bc=d==='over'?'bad':d==='due'?'amb':'', c2='', tint='';
