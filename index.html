@@ -2156,12 +2156,21 @@ const doneAt=j=>Date.parse(j.done&&j.done.at)||Date.parse((jDoneHere(j)||{}).at)
 // New since you last looked (DEC-0490): per phone, per group, per tab. Before the first look, the day this was built on
 // the phone is the start, so nothing already there counts. The tab you are on counts from the look before this one, so
 // its number stays while you read it and is gone next time. A job you finished yourself is not news to you.
-function grpLook(){ let L=ls.get('wl_grpLook',null); if(!L||!L.start){ L={start:Date.now(),g:{}}; ls.set('wl_grpLook',L); } return L; }
-function grpSince(g,k){ const P=st.J.prev; if(P&&P.g===g&&P.k===k) return P.t; const L=grpLook(); return ((L.g||{})[g]||{})[k]||L.start; }
-function grpMark(g,k){ if(k!=='todo'&&k!=='done') return; const L=grpLook(); L.g=L.g||{}; const e=L.g[g]=L.g[g]||{}; st.J.prev={g:g,k:k,t:e[k]||L.start}; e[k]=Date.now(); ls.set('wl_grpLook',L); }
-function grpNew(g,k){ const t=grpSince(g,k);
-  if(k==='todo') return jobsAll().filter(j=>j.group===g&&j.state!=='doing'&&(Date.parse(j.raised)||0)>t).length;
-  return jobsDone().filter(j=>j.group===g&&!jDoneHere(j)&&!(j.done&&j.done.by&&st.walker&&nk(j.done.by)===nk(st.walker))&&doneAt(j)>t).length; }
+// New since you last looked (DEC-0490), by job id, not by date: the site file gives a job's raised day without its time,
+// and a job can reach the phone days after it was raised, when the desk files it late (23 Nov 2026).
+function grpJobs(g,k){ return k==='todo'?jobsAll().filter(j=>j.group===g&&j.state!=='doing')
+  :jobsDone().filter(j=>j.group===g&&!jDoneHere(j)&&!(j.done&&j.done.by&&st.walker&&nk(j.done.by)===nk(st.walker))); }
+function grpIds(g,k){ return grpJobs(g,k).map(j=>j.id); }
+function grpLook(){ let L=ls.get('wl_grpLook',null); if(!L||L.v!==2){ L={v:2,old:L&&L.start?L:null,g:{}}; ls.set('wl_grpLook',L); } L.g=L.g||{}; return L; }
+// The jobs a tab has shown you. The tab you are on keeps the list from before you opened it, so its number stays while you read.
+// First time after the change: seen is what was raised (or done) before the day this phone began counting (the old count's start).
+function grpSeen(g,k){ const P=st.J.prev; if(P&&P.g===g&&P.k===k) return P.seen;
+  const L=grpLook(), e=L.g[g]=L.g[g]||{}; if(Array.isArray(e[k])) return e[k];
+  const o=L.old, d=new Date(o?o.start:Date.now()); d.setHours(0,0,0,0);
+  e[k]=grpJobs(g,k).filter(j=>(k==='todo'?(Date.parse(j.raised)||0):doneAt(j))<d.getTime()).map(j=>j.id); ls.set('wl_grpLook',L); return e[k]; }
+function grpMark(g,k){ if(k!=='todo'&&k!=='done') return; st.J.prev=null; const before=grpSeen(g,k), L=grpLook();
+  L.g[g]=L.g[g]||{}; L.g[g][k]=grpIds(g,k); ls.set('wl_grpLook',L); st.J.prev={g:g,k:k,seen:before}; }
+function grpNew(g,k){ const s=new Set(grpSeen(g,k)); return grpIds(g,k).filter(id=>!s.has(id)).length; }
 function jobsDone(){ const p=myPos(), fm=isFM(p), gs=new Set(p?(p.groups||[]):[]); return (SITE().jobs||[]).filter(j=>(j.state==='done'||jDoneHere(j))&&!j.round&&!j.planned&&(fm||gs.has(j.group))).sort((a,b)=>doneAt(b)-doneAt(a)); }
 const doneMine=j=>!!(j.done&&st.walker&&nk(j.done.by)===nk(st.walker));
 const doneDays=()=>WFM_SITE_SHAPE.doneDays;
