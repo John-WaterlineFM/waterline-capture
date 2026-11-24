@@ -1589,6 +1589,156 @@ body.t-ni .gdot{background:color-mix(in srgb,var(--gh) 45%,#FFFFFF)}
 .tf .hz.four .hc,.tf .hz.four .hc.on{min-height:0;padding:24px 4px 6px;gap:4px}
 .tf .hz.four .hc .ic{width:40px;height:40px}
 .tf .hz.four~.none{margin-top:8px}
+
+/* ── Pass 2 (DEC-0509; Design 21.10 to 21.17): Messages, a chat, a chat's info, a group, Settings, In Today.
+   The same four sizes, 48 · 28 · 17 · 13; heads end on the app's own waterline; no rule down any edge (DEC-0511 rule 3). ── */
+/* teal words (21.11, tertiary) and a plain band row */
+.t3{display:inline-flex;align-items:center;gap:8px;min-height:44px;flex:none;font:600 17px Outfit;color:var(--accentD);cursor:pointer;position:relative}
+.t3 svg{width:20px;height:20px}
+.t3 input{position:absolute;opacity:0;width:1px;height:1px}
+.jh .t3{color:var(--hA)}
+.b3{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;font:600 17px Outfit;color:var(--accentD)}
+.p2r{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 16px 12px 20px;position:relative;text-align:left;color:var(--text);background:none}
+.p2r+.p2r::before,.p2r+.qx-row::before,.qx-row+.qx-row::before,.qx-row+.qx-strip::before{content:'';position:absolute;top:0;left:20px;right:0;height:1px;background:var(--border)}
+button.pr,label.pr{cursor:pointer;transition:background-color .2s}
+button.pr:active,label.pr:active{background:var(--stone);transition:none}
+.p2r .vw{font:600 17px/1.3 'DM Sans'}
+.p2 .para{font:400 13px/1.5 'DM Sans';color:var(--textMid);padding:0 20px 4px}
+/* Messages: one band; a chat's picture where a job's photo is; the time in Sora, the count under it */
+.c-av{border-radius:12px;font:800 17px Sora}
+.c-av.rw{width:56px;height:56px}
+.c-av.sm{font-size:13px}
+.vr.mc{min-height:80px;align-items:center}
+.vr.mc .vw,.vr.mc .vs{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vr.mc .va{align-self:stretch;justify-content:center;gap:8px}
+.vr.mc .va i{font:600 13px Sora;color:var(--textMid);margin:0}
+.vr.mc.ur .va i{color:var(--unreadText);font-weight:800}
+.vr.mc.ur .vs{color:var(--text)}
+.c-ub{min-width:22px;height:22px;padding:0 6px;border-radius:11px;font:800 13px/22px Sora}
+.mcl .vmore{min-height:56px}
+.s-msgs .wait{border-bottom:0}
+/* A chat: the head is one row and stays; it ends on the waterline */
+.jh.chd{position:sticky;top:0;z-index:3;padding:calc(4px + env(safe-area-inset-top)) 4px 0}
+.jh.chd .c-wv{margin:4px -4px 0}
+.cht{display:flex;align-items:center;gap:4px}
+.jh.chd .c-ti{color:var(--hT);gap:12px;min-height:48px}
+.jh.chd .c-tn{font:800 17px/1.3 Sora;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jh.chd .c-s{font:400 13px/1.4 'DM Sans';color:var(--hM)}
+.c-th{gap:8px;padding:12px 12px 24px}
+.c-day,.c-sys{font:600 13px Outfit;padding:6px 12px;border-radius:12px}
+.c-b{border-radius:12px 12px 12px 4px;padding:8px 12px;box-shadow:none}
+.c-b.c-me{border-radius:12px 12px 4px 12px}
+.c-b p{font-size:17px;line-height:1.4}
+.c-who{font:700 13px/1.4 'DM Sans'}
+.c-ft{font:500 13px Sora}
+.c-err{font:600 13px 'DM Sans'}
+.c-only{font-size:13px}
+/* a notice wears its colour as its mark and a tint, never a rule down its edge; a quoted message the same */
+.c-ann{border-left:0}
+.c-b.c-ann{background:color-mix(in srgb,var(--kWho) 10%,var(--white))}
+body.t-ni .c-b.c-ann{background:color-mix(in srgb,var(--kWho) 26%,var(--white))}
+.c-h{font:800 17px/1.3 Sora}
+.c-qt{border-left:0;border-radius:8px;padding:8px}
+.c-qt b{font:700 13px 'DM Sans'}
+.c-ack,.c-gh{min-height:56px;border-radius:12px;font:600 17px Outfit;margin:12px 0 4px}
+.c-ack svg{width:20px;height:20px}
+.c-gh{border:0;background:var(--accentL)}
+.c-ph,.c-img{border-radius:12px}
+/* the handover card: its head in the department's colour (DEC-0357), in words, not capitals */
+.c-card{border-radius:12px}
+.c-cap{font:600 13px Outfit;letter-spacing:0;text-transform:none;padding:8px 12px}
+.c-pt,.c-op{padding:8px 12px}
+.c-k{font:700 13px Outfit;letter-spacing:0;text-transform:none;width:48px}
+.c-v{font-size:17px}
+.c-w{font:600 17px/1.3 'DM Sans'}
+.c-ow .sub,.c-did{font-size:13px}
+.c-sq{border-radius:12px;font:800 13px Sora}
+.c-to{font-size:13px;padding:0 12px}
+.c-to b{font:600 17px 'DM Sans'}
+.c-pw{align-items:flex-start}.c-pw .c-k{padding-top:12px}.c-pw textarea{font-size:17px;min-height:44px;padding:10px 0}
+.c-tg{border:0;border-radius:12px;background:var(--accentL)}
+.c-nf .fl,.cgn .fl{display:block;font:600 13px Outfit;color:var(--textMid);margin-bottom:8px}
+.c-nf input,.c-nf textarea{border:0;border-radius:12px;background:var(--cream);font-size:17px;padding:12px}
+.c-nk{font-size:17px}
+/* A chat's info and a group: the picture leads, the title at 28, the waterline */
+.cib{display:flex;align-items:center;gap:20px;margin:0 0 12px}
+.c-av.lg{width:96px;height:96px;border-radius:12px;border:0;font-size:48px}
+body.t-li .c-av.lg.ph{border:1px solid var(--border)}
+.c-av.sq{border-radius:12px}
+.cih .b2{margin:0 0 4px}
+.c-info .jpl{margin-bottom:12px}
+.cgn{display:block;padding:20px 20px 0}
+.cgn input{width:100%;border:0;border-radius:12px;background:var(--white);font-size:17px;padding:14px 12px;min-height:52px}
+.vsh+.vsh{padding-top:4px}
+.p2r.g-rk{min-height:56px;margin:0;border-bottom:0;background:none;padding:8px 16px 8px 20px}
+.p2r.g-rk .vw{font-weight:500}
+.cgf{border-top:0;padding-top:12px}
+.cgf .sub{font-size:13px;color:var(--textMid);text-align:center}
+/* Settings: the person in the head; the theme as three pictures */
+.mewho{margin:8px 0 0}
+.mewho b{display:block;font:800 17px/1.3 Sora;color:var(--hT)}
+.mewho span{display:block;font:400 13px/1.4 'DM Sans';color:var(--hM);margin-top:2px}
+.melk{display:flex;flex-wrap:wrap;column-gap:24px;margin-top:4px}
+.thm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 20px}
+.thb{display:flex;flex-direction:column;gap:8px;padding:8px 8px 4px;border-radius:12px;background:var(--white);transition:background-color .2s}
+.thb:active{background:var(--stone);transition:none}
+.thb.on{background:var(--accentL);outline:2px solid var(--accentD);outline-offset:-2px}
+.thp{display:flex;flex-direction:column;height:64px;border-radius:8px;overflow:hidden;background:#F5F7F9;box-shadow:inset 0 0 0 1px var(--border)}
+.thp i{height:22px;background:#0D1F2D}
+.thp u{height:2px;background:#3AABC6}
+.thp s{height:9px;margin:6px 8px 0;border-radius:3px;background:#FFFFFF;box-shadow:0 0 0 1px #DCE6EC}
+.thp-li i{background:#FFFFFF}
+.thp-ni{background:#091624}.thp-ni i{background:#071320}.thp-ni s{background:#0D2035;box-shadow:none}
+.thn{display:flex;align-items:center;justify-content:center;gap:4px;min-height:28px;font:600 13px Outfit;color:var(--text)}
+.thn svg{width:16px;height:16px;color:var(--accentD)}
+.me .qx-row,.me .qx-strip{border-bottom:0;position:relative;background:none}
+.me .qx-row{padding:12px 16px 12px 20px;min-height:56px}
+.me .qx-strip{padding:12px 20px 16px}
+.qx-k{font:600 17px/1.3 'DM Sans'}
+.qx-k .sub{font:500 13px/1.4 'DM Sans';margin-top:4px}
+.qx-st button{border:0;border-radius:12px;background:var(--accentL)}
+.qx-st b{font:800 17px Sora}
+.qx-ax{font:500 13px Sora}
+.qx-say{font-size:13px}
+.melogo{display:flex;justify-content:center;padding:40px 16px 20px}
+/* In Today and the chat's sheets, on the four sizes; no edged or outlined control */
+.sheet[data-p2] .grp{font:700 13px Outfit;letter-spacing:1.5px;color:var(--textMid);padding:16px 20px 8px}
+.sheet[data-p2] .gr2 .t{font:600 13px Sora;letter-spacing:0}
+.sheet[data-p2] .sh{padding-left:20px}
+.sheet[data-p2] .inr{min-height:56px;padding:8px 16px 8px 20px;border-bottom:0;position:relative}
+.sheet[data-p2] .inr+.inr::before{content:'';position:absolute;top:0;left:72px;right:0;height:1px;background:var(--border)}
+.sheet[data-p2] .inr .nm{display:block;font:600 17px/1.3 'DM Sans';color:var(--text)}
+.sheet[data-p2] .sub,.sheet[data-p2] .help,.sheet[data-p2] .inr .rt{font-size:13px;color:var(--textMid)}
+.sheet[data-p2] .inr.none,.sheet[data-p2] .one,.sheet[data-p2] .para{font:400 13px/1.5 'DM Sans';color:var(--textMid);min-height:0;padding:4px 20px 12px;border-bottom:0}
+.sheet[data-p2] .ini{border-radius:12px;border:0;background:var(--stone);font:800 13px Sora}
+.sheet[data-p2] .ini.un{background:none;border:1.5px dashed var(--textMuted)}
+.sheet[data-p2] .r{padding:12px 16px 12px 20px;min-height:56px}
+.sheet[data-p2] .r .w{font:600 17px/1.3 'DM Sans';color:var(--text)}
+.sheet[data-p2] .list{border:0}
+.sheet[data-p2] .c-ch{border:0;border-radius:0;min-height:64px;padding:0 16px 0 20px}
+.sheet[data-p2] .c-nm{font:600 17px/1.3 'DM Sans'}
+.sheet[data-p2] .btn{min-height:56px;border-radius:12px;font:600 17px Outfit}
+.sheet[data-p2] .btn.g{border:0;background:var(--accentL);color:var(--accentD)}
+.sheet[data-p2] .field label{font:600 13px Outfit}
+.sheet[data-p2] textarea{border:0;border-radius:12px;background:var(--cream);font-size:17px}
+/* a job's photos, swiped sideways in the lead (John, 24 Nov 2026) */
+.jhsc{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.jhsc::-webkit-scrollbar{display:none}
+.jhp{flex:0 0 100%;height:100%;padding:0;scroll-snap-align:start;scroll-snap-stop:always}
+.jhp .pic{display:grid;place-items:center;width:100%;height:100%}
+.jhn{pointer-events:none}
+/* the risk assessment, read before Start the Job: the four sizes (pass 1 never saw it: his site file carries none) */
+.rasec p,ol.cl li{font-size:17px;line-height:1.4}
+.scr i{font-size:13px;color:var(--textMid)}
+.c-av.xs{font-size:13px;border-radius:8px}
+/* design review, pass 2: the chat head's second line wraps instead of being cut (Design 14); Close Group stands 24px off
+   the primary (9.1); the tick box is drawn the same in every theme (15.4) */
+.jh.chd .c-tw .c-s{white-space:normal;overflow:visible}
+.jh.chd .cht{align-items:flex-start}.jh.chd .c-ti{align-items:flex-start;padding:4px 0}
+.cgf .b3{margin-top:16px}
+.g-rk input{appearance:none;-webkit-appearance:none;width:24px;height:24px;flex:none;margin:0;border-radius:6px;border:1.5px solid var(--textMid);background:var(--white);display:grid;place-items:center;cursor:pointer}
+.g-rk input:checked{background:var(--btnFill);border-color:var(--btnFill)}
+.g-rk input:checked::after{content:'';width:12px;height:6px;border-left:2px solid var(--btnText);border-bottom:2px solid var(--btnText);transform:translateY(-1px) rotate(-45deg)}
 </style>
 </head>
 <body>
@@ -2447,8 +2597,8 @@ function whoSheet(){
   if(none.length) h+=head(none.join(' · '))+'<div class="inr none">No rota loaded</div>';
   if(!d) h='<div class="para">'+(R.loaded?'The rota the desk last published does not reach today.':'No rota loaded on the desk.')+'</div>';
   const pub=st.site&&st.site.published;
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who is in today"><div class="sh"><span><b>In Today</b><span class="when">'+esc(when)+'</span></span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +h+'<p class="help" style="padding:0 16px 24px">From the rota the desk published'+(pub?' <span class="n">'+day(pub)+' at '+hm(pub)+'</span>':'')+'. Names are matched to the Organisation Structure on the desk.</p></div>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who is in today" data-p2><div class="sh"><span><b>In Today</b><span class="when">'+esc(when)+'</span></span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+    +h+(pub?'<p class="help" style="padding:8px 20px 24px">Rota from <span class="n">'+day(pub)+' at '+hm(pub)+'</span></p>':'<div style="height:24px"></div>')+'</div>';
 }
 
 // ── Due, the landing place ──
@@ -3041,8 +3191,9 @@ function vJob(){
   const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
   const sp=(j.photos||[]).filter(n=>!inThr.has(n)), inStrip=new Set(sp);
   const lead=(j.photos||[])[0]||null, nPh=(j.photos||[]).length; if(lead) inStrip.add(lead);
-  const hero=lead?'<button class="jhero" data-act="pvOpen" data-n="'+esc(lead)+'" aria-label="Open the photo">'+phImg(lead,'','Photo of '+(j.title||'the job'),j)+(nPh>1?'<span class="jhn"><span class="n">1</span> of <span class="n">'+nPh+'</span></span>':'')+'</button>':'';
-  if(lead&&sp.indexOf(lead)>=0) sp.splice(sp.indexOf(lead),1);
+  const hero=lead?'<div class="jhero"><div class="jhsc">'+(j.photos||[]).map((n,i)=>'<button class="jhp" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+nPh+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'),i?null:j)+'</button>').join('')+'</div>'
+    +(nPh>1?'<span class="jhn"><span class="n jhi">1</span> of <span class="n">'+nPh+'</span></span>':'')+'</div>':'';
+  sp.length=0;   // every photo of the job is in the lead now, so the strip under the head has nothing left to show
   const strip=sp.length?'<div class="strip">'+sp.map((n,i)=>'<button class="ph" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+sp.length+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'))+'</button>').join('')+'</div>':'';
   const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+(j.photosNotCopied===1?' is':' are')+' on the desk.</div>':'';
   const hs=holders(j), pA=pend.filter(x=>x.act==='assign'), pa=pA[pA.length-1], aOn=pa?((pa.assign||{}).on||[]).map(pName):[], aOff=pa?((pa.assign||{}).off||[]).map(pName):[];
@@ -3520,7 +3671,7 @@ function finParts(){ const F=st.form, j=jobById(F.id); if(!j) return null; const
 // its corner, the three checks, the signature. One screen, no scrolling; it asks less than before.
 function vFinish(){ const P=finParts(); if(!P) return ''; const F=P.F, j=P.j, ph=F.dphotos[0];
   return '<div class="sheet tf fc" role="dialog" aria-modal="true" aria-label="Mark done">'+P.top('Finish · Job '+(j.no||''),'t5Back')
-   +'<div class="pg"><div class="fcs"><label for="dnote">What did you do, and what caused it?</label><div class="fcf"><textarea id="dnote" data-in="dnote" rows="3" data-t5focus>'+esc(F.dnote||'')+'</textarea>'
+   +'<div class="pg"><div class="fcs"><label for="dnote">What caused it, and what did you do?</label><div class="fcf"><textarea id="dnote" data-in="dnote" rows="3" data-t5focus>'+esc(F.dnote||'')+'</textarea>'
      +(ph?'<span class="fct" style="background-image:url('+(ph.url||'')+')"><button class="x" data-act="dphotoDel" data-i="0" aria-label="Remove the photo"><i>'+I.close+'</i></button></span>'
         :'<label class="fcc" aria-label="Add a photo of the finished work">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label>')+'</div></div>'
    +'<p class="pgd">Slide your finger down the ones that are true.</p>'+P.checks
@@ -3851,33 +4002,35 @@ function quietStrip(q){ const A=hmMin(q.from), B=hmMin(q.to), len=(B-A+1440)%144
     +'<div class="qx-ax" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div><div class="qx-say">'+ICO('moon')+esc(say)+'</div></div>'; }
 function alertsGroup(){
   const a=ls.get('wl_alerts',null), cant=alertsCan(), me=meP(), perm=cant?'':Notification.permission, on=!!(a&&me&&a.pid===me.id)&&perm==='granted';
-  const v=cant==='ios'?'Off<span class="sub">Add to Home Screen first</span>':cant?'Not on this browser'
-    :perm==='denied'?'Blocked<span class="sub">Allow notifications for Waterline in the phone’s settings</span>'
-    :!me?'Off<span class="sub">Choose your name from the list</span>'
-    :on?'On':AL.busy?'Turning on':'Off';
-  const act=cant||perm==='denied'||!me||AL.busy?'':on?'<button class="lnk act" data-act="alertsTest">Send a Test</button>':'<button class="lnk act" data-act="alertsOn">Turn On</button>';
+  const v=cant==='ios'?['Off','Add to Home Screen first']:cant?['Not on this browser','']
+    :perm==='denied'?['Blocked','Allow notifications for Waterline in the phone’s settings']
+    :!me?['Off','Choose your name from the list']
+    :[on?'On':AL.busy?'Turning on':'Off',''];
+  const act=cant||perm==='denied'||!me||AL.busy?'':on?'<button class="t3" data-act="alertsTest">Send a Test</button>':'<button class="t3" data-act="alertsOn">Turn On</button>';
   const q=quiet(), qr=on?'<button class="qx-row" data-act="quietOn" role="switch" aria-checked="'+q.on+'"><span class="qx-k">Quiet hours<span class="sub">No sound or vibration</span></span><span class="c-sw'+(q.on?' on':'')+'"><i></i></span></button>'
       +(q.on?quietStepRow('from','From',q.from)+quietStepRow('to','To',q.to)+quietStrip(q):''):'';
-  return '<div class="grp">Alerts</div><div class="list"><div class="f"><span class="k">Alerts</span><span class="v">'+v
-    +(AL.err?'<span class="help err" role="alert">'+esc(AL.err)+'</span>':'')+(AL.said?'<span class="sub" role="status">'+esc(AL.said)+'</span>':'')+'</span>'+act+'</div>'+qr+'</div>';
+  return vGrp('Alerts')+'<div class="vsheet"><div class="p2r"><span class="vt"><span class="vw">'+v[0]+'</span>'+(v[1]?'<span class="vs">'+v[1]+'</span>':'')
+    +(AL.err?'<span class="vs" role="alert">'+esc(AL.err)+'</span>':'')+(AL.said?'<span class="vs" role="status">'+esc(AL.said)+'</span>':'')+'</span>'+act+'</div>'+qr+'</div>';
 }
 // Settings: the site's logo large (DEC-0303 rule 1), the theme for everyone (rule 4), who you are, here only (DEC-0302),
 // each changed on its own, and values with no paragraphs (DEC-0367).
 function vMe(){
   st.place='me'; st.form=st.form||{};
   const p=myPos(), s=SITE(), th=theme();
-  const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
-  const o=(k,v,act)=>'<button class="f go" data-act="'+act+'"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+I.chev+'</button>';
-  const acct=!!(STORE&&STORE.acct&&STORE.acct());
-  return '<div class="body">'+pageHead('Settings')+'<div class="zone logo"><span class="tile"><img src="push/icon-512.png" alt="'+esc(s.site||'The site')+'"></span></div>'
-    +'<div class="grp">Theme</div><div class="seg">'+[['wl','Waterline'],['li','Light'],['ni','Night']].map(x=>'<button class="'+(th===x[0]?'on':'')+'" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(th===x[0])+'">'+(th===x[0]?I.tick:'')+x[1]+'</button>').join('')+'</div>'
-    +'<div class="grp">You</div><div class="list">'+(acct?f('Name',esc(st.walker)):o('Name',esc(st.walker),'whoAgain'))
-    +(acct&&!ls.get('wl_mgr',false)?f:o)('Position',p?esc(p.title)+(p.department&&!p.dept?'<span class="sub">'+esc(p.department)+'</span>':''):'Not chosen','whoPosAgain')+'</div>'
-    +(acct?'<div class="pad"><button class="lnk" data-act="signOut">Sign Out</button></div>':'')
+  const acct=!!(STORE&&STORE.acct&&STORE.acct()), canPos=!(acct&&!ls.get('wl_mgr',false));
+  const pos=p?esc(p.title)+(p.department&&!p.dept?' · '+esc(p.department):''):'Position not chosen';
+  const n=st.outbox.length;
+  // one small picture of each theme: its head, its line, its page (the colours are each theme's own, so they are written here)
+  const pic=k=>'<span class="thp thp-'+k+'" aria-hidden="true"><i></i><u></u><s></s><s></s></span>';
+  return '<div class="body v1 p2 me"><div class="jh vjh"><div class="vtl"><h1>Settings</h1></div>'
+    +'<p class="mewho"><b>'+esc(st.walker||'Name not chosen')+'</b><span>'+pos+'</span></p>'
+    +'<div class="melk">'+(acct?'':'<button class="t3" data-act="whoAgain">Change Name</button>')+(canPos?'<button class="t3" data-act="whoPosAgain">Change Position</button>':'')+(acct?'<button class="t3" data-act="signOut">Sign Out</button>':'')+'</div>'+WAVE+'</div>'
+    +vGrp('Theme')+'<div class="thm">'+[['wl','Waterline'],['li','Light'],['ni','Night']].map(x=>'<button class="thb'+(th===x[0]?' on':'')+'" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(th===x[0])+'">'+pic(x[0])+'<span class="thn">'+(th===x[0]?I.tick:'')+x[1]+'</span></button>').join('')+'</div>'
     +alertsGroup()
-    +'<div class="grp">The site</div><div class="list">'+f('From the desk',s.published?esc(ago(Date.now()-Date.parse(s.published))):'Not published yet')
-    +f('Waiting',st.outbox.length?'<span class="n">'+st.outbox.length+'</span>, sent when there is signal':'Nothing')+'</div>'
-    +'<div class="wm" style="padding-top:16px"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
+    +vGrp('The site')+'<div class="vsheet"><div class="p2r"><span class="vt"><span class="vw">'+(s.published?'From the desk '+esc(ago(Date.now()-Date.parse(s.published))):'Nothing from the desk yet')+'</span></span></div>'
+    +'<div class="p2r"><span class="vt"><span class="vw">'+(n?'<span class="n">'+n+'</span> waiting, sent when there is signal':'Nothing waiting to send')+'</span></span></div></div>'
+    +'<div class="melogo"><span class="tile"><img src="push/icon-512.png" alt="'+esc(s.site||'The site')+'"></span></div>'
+    +'<div class="wm"><img class="brand" src="waterline-logo.png" alt="Empowered by Waterline FM" style="width:160px"></div><div style="height:96px"></div></div>'+navBar('me');
 }
 // ── Send Proof: photo first, then what it is (DEC-0286 rule 3) ───────────────────────────────
 // ── Send Proof: the photo or PDF first, then what it is and the line it proves (DEC-0286 rule 3) ──
@@ -6359,19 +6512,23 @@ function vMsgs(){
   const S0=seenSet(), L=myChats().map(c=>({c:c,last:chatLast(c),n:unreadIn(c.id,S0).length}));
   const pinned=L.filter(x=>x.c.id==='managers'), rest=L.filter(x=>x.c.id!=='managers');
   const withMsg=rest.filter(x=>x.last).sort((a,b)=>Date.parse(b.last.taken)-Date.parse(a.last.taken)), none=rest.filter(x=>!x.last);
-  const all=pinned.concat(withMsg,none), U=all.reduce((s,x)=>s+x.n,0);
-  const rows=all.map(x=>'<button class="c-ch'+(x.n?' ur':'')+'" data-act="chatOpen" data-id="'+esc(x.c.id)+'"'+(x.n?' aria-label="'+esc(x.c.name)+', '+x.n+' unread"':'')+'>'+chatAv(x.c)
-    +'<span class="c-m"><span class="c-r"><span class="c-nm">'+esc(x.c.name)+'</span>'+(x.last?'<span class="c-tm n">'+esc(tList(x.last.taken))+'</span>':'')+'</span>'
-    +'<span class="c-r"><span class="c-pv">'+esc(preview(x.last))+'</span>'+(x.n?'<span class="c-ub n" aria-hidden="true">'+x.n+'</span>':'')+'</span></span></button>').join('');
-  const nw=meP()&&chats().some(canPost)?'<button class="c-new" data-act="chatNew">'+ICO('pencil')+'New</button>':'';
-  return '<div class="body"><div class="c-hd"><div class="c-t"><h1>Messages</h1>'+(U?'<span class="c-s"><b class="n">'+U+'</b> unread</span>':'')+nw+'</div>'+WAVE+'</div>'
-    +waitLine()+'<div class="c-list">'+(rows||'<div class="one">No chat has been set up for your position yet. The desk sets the chats from the Organisation Structure.</div>')
-    +(fmMe()?'<button class="c-ch c-ng" data-act="grpNew"><span class="c-av">'+ICO('plus')+'</span><span class="c-m"><span class="c-nm">New Group</span></span></button>':'')+'</div><div style="height:40px"></div></div>'+navBar('msgs');
+  const all=pinned.concat(withMsg,none), U=all.reduce((s,x)=>s+x.n,0), inN=all.filter(x=>x.n);
+  // A notice that asks to be confirmed still waits once it has been seen: a zero never hides it.
+  const ask=all.reduce((n,x)=>n+chatMsgs(x.c.id).filter(m=>m.kind==='notice'&&!m.deleted&&m.notice.confirm&&forMe(m)&&!myRead(m.id).confirmed).length,0);
+  const askSay=ask?plural(ask,'notice')+' to confirm':'';
+  const num=U?vlNum(U,'Unread',[inN.length>1?'in '+inN.length+' chats':'in '+inN[0].c.name,askSay].filter(Boolean).join(' · ')):ask?vlNum(ask,ask===1?'Notice to confirm':'Notices to confirm',''):'';
+  const rows=all.map(x=>'<button class="vr mc'+(x.n?' ur':'')+'" data-act="chatOpen" data-id="'+esc(x.c.id)+'"'+(x.n?' aria-label="'+esc(x.c.name)+', '+x.n+' unread"':'')+'>'+chatAv(x.c,'rw')
+    +'<span class="vt"><span class="vw">'+esc(x.c.name)+'</span><span class="vs">'+esc(preview(x.last))+'</span></span>'
+    +'<span class="va">'+(x.last?'<i class="n">'+esc(tList(x.last.taken))+'</i>':'')+(x.n?'<span class="c-ub n" aria-hidden="true">'+x.n+'</span>':'')+'</span></button>').join('');
+  const nw=meP()&&chats().some(canPost)?'<button class="t3" data-act="chatNew">'+ICO('pencil')+'New</button>':'';
+  const ng=fmMe()?'<button class="vmore" data-act="grpNew">New Group</button>':'';
+  return '<div class="body v1 p2"><div class="jh vjh"><div class="vtl"><h1>Messages</h1>'+nw+'</div>'+num+WAVE+'</div>'+waitLine()
+    +(rows?'':'<p class="para">No chat for your position yet.</p>')+(rows||ng?'<div class="vsheet mcl">'+rows+ng+'</div>':'')+'<div style="height:96px"></div></div>'+navBar('msgs');
 }
 
 // ── A chat (b2, b4) ──
 function chatHead(c,sub,back){
-  return '<div class="c-hd"><div class="c-t">'+backBtn(back||'msgs')+'<button class="c-ti" data-act="chatInfo" aria-label="About '+esc(c.name)+'">'+chatAv(c,'sm')
+  return '<div class="jh chd"><div class="cht">'+backBtn(back||'msgs')+'<button class="c-ti" data-act="chatInfo" aria-label="About '+esc(c.name)+'">'+chatAv(c,'sm')
     +'<span class="c-tw"><span class="c-tn">'+esc(c.name)+'</span><span class="c-s">'+esc(sub)+'</span></span></button>'
     +'<button class="ib" data-act="chatInfo" aria-label="Chat settings" title="Chat settings">'+I.gear+'</button></div>'+WAVE+'</div>';
 }
@@ -6475,7 +6632,7 @@ function vChat(){
   const ph=F.replyTo?'Reply':out?'Message '+c.name:'Message';
   const foot=msgBar({id:'ctext',key:'ctext',val:F.ctext,ph:F.mode==='ho'?'Add a message with it':ph,label:ph,
     top:F.replyTo?'<div class="c-rq">'+ICO('reply')+quoteOf(F.replyTo,false)+'<button class="ib" data-act="replyOff" aria-label="Do not reply to it">'+I.close+'</button></div>':''});
-  return '<div class="body c-bd">'+chatHead(c,chatSub(c))+waitLine()+'<div class="c-th">'+th+'</div></div>'+foot;
+  return '<div class="body c-bd p2">'+chatHead(c,chatSub(c))+waitLine()+'<div class="c-th">'+th+'</div></div>'+foot;
 }
 // What Waterline adds to a handover, worked out from the site file as it is written (DEC-0348 rule 4): permits issued and not
 // closed on jobs in your groups, jobs started today and not done, jobs done today, and how many were already going.
@@ -6494,7 +6651,7 @@ function hoWriteCard(c){
   const row=(k,i,ic,w,sub)=>{ const on=F.pick[k+i]; return '<div class="c-op"><span class="c-sq'+(ic.charAt(0)==='<'?'':' n')+'">'+ic+'</span><span class="c-ow"><span class="c-w">'+w+'</span><span class="sub">'+sub+'</span></span>'
     +'<button class="c-tg'+(on?' on':'')+'" data-act="hoPick" data-k="'+k+i+'" aria-pressed="'+!!on+'" aria-label="'+(on?'Take this out of the handover':'Add this to the handover')+'">'+(on?ICO('check'):ICO('plus'))+'</button></div>'; };
   let h='<div class="c-b c-me c-wr"><div class="c-card"><div class="c-cap" style="background:'+col+'">'+ICO('arrow-right-left')+'<span>Handover'+(myDept()?' from '+esc(myDept()):'')+'</span><button class="c-x" data-act="cModeOff" aria-label="Do not write the handover">'+I.close+'</button></div>'
-    +'<div class="c-to"><span>To</span>'+chatAv(c,'xs')+'<b>'+esc(c.name)+'</b><button class="lnk" data-act="chatPick" data-for="ho">Change</button></div>'
+    +'<div class="c-to"><span>To</span>'+chatAv(c,'xs')+'<b>'+esc(c.name)+'</b><button class="t3" data-act="chatPick" data-for="ho">Change</button></div>'
     +CS.handoverParts.map(p=>'<label class="c-pt c-pw"><span class="c-k k-'+p.k+'">'+esc(p.l)+'</span><textarea id="ho-'+p.k+'" rows="1" data-in="p_'+p.k+'" placeholder="'+esc(p.hint)+'">'+esc(F['p_'+p.k]||'')+'</textarea></label>').join('');
   A.permits.forEach((p,i)=>{ h+=row('pm',i,ICO('shield-check'),esc(p.type)+' permit open',esc([p.id,p.no?'Job '+p.no:''].filter(Boolean).join(' · '))); });
   A.started.forEach((s0,i)=>{ h+=row('st',i,esc(s0.no||''),esc(s0.title||'Job '+s0.no),SH_DOING+'In progress'+(isNaN(s0.at)?'':', started <span class="n">'+esc(hm(s0.at))+'</span>')); });
@@ -6515,8 +6672,7 @@ function ntWriteCard(c){
 // ── A chat's info (b6): its photo with Change, the two switches as the desk set them, who changed the photo, the members ──
 function vChatInfo(){
   const c=chatById(st.form.chat); if(!c||!seesChat(c)) return '<div class="body">'+formZone('msgs','Messages','Not Your Chat','This chat is not one of yours any more.')+'</div>';
-  const sw=(on,lab,sub)=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(lab)+'</span><span class="sub">'+esc(sub)+'</span></span><span class="c-sw'+(on?' on':'')+'" role="switch" aria-checked="'+on+'" aria-disabled="true" aria-label="'+esc(lab)+'"><i></i></span></div>';
-  const ev=!!ls.get('wl_evAlert',false), out=outChat(c);
+  const ev=!!ls.get('wl_evAlert',false), out=outChat(c), canP=canPhoto(c);
   const posts=c.made?'Only the people holding its roles see and post here. Nobody writes to it from outside.':c.id==='all'?'Everyone on the site posts here. Notices come from the FM and the Notice Sender.'
     :c.id==='managers'?(out?'Only managers see this chat. They see what you send them and reply to you here.':'Only managers see and post here. Anyone else writes to Management and sees only their own messages and the replies.')
     :out?'Only '+c.name+' sees this chat. They see what you send them and reply to you here.':'Everyone in '+c.name+' posts here. Anyone else can write to '+c.name+'; they see only their own messages and the replies.';
@@ -6525,15 +6681,17 @@ function vChatInfo(){
   const ppl=mem.map(p=>{ const who=PEOPLE().find(x=>x.position===p.id); return {nm:who?who.name:p.title,sub:who?p.title+(mg.has(p.id)?' · manager':''):(mg.has(p.id)?'Manager':(p.department||''))}; });
   const chg=msgItems().filter(x=>x.kind==='chatphoto'&&chatOf(x)===c.id).sort((a,b)=>Date.parse(b.taken)-Date.parse(a.taken))[0];
   const by=chg?{by:whoSays(chg),at:chg.taken}:c.photoBy?{by:c.photoBy,at:c.photoAt}:null;
-  return '<div class="body c-info"><div class="c-hd c-ih"><div class="c-t">'+backBtn('chatBack')+'</div><div class="c-big">'+chatAv(c,'lg')
-    +(canPhoto(c)?'<label class="c-cam" aria-label="Change the photo">'+ICO('camera')+'<input type="file" accept="image/*" data-file="chatphoto"></label>':'')+'</div>'
-    +'<h1>'+esc(c.name)+'</h1><span class="c-s">'+esc(chatSub(c))+'</span>'+(c.made&&fmMe()?'<button class="c-edg" data-act="grpEdit">'+ICO('pencil')+'Edit Group</button>':'')+WAVE+'</div>'
-    +grp('Who posts')+'<div class="one">'+esc(posts)+'</div>'
-    +(c.id==='all'?grp('Alerts')+'<div class="list"><button class="c-sr" data-act="evAlert" role="switch" aria-checked="'+ev+'"><span class="c-sm"><span class="c-sl">Alert Me for Everyone</span><span class="sub">'+(ev?'On: this phone sounds for every message here':'Off: messages here add to your count, without a sound')+'</span></span><span class="c-sw'+(ev?' on':'')+'"><i></i></span></button></div>':'')
-    +(out?'':grp('This chat · set on the desk')+'<div class="list">'+sw(c.membersPhoto!==false,'Members can change the photo',c.membersPhoto!==false?'Anyone in '+c.name+' can choose it':'Only managers can choose it')+'</div>'
-    +grp('Photo')+'<div class="list"><div class="c-sr"><span class="c-sm"><span class="c-sl">'+(by?'Changed by '+esc(by.by):'No photo yet')+'</span><span class="sub">'+(by?esc(day(by.at))+' at <span class="n">'+esc(hm(by.at))+'</span>. The earlier photo is kept.':(c.made?'The chat shows its initials.':'The chat shows its colour and initials.'))+'</span></span>'+(by?chatAv(c,'sq'):'')+'</div></div>'
-    )+(c.made?grpInfo(c):'')+grp('Members',ppl.length)+'<div class="list">'+ppl.map(p=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(p.nm)+'</span><span class="sub">'+esc(p.sub)+'</span></span></div>').join('')+'</div>'
-    +grp('Kept')+'<div class="one">Every message is kept as a record, with who sent it and when. Managers can read every chat.</div><div style="height:40px"></div></div>';
+  const row=(w,sub,right)=>'<div class="p2r"><span class="vt"><span class="vw">'+w+'</span>'+(sub?'<span class="vs">'+sub+'</span>':'')+'</span>'+(right||'')+'</div>';
+  return '<div class="body v1 p2 c-info">'+vlTop('chatBack','')+'<div class="jh jh2 cih"><div class="cib">'+chatAv(c,'lg')
+    +(canP?'<label class="t3">'+ICO('camera')+'Change Photo<input type="file" accept="image/*" data-file="chatphoto"></label>':'')+'</div>'
+    +'<h1>'+esc(c.name)+'</h1><p class="jpl">'+esc(chatSub(c))+'</p>'+(c.made&&fmMe()?'<button class="b2" data-act="grpEdit">'+ICO('pencil')+'Edit Group</button>':'')+WAVE+'</div>'
+    +vGrp('Members',ppl.length)+'<div class="vsheet">'+ppl.map(p=>row(esc(p.nm),esc(p.sub))).join('')+'</div>'
+    +(c.id==='all'?vGrp('Alerts')+'<div class="vsheet"><button class="p2r" data-act="evAlert" role="switch" aria-checked="'+ev+'"><span class="vt"><span class="vw">Alert Me for Everyone</span><span class="vs">'+(ev?'This phone sounds for every message here':'No sound. Messages here add to your count')+'</span></span><span class="c-sw'+(ev?' on':'')+'"><i></i></span></button></div>':'')
+    +vGrp('Who posts')+'<p class="para">'+esc(posts)+'</p>'
+    +(out||(!by&&canP)?'':vGrp('Photo')+(by?'<div class="vsheet">'+row('Changed by '+esc(by.by),esc(day(by.at))+' at <span class="n">'+esc(hm(by.at))+'</span>',chatAv(c,'sq'))+'</div>':'')
+      +(canP?'':'<p class="para">Only managers can change the photo.</p>'))
+    +(c.made?grpInfo(c):'')
+    +vGrp('Kept')+'<p class="para">Every message is kept as a record, with who sent it and when. Managers can read every chat.</p><div style="height:40px"></div></div>';
 }
 
 // ── A chat group the FM makes from roles (DEC-0365) ──
@@ -6549,18 +6707,18 @@ function vChatGroup(){
   if(!fmMe()) return '<div class="body">'+formZone('msgs','Messages','Not Yours to Change','Only the FM makes and edits chat groups.')+'</div>';
   const R=grpRoles(), known=new Set([].concat(...R.map(x=>x.titles))), gone=F.roles.filter(t=>!known.has(t));
   const why=F.tried?(!String(F.gName||'').trim()?'Name the group.':!F.roles.length?'Tick at least one role.':''):'';
-  const tick=t=>'<label class="g-rk"><input type="checkbox" data-in="gRole" value="'+esc(t)+'"'+(F.roles.indexOf(t)>=0?' checked':'')+'><span>'+esc(t)+'</span></label>';
+  const tick=t=>'<label class="p2r g-rk"><input type="checkbox" data-in="gRole" value="'+esc(t)+'"'+(F.roles.indexOf(t)>=0?' checked':'')+'><span class="vw">'+esc(t)+'</span></label>';
   const nm=String(F.gName||'').trim()||(g&&g.name)||'the group';
   const foot=F.closing
-    ?'<div class="foot"><span class="c-err">Close '+esc(nm)+'? It leaves every list and nobody can post in it. Its messages are kept.</span><button class="btn p" data-act="grpCloseSend">Close the Group</button><button class="gh" data-act="grpCloseOff" style="margin-top:16px">Keep the Group</button></div>'
-    :'<div class="foot">'+(why?'<span class="c-err" role="alert">'+esc(why)+'</span>':'')+'<button class="btn p" data-act="grpSend">'+(g?'Save Changes':'Make Group')+'</button>'
-      +(g?'<button class="gh" data-act="grpClose">Close Group</button>':'')+'<span class="sub">The desk files it. Everyone in it sees the change once it has.</span></div>';
-  return '<div class="body" style="min-height:100vh;display:flex;flex-direction:column"><div class="c-hd"><div class="c-t">'+backBtn(g?'grpBack':'msgs')+'<h1>'+(g?'Edit Group':'New Group')+'</h1></div>'+WAVE+'</div>'
-    +'<div class="pad" style="padding-bottom:12px"><label class="c-nf"><span class="fl">Name</span><input id="g-name" data-in="gName" maxlength="60" value="'+esc(F.gName||'')+'" placeholder="What the group is for"></label></div>'
-    +grp('Roles in it',F.roles.length)
-    +R.map(x=>grp(x.dept||'No department')+'<div class="list">'+x.titles.map(tick).join('')+'</div>').join('')
-    +(gone.length?grp('No longer on the Organisation Structure')+'<div class="list">'+gone.map(tick).join('')+'</div>':'')
-    +'<div style="flex:1"></div>'+foot+'</div>';
+    ?'<div class="foot cgf"><span class="c-err">Close '+esc(nm)+'? It leaves every list and nobody can post in it. Its messages are kept.</span><button class="b1" data-act="grpCloseSend">Close the Group</button><button class="b2" data-act="grpCloseOff">Keep the Group</button></div>'
+    :'<div class="foot cgf">'+(why?'<span class="c-err" role="alert">'+esc(why)+'</span>':'')+'<button class="b1" data-act="grpSend">'+(g?'Save Changes':'Make Group')+'</button>'
+      +(g?'<button class="b3" data-act="grpClose">Close Group</button>':'')+'</div>';
+  return '<div class="body v1 p2 cg" style="min-height:100vh;display:flex;flex-direction:column">'+vlTop(g?'grpBack':'msgs','')+'<div class="jh jh2"><h1>'+(g?'Edit Group':'New Group')+'</h1>'+WAVE+'</div>'
+    +'<label class="cgn"><span class="fl">Name</span><input id="g-name" data-in="gName" maxlength="60" value="'+esc(F.gName||'')+'" placeholder="What the group is for"></label>'
+    +vGrp('Roles in it',F.roles.length)
+    +R.map(x=>vGrp(x.dept||'No department')+'<div class="vsheet">'+x.titles.map(tick).join('')+'</div>').join('')
+    +(gone.length?vGrp('No longer on the Organisation Structure')+'<div class="vsheet">'+gone.map(tick).join('')+'</div>':'')
+    +'<div style="flex:1;min-height:24px"></div>'+foot+'</div>';
 }
 async function grpSend(close){
   const F=st.form; F.tried=true;
@@ -6575,7 +6733,7 @@ async function grpSend(close){
 // A made group's history, on its info (DEC-0365 rule 9). Its roles are under its name.
 function grpInfo(c){
   const h=[{l:'Made by '+(c.by||'the FM'),at:c.at,s:''}].concat((c.changed||[]).map(x=>({l:'Changed by '+(x.by||'the FM'),at:x.at,s:'Was '+x.name+'.'}))).reverse();
-  return grp('History')+'<div class="list">'+h.map(x=>'<div class="c-sr"><span class="c-sm"><span class="c-sl">'+esc(x.l)+'</span><span class="sub">'+(x.at?esc(day(x.at))+' at <span class="n">'+esc(hm(x.at))+'</span>. ':'')+esc(x.s)+'</span></span></div>').join('')+'</div>';
+  return vGrp('History')+'<div class="vsheet">'+h.map(x=>'<div class="p2r"><span class="vt"><span class="vw">'+esc(x.l)+'</span><span class="vs">'+(x.at?esc(day(x.at))+' at <span class="n">'+esc(hm(x.at))+'</span>. ':'')+esc(x.s)+'</span></span></div>').join('')+'</div>';
 }
 
 // ── Sheets: who read it (a long press on your own message), where to post, what to attach ──
@@ -6590,7 +6748,7 @@ function readersSheet(){
       +(S0.noPhone.length?grp('No phone set up',S0.noPhone.length)+'<div class="one">'+esc(S0.noPhone.map(p=>p.title).join(', '))+'. They see it once a phone is set up for someone holding the position.</div>':'');
   } else { const R=readsOf(x.id).filter(r=>x.kind==='handover'?r.act==='confirmed':true), seen={}, U=R.filter(r=>{ const k=nk(r.person); if(seen[k]) return false; seen[k]=1; return true; });
     b=grp('Read by',U.length)+(U.length?'<div class="list">'+U.map(r=>'<div class="r"><span class="m"><span class="w">'+esc(r.person)+'</span><span class="sub">'+esc(posTitle(r.pos)||'Position not given')+' · <span class="n">'+esc(tShort(r.taken))+'</span></span></span></div>').join('')+'</div>':'<div class="one">'+(waiting(x.id)?'Waiting for signal to send.':'Nobody yet.')+'</div>'); }
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who read it"><div class="sh"><b>Who Read It</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'+b+'<div style="height:16px"></div></div>';
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Who read it" data-p2><div class="sh"><b>Who Read It</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'+b+'<div style="height:16px"></div></div>';
 }
 // A long press on your own message (John, 24 Oct 2026): Edit, Delete and Who Read It. Only a message's or a reply's words
 // are edited, and not a voice note's; a notice or a handover is deleted and sent again. Sent to the wrong chat: delete it
@@ -6600,28 +6758,28 @@ const cWords=x=>(x.kind==='msg'||x.kind==='reply')&&!auOf(x);
 function cMsgSheet(){
   const x=cMine(), y=msgItems().find(z=>z.id===(st.form&&st.form.rid));
   if(!x){ if(!y||y.deleted) return '';
-    return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="The message"><div class="sh"><b>'+esc(whoSays(y))+'’s Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="The message" data-p2><div class="sh"><b>'+esc(whoSays(y))+'’s Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
       +'<button class="verb" data-act="replyTo" data-id="'+esc(y.id)+'">'+ICO('reply')+'<span class="m"><span class="w">Reply</span><span class="sub">Or swipe the message to the right</span></span></button></div><div style="height:24px"></div></div>'; }
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'">'+ic+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Your message"><div class="sh"><b>Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Your message" data-p2><div class="sh"><b>Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +'<button class="verb" data-act="replyTo" data-id="'+esc(x.id)+'">'+ICO('reply')+'<span class="m"><span class="w">Reply</span><span class="sub">Or swipe the message to the right</span></span></button>'
-    +(cWords(x)?v('cEdit',I.edit,'Edit','Change its words'):'')
+    +(cWords(x)?v('cEdit',I.edit,'Edit',''):'')
     +v('cDel',I.trash,'Delete',x.kind==='msg'||x.kind==='reply'?'Sent to the wrong chat? Delete it, then send it in the right one':'To change it, delete it and send it again')
     +v('cReaders',ICO('check-check'),'Who Read It','')+'</div><div style="height:24px"></div></div>'; }
 function cEditSheet(){ const F=st.form;
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Edit your message"><div class="sh"><b>Edit Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Edit your message" data-p2><div class="sh"><b>Edit Your Message</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<div class="field"><label for="etext">Its words</label><textarea id="etext" data-in="etext">'+esc(F.etext||'')+'</textarea><div class="help">The chat shows it as edited. The desk keeps what it said before.</div></div>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="cEditSend"'+(st.busy?' disabled':'')+'>'+I.send+'Save the Change</button>'
     +(F.eerr?'<div class="help err" role="alert" style="margin:0">'+esc(F.eerr)+'</div>':'')+'</div></div>'; }
 function cDelSheet(){ const x=cMine(), ask=x&&(x.kind==='notice'||x.kind==='handover');
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Delete your message"><div class="sh"><b>Delete Your Message?</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Delete your message" data-p2><div class="sh"><b>Delete Your Message?</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<p class="para" style="padding-top:8px">Everyone in the chat sees “'+esc(CS.msgDeleted)+'” in its place'+(ask?', and nobody is asked to confirm it any more':'')+'. The desk keeps what it said, who deleted it and when.</p>'
     +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="cDelSend"'+(st.busy?' disabled':'')+'>'+I.trash+'Delete the Message</button><button class="btn g" data-act="sheetClose">Keep It</button></div></div>'; }
 function chatPickSheet(){
   const ho=st.form&&st.form.pickFor==='ho', why=ho?'Send the handover to':'New Message';
   const row=c=>'<button class="c-ch c-pk" data-act="chatPicked" data-id="'+esc(c.id)+'">'+chatAv(c,'sm')+'<span class="c-m"><span class="c-nm">'+esc(c.name)+'</span></span></button>';
   const L=chats().filter(c=>inChat(c)&&canPost(c)), O=ho?[]:chats().filter(c=>outChat(c));
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(why)+'"><div class="sh"><b>'+esc(why)+'</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(why)+'" data-p2><div class="sh"><b>'+esc(why)+'</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +(O.length?grp('Your chats'):'')+'<div class="list">'+L.map(row).join('')+'</div>'
     +(O.length?grp('Write to a department')+'<div class="one">Only you and they see what you send and their replies. You do not see their chat.</div><div class="list">'+O.map(row).join('')+'</div>':'')+'<div style="height:16px"></div></div>';
 }
@@ -6741,6 +6899,8 @@ async function msgAct(a,b){
 }
 // Swipe a message to the right to reply to it (DEC-0358 rule 2); a long press on any message opens Reply, and on your own
 // Edit, Delete and Who Read It too. No message carries a Reply line (John, 25 Oct 2026).
+// The job's lead photos are swiped sideways; the count follows the photo in view.
+app.addEventListener('scroll',e=>{ const s=e.target; if(!s.classList||!s.classList.contains('jhsc')) return; const i=s.parentNode.querySelector('.jhi'); if(i) i.textContent=Math.round(s.scrollLeft/Math.max(1,s.clientWidth))+1; },true);
 let _sw=null;
 app.addEventListener('touchstart',e=>{ const b=e.target.closest('.c-b[data-sw]'); _sw=b&&e.touches.length===1?{id:b.dataset.sw,x:e.touches[0].clientX,y:e.touches[0].clientY,el:b}:null; },{passive:true});
 app.addEventListener('touchmove',e=>{ if(!_sw) return; const dx=e.touches[0].clientX-_sw.x, dy=Math.abs(e.touches[0].clientY-_sw.y); if(dy>30){ _sw.el.style.transform=''; _sw=null; return; } if(dx>0) _sw.el.style.transform='translateX('+Math.min(dx,72)+'px)'; },{passive:true});
