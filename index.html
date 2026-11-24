@@ -1377,6 +1377,218 @@ body.t-li .jtg{color:var(--textMid)}
 .c-fld{border-radius:12px}.c-fld .ktag{font-size:13px;text-transform:none;letter-spacing:0}.c-fld textarea,.c-fld input{font-size:17px}
 .rec .t{font-size:17px}
 @media (prefers-reduced-motion:reduce){.vr,.b1,.b2,.nv,.nv.cap .capb,.vtabs button{transition:opacity .2s}.nv.cap:active .capb{transform:none}}
+
+/* ── Pass 1 (DEC-0509; Design 21.10 to 21.16): Due, a line, Fire Walks, Groups, a group, done rows, Before You Start, Finish.
+   The same four sizes, 48 · 28 · 17 · 13 (21.15); heads end on the app's own waterline (21.13). ── */
+.v1>.jtop{flex:none;display:flex;align-items:center;gap:4px;padding:calc(4px + env(safe-area-inset-top)) 4px 0;background:var(--ink)}
+.jsp{width:44px;height:44px;flex:none}
+.v1 .jh2 .vz{margin:0 0 16px}
+.v1 .jh2 h1+.jn2{margin-top:4px}
+.v1 .jh2 .jpl{margin-bottom:16px}
+.v1 .jh2 .jpl+.jst2{margin-top:-4px}
+.jamb{color:var(--hAmb);font-weight:700}
+.v1 .jpl .mono{font:400 17px ui-monospace,'SFMono-Regular',Consolas,monospace;color:inherit}
+.vjh .b1,.vjh .b2{margin-top:16px}
+.vjh>.vzw b{display:block;font:800 17px/1.3 Sora;color:var(--hT)}
+.v1 .ib .bd,.jh .ib .bd{font:800 13px/20px Sora}
+/* a head's tabs when each carries its count (a group, Fire Walks): the count with its state mark, its name under it */
+.jh .sw{display:flex;margin:12px -20px 0;border-top:0}
+.jh .sw button{flex:1;min-height:56px;gap:4px;font:600 13px Outfit;color:var(--hA);border-bottom:2px solid transparent;transition:opacity .2s}
+.jh .sw button:active{opacity:.6;transition:none}
+.jh .sw button.on{color:var(--hT);border-bottom-color:var(--hA)}
+.jh .sw .n{font:800 17px Sora;color:var(--hT)}
+.jh .sw .sm{width:16px;height:16px}
+.jh .sw .bd{font:800 13px/20px Sora}
+.jh .sw+.c-wv{margin-top:0}
+/* sections and rows without a photo (21.12): one flat band, rows ruled from the text, the figure in Sora on the right */
+.v1 .grp{font:700 13px Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMid);padding:24px 20px 8px;display:flex;align-items:center;gap:8px}
+.v1 .grp .n{font:800 17px Sora;letter-spacing:0;color:var(--text)}
+.v1 .jh+.list,.v1 .jh+.tools+.list{margin-top:16px}
+.v1 .r{min-height:56px;padding:12px 16px 12px 20px;border-bottom:0;transition:background-color .2s}
+.v1 .r:active{background:var(--stone);transition:none}
+.v1 .r+.r::before,.v1 .inner+.r::before,.v1 .inner .r::before{content:'';position:absolute;top:0;left:20px;right:0;height:1px;background:var(--border)}
+.v1 .r .w{font:600 17px/1.3 'DM Sans'}
+.v1 .r .sub{display:block;font:500 13px/1.4 'DM Sans';color:var(--textMid);margin-top:4px}
+.v1 .r .st{max-width:112px}
+.v1 .r .st b{font:800 17px/1.2 Sora}
+.v1 .r .st i{font:500 13px/1.4 'DM Sans';margin-top:2px}
+.v1 .mono{font-size:13px}
+.v1 .badge{font:600 13px/20px 'DM Sans';letter-spacing:0;text-transform:none}
+.v1 .inner{border-bottom:0}
+.v1 .inner .r{border-top:0}
+.v1 .inner .r .sub,.v1 .cat.open .sub{color:var(--textMS)}
+.v1 .gi{width:44px;height:44px;border-radius:12px}
+.v1 .r>svg:last-child,.v1 .ra>svg:last-child,.v1 .wjob>svg:last-child{display:none}
+.v1 .cts{display:flex;gap:16px;margin-top:4px;font:500 13px 'DM Sans';color:var(--textMid)}
+.v1 .cts span{display:inline-flex;align-items:center;gap:4px}
+.v1 .cts b{font:800 17px Sora;color:var(--text)}
+.v1 .cts svg{width:16px;height:16px}
+.v1 .para{font:400 13px/1.5 'DM Sans';color:var(--textMid);padding:16px 20px}
+.v1 .para .lnk{font:600 13px Outfit}
+.v1 .f{padding:12px 16px 12px 20px;border-bottom:0;position:relative}
+.v1 .f+.f::before,.v1 .why .wr+.wr::before,.v1 .wrl+.wrl::before,.v1 .wjob+.wrl::before{content:'';position:absolute;top:0;left:20px;right:0;height:1px;background:var(--border)}
+.v1 .f .k{width:96px;font:600 13px/24px Outfit;color:var(--textMid)}
+.v1 .f .v{font:500 17px/1.4 'DM Sans'}
+.v1 .f .sub{display:block;font:400 13px/1.4 'DM Sans';color:var(--textMid);margin-top:4px}
+.v1 .why.sq .wr{padding:12px 16px 12px 20px;border-bottom:0;position:relative}
+.v1 .why .eb{font:700 13px Outfit;letter-spacing:1.5px;color:var(--textMid)}
+.v1 .why b{font:600 17px/1.4 'DM Sans'}
+.v1 .why .lw{font:500 17px/1.4 'DM Sans'}
+.v1 .why .sub{font-size:13px}
+.v1 .wait{font:400 13px/1.5 'DM Sans';padding:12px 20px}
+.v1 .wait b{font-weight:700}
+.v1 .note{border-radius:12px;font:400 13px/1.5 'DM Sans';margin:16px 16px 0}
+.v1 .note .eb{font:700 13px Outfit;letter-spacing:1.5px}
+.v1 .ra{padding:12px 16px;gap:12px;border-bottom:0;border-right:0;position:relative;align-items:flex-start}
+.v1 .ra+.ra::before{content:'';position:absolute;top:0;left:72px;right:0;height:1px;background:var(--border)}
+.v1 .ra .w{font:600 17px/1.3 'DM Sans'}
+.v1 .ra .sub{display:block;font:500 13px/1.4 'DM Sans';color:var(--textMid);margin-top:4px}
+.v1 .wrl{padding:12px 16px 12px 20px;border-bottom:0;position:relative}
+.v1 .wrl .w{font:600 17px/1.3 'DM Sans'}
+.v1 .wrl .sub,.v1 .wjob .sub{display:block;font:500 13px/1.4 'DM Sans';margin-top:4px}
+.v1 .wjob{border-bottom:0}
+.v1 .wjob .w{font:600 17px/1.3 'DM Sans'}
+/* the Groups tab: a row per group in one band; its three counts keep their state marks (DEC-0337 rule 2) */
+.vr.vg{min-height:64px;align-items:center}
+.vr.vg+.vr.vg::before{left:72px}
+.vgi{width:44px;height:44px;overflow:visible;position:relative;color:var(--text)}
+.vgi .bd{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--unread);color:#FFFFFF;font:800 13px/20px Sora;text-align:center}
+.vcs{flex:none;display:flex;gap:12px}
+.vcs span{display:inline-flex;align-items:center;gap:4px;font:800 17px Sora;color:var(--text)}
+.vcs .sm{width:16px;height:16px}
+.vcs .s-todo{color:var(--jTodo)}.vcs .s-doing{color:var(--jDoing)}.vcs .s-done,.va .s-done{color:var(--jDone)}.va .s-closed{color:var(--textMuted)}
+/* Before You Start and Finish (the full-screen check): the same sizes, buttons and radius; the words and the flow kept */
+.tf .zt .eb{font:500 13px 'DM Sans';letter-spacing:0;text-transform:none}
+.t5 span{font:600 13px Outfit;letter-spacing:0;text-transform:none}
+.tf .zsay{font:800 17px/1.3 Sora}
+.tf .zsub{font-size:13px}
+.tf .z h1{font:800 28px/1.15 Sora}
+.tf .hero b{font:800 48px/1 Sora;letter-spacing:-.04em}
+.tf .hero p{font:800 17px/1.3 Sora;padding-bottom:2px}
+.tf .lab{font:700 13px Outfit;letter-spacing:1.5px;color:var(--textMid)}
+.tf .hc .pm{font:600 13px Outfit}
+.tf .hc,.tf .hc.on{padding-top:28px}
+.tf .none{min-height:56px;margin-top:12px;border:0;background:var(--accentL);font:600 17px Outfit}
+.tf .none.on{border:0;outline:2px solid var(--accentD);outline-offset:-2px}
+.tf .ft .btn,.tf .btn{min-height:56px;border-radius:12px;font:600 17px Outfit}
+.tf .say,.tf .pgd,.pgk,.tf .help,.nora{font-size:13px}
+.tf .pgh{font:800 28px/1.15 Sora}
+.pgr{padding:14px 0}
+.pgr b{font:500 17px/1.4 'DM Sans'}
+.qc{border-radius:12px}
+.qc .of{font:700 13px Outfit;letter-spacing:1.5px}
+.qc .for{font-size:13px}
+.qc h2{font:800 28px/1.15 Sora}
+.qc p{font-size:17px;line-height:1.4}
+.qc p.kits{font-size:13px}
+.tf .yn{display:grid;grid-template-columns:2fr 3fr;gap:8px}
+.tf .yn.col{display:flex;flex-direction:column}
+.tf .yn button,.tf .qc .yn button{height:auto;min-height:56px;border:0;border-radius:12px;font:600 17px Outfit;gap:8px}
+.tf .yn .no{background:var(--accentL);color:var(--accentD)}
+.tf .yn .yes{background:var(--btnFill);color:var(--btnText)}
+.tf.full .yn .yes{background:var(--accentOnInk);color:var(--zBtnText)}
+.tf .yn button.on{outline:2px solid var(--accentD);outline-offset:2px}
+.done h2{font:800 28px/1.2 Sora}
+.done p{font-size:17px;line-height:1.4}
+.okr{font:500 17px/1.35 'DM Sans'}
+.okr em{font:600 13px Outfit}
+.ralink{min-height:56px;font:600 17px Outfit}
+.same{border:0;background:var(--accentL)}
+.same b{font:600 17px 'DM Sans'}
+.same .m span{font-size:13px}
+.tf .field>label,.tf .fl{font:600 13px Outfit}
+.tf textarea,.tf input{font-size:17px}
+.tf .th{border-radius:12px}
+.tf .th.add,.tf .th.sk{border:0;background:var(--accentL);font:600 13px Outfit}
+.sigp,.sigp canvas{border-radius:12px}
+.sigp .who{font-size:13px}
+.sigp .clr{font:600 17px Outfit}
+.kr .m b{font:500 17px 'DM Sans'}
+.kr .m span{font-size:13px}
+.wear .sg b{font-size:13px}
+/* Finish: say it and sign, one screen (DEC-0515) */
+.tf.fc .pg{padding-top:16px;display:flex;flex-direction:column}
+.fcs label{display:block;font:800 17px/1.3 Sora;color:var(--text);margin-bottom:8px}
+.fcf{position:relative}
+.tf.fc textarea{display:block;width:100%;min-height:104px;border:0;border-radius:12px;background:var(--white);padding:12px 68px 12px 12px;font:400 17px/1.4 'DM Sans';color:var(--text);resize:none}
+.tf label.fcc,.fct{position:absolute;right:8px;bottom:8px;width:48px;height:48px;border-radius:12px;display:grid;place-items:center}
+.tf label.fcc{background:var(--accentL);color:var(--accentD);cursor:pointer}
+.fcc input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.fct{background:var(--stone) center/cover no-repeat}
+.fct .x{position:absolute;top:-14px;right:-14px;width:44px;height:44px;display:grid;place-items:center;color:var(--accentD)}
+.fct .x i{display:grid;place-items:center;width:28px;height:28px;border-radius:14px;background:var(--white)}
+.tf.fc .pgd{margin:20px 0 0}
+.tf.fc .pgq{margin-top:8px}
+.tf.fc .fsig{margin-top:16px;flex:1;min-height:120px;height:auto;background:var(--white)}
+/* Finish: the top row, a found-something answer, the signature on its line */
+.tf .fz{padding-bottom:8px}
+.tf .fq{margin-top:20px}
+.tf .fq label{display:block;font:800 17px/1.3 Sora;color:var(--text);margin-bottom:8px}
+.fsig{position:relative;height:150px;border-radius:12px;background:var(--stone)}
+.fsig canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;color:var(--text);border-radius:12px}
+.fsig::after{content:'';position:absolute;left:44px;right:16px;bottom:40px;height:1px;background:var(--textMuted);pointer-events:none}
+.fsig .fx{position:absolute;left:14px;bottom:32px;color:var(--textMuted);pointer-events:none}
+.fsig .fx svg{width:20px;height:20px}
+.fsig .who{position:absolute;left:44px;bottom:12px;font:500 13px 'DM Sans';color:var(--textMid);pointer-events:none}
+.fsig .fhint{position:absolute;left:0;right:0;top:36%;text-align:center;font:500 13px 'DM Sans';color:var(--textMid);pointer-events:none}
+.fsig .clr{position:absolute;right:4px;top:4px;min-height:44px;padding:0 12px;font:600 17px Outfit;color:var(--accentD)}
+/* John, 24 Nov: the head's number and its word on one baseline, the few words left under them */
+.vz{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:4px}
+.vz .vzw{display:contents}
+.vz .vzw b{display:inline;font:800 17px/1.2 Sora}
+.vz .vzw span{flex-basis:100%}
+.vl .jh2 .vz,.v1 .jh2 .vz{margin:0 0 16px}
+/* tabs in a head: equal thirds, the icon over its name as before; the chosen one is tinted, with no line under it to cut
+   the waterline below */
+.vtabs{display:flex;gap:8px;margin:12px 0 0}
+.vtabs button{flex:1 1 0;min-width:0;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 4px;border-bottom:0;border-radius:12px;font:600 13px Outfit;color:var(--hA)}
+.vtabs button svg{width:24px;height:24px}
+.vtabs button.on,.jh .sw button.on{background:var(--accentL);color:var(--hT);border-bottom-color:transparent}
+body.t-ni .vtabs button.on,body.t-ni .jh .sw button.on,body.t-wl .vtabs button.on,body.t-wl .jh .sw button.on{background:rgba(255,255,255,.12)}
+.jh .sw{margin:12px 0 0;gap:8px}
+.jh .sw button{border-bottom:0;border-radius:12px}
+.jh .sw+.c-wv{margin-top:12px}
+/* the opened job is one scrolling page; its top row and its message bar stay */
+.jb{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.jb .jtop{position:sticky;top:0;z-index:4}
+.jb .tw{flex:1 0 auto;min-height:0;overflow:visible}
+.jb .mbar.j{position:sticky;bottom:0;z-index:4}
+/* a marked entry wears its kind's colour: its label and a tint, no rule down its edge (John, 24 Nov 2026) */
+.msg.kc .bub{background:color-mix(in srgb,var(--kc) 10%,var(--white))}
+.msg.kc .bub .kd{color:var(--kc)}
+body.t-ni .msg.kc .bub{background:color-mix(in srgb,var(--kc) 26%,var(--white))}
+body.t-ni .msg.kc .bub .kd{color:color-mix(in srgb,var(--kc) 35%,#FFFFFF)}
+.ev.e-doing svg{color:var(--jDoing)}.ev.e-done svg{color:var(--jDone)}.ev.e-urgent svg{color:var(--redText)}.ev.e-asap svg{color:var(--amberText)}
+.ev[class*=" e-"]{color:var(--textMid)}
+.meta b{font-weight:700}
+/* a job group's own colour, as a light tint (DEC-0514) */
+.vgi.gca{background:color-mix(in srgb,var(--gh) 16%,var(--white));color:var(--gh)}
+body.t-ni .vgi.gca{background:color-mix(in srgb,var(--gh) 34%,var(--white));color:color-mix(in srgb,var(--gh) 30%,#FFFFFF)}
+.ghd{display:flex;align-items:center;gap:12px;margin:8px 0 4px}
+.ghd h1{margin:0!important}
+.gdot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;background:var(--gh)}
+body.t-ni .gdot{background:color-mix(in srgb,var(--gh) 45%,#FFFFFF)}
+/* design review, 24 Nov: a row's title in text (21.2); sheets on the four sizes (21.15); no edged pressable (21.11) */
+.v1 .r .w,.v1 .ra .w{color:var(--text)}
+.sheet .sh b{font:800 17px Sora}
+.sheet .sh .when{font-size:13px}
+.sheet .opt{font:500 17px/1.4 'DM Sans'}
+.sheet .opt .rt{font-size:13px}
+.sheet .verb .w{font:600 17px/1.3 'DM Sans'}
+.sheet .verb .sub{font-size:13px}
+.tf .hc,.tf .hc.on{border:0}
+.tf .hc.on{background:var(--accentL)}
+.tf .hc.on,.tf .hz.four .hc.on{padding-left:6px;padding-right:6px}
+.tf .hz.four .hc.on{padding-left:4px;padding-right:4px}
+.qc{border:0}
+.c-fld .ktag.k0{color:var(--textMuted);font-weight:600}
+.tf .field label.th{display:grid}
+/* Look on a short phone: four across, tighter, so None of These stays above the foot (DEC-0383 rule 6) */
+.tf.lk .z{padding-bottom:12px}
+.tf.lk .pg{padding-top:12px;padding-bottom:8px}
+.tf .hz.four .hc,.tf .hz.four .hc.on{min-height:0;padding:24px 4px 6px;gap:4px}
+.tf .hz.four .hc .ic{width:40px;height:40px}
+.tf .hz.four~.none{margin-top:8px}
 </style>
 </head>
 <body>
@@ -1846,7 +2058,7 @@ function render(){
   document.body.className='t-'+theme()+' s-'+st.screen;
   if(st.screen!=='job'&&_play.a){ _play.a.pause(); _play={}; }
   // The conversation keeps its place from the foot (P6); a job opened, or a message sent, shows its newest entry.
-  const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.tw'), fb=tw0&&!st.twEnd&&st.twFor===jid?tw0.scrollHeight-tw0.scrollTop:null; st.twEnd=false; st.twFor=jid;
+  const jid=st.screen==='job'&&st.form?st.form.id:'', tw0=app.querySelector('.jb'), twSame=!!tw0&&st.twFor===jid, twY=twSame?tw0.scrollTop:0, twFoot=!!st.twEnd||(twSame&&tw0.scrollTop>0&&tw0.scrollHeight-tw0.scrollTop-tw0.clientHeight<40); st.twEnd=false; st.twFor=jid;
   const f={start:vStart,setup:vSetup,signin:vSignin,who:vWho,whopos:vWhoPos,whotype:vWhoType,due:vDue,jobs:vJobs,me:vMe,line:vLine,job:vJob,missed:vMissed,walkinfo:vWalkInfo,fault:vFault,hazard:vHazard,proof:vProof,reading:vReading,flush:vFlush,pest:vPest,sighting:vSighting,rounds:vRounds,walk:vWalk,walks:vWalks,walkrec:vWalkRec,unscan:vUnscan,signoff:vSignoff,msgs:vMsgs,chat:vChat,chatinfo:vChatInfo,chatgroup:vChatGroup}[st.screen]||vDue;
   app.innerHTML=f();
   if(st.sheet){ const sh={leave:leaveSheet,jpvisit:jpVisitSheet,jpclose:jpCloseSheet,jobs:jobsSheet,jflag:jFlagSheet,jdone:vFinish,jstop:jStopSheet,jpause:jPauseSheet,jassign:jAssignSheet,jmore:jMoreSheet,jkinds:jKindSheet,jmsg:jMsgSheet,jedit:jEditSheet,jdel:jDelSheet,take5:vTake5,whosin:whoSheet,jsort:jSortSheet,jpermit:jPermitSheet,jreview:jReviewSheet,jparts:jPartsSheet,readers:readersSheet,cmsg:cMsgSheet,cedit:cEditSheet,cdel:cDelSheet,chatpick:chatPickSheet,attach:attachSheet}[st.sheet]; app.insertAdjacentHTML('beforeend',sh?sh():sheet()); }
@@ -1854,7 +2066,7 @@ function render(){
   if(st.crop) app.insertAdjacentHTML('beforeend',vCrop());
   if(st.scanFor) app.insertAdjacentHTML('beforeend',vScan());
   if(st.ds){ app.insertAdjacentHTML('beforeend',vDocScan()); dsBind(); }
-  const tw=app.querySelector('.tw'); if(tw) tw.scrollTop=fb==null?tw.scrollHeight:tw.scrollHeight-fb;
+  const tw=app.querySelector('.jb'); if(tw) tw.scrollTop=twFoot?tw.scrollHeight:twY;
   after();
   if(st.sheet==='jdone'){ t5SigBind(); t5FinBind(); }
   if(st.sheet==='take5') t5MarkBind();
@@ -2170,6 +2382,16 @@ function sheet(){
     +v('rounds','round','Fire Walk',rs.length?'':'No fire walks set up on the desk yet',!rs.length)
     +'</div><div style="height:24px"></div></div>';
 }
+// Pass 1 heads (Design 21.13, 21.14): a record's top row is a bare Back, a small label and at most one bare control; a
+// list's or a record's one number sits with its word and its comparator. `say` is plain words (it is escaped here).
+function vlTop(back,tag,right){ return '<div class="jtop">'+backBtn(back)+'<span class="jtg">'+tag+'</span>'+(right||'<span class="jsp"></span>')+'</div>'; }
+function vlNum(num,word,say,tone,urg){ return '<div class="vz"><span class="vzn n'+(tone?' t-'+tone:'')+'"'+(urg?' data-urg':'')+'>'+esc(String(num))+'</span><span class="vzw"><b'+(tone?' class="t-'+tone+'"':'')+'>'+esc(word)+'</b>'+(say?'<span>'+esc(say)+'</span>':'')+'</span></div>'; }
+const vGrp=(t,n)=>'<div class="vsh"><span class="vl">'+esc(t)+'</span>'+(n==null?'':'<b class="n">'+n+'</b>')+'</div>';
+// An age since a past event (Design 7.5): days under a month, then months, then years and months.
+const vAgo=d=>{ if(!(d>=1)) return 'today'; if(d<30) return plural(d,'day')+' ago'; const y=Math.floor(d/365.25), m=Math.floor((d-y*365.25)/30.44); return (y?plural(y,'year')+(m?' '+plural(m,'month'):''):plural(m,'month'))+' ago'; };
+// A job group wears a light tint of its own colour (DEC-0514): by its place in the site's list, never a state colour (21.3).
+const GHUE=['#156B87','#BE185D','#2563EB','#0F766E','#7C3AED','#4F46E5'];
+const gSty=g=>{ const i=(SITE().groups||[]).findIndex(x=>x.id===g); return ' style="--gh:'+GHUE[(i<0?0:i)%GHUE.length]+'"'; };
 function grp(t,n){ return '<div class="grp">'+esc(t)+(n==null?'':' · <span class="n">'+n+'</span>')+'</div>'; }
 const TIER={red:['var(--red)','var(--redText)'],amber:['var(--amber)','var(--amberText)'],grey:['var(--textMuted)','var(--textMid)']};
 // A row: the stripe on its edge, words, the state on the right; the whole row is the target (21.2). Red and amber
@@ -2235,31 +2457,28 @@ function whoSheet(){
 // categories, each with its count, opening in place the desk's way (DEC-0303 rule 6; DEC-0140).
 function vDue(){
   st.place='due';
-  let h='<div class="body">'+pageHead('Due',whoBtn());
-  if(!st.site) return h+'<div class="zone"><span class="eb">Nothing from the desk yet</span><p>Due shows once the desk has published the site details. You can still capture from the button below.</p></div>'+waitLine()+siteNote()+'<div style="height:96px"></div></div>'+navBar('due');
+  const hd=mid=>'<div class="jh vjh"><div class="vtl"><h1>Due</h1>'+whoBtn()+'</div>'+mid+WAVE+'</div>';
+  const end=h=>h+'<div style="height:96px"></div></div>'+navBar('due');
+  let h='<div class="body v1">';
+  if(!st.site) return end(h+hd('<p class="vzw"><b>Nothing from the desk yet</b><span>You can still report with the button below.</span></p>')+waitLine()+siteNote());
   const D=dueFor(), s=SITE(), H=s.health||{};
   const nowW=D.fm?null:D.today.find(x=>x.t==='walk'&&x.now&&!sentIn(x.r.id,x.from,x.to)), nextW=D.fm||nowW?null:D.today.find(x=>x.t==='walk'&&!x.now);
   const lead=nowW||nextW;
   if(D.fm){
     const ln=H.overdue||0;   // missed walks are for the manager on Plan, never on Due (DEC-0330)
-    h+='<div class="zone"><span class="eb">On the site</span><div class="row1"><span class="num n" style="color:'+(H.overdue?'var(--inkRed)':'var(--onInk)')+'"'+(H.overdue?' data-urg':'')+'>'+(H.overdue||0)+'</span><span class="what">overdue</span></div>'
-      +'<p>'+(ln===1?'Line':'Lines')+' past due, against <b class="n">'+(H.inDate||0)+'</b> in date.</p></div>';
+    h+=hd(vlNum(ln,'Overdue',(H.inDate||0)+' in date',ln?'urgent':'',!!ln));
   } else if(lead){
-    const r=lead.r;
-    h+='<div class="zone"><span class="eb">'+(nowW?'Open now':'Next')+'</span><div class="row1"><span class="num n">'+esc(hm(lead.from))+'</span><span class="what">'+esc(r.name)+'</span></div>'
-      +'<p><b class="n">'+(r.points||[]).length+'</b> points, '+(nowW?'open until':'open from <b class="n">'+esc(hm(lead.from))+'</b> to')+' <b class="n">'+esc(hm(lead.to))+'</b>.'+((r.lines||[]).length?' Signed off, it brings <b class="n">'+r.lines.length+'</b> '+((r.lines.length===1)?'line':'lines')+' in date.':'')+'</p>'
-      +'<button class="btn" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+walkOpenSay(r.id)+'</button></div>';
+    const r=lead.r, n=(r.points||[]).length;
+    h+=hd(vlNum(hm(lead.from),r.name,(nowW?'Open until ':'Opens '+hm(lead.from)+', until ')+hm(lead.to)+' · '+plural(n,'point'))
+      +'<button class="b1" data-act="walkStart" data-id="'+esc(r.id+'|'+lead.from)+'">'+I.scan+walkOpenSay(r.id)+'</button>');
   } else if(!D.over.length&&!D.today.length&&!D.soon.length&&!D.mine.length&&jobsAll().length){
-    h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">0</span><span class="what">jobs given to you</span></div>'
-      +'<p>No walk, line or job is yours today. Your groups’ jobs are on Jobs.</p><button class="gh" data-act="jobs">'+I.jobs+'Open Jobs</button></div>';
-    return h+waitLine()+walkCarry()+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
+    const W=jobsAll(), nb=W.filter(nobody).length;
+    h+=hd(vlNum(W.length,W.length===1?'Job waiting in your groups':'Jobs waiting in your groups','None given to you'+(nb?' · '+nb+' with nobody on '+(nb===1?'it':'them'):'')));
+    return end(h+waitLine()+walkCarry()+dueWaiting()+walksFoot());
   } else {
     const n=D.over.length, all=n+D.today.length+D.soon.length+D.mine.length;
-    if(!n&&D.mine.length){
-      h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n">'+D.mine.length+'</span><span class="what">'+(D.mine.length===1?'job given to you':'jobs given to you')+'</span></div>'
-        +'<p>Nothing on your Due is overdue.</p></div>'; }
-    else h+='<div class="zone"><span class="eb">For you</span><div class="row1"><span class="num n" style="color:'+(n?'var(--inkRed)':'var(--onInk)')+'"'+(n?' data-urg':'')+'>'+n+'</span><span class="what">overdue</span></div>'
-      +'<p>'+(all?'Of <b class="n">'+all+'</b> on your Due.':'Nothing on your Due.')+'</p></div>';
+    if(!n&&D.mine.length) h+=hd(vlNum(D.mine.length,D.mine.length===1?'Job given to you':'Jobs given to you','Nothing overdue'));
+    else h+=hd(vlNum(n,'Overdue',all?'of '+all+' due':'',n?'urgent':'',!!n));
   }
   h+=waitLine()+walkCarry(lead&&lead.r.id);
   if(siteStale()||st.siteErr) h+=siteNote();
@@ -2267,19 +2486,24 @@ function vDue(){
   const any=D.over.length+today.length+D.soon.length+D.mine.length;
   if(!any){
     const p=D.p;
-    h+='<p class="para">'+(p?'Nothing else is due for '+esc(p.title)+' today or in the next '+(s.outlook||7)+' days. ':'')+'Due holds the walks your department does, the lines your position’s duties cover and the jobs given to you, all set on the desk. The rest of your groups’ jobs are on Jobs.</p>';
-    return h+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
+    h+='<p class="para">Nothing else due in the next '+(s.outlook||7)+' days.</p>';
+    return end(h+dueWaiting()+walksFoot());
   }
   const firstOver=D.over.filter(x=>x.t!=='line'), lines=D.over.filter(x=>x.t==='line'&&x.i.kind!=='look'), look=D.over.filter(x=>x.t==='line'&&x.i.kind==='look');
-  if(firstOver.length) h+=grp('Overdue')+'<div class="list">'+firstOver.map(dueRow).join('')+'</div>';
-  if(lines.length) h+=grp('Lines, by category')+'<div class="list">'+cats(lines)+'</div>';
-  if(look.length) h+=grp('To look at')+'<div class="list">'+look.map(dueRow).join('')+'</div>';
-  if(today.length) h+=grp('Today')+'<div class="list">'+today.map(dueRow).join('')+'</div>';
-  if(D.mine.length) h+=lh('Your jobs')+jl(jSortL(D.mine),true,1);
-  if(D.soon.length) h+=grp('Next '+(s.outlook||7)+' days')+'<div class="list">'+D.soon.map(dueRow).join('')+'</div>';
-  else h+='<p class="para">Nothing else falls due in the next '+(s.outlook||7)+' days.</p>';
-  return h+walksFoot()+'<div style="height:96px"></div></div>'+navBar('due');
+  if(firstOver.length) h+=vGrp('Overdue',firstOver.length)+'<div class="list">'+firstOver.map(dueRow).join('')+'</div>';
+  if(lines.length) h+=vGrp('Lines, by category',lines.length)+'<div class="list">'+cats(lines)+'</div>';
+  if(look.length) h+=vGrp('To look at',look.length)+'<div class="list">'+look.map(dueRow).join('')+'</div>';
+  if(today.length) h+=vGrp('Today',today.length)+'<div class="list">'+today.map(dueRow).join('')+'</div>';
+  if(D.mine.length) h+=vSec('Your jobs',D.mine.length,jSortL(D.mine).map(j=>vlRow(j,'')).join(''),'');
+  if(D.soon.length) h+=vGrp('Next '+(s.outlook||7)+' days',D.soon.length)+'<div class="list">'+D.soon.map(dueRow).join('')+'</div>';
+  else h+='<p class="para">Nothing else due in the next '+(s.outlook||7)+' days.</p>';
+  return end(h+dueWaiting()+walksFoot());
 }
+// What is waiting in the person's groups, under what is theirs (John, 24 Nov 2026: "its not that theres nothing to do theres
+// still 60 jobs waiting. we need to show what they have and whats waiting to do"): the first three, flagged then oldest, and
+// the way to the rest. The FM's Due is the site's overdue lines, so it is not shown there.
+function dueWaiting(){ const W=jobsAll(); if(!W.length||isFM(myPos())) return ''; const t=j=>Date.parse(j.raised)||0, L=W.slice().sort((a,b)=>flagRank(a)-flagRank(b)||t(a)-t(b)).slice(0,3);
+  return vSec('Waiting in your groups',W.length,L.map(j=>vlRow(j,'')).join('')+(W.length>3?'<button class="vmore" data-act="jobs">All '+W.length+' jobs</button>':''),''); }
 // Lines in their categories: one row each with its count and its oldest, red count first (DEC-0252 rule 3, DEC-0254
 // words); the open one is a stone band with each line's own tier dashed down its edge (DEC-0140). Evidence state and
 // last checked are not in the site file yet (the desk's next slice), so a line row does not claim either.
@@ -2414,11 +2638,12 @@ function jobRowP(j,showGroup,own){ if(j.state==='done'||jDoneHere(j)) return job
   return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +(by?'<span class="sub">'+(j.state==='doing'?'<span class="stt">'+SH.doing+'In progress</span>'+(h.length?' · ':''):'')+(h.length?esc(own?'With '+h.map(x=>x.name).join(', '):holdersSay(j)):'')+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span><span class="ag"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i></span></button>'; }
-function jobRowDone(j,showGroup){ const d=j.done||{}, here=jDoneHere(j);
-  if(here) return '<button class="ra c jx" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+'<span class="w">'+esc(j.title||'Job')+'</span>'
-    +'<span class="sub">'+esc('Marked done by you, '+at2(here.at))+'</span><span class="sub">'+esc(here.waiting?'Not delivered, no signal: it sends by itself.':'Waiting for the desk to file it.')+'</span></span></button>';
-  return '<button class="ra c'+(d.how?' jc':' jx')+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+'<span class="w">'+esc(j.title||'Job')+'</span>'
-    +'<span class="sub">'+esc((d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at))+'</span><span class="sub">'+esc(doneSay(j))+'</span></span></button>'; }
+function jobRowDone(j,showGroup){ const d=j.done||{}, here=jDoneHere(j), t=here?Date.parse(here.at):doneAt(j), n=Math.floor((Date.now()-t)/864e5);
+  const ag=!t||isNaN(n)?['','']:n<1?['Today','']:[String(n),n===1?'day':'days'];
+  const who=youOr(d.by), sub=here?(here.waiting?'Not sent yet, no signal':'Sent '+hm(here.at)+', not filed yet')
+    :who.charAt(0).toUpperCase()+who.slice(1)+' · '+doneSay(j);
+  return '<button class="vr" data-act="openJob" data-id="'+esc(j.id)+'">'+vThumb(j,'')+'<span class="vt"><span class="vw">'+esc(j.title||'Job')+'</span><span class="vs">'+esc(sub)+'</span></span>'
+    +'<span class="va"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i>'+(d.how&&!here?SMK('done').replace('s-done','s-closed'):SMK('done'))+'</span></button>'; }
 // A group's icon, from its name (the site's groups are its own, DEC-0309); one set, one stroke (21.7).
 const GIC=[[/pest/i,'rat'],[/fire.?walk|walk/i,'flame'],[/fire/i,'fire-extinguisher'],[/legionella|water|tmv/i,'droplets'],[/banned/i,'ban'],[/hygiene/i,'spray-can'],[/housekeep/i,'bed-double'],[/inspect/i,'clipboard-check'],[/part|material/i,'pkg'],[/planned/i,'calendar-clock'],[/maint/i,'jobs']];
 function GICO(g){ const n=GROUP(g), m=GIC.find(x=>x[0].test(n)), k=m?m[1]:'folder'; return k==='pkg'?I.pkg:k==='jobs'?I.jobs:k==='rat'?I.rat:ICO(k); }
@@ -2448,7 +2673,7 @@ function jobCard(j){ const a=jLate(j);
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
 function jobsShown(){ const J=st.J, lv=(SITE().levels||[]).map(l=>l.code);
   const dn=J.state==='done';
-  let L=(dn?jobsDone():jobsAll()).filter(j=>!J.grp||j.group===J.grp).filter(j=>dn||(j.state==='doing'?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
+  let L=(dn?jobsDone():jobsAll()).filter(j=>!J.grp||j.group===J.grp).filter(j=>dn||(vDoing(j)?'doing':'todo')===J.state).filter(j=>!J.groups.length||J.groups.indexOf(j.group)>=0);
   const q=J.q.trim().toLowerCase(); if(q) L=L.filter(j=>(String(j.title)+' '+jWhere(j)).toLowerCase().indexOf(q)>=0);
   const t=j=>dn?doneAt(j):Date.parse(j.raised)||0, fl=j=>{ const l=LOC(j.loc), i=l?lv.indexOf(l.level):-1; return i<0?99:i; };
   return L.sort((a,b)=>flagRank(a)-flagRank(b)||(J.sort==='old'?t(a)-t(b):J.sort==='place'?fl(a)-fl(b)||jWhere(a).localeCompare(jWhere(b)):t(b)-t(a))); }
@@ -2468,17 +2693,17 @@ function vJobs(){
   // The head (21.1, 21.14): the title, the one number with its comparator, the tabs, ending on the app's own waterline.
   let h='<div class="body"><div class="jh vjh"><div class="vtl"><h1>Jobs</h1><button class="ib" data-act="jsearch" aria-label="Search jobs" aria-expanded="'+!!(J.qOpen||J.q)+'">'+I.search+'</button></div>'
     +(p&&!fm&&!gids.length&&!all.length?'<p class="vzw"><span>No job groups are set for your position on the desk’s Organisation Structure.</span></p>':jobsHead(all))
-    +'<div class="vtabs" role="tablist">'+[['next','Up Next'],['floor','By Floor'],['groups','Groups']].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'">'+x[1]+'</button>').join('')+'</div>'+WAVE+'</div>'
+    +'<div class="vtabs" role="tablist">'+[['next','Up Next',I.list],['floor','By Floor',I.pin],['groups','Groups',I.grid]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'">'+x[2]+'<span>'+x[1]+'</span></button>').join('')+'</div>'+WAVE+'</div>'
     +(J.qOpen||J.q?'<div class="tools vq"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search every group" aria-label="Search jobs in every group" value="'+esc(J.q)+'"></label></div>':'');
   const q=J.q.trim().toLowerCase();
   if(q){ const R=all.concat(done).filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
     h+=R.length?vSec('Matches',R.length,jSortL(R).map(j=>jobRowP(j,true)).join(''),'','<button class="vsrt" data-act="jclear">Clear</button>'):'<p class="para">No job matches. <button class="lnk" data-act="jclear">Clear</button></p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   if(J.tab==='groups'){
-    h+=G.length?'<div class="gcs">'+G.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, dn=done.filter(j=>j.group===g).length;
+    h+=G.length?vSec(fm?'Every group':'Your groups',G.length,G.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(vDoing).length, dn=done.filter(j=>j.group===g).length;
       const nw=grpNew(g,'todo')+grpNew(g,'done');
-      return '<button class="gc" data-act="jgrp" data-id="'+esc(g)+'" aria-label="'+esc(GROUP(g))+': '+(L.length-d)+' to do, '+d+' in progress, '+dn+' done'+(nw?', '+nw+' new since you last looked':'')+'"><span class="gi">'+GICO(g)+(nw?'<span class="bd" aria-hidden="true">'+nw+'</span>':'')+'</span><span class="w">'+esc(GROUP(g))+'</span>'
-        +'<span class="cs" aria-hidden="true"><span>'+SMK('todo')+(L.length-d)+'</span><span>'+SMK('doing')+d+'</span><span>'+SMK('done')+dn+'</span></span></button>'; }).join('')+'</div>'
+      return '<button class="vr vg" data-act="jgrp" data-id="'+esc(g)+'" aria-label="'+esc(GROUP(g))+': '+(L.length-d)+' to do, '+d+' in progress, '+dn+' done'+(nw?', '+nw+' new since you last looked':'')+'"><span class="vth vgi gca"'+gSty(g)+'>'+GICO(g)+(nw?'<span class="bd n" aria-hidden="true">'+nw+'</span>':'')+'</span><span class="vt"><span class="vw">'+esc(GROUP(g))+'</span></span>'
+        +'<span class="vcs" aria-hidden="true"><span>'+SMK('todo')+(L.length-d)+'</span><span>'+SMK('doing')+d+'</span><span>'+SMK('done')+dn+'</span></span></button>'; }).join(''),'')
       :'<p class="para">Jobs show here once the desk has job groups for your position.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   if(J.tab==='floor'&&all.length){ h+=byFloor(all); return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
@@ -2534,9 +2759,8 @@ function jobsHead(all){ const c=k=>all.filter(j=>vLvl(j)===k), U=c('urgent'), A=
   const top=U.length?['urgent',U,'Urgent']:A.length?['asap',A,'As soon as possible']:W.length?['week',W,'This week']:['doing',D,'In progress'];
   const also=[['asap',A,'as soon as possible'],['week',W,'this week']].filter(x=>x[0]!==top[0]&&x[1].length&&(top[0]==='urgent'||(top[0]==='asap'&&x[0]==='week')));
   const od=oldestDays(top[1].length?top[1]:all), lw='No count from last week to set it against yet.';
-  if(!all.length) return '<div class="vz"><span class="vzn n">0</span><span class="vzw"><b>Open</b><span>Nothing open in your groups.</span></span></div>';
-  const say=(also.length?'and '+also.map(x=>x[1].length+' '+x[2]).join(' and ')+', ':'')+'of '+all.length+' open. '
-    +(top[1].length?'The oldest '+(top[0]==='doing'?'in progress':top[2].toLowerCase())+' job has waited '+od+(od===1?' day':' days')+'. ':'')+lw;
+  if(!all.length) return '<div class="vz"><span class="vzn n">0</span><span class="vzw"><b>Open</b></span></div>';
+  const say='of '+all.length+' open';
   return '<div class="vz"><span class="vzn n t-'+top[0]+'">'+top[1].length+'</span><span class="vzw"><b class="t-'+top[0]+'">'+top[2]+'</b><span>'+esc(say)+'</span></span></div>'; }
 // Up Next (DEC-0507 round): the one job to do now, flagged first then newest, with its Start Job, in the zone.
 function upNext(j,n,nb){ const fl=jFlag(j), hs=holders(j), S0=jState(j), go=!S0.doing&&!S0.paused&&inGroup(j)&&!!st.walker&&!j.pest;
@@ -2561,16 +2785,22 @@ function byFloor(all){ const lv=(SITE().levels||[]), fl=lv.filter(l=>/floor|^gro
   return h+vSec(nm,L.length,L.map(j=>vlRow(j,'')).join(''),''); }
 // A group opened: its name and its counts in the zone (21.1), the counts are the filter (DEC-0327 rule 2), its jobs below.
 function vGroup(){
-  const J=st.J, all=jobsAll().filter(j=>j.group===J.grp), nTodo=all.filter(j=>j.state!=='doing').length, nDoing=all.length-nTodo, nDone=jobsDone().filter(j=>j.group===J.grp).length;
-  const inState=J.state==='doing'?nDoing:J.state==='done'?nDone:nTodo, L=jobsShown(), nf=J.sort!=='new'?1:0, o=oldestDays(all), nb=all.filter(nobody).length;
-  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('jgrpBack')+'<span class="eb">Your groups</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO(J.grp)+'</span><h1 style="margin:0">'+esc(GROUP(J.grp))+'</h1></div>'
-    +'<p>'+(all.length?'<b class="n">'+nb+'</b> with nobody on '+(nb===1?'it':'them')+'. The oldest was raised <b class="n">'+o+'</b> '+(o===1?'day':'days')+' ago.':'Nothing open in this group.')+'</p>'
+  const J=st.J, all=jobsAll().filter(j=>j.group===J.grp), nTodo=all.filter(j=>!vDoing(j)).length, nDoing=all.length-nTodo, nDone=jobsDone().filter(j=>j.group===J.grp).length;
+  const L=jobsShown(), o=oldestDays(all), nb=all.filter(nobody).length, q=J.q.trim();
+  let h='<div class="body v1">'+vlTop('jgrpBack',isFM(myPos())?'Every group':'Your groups')
+    +'<div class="jh jh2"><div class="ghd"><span class="vth vgi gca"'+gSty(J.grp)+'>'+GICO(J.grp)+'</span><h1>'+esc(GROUP(J.grp))+'</h1></div>'
+    +'<p class="jn2">'+(all.length?nb+' with nobody on '+(nb===1?'it':'them')+'. Oldest: '+vAgo(o).replace(/ ago$/,'')+'.':'Nothing open in this group.')+'</p>'
     +'<div class="sw" role="tablist">'+[['todo','To Do',nTodo],['doing','In Progress',nDoing],['done','Done',nDone]].map(x=>{ const nw=x[0]==='doing'?0:grpNew(J.grp,x[0]);
-      return '<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"'+(nw?' aria-label="'+x[1]+', '+x[2]+', '+nw+' new since you last looked"':'')+'><span class="n">'+SMK(x[0])+x[2]+(nw?'<span class="bd" aria-hidden="true">'+nw+'</span>':'')+'</span>'+x[1]+'</button>'; }).join('')+'</div></div>'
-    +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search" aria-label="Search this group" value="'+esc(J.q)+'"></label>'
-    +'</div>'+lh(J.state==='doing'?'In progress':J.state==='done'?'Done, last '+doneDays()+' days':'To do');
-  if(J.q.trim()) h+='<div class="act"><span><span class="n">'+L.length+'</span> of <span class="n">'+inState+'</span> shown</span><button class="lnk" data-act="jclear">Clear All</button></div>';
-  h+=L.length?jl(L,false):'<p class="para">'+(J.state==='done'?(nDone?'No job here matches.':'Nothing done in this group in the last '+doneDays()+' days. Older done jobs are on the desk’s Jobs page.'):all.length?'No job here matches.':'Nothing open in this group.')+'</p>';
+      return '<button role="tab" class="'+(J.state===x[0]?'on':'')+'" data-act="jstate" data-v="'+x[0]+'" aria-selected="'+(J.state===x[0])+'"'+(nw?' aria-label="'+x[1]+', '+x[2]+', '+nw+' new since you last looked"':'')+'><span class="n">'+SMK(x[0])+x[2]+(nw?'<span class="bd" aria-hidden="true">'+nw+'</span>':'')+'</span>'+x[1]+'</button>'; }).join('')+'</div>'+WAVE+'</div>'
+    +'<div class="tools vq"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search this group" aria-label="Search this group" value="'+esc(J.q)+'"></label></div>';
+  const lab=q?'Matches':J.state==='doing'?'In progress':J.state==='done'?'Done, last '+doneDays()+' days':'To do';
+  const srt=q?'<button class="vsrt" data-act="jclear">Clear</button>':'<button class="vsrt" data-act="jsortOpen" aria-label="Sort: '+SORTW[J.sort]+'">Sort'+I.down+'</button>';
+  if(L.length&&!q&&J.state!=='done'){ const NM={urgent:'Urgent',asap:'As soon as possible',week:'This week'}, rest=L.filter(j=>!vLvl(j));
+    ['urgent','asap','week'].forEach(k=>{ const F=L.filter(j=>vLvl(j)===k).sort((a,b)=>(Date.parse(a.raised)||0)-(Date.parse(b.raised)||0)); if(F.length) h+=vSec(NM[k],F.length,F.map(j=>vlRow(j,k)).join(''),k); });
+    if(rest.length) h+=vSec(lab,rest.length,rest.map(j=>vlRow(j,J.state==='doing'?'doing':'')).join(''),'',srt);
+    return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
+  h+=L.length?vSec(lab,L.length,L.map(j=>jobRowP(j,false)).join(''),'',q?'<button class="vsrt" data-act="jclear">Clear</button>':'<button class="vsrt" data-act="jsortOpen" aria-label="Sort: '+SORTW[J.sort]+'">Sort'+I.down+'</button>')
+    :'<p class="para">'+(q?'No job here matches. <button class="lnk" data-act="jclear">Clear</button>':J.state==='done'?'Nothing done here in the last '+doneDays()+' days.':all.length?'Nothing '+(J.state==='doing'?'in progress':'to do')+' in this group.':'Nothing open in this group.')+'</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('jobs');
 }
 // One sheet: sort first, then the filter by group, each with its count; Clear All beside Show (Design 10.2, 9.13).
@@ -2585,14 +2815,15 @@ function jobsSheet(){
 // A line opened: the record's identity and its one action in the zone (21.1); the facts below.
 function vLine(){
   const i=(SITE().due||[]).find(x=>x.id===st.form.id); if(!i) return '<div class="body">'+formZone(st.place||'due','Due','No Longer Due','This item is no longer in the site details from the desk.')+'</div>';
-  const T=TIER[i.tier]||TIER.grey, a=i.kind==='look'||i.kind==='soon'?null:overDays(i.late||0), u=a&&(i.tier==='red'||i.tier==='amber');
+  const a=i.kind==='look'||i.kind==='soon'?null:overDays(i.late||0), u=a&&(i.tier==='red'||i.tier==='amber');
   const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
-  return '<div class="body"><div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(secOf(i))+'</span></div><h1>'+esc(i.what)+'</h1>'
-    +'<p><span class="mono">'+esc(i.id)+'</span> · '+(a?'<b'+(u?' data-urg style="color:'+(i.tier==='red'?'var(--inkRed)':'var(--inkAmber)')+'"':'')+'>'+esc(a[0]==='Today'?'Due today':a.join(' '))+'</b>':esc(i.kind==='look'?'to look at':'due soon'))+'</p>'
-    +'<button class="btn" data-act="proofFor" data-id="'+esc(i.id)+'">'+I.cert+'Send Proof</button></div>'
-    +'<div class="list" style="border-top:none">'+f('Register',esc(i.register))+(i.due?f('Due','<span class="n">'+esc(day(i.due))+'</span>'):'')
-    +(isFM(myPos())?f('Whose',(i.duties||[]).length?esc(i.duties.map(d=>{ const t=positions().filter(p=>(p.duties||[]).indexOf(d)>=0).map(p=>p.title); return t.length?t.join(', '):d; }).join(', '))+(i.nobody?'<span class="sub">Nobody holds this duty. Tick it under Duties held on the desk’s Organisation Structure.</span>':''):'Names no one, so it is shown to the FM.'):'')+'</div>'
-    +lineWhy(lineById(i.id),i)+'<p class="para">Send the certificate, report or photo that proves it. The desk files it against this line.</p></div>';
+  return '<div class="body v1">'+vlTop(st.place||'due',esc(secOf(i)))
+    +'<div class="jh jh2"><h1>'+esc(i.what)+'</h1>'
+    +'<div class="jpl"><span class="mono">'+esc(i.id)+'</span> · '+(a?'<b'+(u?' data-urg class="'+(i.tier==='red'?'jlate':'jamb')+'"':'')+'>'+esc(a[0]==='Today'?'Due today':a.join(' '))+'</b>':esc(i.kind==='look'?'to look at':'due soon'))+'</div>'
+    +'<button class="b1" data-act="proofFor" data-id="'+esc(i.id)+'">'+I.cert+'Send Proof</button>'+WAVE+'</div>'
+    +'<div class="list">'+f('Register',esc(i.register))+(i.due?f('Due','<span class="n">'+esc(day(i.due))+'</span>'):'')
+    +(isFM(myPos())?f('Whose',(i.duties||[]).length?esc(i.duties.map(d=>{ const t=positions().filter(p=>(p.duties||[]).indexOf(d)>=0).map(p=>p.title); return t.length?t.join(', '):d; }).join(', '))+(i.nobody?'<span class="sub">Nobody holds this duty yet.</span>':''):'Nobody named'):'')+'</div>'
+    +lineWhy(lineById(i.id),i)+'</div>';
 }
 // A job opened (P6; DEC-0317, DEC-0318; mockup sandbox/mockups/job-2026-10-20). The zone carries the record and its one
 // action (Design 21.1): the group and the job's number, title, place, the flag in words, where it stands and since when,
@@ -2670,10 +2901,13 @@ function jStartWait(j,S0){ const pms=jPerms(j), pPm=S0.pend.find(x=>x.act==='per
   return w.map(p=>p.type).concat(pPm?(pPm.types||[]).filter(t=>!w.some(p=>p.type===t)):[]); }
 // What the desk wrote as a job changed, as one small line across the middle (DEC-0307 rule 2): "Started by you".
 const EVK={Started:'play',Restarted:'play',Paused:'pause',Assigned:'users',Flagged:'flag',Done:'check','Safety check':'shield-check','Parts used':'package',Permit:'file-check'};
+function asgSay(t,by){ const s=String(t||'')+'.', on=(/Put on: ([^.]+)\./.exec(s)||[])[1], off=(/Taken off: ([^.]+)\./.exec(s)||[])[1], B=by==='you'?'You':by;
+  if(!on&&!off) return String(t||'').replace(/\.$/,'')+', by '+by;
+  return B+(on?' put '+on+' on it':'')+(on&&off?' and':'')+(off?' took '+off+' off it':''); }
 function evWords(kind,text,by){ const t=String(text||'').trim();
   if(kind==='Flagged'){ if(/^(Flag removed|Remove the flag)/i.test(t)) return 'Flag removed by '+by; if(/^Asked/.test(t)) return t.replace(/\.$/,'')+', by '+by;
     const m=/^([^:.]+)[:.]?\s*(.*)$/.exec(t)||['',t,'']; return 'Flagged '+m[1]+' by '+by+(m[2]?'. '+m[2].replace(/\.$/,''):''); }
-  if(kind==='Assigned') return t.replace(/\.$/,'')+', by '+by;
+  if(kind==='Assigned') return asgSay(t,by);
   // A permit line names who issued or refused it; an application is said as who applied (W).
   if(kind==='Permit') return /^Permit (issued|refused) by /.test(t)?t.replace(/\.$/,''):(by==='you'?'You':by)+' '+t.charAt(0).toLowerCase()+t.slice(1).replace(/\.$/,'');
   const rest=t.replace(new RegExp('^'+kind+'[:.]?\\s*'),'').trim();
@@ -2683,10 +2917,14 @@ function evWords(kind,text,by){ const t=String(text||'').trim();
 function voiceEl(k,secs,t){ let w=''; for(let i=0;i<26;i++) w+='<b style="height:'+(6+Math.round(Math.abs(Math.sin(i*1.7)+Math.sin(i*.6))*9))+'px"></b>';
   return '<div class="voice" data-k="'+esc(k)+'" data-s="'+(Number(secs)||0)+'"><button class="vp" data-act="vplay" data-k="'+esc(k)+'"'+(t?' data-t="'+esc(t)+'"':'')+' aria-label="Play the voice note">'+I.play+'</button>'
     +'<div class="wave" aria-hidden="true">'+w+'</div><span class="dur n">'+clock(secs)+'</span></div>'; }
+const KCOL={Investigation:'#7C3AED','Parts needed':'#2563EB','Resident said':'#BE185D',Handover:'#0F766E',Visit:'#7C3AED'};
+const cvK=k=>KCOL[k]?' kc" style="--kc:'+KCOL[k]:'';
+const cvE=(k,t)=>/^(Started|Restarted)$/.test(k)?' e-doing':/^(Done|Signed off)$/.test(k)?' e-done':k==='Paused'?' e-doing':k==='Flagged'?(/urgent/i.test(t||'')?' e-urgent':/soon/i.test(t||'')?' e-asap':''):'';
+const cvBy=n=>{ if(theme()==='ni') return ''; const q=PEOPLE().find(x=>nk(x.name)===nk(n)); return q?deep(deptCol(personDept({pos:q.position})),5.4):''; };
 function jThread(j,pend,inStrip){
   const th=j.thread||[], chg=pend.filter(x=>x.act==='edit'||x.act==='delete');
   const all=th.concat(pend.filter(x=>!(x.act==='edit'||x.act==='delete')).map(x=>({at:x.at,by:x.by,kind:x.act==='note'?(x.kind||'Note'):PK[x.act],text:pendText(x),photos:[],pend:x})));
-  if(!all.length) return '<p class="para" style="align-self:center;text-align:center">Nothing is written on this job yet. Write the first entry below.</p>';
+  if(!all.length) return '<p class="para" style="align-self:center;text-align:center">Nothing written yet.</p>';
   let h=th.length>=WFM_SITE_SHAPE.threadMax?'<div class="sys">Earlier entries are on the desk’s Jobs page.</div>':'', last='';
   all.forEach(e=>{
     const dl=dayLab(e.at); if(dl&&dl!==last){ h+='<div class="dayb">'+esc(dl)+'</div>'; last=dl; }
@@ -2698,8 +2936,8 @@ function jThread(j,pend,inStrip){
     if(e.deleted||(c&&c.act==='delete')){ const d=e.deleted||{by:st.walker,at:c.at}, cs=c?' · '+(c.sending?'Sending':c.waiting?'Not delivered, no signal':'Delivered'):'';
       h+='<div class="ev">'+ICO('trash-2')+'<span>'+esc((own?'You':e.by)+' deleted a message')+(isNaN(Date.parse(d.at))?'':' · <span class="n">'+hm(d.at)+'</span>')+esc(cs)+'</span></div>'; return; }
     const ph=(e.photos||[]).filter(n=>!inStrip.has(n)), sp=x?(_sentPics[x.cap]||[]):[];
-    if((e.photos||[]).length&&!ph.length&&!sp.length&&!x&&!e.audio&&!String(e.text||'').trim()){ h+='<div class="ev">'+ICO('image')+'<span>'+esc((own?'You':e.by)+' added the photo shown above')+tm+'</span></div>'; return; }
-    if(EVK[kind]&&!ph.length&&!sp.length){ h+='<div class="ev">'+ICO(EVK[kind])+'<span>'+esc(evWords(kind,e.text,own?'you':e.by))+tm+esc(ps)+'</span></div>'; return; }
+    if((e.photos||[]).length&&!ph.length&&!sp.length&&!x&&!e.audio&&!String(e.text||'').trim()){ h+='<div class="ev">'+ICO('image')+'<span>'+esc((own?'You':e.by)+' added the photo')+tm+'</span></div>'; return; }
+    if(EVK[kind]&&!ph.length&&!sp.length){ h+='<div class="ev'+cvE(kind,e.text)+'">'+ICO(EVK[kind])+'<span>'+esc(evWords(kind,e.text,own?'you':e.by))+tm+esc(ps)+'</span></div>'; return; }
     const au=x?(x.au?{k:'p:'+x.cap,s:x.au}:null):(e.audio?{k:'a:'+(e.audio.name||''),t:e.audio.type,s:e.audio.secs}:null);
     const pics=ph.map(n=>'<button class="tpb" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open the photo from '+esc(own?'you':e.by)+'">'+phImg(n,'tp','Photo from '+e.by)+'</button>').join('')
       +sp.map((u,i)=>'<button class="tpb" data-act="pvOpen" data-cap="'+esc(x.cap)+'" data-i="'+i+'" aria-label="Open your photo"><img class="tp" src="'+u+'" alt="Your photo"></button>').join('')
@@ -2709,9 +2947,9 @@ function jThread(j,pend,inStrip){
     const ed=c&&c.act==='edit'?' · Edited'+(c.waiting?', not delivered, no signal':''):e.edited?' · Edited':'';
     // Your own message on a job can be edited or deleted by pressing and holding it (DEC-0321 rule 1).
     const mine=own&&id&&WFM_CAPTURE_SHAPE.msgKinds.indexOf(kind)>=0;
-    h+='<div class="msg'+(own?' me':'')+'"><div class="bub"'+(mine?' data-mine="'+esc(id)+'" tabindex="0" aria-description="Press and hold to edit or delete"':'')+'>'+(kind!=='Note'?'<span class="kd">'+esc(kind)+'</span>':'')+pics+(au?voiceEl(au.k,au.s,au.t):'')
+    h+='<div class="msg'+(own?' me':'')+cvK(kind)+'"><div class="bub"'+(mine?' data-mine="'+esc(id)+'" tabindex="0" aria-description="Press and hold to edit or delete"':'')+'>'+(kind!=='Note'?'<span class="kd">'+esc(kind)+'</span>':'')+pics+(au?voiceEl(au.k,au.s,au.t):'')
       +(words?'<p>'+esc(words)+'</p>':'')+'</div>'
-      +'<div class="meta">'+(own?'You':esc(e.by))+tm+esc(ps)+(e.after?' · Added after Done':'')+(ed?'<span class="ed">'+esc(ed)+'</span>':'')+'</div></div>';
+      +'<div class="meta">'+(own?'You':(c0=>c0?'<b style="color:'+c0+'">'+esc(e.by)+'</b>':esc(e.by))(cvBy(e.by)))+tm+esc(ps)+(e.after?' · Added after Done':'')+(ed?'<span class="ed">'+esc(ed)+'</span>':'')+'</div></div>';
   });
   return h;
 }
@@ -2758,26 +2996,26 @@ function vJob(){
   const pz=paused?(pPR?{by:'',at:pPR.at,why:pPR.stopped?'Stopped: '+pPR.stopped.why+(pPR.note?'. '+pPR.note:''):pPR.note,x:pPR}:j.paused):null;
   // Where it stands, and since when.
   let sw, ss='';
-  if(S0.done){ const d=j.done||{}; sw=d.how?'Closed':'Done'; ss=(d.how?'Closed':'Done')+' by '+youOr(d.by)+', '+at2(d.at)+'. '+doneSay(j)+'.'; }
+  if(S0.done){ const d=j.done||{}; sw=d.how?'Closed':'Done'; ss='by '+youOr(d.by)+', '+at2(d.at)+'. '+doneSay(j)+'.'; }
   else if(pD){ sw='Done'; ss='You marked it done at '+hm(pD.at)+'. '+sent(pD); }
   else if(paused){ const why=String(pz.why||'').trim(), me=pz.x||(!!st.walker&&nk(pz.by)===nk(st.walker));
     sw='In progress, paused'; ss='Paused by '+(me?'you':pz.by||'someone not named')+(isNaN(Date.parse(pz.at))?'':', '+at2(pz.at))+'.'+(why?' '+why+(/[.!?]$/.test(why)?'':'.'):'')+(pz.x?' '+sent(pz.x):''); }
   else if(doing){ sw='In progress'; const sx=pPR&&pPR.act==='restart'?pPR:pS;
-    if(sx) ss=(sx.act==='restart'?'You restarted it at ':'You started it at ')+hm(sx.at)+'. '+sent(sx);
-    else { const se=(j.thread||[]).filter(x=>(x.kind==='Started'||x.kind==='Restarted')&&!isNaN(Date.parse(x.at))).pop(); if(se) ss=se.kind+' by '+youOr(se.by)+', '+at2(se.at); } }
-  else { sw='To do'; const r=(j.thread||[]).find(x=>x.kind==='Raised'&&!isNaN(Date.parse(x.at))); ss=r?'Raised'+(r.by?' by '+youOr(r.by):'')+', '+at2(r.at):(j.raised?'Raised '+jAge(j):''); }
+    if(sx) ss=sx.sending||sx.waiting?sent(sx):'';
+ }
+  else { sw='To do'; const rd=Math.floor((Date.now()-Date.parse(j.raised))/864e5); ss=isNaN(rd)?'':'raised '+vAgo(rd); }
   // Its permits (W; DEC-0313 rule 3): one applied for and not issued holds Start back.
   const pms=jPerms(j), pPm=pend.find(x=>x.act==='permit'), pmWait=pms.filter(p=>p.state==='Requested'), pmOn=pms.filter(p=>p.state==='Active');
   const pmRef=pms.filter(p=>p.state==='Cancelled'&&p.why!=null&&p.by).pop();
   const waitT=jStartWait(j,S0);
   // The one action (Design 9.1), for the people in the job's group (DEC-0308 rule 3).
   let btn=null, why='', row=false;
-  if(S0.done) why='Anything you add below goes on the job after its Done. The Done and its sign-off stay as they were.';
+  if(S0.done) why='Anything added now is marked after Done.';
   else if(!pD){
     const pa=canIssue()?permAsk(j):null;
     if(pa){ btn=['jpermitReview','permit','Review the Permit']; why=(pa.by?youOr(pa.by).replace(/^you$/,'You'):'Someone')+' applied for a permit to work: '+pa.types.join(', ')+(pa.at&&!isNaN(Date.parse(pa.at))?', at '+at2(pa.at):'')+'. The job cannot start until it is issued.'; }
-    else if(!st.walker) why='Starting and finishing a job need your name on this phone. Add it in Settings.';
-    else if(!inGroup(j)) why='Start, Pause and Stop are for the people in '+GROUP(j.group)+'. Your position is not in it on the desk’s Organisation Structure.';
+    else if(!st.walker) why='Add your name in Settings to start jobs.';
+    else if(!inGroup(j)) why='Only '+GROUP(j.group)+' can start this job.';
     else if(waitT.length&&(!doing||paused)) why='Waiting for the permit to work: '+waitT.join(', ')+', applied for '+((pmWait[0]||pPm||{}).at?at2((pmWait[0]||pPm).at)+' ('+jAge({raised:(pmWait[0]||pPm).at})+')':'')+'.'+(pPm?' '+sent(pPm):'')+' '+issuerSay()+' Start comes back here once it is issued.';
     else row=true;
   }
@@ -2787,7 +3025,7 @@ function vJob(){
   const pc=j.pest||null, pdue=pc?jPestDue(j):null;
   if(pc){ row=false; btn=null; if(!S0.done&&!pD){ sw=''; ss=''; if(st.walker){ btn=['jpVisit','rat','Record a Visit']; why=inGroup(j)?'':'Closing the case is for the people in '+GROUP(j.group)+'. Your position is not in it on the desk\u2019s Organisation Structure.'; } else why='Recording a visit needs your name on this phone. Add it in Settings.'; }
     else if(S0.done) sw='Closed'; }
-  const top='<div class="jtop">'+backBtn(st.place||'due')+'<span class="jtg">'+esc(GROUP(j.group))+(j.no?' · Job '+esc(j.no):'')+'</span>'
+  const top='<div class="jtop">'+backBtn(st.place||'due')+'<span class="jtg"><i class="gdot"'+gSty(j.group)+'></i>'+esc(GROUP(j.group))+(j.no?' · Job '+esc(j.no):'')+'</span>'
       +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>';
   const flv=fl&&/^(urgent|asap|week)$/.test(fl.level||'')?fl.level:'x', mk=S0.done||pD?'done':(doing||paused)?'doing':'todo';
   const zone='<div class="jh jh2">'
@@ -2807,13 +3045,13 @@ function vJob(){
   if(lead&&sp.indexOf(lead)>=0) sp.splice(sp.indexOf(lead),1);
   const strip=sp.length?'<div class="strip">'+sp.map((n,i)=>'<button class="ph" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+sp.length+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'))+'</button>').join('')+'</div>':'';
   const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+(j.photosNotCopied===1?' is':' are')+' on the desk.</div>':'';
-  const hs=holders(j), pA=pend.filter(x=>x.act==='assign');
+  const hs=holders(j), pA=pend.filter(x=>x.act==='assign'), pa=pA[pA.length-1], aOn=pa?((pa.assign||{}).on||[]).map(pName):[], aOff=pa?((pa.assign||{}).off||[]).map(pName):[];
+  const whoL=hs.filter(x=>aOff.indexOf(x.name)<0).map(x=>x.name+(isMe(x)?' (you)':'')).concat(aOn.filter(n=>!hs.some(x=>x.name===n)));
   // Who is on it shows only when someone is; with nobody, only the control that assigns, for whoever may (DEC-0334).
-  const people=(hs.length||pA.length||S0.canAsg)?'<div class="people">'+(hs.length||pA.length?'<span class="lab">On it</span>':'')+'<span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'')
-    +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':'')+'</span>'
-    +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(hs.length?'Change who is on this job':'Give this job to someone')+'">'+(hs.length?'Change':'Assign')+'</button>':'')+'</div>':'';
+  const people=(hs.length||pA.length||S0.canAsg)?'<div class="people">'+(hs.length||pA.length?'<span class="lab">On it</span>':'')+'<span class="who">'+esc(whoL.join(', '))+(pa&&(pa.sending||pa.waiting)?'<span class="sub">'+esc(pa.sending?'Sending':'Not sent yet, no signal')+'</span>':'')+'</span>'
+    +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(whoL.length?'Change who is on this job':'Give this job to someone')+'">'+(whoL.length?'Change':'Assign')+'</button>':'')+'</div>':'';
   return '<div class="jb">'+top+hero+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+msgBar({job:true,id:'jnote',key:'note',val:F.note,ph:'Message',label:'Write on this job, as '+F.kind,
-    kind:'<button class="ktag" data-act="jkinds" aria-haspopup="dialog" aria-controls="jnote" aria-label="Kind of entry: '+esc(F.kind)+'. Change it">'+esc(F.kind)+I.down+'</button>'})+'</div>';
+    kind:'<button class="ktag'+(F.kind==='Note'?' k0':'')+'" data-act="jkinds" aria-haspopup="dialog" aria-controls="jnote" aria-label="'+(F.kind==='Note'?'Kind of entry: none. Choose one':'Kind of entry: '+esc(F.kind)+'. Change it')+'">'+esc(F.kind==='Note'?'Kind':F.kind)+I.down+'</button>'})+'</div>';
 }
 // Record a Visit on an insect case (DEC-0478 rule 3, DEC-0480 rule 2): what was done, what was found, and the next
 // follow-up date, set by the person (no interval claimed without a source). A rodent case's visit is its case visit.
@@ -2887,7 +3125,7 @@ function jMoreSheet(){
 function jKindSheet(){
   const F=st.form;
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Kind of entry"><div class="sh"><b>Kind of Entry</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
-    +'<div class="opts" role="radiogroup" aria-label="Kind of entry">'+WFM_CAPTURE_SHAPE.msgKinds.map(k=>'<button class="opt'+(F.kind===k?' on':'')+'" role="radio" aria-checked="'+(F.kind===k)+'" data-act="jkind" data-v="'+esc(k)+'"><span class="rad"></span><span class="m">'+esc(k)+'</span></button>').join('')+'</div><div style="height:24px"></div></div>';
+    +'<div class="opts" role="radiogroup" aria-label="Kind of entry">'+WFM_CAPTURE_SHAPE.msgKinds.filter(k=>k!=='Note').map(k=>'<button class="opt'+(F.kind===k?' on':'')+'" role="radio" aria-checked="'+(F.kind===k)+'" data-act="jkind" data-v="'+esc(k)+'"><span class="rad"></span><span class="m">'+esc(k)+'</span></button>').join('')+'</div><div style="height:24px"></div></div>';
 }
 // A photo full screen (21.6), from the strip or the conversation.
 function vPhoto(){
@@ -3268,25 +3506,26 @@ function t5StopView(j,C){ const S0=C.stop;
 // Electricity was tapped. No timing is kept.
 function t5Elec(j){ const s=jSent().filter(x=>x.job===j.id&&x.hz).pop(); return s?s.hz.indexOf('electricity')>=0:!!(j.check&&(j.check.hazards||[]).some(h=>h.id==='electricity')); }
 function t5FinQs(j){ return T5().finish.filter(f=>!f.when||(f.when==='electricity'&&t5Elec(j))); }
-function vFinish(){
-  const F=st.form, j=jobById(F.id); if(!j) return ''; const D=F.fin, qs=t5FinQs(j), err=D.tried?t5FinWhy(j):'';
-  F.dphotos=F.dphotos||[];
-  D.marks=D.marks||{}; const M=D.marks, nw=t5FinNew(j);
-  return '<div class="sheet tf" role="dialog" aria-modal="true" aria-label="Mark done">'+t5Zone('Mark Done · Job '+(j.no||''),null,'<div class="hero"><b class="n">'+qs.length+'</b><p>checks,<br>then sign</p></div>')
-    +'<div class="pg"><p class="pgd">Slide your finger down the ones that are true.</p><ol class="pgq">'+qs.map((f,i)=>{ const on=!!M[f.id];
-      return '<li><button class="pgr'+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-id="'+esc(f.id)+'"'+(i===0?' data-t5focus':'')+'><span class="pn">'+(on?I.tick:'')+'</span><b>'+esc(t5Sure(f))+'</b></button></li>'; }).join('')+'</ol>'
-    +'<p class="pgc pgd" aria-live="polite" style="margin-top:8px">'+t5FinSay(qs,M)+'</p>'
-    +(nw?'<div class="field" style="padding:16px 0 0"><label for="t5found">'+esc(nw.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea><div class="help">It goes to the FM, for the risk assessment review.</div></div>':'')
-    +'<div class="field" style="padding:20px 0 0"><span class="fl">A photo of the finished work <span class="opt-w">(optional)</span></span><div class="thumbs">'
-    +F.dphotos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+muBtn(p,'dphotos',i)+'<button class="x" data-act="dphotoDel" data-i="'+i+'" aria-label="Remove the photo"><i>'+I.close+'</i></button></div>').join('')
-    +'<label class="th add" aria-label="Add a photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label><button class="th sk" data-act="muSketch" data-l="dphotos" aria-label="Draw a sketch">'+ICO('pen-line')+'Sketch</button></div></div>'
-    +'<div class="field" style="padding:16px 0 0"><label for="dnote">What was done <span class="opt-w">(optional)</span></label><textarea id="dnote" data-in="dnote">'+esc(F.dnote||'')+'</textarea></div>'
-    +'<div style="margin:0 -16px">'+partsPart(F,'Parts and materials used',true)+'</div>'
-    +'<div class="field sigw" style="padding:20px 0 0"><span class="fl" id="t5sigl">Sign with your finger</span><div class="sigp"><canvas id="t5sig" role="img" aria-labelledby="t5sigl"></canvas><span class="who">'+esc((st.walker||'')+(D.strokes.length?' · '+hm(D.at||new Date().toISOString()):''))+'</span>'
-      +(D.strokes.length?'<button class="clr" data-act="t5SigClear">Clear</button>':'')+'</div></div>'
-    +(err?'<div class="help err" role="alert">'+esc(err)+'</div>':'')+'</div>'
-    +'<div class="ft">'+(F.dphotos.length?'':'<p class="say">With no photo, the job’s record says none was taken.</p>')+'<button class="btn" data-act="t5DoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Sign and Mark Done</button></div></div>';
-}
+
+// ---- Finish: its shared parts (the checks, the signature, the top row) ----
+function finParts(){ const F=st.form, j=jobById(F.id); if(!j) return null; const D=F.fin, qs=t5FinQs(j); F.dphotos=F.dphotos||[]; D.marks=D.marks||{};
+  const M=D.marks, nw=t5FinNew(j), err=D.tried?t5FinWhy(j):'';
+  const checks='<ol class="pgq">'+qs.map((f,i)=>{ const on=!!M[f.id]; return '<li><button class="pgr'+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-id="'+esc(f.id)+'"><span class="pn">'+(on?I.tick:'')+'</span><b>'+esc(t5Sure(f))+'</b></button></li>'; }).join('')+'</ol><p class="pgc pgd" aria-live="polite" style="margin-top:8px">'+t5FinSay(qs,M)+'</p>'
+    +(nw?'<div class="fq"><label for="t5found">'+esc(nw.askQ)+'</label><textarea id="t5found" data-in="t5found">'+esc(F.t5found||'')+'</textarea></div>':'');
+  const sig='<div class="fsig"><canvas id="t5sig" role="img" aria-label="Sign with your finger"></canvas><span class="fx" aria-hidden="true">'+I.close+'</span><span class="who">'+esc((st.walker||'')+(D.strokes.length?' · '+hm(D.at||new Date().toISOString()):''))+'</span>'
+    +(D.strokes.length?'<button class="clr" data-act="t5SigClear">Clear</button>':'<span class="fhint">Sign with your finger</span>')+'</div>';
+  const top=(t,back,extra)=>'<div class="zone z fz"><div class="zt"><button class="ib" data-act="'+back+'" aria-label="Back">'+I.back+'</button><span class="eb">'+esc(t)+'</span><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'+(extra||'')+'</div>';
+  return {F:F,j:j,D:D,err:err,checks:checks,sig:sig,top:top}; }
+// Finish (John, 24 Nov 2026: "i cant make closing a job harder", then "Yes, C"): say it and sign. One question, the camera in
+// its corner, the three checks, the signature. One screen, no scrolling; it asks less than before.
+function vFinish(){ const P=finParts(); if(!P) return ''; const F=P.F, j=P.j, ph=F.dphotos[0];
+  return '<div class="sheet tf fc" role="dialog" aria-modal="true" aria-label="Mark done">'+P.top('Finish · Job '+(j.no||''),'t5Back')
+   +'<div class="pg"><div class="fcs"><label for="dnote">What did you do, and what caused it?</label><div class="fcf"><textarea id="dnote" data-in="dnote" rows="3" data-t5focus>'+esc(F.dnote||'')+'</textarea>'
+     +(ph?'<span class="fct" style="background-image:url('+(ph.url||'')+')"><button class="x" data-act="dphotoDel" data-i="0" aria-label="Remove the photo"><i>'+I.close+'</i></button></span>'
+        :'<label class="fcc" aria-label="Add a photo of the finished work">'+I.photo+'<input type="file" accept="image/*" capture="environment" multiple data-file="dphotos"></label>')+'</div></div>'
+   +'<p class="pgd">Slide your finger down the ones that are true.</p>'+P.checks
+   +P.sig+(P.err?'<div class="help err" role="alert">'+esc(P.err)+'</div>':'')+'</div>'
+   +'<div class="ft"><button class="btn" data-act="t5DoneSend"'+(st.busy?' disabled':'')+'>'+I.tick+'Sign and Mark Done</button></div></div>'; }
 const t5FinSay=(qs,M)=>{ const n=qs.filter(f=>M[f.id]).length; return n===qs.length?'All '+n+' marked.':n+' of '+qs.length+' marked. The FM will see which.'; };
 // The line whose unmarked state asks a question ("What did you find?"), once anything is marked or Sign was pressed.
 function t5FinNew(j){ const D=st.form.fin, M=D.marks||{}; if(!D.tried&&!Object.keys(M).length) return null; return t5FinQs(j).find(f=>f.ask&&!M[f.id])||null; }
@@ -3514,17 +3753,17 @@ function vMissed(){
   const r=roundById(st.form.id), it=r&&(SITE().due||[]).find(i=>i.round===r.id), w=it&&it.walk;
   if(!r||!w) return '<div class="body">'+formZone('due','Walk','Nothing Missed','No walks of this round are missed in the site details from the desk.')+'</div>';
   const f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
-  return '<div class="body"><div class="zone"><div class="ztop">'+backBtn('due')+'<span class="eb">'+esc(r.name)+'</span></div><div class="row1"><span class="num n" data-urg style="color:var(--inkRed)">'+w.missed+'</span><span class="what">not walked</span></div>'
-    +'<p>The last at <b class="n">'+esc(hm(w.lastMissed))+'</b>, '+esc(day(w.lastMissed))+'. A walk’s time cannot be walked once it has passed; the desk closes each one with a reason on Jobs.'+(w.open?' The next is open now, until <b class="n">'+esc(hm(w.open.end))+'</b>.':'')+'</p>'
-    +(w.open?'<button class="btn" data-act="roundStart" data-id="'+esc(r.id)+'">'+I.scan+walkOpenSay(r.id)+'</button>':'')+'</div>'
-    +'<div class="list" style="border-top:none">'+f('Walked by',esc(r.walker||'Not chosen'))+(it.linesDue?f('Its lines','not proven since <span class="n">'+esc(day(it.linesDue))+'</span>'):'')+'</div></div>';
+  return '<div class="body v1">'+vlTop('due',esc(r.name))+'<div class="jh jh2">'
+    +vlNum(w.missed,'Not walked','The last at '+hm(w.lastMissed)+', '+day(w.lastMissed)+'.'+(w.open?' The next is open until '+hm(w.open.end)+'.':''),'urgent',true)
+    +(w.open?'<button class="b1" data-act="roundStart" data-id="'+esc(r.id)+'">'+I.scan+walkOpenSay(r.id)+'</button>':'')+WAVE+'</div>'
+    +'<div class="list">'+f('Walked by',esc(r.walker||'Not chosen'))+(it.linesDue?f('Its lines','not proven since <span class="n">'+esc(day(it.linesDue))+'</span>'):'')+'</div></div>';
 }
 function vWalkInfo(){
   const r=roundById(st.form.id); if(!r) return '<div class="body">'+formZone('due','Walk','Walk Not Found','This walk is no longer in the site details from the desk.')+'</div>';
   const t=hm(st.form.from), to=nextTime(r,t), f=(k,v)=>'<div class="f"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
-  return '<div class="body"><div class="zone"><div class="ztop">'+backBtn('due')+'<span class="eb">Opens at <span class="n">'+esc(t)+'</span></span></div><h1>'+esc(r.name)+', <span class="n">'+esc(t)+'</span></h1>'
-    +'<p>It cannot be started before <b class="n">'+esc(t)+'</b>: the desk counts a walk’s scans only inside its time. Come back to Due then.</p></div>'
-    +'<div class="list" style="border-top:none">'+f('Open','<span class="n">'+esc(t)+'</span> to <span class="n">'+esc(to)+'</span>')+f('Points','<span class="n">'+(r.points||[]).length+'</span>')
+  return '<div class="body v1">'+vlTop('due','Opens at '+esc(t))+'<div class="jh jh2"><h1>'+esc(r.name)+', <span class="n">'+esc(t)+'</span></h1>'
+    +'<p class="jn2">Opens at '+esc(t)+'.</p>'+WAVE+'</div>'
+    +'<div class="list">'+f('Open','<span class="n">'+esc(t)+'</span> to <span class="n">'+esc(to)+'</span>')+f('Points','<span class="n">'+(r.points||[]).length+'</span>')
     +f('Proves',esc(plural((r.lines||[]).length,'line'))+'<span class="sub">'+esc((r.lines||[]).join(', '))+'</span>')+f('Walked by',esc(r.walker||'Not chosen'))+'</div></div>';
 }
 // ── Alerts (DEC-0288 rule 2, DEC-0344) ─────────────────────────────────────────────────────────
@@ -3980,46 +4219,49 @@ function walkSays(w){ const no=(w.lines||[]).filter(x=>!x.ok).length, okN=(w.lin
   return '<span class="n">'+(w.scanned||0)+'</span> of <span class="n">'+(w.of||0)+'</span> points'+(gone?', stopped early':'')+' · <span class="n">'+okN+'</span> '+(okN===1?'line':'lines')+' OK'+(no?', <span class="n">'+no+'</span> not OK':''); }
 function walkRowP(x,kind){
   if(kind==='done'){ const j=x, w=j.walk, d=j.done||{};
-    return '<button class="ra c jx" data-act="walkRec" data-id="'+esc(j.id)+'"><span class="gi">'+SMK('done')+'</span><span class="m"><span class="w">'+esc(j.title)+'</span>'
+    return '<button class="ra c" data-act="walkRec" data-id="'+esc(j.id)+'"><span class="gi">'+SMK('done')+'</span><span class="m"><span class="w">'+esc(j.title)+'</span>'
       +'<span class="sub">'+esc(dayWord(Date.parse(j.due)))+' · signed by '+esc(youOr(w?w.by:d.by))+' at <span class="n">'+hm(w?w.at:d.at)+'</span></span>'
       +(w?'<span class="sub">'+walkSays(w)+'</span>':'')+'</span>'+I.chev+'</button>'; }
   if(kind==='sent'){ const r=roundById(x.round);
     return '<div class="ra c"><span class="gi">'+I.wait+'</span><span class="m"><span class="w">'+esc(r?r.name:'Walk')+'</span><span class="sub">Sent from this phone at <span class="n">'+hm(x.at)+'</span>. Waiting for the desk to file it.</span></span></div>'; }
-  if(kind==='missed') return '<div class="ra c jt"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(x.title)+'</span><span class="sub">'+esc(dayWord(Date.parse(x.due)))+' · no walk filed</span></span></div>';
+  if(kind==='missed') return '<div class="ra c"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(x.title)+'</span><span class="sub">'+esc(dayWord(Date.parse(x.due)))+' · no walk filed</span></span></div>';
   // Due: the row starts the walk.
   return '<button class="ra c" data-act="roundStart" data-id="'+esc(x.round)+'"><span class="gi">'+SMK('due')+'</span><span class="m"><span class="w">'+esc(x.title)+'</span>'
     +'<span class="sub">'+(x.later?'Later today, at <span class="n">'+hm(x.at)+'</span>':'Due now'+(x.slot&&x.slot.end?', until <span class="n">'+hm(x.slot.end)+'</span>':''))+'</span></span>'+I.chev+'</button>';
 }
+// A day's missed walks in one sub-line, by round: "Night 01:00 and 21:00 · Maintenance 08:00 and 18:00 · Day 15:00".
+function walkMissSay(L){ const by=[]; L.forEach(j=>{ const m=/^(.*?)\s*(\d\d:\d\d)$/.exec(j.title||''), n=(m?m[1]:j.title||'Walk').replace(/\s*fire walk$/i,''), t=m?m[2]:''; let g=by.find(x=>x.n===n); if(!g) by.push(g={n:n,t:[]}); if(t) g.t.push(t); });
+  return by.map(g=>g.n+(g.t.length?' '+g.t.join(' and '):'')).join(' · '); }
 function vWalks(){
   st.place='due';
   const W=walkSplit(), t=st.walksTab||'due', last=W.done[0], lw=last&&last.walk;
-  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('due')+'<span class="eb">Due</span></div><div style="display:flex;gap:12px;align-items:center"><span class="gi">'+GICO('fire-walks')+'</span><h1 style="margin:0">'+esc(GROUP('fire-walks'))+'</h1></div>'
-    +'<p>'+(last?'The last walk filed: '+esc(last.title)+', '+esc(dayWord(Date.parse(last.due)).toLowerCase().replace(/^(mon|tue|wed|thu|fri|sat|sun)/,s=>s[0].toUpperCase()+s.slice(1)))+', signed by '+esc(youOr(lw?lw.by:(last.done||{}).by))+' at <b class="n">'+hm(lw?lw.at:(last.done||{}).at)+'</b>.':'No walk filed in the last <b class="n">'+doneDays()+'</b> days.')+'</p>'
-    +'<div class="sw" role="tablist">'+[['due','Due Today',W.due.length],['done','Done',W.done.length+W.sent.length],['missed','Missed',W.missed.length]].map(x=>'<button role="tab" class="'+(t===x[0]?'on':'')+'" data-act="walksTab" data-v="'+x[0]+'" aria-selected="'+(t===x[0])+'"><span class="n">'+SMK(x[0]==='missed'?'miss':x[0])+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>';
-  if(t==='done'){ h+=grp('Done, last '+doneDays()+' days')+((W.sent.length||W.done.length)?'<div class="list">'+W.sent.map(x=>walkRowP(x,'sent')).join('')+W.done.map(j=>walkRowP(j,'done')).join('')+'</div>':'<p class="para">No walk filed in the last '+doneDays()+' days. Older walks are on the desk’s Walk Checklists.</p>'); }
-  else if(t==='missed') h+=grp('Missed, last '+doneDays()+' days')+(W.missed.length?'<div class="list">'+walkMissDays(W.missed).map(d=>'<div class="ra c jt"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(dayWord(d.at))+': <span class="n">'+d.L.length+'</span> missed</span><span class="sub">'+esc(d.L.map(j=>j.title).join(', '))+'</span></span></div>').join('')+'</div>':'<p class="para">No walk missed in the last '+doneDays()+' days.</p>')
+  let h='<div class="body v1">'+vlTop('due','Due')+'<div class="jh jh2"><h1>'+esc(GROUP('fire-walks'))+'</h1>'
+    +'<p class="jn2">'+(last?'Last: '+esc(last.title)+', '+esc(dayWord(Date.parse(last.due)).toLowerCase().replace(/^(mon|tue|wed|thu|fri|sat|sun)/,s=>s[0].toUpperCase()+s.slice(1)))+', signed by '+esc(youOr(lw?lw.by:(last.done||{}).by))+' at '+hm(lw?lw.at:(last.done||{}).at)+'.':'No walk filed in the last '+doneDays()+' days.')+'</p>'
+    +'<div class="sw" role="tablist">'+[['due','Due Today',W.due.length],['done','Done',W.done.length+W.sent.length],['missed','Missed',W.missed.length]].map(x=>'<button role="tab" class="'+(t===x[0]?'on':'')+'" data-act="walksTab" data-v="'+x[0]+'" aria-selected="'+(t===x[0])+'"><span class="n">'+SMK(x[0]==='missed'?'miss':x[0])+x[2]+'</span>'+x[1]+'</button>').join('')+'</div>'+WAVE+'</div>';
+  if(t==='done'){ const n=W.sent.length+W.done.length; h+=vGrp('Done, last '+doneDays()+' days',n)+(n?'<div class="list">'+W.sent.map(x=>walkRowP(x,'sent')).join('')+W.done.map(j=>walkRowP(j,'done')).join('')+'</div>':'<p class="para">No walk filed in the last '+doneDays()+' days.</p>'); }
+  else if(t==='missed') h+=vGrp('Missed, last '+doneDays()+' days',W.missed.length)+(W.missed.length?'<div class="list">'+walkMissDays(W.missed).map(d=>'<div class="ra c"><span class="gi">'+SMK('miss')+'</span><span class="m"><span class="w">'+esc(dayWord(d.at))+': <span class="n">'+d.L.length+'</span> missed</span><span class="sub">'+esc(walkMissSay(d.L))+'</span></span></div>').join('')+'</div>':'<p class="para">No walk missed in the last '+doneDays()+' days.</p>')
     +(W.older?'<p class="para"><span class="n">'+W.older+'</span> older '+(W.older===1?'walk':'walks')+' with no walk filed are on the desk’s Plan.</p>':'');
-  else h+=grp('Due today')+(W.due.length?'<div class="list">'+W.due.map(x=>walkRowP(x,'due')).join('')+'</div>':'<p class="para">Nothing more is due today.</p>');
+  else h+=vGrp('Due today',W.due.length)+(W.due.length?'<div class="list">'+W.due.map(x=>walkRowP(x,'due')).join('')+'</div>':'<p class="para">Nothing more is due today.</p>');
   return h+'<div style="height:96px"></div></div>'+navBar('due');
 }
-// A done walk opened: its record (DEC-0366 rule 5). The zone carries who, when and the points (Design 21.1); then why it
-// stopped early; then the lines, a Not OK line carrying its job and where it stands, which opens the job (rule 4).
+// A done walk opened: its record (DEC-0366 rule 5). The head carries who, when and the points (Design 21.1, 21.13); then
+// why it stopped early; then the lines, a Not OK line carrying its job and where it stands, which opens the job (rule 4).
 function vWalkRec(){
   st.place='walkrec';
   const j=(SITE().jobs||[]).find(x=>x.id===st.wrec), w=j&&j.walk;
   if(!j||!w) return '<div class="body">'+formZone('walks','Fire Walks','No Longer on the Phone','This walk is no longer in the site details from the desk. Walks stay '+doneDays()+' days; older ones are on the desk’s Walk Checklists.')+'</div>'+navBar('due');
   const r=roundById(j.round), nu=w.unscanned||0, gone=Math.max(0,(w.of||0)-(w.scanned||0)-nu), no=(w.lines||[]).filter(x=>!x.ok).length, slotT=(/(\d\d:\d\d)$/.exec(j.title)||[])[1];
-  let h='<div class="body"><div class="zone"><div class="ztop">'+backBtn('walks')+'<span class="eb">'+esc(GROUP('fire-walks'))+'</span></div><h1>'+esc(r?r.name:j.title)+'</h1>'
-    +'<p>'+esc(dayWord(Date.parse(j.due)))+(slotT?', the <b class="n">'+slotT+'</b> walk':'')+'. Signed off by '+esc(youOr(w.by))+' at <b class="n">'+hm(w.at)+'</b>.</p>'
-    +'<p><b class="n">'+(w.scanned||0)+'</b> of <b class="n">'+(w.of||0)+'</b> points.'+(nu?' <b class="n">'+nu+'</b> would not scan.':'')+(gone?' <b class="n">'+gone+'</b> not scanned.':'')+'</p></div>';
-  if(gone) h+=grp('Why it stopped early')+'<div class="wait">'+(w.early?esc(w.early.label)+(w.early.note?': “'+esc(w.early.note)+'”':'')+'.':'Not said. This walk was signed before the phone asked why.')+'</div>';
-  h+=grp('The '+plural((w.lines||[]).length,'line')+' it proves')+(w.allOk?'<div class="wait">All OK pressed at <b class="n">'+hm(w.allOk)+'</b>.</div>':'')+'<div class="list">';
+  let h='<div class="body v1">'+vlTop('walks',esc(GROUP('fire-walks')))+'<div class="jh jh2"><h1>'+esc(r?r.name:j.title)+'</h1>'
+    +'<div class="jpl">'+esc(dayWord(Date.parse(j.due)))+(slotT?', the <span class="n">'+slotT+'</span> walk':'')+'</div>'
+    +'<div class="jst2">'+SMK('done')+'<span><b>Signed off by '+esc(youOr(w.by))+' at '+hm(w.at)+'</b> · '+(w.scanned||0)+' of '+(w.of||0)+' points.'+(nu?' '+nu+' would not scan.':'')+(gone?' '+gone+' not scanned.':'')+'</span></div>'+WAVE+'</div>';
+  if(gone) h+=vGrp('Why it stopped early')+'<div class="wait">'+(w.early?esc(w.early.label)+(w.early.note?': “'+esc(w.early.note)+'”':'')+'.':'Not said. This walk was signed before the phone asked why.')+'</div>';
+  h+=vGrp('The '+plural((w.lines||[]).length,'line')+' it proves')+(w.allOk?'<div class="wait">All OK pressed at <b class="n">'+hm(w.allOk)+'</b>.</div>':'')+'<div class="list">';
   (w.lines||[]).forEach(x=>{ const l=lineById(x.line), what=l?l.what:x.line;
     h+='<div class="wrl"><span class="mk" role="img" aria-label="'+(x.ok?'OK':'Not OK')+'" style="color:'+(x.ok?'var(--jDone)':'var(--redText)')+'">'+(x.ok?I.tick:I.close)+'</span><span class="m"><span class="w">'+esc(what)+'</span>'
       +(x.ok?'':'<span class="sub">Not OK'+(x.note?': “'+esc(x.note)+'”':'')+'</span>')+'</span></div>';
     (x.jobs||[]).forEach(id=>{ const jb=jobById(id);
-      h+=jb?'<button class="wjob" data-act="openJob" data-id="'+esc(id)+'"><span class="m"><span class="gl sub">'+GICO(jb.group)+esc(GROUP(jb.group))+'</span><span class="w">Job '+(jb.no?'<span class="n">'+esc(jb.no)+'</span>, ':'')+esc(jb.state==='done'?'Done':jb.state==='doing'?'In progress':'To do')+'</span>'
-          +(holders(jb).length||jb.state!=='done'?'<span class="sub">'+esc(holders(jb).length?holdersSay(jb):'Nobody on it yet')+'</span>':'')+'</span>'+I.chev+'</button>'
+      h+=jb?'<button class="wjob" data-act="openJob" data-id="'+esc(id)+'"><span class="m"><span class="w">Job '+(jb.no?'<span class="n">'+esc(jb.no)+'</span>, ':'')+esc(jb.state==='done'?'Done':jb.state==='doing'?'In progress':'To do')+'</span>'
+          +'<span class="sub">'+esc(GROUP(jb.group))+(holders(jb).length||jb.state!=='done'?' · '+esc(holders(jb).length?holdersSay(jb):'Nobody on it yet'):'')+'</span></span></button>'
         :'<div class="wjob"><span class="m"><span class="sub">Made a job on the desk; it is no longer on the phone.</span></span></div>'; });
   });
   return h+'</div><div style="height:96px"></div></div>'+navBar('due');
@@ -4854,7 +5096,7 @@ app.addEventListener('click',async e=>{
   if(a==='pickDuty'){ F.duty=b.dataset.id; F.dq=''; return render(); }
   if(a==='dutyClear'){ F.duty=''; return render(); }
   // A job's actions (P4): each is a capture of kind job, filed on the desk by wfmCapApplyJobUpdate.
-  if(a==='jkind'){ F.kind=b.dataset.v; st.sheet=false; render(); const t=app.querySelector('.mbar .ktag'); if(t) t.focus(); return; }
+  if(a==='jkind'){ F.kind=F.kind===b.dataset.v?'Note':b.dataset.v; st.sheet=false; render(); const t=app.querySelector('.mbar .ktag'); if(t) t.focus(); return; }
   // P6: the kind tag, More, a photo full screen, the microphone and send, a voice note played, checked, sent or thrown away.
   if(a==='jkinds'){ st.sheet='jkinds'; render(); const v=app.querySelector('.sheet .opt.on')||app.querySelector('.sheet .opt'); if(v) v.focus(); return; }
   if(a==='jmore'){ st.sheet='jmore'; render(); const v=app.querySelector('.sheet .verb'); if(v) v.focus(); return; }
@@ -6657,7 +6899,7 @@ boot();
     // where it lands: Due's head wave, the sign-in head's tide line, or the wave under the first block of Who Are You
     // (a ::after on the zone)
     let r=null, ra=null;
-    if(!TILE){ const hd=document.querySelector('.c-hd')||document.querySelector('.si-hd'), rw=hd&&hd.querySelector('.c-wv,.si-tide'), real=rw&&rw.querySelector('.c-wave');
+    if(!TILE){ const hd=document.querySelector('.c-hd')||document.querySelector('.s-due .vjh')||document.querySelector('.si-hd'), rw=hd&&hd.querySelector('.c-wv,.si-tide'), real=rw&&rw.querySelector('.c-wave');
       if(real){ r=rw.getBoundingClientRect(); ra=real.getAnimations()[0]; } }
     else { const z=document.querySelector('.body>.zone:first-child');
       if(z&&!document.querySelector('.splash')){ const b=z.getBoundingClientRect(); r={left:b.left,top:b.bottom-22,width:b.width,height:22};
