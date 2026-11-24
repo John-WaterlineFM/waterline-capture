@@ -414,6 +414,37 @@ span.pic.tp{width:200px;height:120px;margin-top:8px}
 /* P6, the opened job (DEC-0317, DEC-0318; mockup sandbox/mockups/job-2026-10-20, round 1). The screen is one column the
    height of the phone: the zone, the photo strip and who is on it stay put; the conversation scrolls between them and the
    message bar (21.6, 21.9). Icons drawn under 24px keep a 1.75 stroke on the 24 grid (21.7). */
+.stg{display:flex;gap:12px;margin:16px 0 0}
+.sbtn{flex:1;height:56px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:8px;font:600 13px Outfit;letter-spacing:.02em;width:100%}
+.sbtn svg{width:22px;height:22px}
+.sbtn.p{background:var(--btnFill);color:var(--btnText)}
+.sbtn.g{background:transparent;border:1.5px solid var(--accentOnInk);color:var(--accentOnInk)}
+.jhero{display:block;flex:none;width:100%;height:240px;position:relative;overflow:hidden;background:var(--stone)}
+.jhero img{width:100%;height:100%;object-fit:cover;display:block}
+.jhn{position:absolute;right:12px;bottom:12px;background:rgba(13,31,45,.72);color:#fff;font-size:12px;padding:2px 8px;border-radius:6px}
+.upn{margin-top:12px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--white)}
+.upn.glow-urgent{border-color:var(--red);box-shadow:0 0 0 1px var(--red),0 0 14px rgba(220,38,38,.30)}
+.upn.glow-asap{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber),0 0 14px rgba(217,119,6,.30)}
+.upn.glow-week{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 14px rgba(30,135,168,.25)}
+.uph{display:block;width:100%;height:180px;overflow:hidden}.uph img{width:100%;height:100%;object-fit:cover;display:block}
+.upt{display:block;width:100%;text-align:left;padding:12px 16px 0;color:var(--text)}
+.upt .jfl{display:flex;align-items:center;gap:4px;font-size:12px;margin-top:4px}
+.upw{display:block;font:700 20px/1.25 Sora;margin:4px 0}
+.upt .jwh{color:var(--textMid)}
+.ups{display:block;font-size:12px;color:var(--textMid);margin:4px 0 0}
+.upn .sbtn{width:calc(100% - 32px);margin:12px 16px 16px}
+.bld{margin:12px 16px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--white)}
+.flb{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:0 16px;border-top:1px solid var(--border);text-align:left;color:var(--text);position:relative}
+.flb:first-child{border-top:0}.flb:disabled{color:var(--textMuted)}
+.flb .fn{width:64px;font-weight:600;flex:none}
+.flb .fm{flex:1;display:flex;flex-wrap:wrap;gap:3px;align-content:center}
+.flb .fm i{width:8px;height:8px;border-radius:2px;background:var(--textMuted);opacity:.5}
+.flb .fm i.d{background:var(--jDoing);opacity:1}.flb .fm i.f-urgent{background:var(--red);opacity:1}.flb .fm i.f-asap{background:var(--amber);opacity:1}.flb .fm i.f-week{background:var(--accent);opacity:1}
+.flb .fc{font:700 20px Sora;min-width:32px;text-align:right}
+.flb.on{background:var(--stone)}.flb.on::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accentD)}
+.bld .gl{height:0;border-top:2px solid var(--accent)}.bld .gl+.flb{border-top:0}
+.flb .fn{width:80px}
+.flo{margin:8px 16px 0;font-size:12px;color:var(--textMid)}.flo .lnk{display:inline;min-height:0;font:600 12px 'DM Sans'}
 .jb{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 .jb .zone{flex:none;padding:calc(8px + env(safe-area-inset-top)) 8px 16px 8px}
 .jb .ztop{display:flex;align-items:center;gap:4px;margin:0}
@@ -1223,6 +1254,129 @@ body.t-ni .r.fl-over{background:color-mix(in srgb,var(--jTodo) 12%,var(--white))
 .ds.cam .off{padding:0 24px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
 .ds.cam .off b{font:800 20px Sora;color:var(--onInk)}
 .ds.cam .off p{margin:0;font-size:15px;line-height:1.4;color:var(--navMid)}
+
+/* ── The phone's visual language on Jobs (DEC-0509; Design 21.10 to 21.16). Sizes 48 · 28 · 17 · 13 only (21.15). ── */
+body.t-li,body.t-wl{--accentL:#E4F4FA}body.t-ni{--accentL:#0F2C40}
+/* 21.10 the bar: icons alone, the page you are on filled in teal, the rest outlines in textMuted, no line under it; a flat
+   bar with one hairline; Capture a key set level in the bar, 56 × 44, 12px corners, ink (teal at Night). */
+.navb{height:calc(60px + env(safe-area-inset-bottom));align-items:center;padding:0 8px env(safe-area-inset-bottom)}
+.nv{height:60px;color:var(--textMuted);transition:opacity .2s}
+.nv:active{opacity:.6;transition:none}
+.nv.on{color:var(--accentD)}
+.nv.on:not(.cap)::after{display:none}
+.nv>svg.ms{width:28px;height:28px}
+.nv .bd{top:8px;font-size:13px}
+body.t-ni .nv .bd{background:#34D399;color:#071320}
+.nv.cap{width:72px;height:60px;margin-top:0;justify-content:center}
+.nv.cap:active{opacity:1}
+.nv.cap .capb{width:56px;height:44px;border-radius:12px;background:var(--ink);color:#FFFFFF;box-shadow:none;transition:transform .2s}
+.nv.cap:active .capb{transform:scale(.94);transition:none}
+body.t-ni .nv.cap .capb{background:var(--accent);color:#071320}
+.nv.cap .capb svg{width:28px;height:28px}
+.nv.cap.sent .capb::after{border-radius:12px}
+/* Heads (21.1, 21.13, 21.14): white to the wave in Light, ink at Night; the wave is the app's own WAVE, in Light recoloured
+   as the desk's page-header wave (the border line at .8, the accent line at .45, a 6% wash). */
+.jh{background:var(--ink);padding:0 20px;--hT:#FFFFFF;--hM:rgba(255,255,255,.72);--hA:var(--accentOnInk);--hRed:#F87171;--hAmb:#FBBF24;--hWk:var(--accentOnInk)}
+body.t-li .jh,body.t-li .jtop{background:var(--white);--hT:var(--text);--hM:var(--textMid);--hA:var(--accentD);--hRed:var(--redText);--hAmb:var(--amberText);--hWk:var(--accentD)}
+.jh .c-wv{margin:12px -20px 0}
+body.t-li .jh .c-wave path:nth-of-type(1){stroke:var(--border);opacity:.8}
+body.t-li .jh .c-wave path:nth-of-type(2){stroke:var(--accent);stroke-width:1;opacity:.45}
+body.t-li .jh .c-wave stop{stop-color:var(--accent)}
+body.t-li .jh .c-wave stop:first-child{stop-opacity:.06}
+.vjh{padding-top:calc(8px + env(safe-area-inset-top))}
+.vtl{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.vjh h1{font:800 28px/1.2 Sora;color:var(--hT);margin:0}
+.jh .ib{color:var(--hA)}.vtl .ib{margin-right:-12px}
+.vz{display:flex;gap:16px;align-items:center;margin-top:8px}
+.vzn{font:800 48px/1 Sora;letter-spacing:-.04em;color:var(--hT)}
+.vzw{flex:1;min-width:0;margin:0}
+.vzw b{display:block;font:800 17px/1.3 Sora;color:var(--hT)}
+.vzw span{display:block;font:400 13px/1.4 'DM Sans';color:var(--hM)}
+.jh .t-urgent{color:var(--hRed)}.jh .t-asap{color:var(--hAmb)}.jh .t-week{color:var(--hWk)}
+.vtabs{display:flex;gap:28px;margin:12px 0 0}
+.vtabs button{flex:none;padding:0;min-height:44px;font:600 17px Outfit;color:var(--hA);border-bottom:2px solid transparent;transition:opacity .2s}
+.vtabs button:active{opacity:.6;transition:none}
+.vtabs button.on{color:var(--hT);border-bottom-color:var(--hA)}
+.vq{padding:12px 12px 0}.vq input{font-size:17px}
+/* 21.12 sections and rows */
+.vsh{display:flex;align-items:center;gap:8px;padding:24px 20px 8px}
+.vsh .vl{font:700 13px Outfit;letter-spacing:1.5px;text-transform:uppercase;color:var(--textMid)}
+.vsh>b{font:800 17px Sora;color:var(--text)}
+.vsh.urgent .vl,.vsh.urgent>b{color:var(--redText)}.vsh.asap .vl,.vsh.asap>b{color:var(--amberText)}
+.vsrt{margin-left:auto;min-height:44px;display:inline-flex;align-items:center;gap:4px;font:600 17px Outfit;color:var(--accentD)}
+.vsrt svg{width:20px;height:20px}
+.s-jobs .vsh{text-shadow:0 0 2px var(--cream),0 0 4px var(--cream),0 0 6px var(--cream)}
+.vsheet{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.vr{display:flex;align-items:flex-start;gap:12px;width:100%;min-height:80px;padding:12px 16px;text-align:left;color:var(--text);position:relative;transition:background-color .2s}
+.vr:active{background:var(--stone);transition:none}
+.vr+.vr::before,.vact+.vr::before,.vmore::before,.vr+.ra::before{content:'';position:absolute;top:0;left:84px;right:0;height:1px;background:var(--border)}
+.vsheet>.ra{position:relative}.vsheet>.ra:last-child{border-bottom:0}
+.vth{width:56px;height:56px;border-radius:12px;overflow:hidden;flex:none;background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--textMuted);line-height:1}
+.vth img{width:100%;height:100%;object-fit:cover;display:block}
+.vth small{font:500 13px 'DM Sans';color:var(--textMid);margin-bottom:4px}
+.vth b{font:800 17px Sora;color:var(--text)}
+.vth svg{width:24px;height:24px}
+.vth.pw{padding:4px}.vth em{font:500 13px/1.2 'DM Sans';font-style:normal;color:var(--text);text-align:center;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vth.r-urgent{box-shadow:0 0 0 2px var(--white),0 0 0 4px var(--red),0 0 8px 2px color-mix(in srgb,var(--red) 30%,transparent)}
+.vth.r-asap{box-shadow:0 0 0 2px var(--white),0 0 0 4px var(--amberRing,var(--amber)),0 0 8px 2px color-mix(in srgb,var(--amber) 30%,transparent)}
+.vth.r-week{box-shadow:0 0 0 2px var(--white),0 0 0 4px var(--accent),0 0 8px 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+.vt{flex:1;min-width:0}
+.vw{display:block;font:600 17px/1.3 'DM Sans';overflow-wrap:anywhere}
+.vs{display:block;font:500 13px/1.4 'DM Sans';color:var(--textMid);margin-top:4px}
+.vs svg{width:13px;height:13px;vertical-align:-2px;margin-right:3px;stroke-width:2.5}
+.vfl{font-weight:700}.vfl.f-urgent{color:var(--redText)}.vfl.f-asap{color:var(--amberText)}.vfl.f-week{color:var(--accentD)}
+.vdg{font-weight:600;color:var(--text)}
+.vlate{color:var(--redText);font-weight:700}
+.vwhy{display:block;font:400 13px/1.4 'DM Sans';color:var(--textMid);margin-top:2px}
+.va{flex:none;display:flex;flex-direction:column;align-items:flex-end;min-width:44px;line-height:1}
+.va b{font:800 17px Sora;color:var(--text)}
+.va i{font:500 13px 'DM Sans';font-style:normal;color:var(--textMuted);margin-top:4px}
+.va .sm{width:16px;height:16px;margin-top:8px}
+.va .s-todo,.jst2 .s-todo{color:var(--jTodo)}.va .s-doing,.jst2 .s-doing{color:var(--jDoing)}.jst2 .s-done{color:var(--jDone)}
+.vact{padding:0 16px 16px 84px;position:relative}
+.vmore{display:flex;align-items:center;width:100%;min-height:48px;padding:0 16px 0 84px;font:600 17px Outfit;color:var(--accentD);position:relative;text-align:left}
+/* By Floor: the building as one flat band, like the sections */
+.bld{margin:24px 0 0;border-radius:0;border-left:0;border-right:0}
+.flb .fn{font:600 17px 'DM Sans'}
+.flb .fc{font:800 17px Sora}
+/* 21.11 actions: primary filled, 56px, 12px corners, Outfit 600 17; secondary tinted, no edge; the pair 2 : 3 */
+.b1,.b2{width:100%;min-height:56px;border-radius:12px;font:600 17px Outfit;display:flex;align-items:center;justify-content:center;gap:8px;transition:filter .2s}
+.b1{background:var(--btnFill);color:var(--btnText)}
+.b2{background:var(--accentL);color:var(--accentD)}
+.b1:active,.b2:active{filter:brightness(.88);transition:none}
+.b1 svg,.b2 svg{width:20px;height:20px;stroke-width:2.25;flex:none}
+.b1 svg polygon,.b1 svg rect,.b2 svg polygon,.b2 svg rect{fill:currentColor}
+.b1[disabled],.b2[disabled]{opacity:.6;cursor:default}
+.stg2{display:grid;grid-template-columns:2fr 3fr;gap:8px}
+/* 21.13 the opened record */
+.jb .jtop{flex:none;display:flex;align-items:center;gap:4px;padding:calc(4px + env(safe-area-inset-top)) 4px 0;background:var(--ink)}
+.jtop .ib{color:var(--accentOnInk)}body.t-li .jtop .ib{color:var(--accentD)}
+.jtg{flex:1;min-width:0;text-align:center;font:500 13px 'DM Sans';color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.t-li .jtg{color:var(--textMid)}
+.jb .jhero{height:min(230px,22vh)}
+.jb .jhn{font:500 13px 'DM Sans';border-radius:12px}
+.jh2{flex:none;padding-top:8px}
+.jfl2{display:flex;align-items:center;gap:6px;font:500 13px/1.4 'DM Sans';color:var(--hM)}
+.jfl2 svg{width:16px;height:16px;stroke-width:2;flex:none}
+.jfl2.f-urgent b,.jfl2.f-urgent svg{color:var(--hRed)}.jfl2.f-asap b,.jfl2.f-asap svg{color:var(--hAmb)}.jfl2.f-week b,.jfl2.f-week svg{color:var(--hWk)}
+.jfl2 b{font-weight:700}
+.jh2 h1{font:800 28px/1.15 Sora;color:var(--hT);margin:8px 0 4px;letter-spacing:-.01em;overflow-wrap:anywhere}
+.jpl{font:500 17px/1.35 'DM Sans';color:var(--hM)}
+.jlate{color:var(--hRed);font-weight:700}
+.jst2{display:flex;align-items:flex-start;gap:8px;font:500 13px/1.4 'DM Sans';color:var(--hM);margin:12px 0 16px}
+.jst2 b{color:var(--hT);font-weight:700}
+.jst2 .sm{width:16px;height:16px;flex:none;margin-top:1px}
+.jn2{font:400 13px/1.4 'DM Sans';color:var(--hM);margin:8px 0 0}
+.jh2 .prow{margin:0}
+/* The opened job's conversation and its one message bar on the same four sizes (21.15); the bar's field takes the
+   phone's one radius, not a pill (21.11), for jobs and chats alike (DEC-0489, one message bar). */
+.jb .dayb,.jb .bub .kd,.jb .meta,.jb .meta .n,.jb .ev,.jb .ev .n,.jb .sys,.jb .sys .k,.jb .sys .n{font-size:13px}
+.jb .bub{border-radius:12px 12px 12px 4px}.jb .msg.me .bub{border-radius:12px 12px 4px 12px}
+.jb .bub p{font-size:17px;line-height:1.4}
+.jb .people .lab{font-size:13px}.jb .people .who{font-size:17px}
+.c-fld{border-radius:12px}.c-fld .ktag{font-size:13px;text-transform:none;letter-spacing:0}.c-fld textarea,.c-fld input{font-size:17px}
+.rec .t{font-size:17px}
+@media (prefers-reduced-motion:reduce){.vr,.b1,.b2,.nv,.nv.cap .capb,.vtabs button{transition:opacity .2s}.nv.cap:active .capb{transform:none}}
 </style>
 </head>
 <body>
@@ -1989,11 +2143,16 @@ function waitLine(){ const n=st.outbox.length; if(!n) return '';
   return '<div class="wait" role="status"><b>'+esc(plural(n,'capture'))+' waiting for signal.</b> '+(n===1?'It sends by itself.':'They send by themselves.')+'</div>'; }
 // Capture, or the send under way on it (DEC-0369 rule 1): Sending with the spiral, then Sent as the arrow lifts off.
 const SPIRAL='<svg class="sp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path pathLength="100" d="M13.00 12.00 L13.06 12.11 L13.11 12.24 L13.14 12.37 L13.16 12.52 L13.15 12.67 L13.13 12.82 L13.09 12.98 L13.03 13.14 L12.94 13.29 L12.83 13.44 L12.71 13.58 L12.56 13.71 L12.39 13.83 L12.20 13.92 L12.00 14.00 L11.78 14.06 L11.56 14.09 L11.32 14.09 L11.08 14.07 L10.83 14.02 L10.59 13.94 L10.35 13.83 L10.12 13.70 L9.90 13.53 L9.69 13.33 L9.50 13.11 L9.34 12.87 L9.20 12.60 L9.08 12.31 L9.00 12.00 L8.95 11.68 L8.94 11.35 L8.96 11.01 L9.02 10.67 L9.11 10.33 L9.25 10.00 L9.42 9.68 L9.64 9.37 L9.88 9.09 L10.17 8.82 L10.48 8.59 L10.83 8.39 L11.20 8.22 L11.59 8.09 L12.00 8.00 L12.43 7.96 L12.86 7.96 L13.30 8.01 L13.74 8.10 L14.17 8.25 L14.59 8.44 L14.99 8.68 L15.37 8.97 L15.72 9.30 L16.04 9.67 L16.32 10.07 L16.57 10.52 L16.76 10.99 L16.91 11.48 L17.00 12.00 L17.04 12.53 L17.02 13.07 L16.95 13.61 L16.81 14.14 L16.62 14.67 L16.37 15.17 L16.06 15.66 L15.70 16.11 L15.29 16.53 L14.83 16.91 L14.33 17.24 L13.79 17.52 L13.22 17.74 L12.62 17.90 L12.00 18.00 L11.37 18.03 L10.72 18.00 L10.08 17.90 L9.45 17.72 L8.83 17.48 L8.24 17.18 L7.67 16.81 L7.14 16.37 L6.66 15.88 L6.23 15.33 L5.85 14.74 L5.53 14.10 L5.28 13.43 L5.10 12.72 L5.00 12.00 L4.97 11.26 L5.02 10.52 L5.15 9.78 L5.36 9.04 L5.65 8.33 L6.01 7.65 L6.45 7.00 L6.96 6.40 L7.53 5.85 L8.17 5.36 L8.85 4.94 L9.59 4.58 L10.36 4.31 L11.17 4.11 L12.00 4.00 L12.84 3.98 L13.69 4.04 L14.53 4.20 L15.36 4.45 L16.17 4.78 L16.94 5.20 L17.67 5.71 L18.34 6.29 L18.96 6.95 L19.51 7.67 L19.98 8.45 L20.37 9.28 L20.67 10.16 L20.88 11.07 L21.00 12.00"/></svg>';
+// The bar: Material Symbols Rounded, as published, outline for a page you are not on, the family's own fill for the
+// page you are on (DEC-0508, Design 21.10). Material Symbols: Copyright Google LLC, licensed under the Apache License,
+// Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0); the icons are used unmodified.
+const MSR={due:'M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-28q0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 14.02 0 23.51 9.2Q310-861.6 310-848v28h340v-28q0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 14.03 0 23.51 9.2Q715-861.6 715-848v28h65q24 0 42 18t18 42v620q0 24-18 42t-42 18H180Zm0-60h600v-430H180v430Zm0-490h600v-130H180v130Zm0 0v-130 130Zm300 230q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z',dueF:'M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-28q0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 14.02 0 23.51 9.2Q310-861.6 310-848v28h340v-28q0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 14.03 0 23.51 9.2Q715-861.6 715-848v28h65q24 0 42 18t18 42v620q0 24-18 42t-42 18H180Zm0-60h600v-430H180v430Zm300-260q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z',jobs:'M180-510q-24.75 0-42.37-17.63Q120-545.25 120-570v-210q0-24.75 17.63-42.38Q155.25-840 180-840h210q24.75 0 42.38 17.62Q450-804.75 450-780v210q0 24.75-17.62 42.37Q414.75-510 390-510H180Zm0 390q-24.75 0-42.37-17.63Q120-155.25 120-180v-210q0-24.75 17.63-42.38Q155.25-450 180-450h210q24.75 0 42.38 17.62Q450-414.75 450-390v210q0 24.75-17.62 42.37Q414.75-120 390-120H180Zm390-390q-24.75 0-42.37-17.63Q510-545.25 510-570v-210q0-24.75 17.63-42.38Q545.25-840 570-840h210q24.75 0 42.38 17.62Q840-804.75 840-780v210q0 24.75-17.62 42.37Q804.75-510 780-510H570Zm0 390q-24.75 0-42.37-17.63Q510-155.25 510-180v-210q0-24.75 17.63-42.38Q545.25-450 570-450h210q24.75 0 42.38 17.62Q840-414.75 840-390v210q0 24.75-17.62 42.37Q804.75-120 780-120H570ZM180-570h210v-210H180v210Zm390 0h210v-210H570v210Zm0 390h210v-210H570v210Zm-390 0h210v-210H180v210Zm390-390Zm0 180Zm-180 0Zm0-180Z',jobsF:'M180-510q-24.75 0-42.37-17.63Q120-545.25 120-570v-210q0-24.75 17.63-42.38Q155.25-840 180-840h210q24.75 0 42.38 17.62Q450-804.75 450-780v210q0 24.75-17.62 42.37Q414.75-510 390-510H180Zm0 390q-24.75 0-42.37-17.63Q120-155.25 120-180v-210q0-24.75 17.63-42.38Q155.25-450 180-450h210q24.75 0 42.38 17.62Q450-414.75 450-390v210q0 24.75-17.62 42.37Q414.75-120 390-120H180Zm390-390q-24.75 0-42.37-17.63Q510-545.25 510-570v-210q0-24.75 17.63-42.38Q545.25-840 570-840h210q24.75 0 42.38 17.62Q840-804.75 840-780v210q0 24.75-17.62 42.37Q804.75-510 780-510H570Zm0 390q-24.75 0-42.37-17.63Q510-155.25 510-180v-210q0-24.75 17.63-42.38Q545.25-450 570-450h210q24.75 0 42.38 17.62Q840-414.75 840-390v210q0 24.75-17.62 42.37Q804.75-120 780-120H570Z',add:'M450-450H230q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h220v-220q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v220h220q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H510v220q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-220Z',addF:'M450-450H230q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h220v-220q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v220h220q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H510v220q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-220Z',msg:'M240-240 131-131q-14 14-32.5 6.34Q80-132.31 80-152v-668q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H240Zm-26-60h606v-520H140v600l74-80Zm-74 0v-520 520Zm130-99h253q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H270q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Zm0-130h420q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H270q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Zm0-130h420q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H270q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Z',msgF:'M240-240 131-131q-14 14-32.5 6.34Q80-132.31 80-152v-668q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H240Zm30-159h253q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H270q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Zm0-130h420q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H270q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Zm0-130h420q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H270q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Z',gear:'M421-80q-14 0-25-9t-13-23l-15-94q-19-7-40-19t-37-25l-86 40q-14 6-28 1.5T155-226L97-330q-8-13-4.5-27t15.5-23l80-59q-2-9-2.5-20.5T185-480q0-9 .5-20.5T188-521l-80-59q-12-9-15.5-23t4.5-27l58-104q8-13 22-17.5t28 1.5l86 40q16-13 37-25t40-18l15-95q2-14 13-23t25-9h118q14 0 25 9t13 23l15 94q19 7 40.5 18.5T669-710l86-40q14-6 27.5-1.5T804-734l59 104q8 13 4.5 27.5T852-580l-80 57q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l80 58q12 8 15.5 22.5T863-330l-58 104q-8 13-22 17.5t-28-1.5l-86-40q-16 13-36.5 25.5T592-206l-15 94q-2 14-13 23t-25 9H421Zm15-60h88l14-112q33-8 62.5-25t53.5-41l106 46 40-72-94-69q4-17 6.5-33.5T715-480q0-17-2-33.5t-7-33.5l94-69-40-72-106 46q-23-26-52-43.5T538-708l-14-112h-88l-14 112q-34 7-63.5 24T306-642l-106-46-40 72 94 69q-4 17-6.5 33.5T245-480q0 17 2.5 33.5T254-413l-94 69 40 72 106-46q24 24 53.5 41t62.5 25l14 112Zm44-210q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Zm0-130Z',gearF:'M421-80q-14 0-25-9t-13-23l-15-94q-19-7-40-19t-37-25l-86 40q-14 6-28 1.5T155-226L97-330q-8-13-4.5-27t15.5-23l80-59q-2-9-2.5-20.5T185-480q0-9 .5-20.5T188-521l-80-59q-12-9-15.5-23t4.5-27l58-104q8-13 22-17.5t28 1.5l86 40q16-13 37-25t40-18l15-95q2-14 13-23t25-9h118q14 0 25 9t13 23l15 94q19 7 40.5 18.5T669-710l86-40q14-6 27.5-1.5T804-734l59 104q8 13 4.5 27.5T852-580l-80 57q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l80 58q12 8 15.5 22.5T863-330l-58 104q-8 13-22 17.5t-28-1.5l-86-40q-16 13-36.5 25.5T592-206l-15 94q-2 14-13 23t-25 9H421Zm59-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z'};
+const MSI=(k,on)=>'<svg class="ms" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="'+MSR[k+(on?'F':'')]+'"/></svg>';
 function capBtn(){ const k=st.capSend&&st.capSend.state;
-  return '<button class="nv cap'+(k==='sent'?' sent':'')+'" data-act="sheet"'+(k==='sending'?' aria-busy="true"':'')+'><span class="capb">'+(k==='sending'?SPIRAL:k==='sent'?ICO('arrow-up'):I.plus)+'</span><span class="lab" role="status">'+(k==='sending'?'Sending':k==='sent'?'Sent':'Capture')+'</span></button>'; }
+  return '<button class="nv cap'+(k==='sent'?' sent':'')+'" data-act="sheet"'+(k==='sending'?' aria-busy="true"':'')+'><span class="capb">'+(k==='sending'?SPIRAL:k==='sent'?ICO('arrow-up'):MSI('add'))+'</span><span class="lab" role="status">'+(k==='sending'?'Sending':k==='sent'?'Sent':'Capture')+'</span></button>'; }
 function capDraw(){ const b=app.querySelector('.navb .nv.cap[data-act="sheet"]'); if(b) b.outerHTML=capBtn(); }
 function navBar(on){
-  const tab=(id,ic,lab,bd)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+(bd?' aria-label="'+lab+', '+bd+' to read"':'')+'>'+I[ic]+(bd?'<span class="bd n" aria-hidden="true">'+bd+'</span>':'')+'<span class="lab">'+lab+'</span></button>';
+  const tab=(id,ic,lab,bd)=>'<button class="nv'+(on===id?' on':'')+'" data-act="'+id+'"'+(on===id?' aria-current="page"':'')+(bd?' aria-label="'+lab+', '+bd+' to read"':'')+'>'+MSI(ic,on===id)+(bd?'<span class="bd n" aria-hidden="true">'+bd+'</span>':'')+'<span class="lab">'+lab+'</span></button>';
   // DEC-0301, DEC-0303 rule 2: Capture is the main button, in the middle of the bar. Messages sits between it and Settings,
   // with the count of what this person has not read (DEC-0348 rule 1).
   return '<nav class="navb"><div class="side">'+tab('due','due','Due')+tab('jobs','jobs','Jobs')+'</div>'+capBtn()+'<div class="side">'+tab('msgs','msg','Messages',unread().length)+tab('me','gear','Settings')+'</div></nav>';
@@ -2141,8 +2300,8 @@ function cats(xs){
 // Walk jobs stay on Due. The site file carries open jobs only, so the switch holds To Do and In Progress. A flagged job
 // sits on top in level order, its level and reason in words, never a colour (DEC-0304; 21.3). Its photo leads it
 // (DEC-0305; 21.6). Each job says who holds it, every name (DEC-0309 rule 6).
-st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:ls.get('wl_jtab','feed'),grp:''};
-if(['feed','groups'].indexOf(st.J.tab)<0) st.J.tab='feed';
+st.J={state:'todo',view:ls.get('wl_jview','list'),sort:ls.get('wl_jsort','new'),groups:[],q:'',tab:(t=>t==='feed'?'next':t)(ls.get('wl_jtab','next')),grp:''};
+if(['next','floor','groups'].indexOf(st.J.tab)<0) st.J.tab='next';
 // Jobs is work that was reported: an occurrence of a planned job (a walk, a flush, a test) stays on Due (DEC-0312 rule 4).
 // Marked done on this phone and not yet filed by the desk: out of To Do and In Progress at once, in Done as waiting for the
 // desk (DEC-0381 rule 2; Design 9.11). The done sent from here, else null.
@@ -2250,7 +2409,7 @@ const jRoomMark=l=>'<i class="rm">Room</i><b class="n">'+esc(l.name)+'</b>'+(l.l
 // A job row. In a list that mixes groups the group leads as a label (showGroup); inside a group it is not repeated.
 // An open job's flag level goes on its row, card and tile as a class; the styles say which levels glow (DEC-0488).
 const jCls=j=>j.state==='done'?(j.done&&j.done.how?' jc':' jx'):(j.state==='doing'?' jd':' jt')+(f=>f&&/^[a-z]+$/.test(f.level||'')?' g-'+f.level:'')(jFlag(j));
-function jobRowP(j,showGroup,own){ if(j.state==='done'||jDoneHere(j)) return jobRowDone(j,showGroup);
+function jobRowP(j,showGroup,own){ if(j.state==='done'||jDoneHere(j)) return jobRowDone(j,showGroup); return vlRow(j,'');
   const a=jLate(j), ag=jAgeN(j), h=own?holders(j).filter(x=>!isMe(x)):holders(j), by=j.state==='doing'||h.length;
   return '<button class="ra c'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jSquare(j)+'<span class="m">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span>'
     +(by?'<span class="sub">'+(j.state==='doing'?'<span class="stt">'+SH.doing+'In progress</span>'+(h.length?' · ':''):'')+(h.length?esc(own?'With '+h.map(x=>x.name).join(', '):holdersSay(j)):'')+'</span>':'')
@@ -2280,7 +2439,7 @@ function jobTile(j,showGroup){ const l=LOC(j.loc), ag=jAgeN(j); let top;
   else if(l&&/^\d+$/.test(l.name)) top='<span class="tp">'+jRoomMark(l)+'</span>';
   else top='<span class="tp'+(l||j.place?'':' q')+'">'+(l?'<span>'+esc(l.name)+'</span>':j.place?'<span>'+esc(j.place)+'</span>':'<span>“'+esc(j.title||'Job')+'”</span>')+'</span>';
   return '<button class="cb tl'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+top+'<span class="cbt" style="display:block">'+(showGroup?'<span class="gl">'+GICO(j.group)+esc(GROUP(j.group))+'</span>':'')+flagLine(j)+(top.indexOf(' q"')>0?'':'<span class="w">'+esc(j.title||'Job')+'</span>')+'<span class="sub">'+(ag[1]==='today'?'Raised today':esc(ag[0]+' '+ag[1]))+(j.state==='doing'?' · In progress':'')+'</span></span></button>'; }
-function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="list">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
+function jl(L,g,own){ return st.J.view==='grid'?'<div class="grid" style="padding-bottom:8px">'+L.map(j=>jobTile(j,g)).join('')+'</div>':'<div class="vsheet">'+L.map(j=>jobRowP(j,g,own)).join('')+'</div>'; }
 function jobRow(j){ const a=jLate(j);
   return '<button class="ra'+jCls(j)+'" data-act="openJob" data-id="'+esc(j.id)+'">'+jPic(j,'sm')+'<span class="m">'+flagLine(j)+'<span class="w">'+esc(j.title||'Job')+'</span><span class="sub">'+esc(jWhere(j))+' · raised '+esc(jAge(j))+'</span>'+(holders(j).length?'<span class="sub">'+esc(holdersSay(j))+'</span>':'')
     +(a?'<span class="sub" data-urg style="color:var(--redText)">'+esc(a.join(' '))+'</span>':'')+'</span></button>'; }
@@ -2305,15 +2464,15 @@ function vJobs(){
   // The group last opened on this phone first, then the one before; groups never opened here after, by open jobs then name (DEC-0484).
   const seen=ls.get('wl_grpSeen',{})||{}, cnt=g=>all.filter(j=>j.group===g).length, G=gids.slice().sort((a,b)=>(seen[b]||0)-(seen[a]||0)||cnt(b)-cnt(a)||GROUP(a).localeCompare(GROUP(b)));
   const oldest=oldestDays(all);
-  let h='<div class="body">'+pageHead('Jobs')+'<div class="zone"><span class="eb">'+(fm?'Every group':'Your groups')+'</span>'
-    +'<div class="row1"><span class="num n">'+all.length+'</span><span class="what">open</span></div>'
-    +'<p>'+(all.length?'<b class="n">'+nb.length+'</b> with nobody on them. The oldest was raised <b class="n">'+oldest+'</b> '+(oldest===1?'day':'days')+' ago.':(p&&!fm&&!gids.length?'No job groups are set for your position on the desk’s Organisation Structure.':'Nothing open in your groups.'))+'</p>'
-    +'<div class="sw" role="tablist">'+[['feed','Feed',I.list],['groups','Groups',I.grid]].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'"><span class="n">'+x[2]+'</span>'+x[1]+'</button>').join('')+'</div></div>'
-    +'<div class="tools"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search every group" aria-label="Search jobs in every group" value="'+esc(J.q)+'"></label></div>';
+  const UP=J.tab==='next'&&!J.q.trim()&&all.length?all.slice().sort((a,b)=>flagRank(a)-flagRank(b)||(Date.parse(b.raised)||0)-(Date.parse(a.raised)||0))[0]:null;
+  // The head (21.1, 21.14): the title, the one number with its comparator, the tabs, ending on the app's own waterline.
+  let h='<div class="body"><div class="jh vjh"><div class="vtl"><h1>Jobs</h1><button class="ib" data-act="jsearch" aria-label="Search jobs" aria-expanded="'+!!(J.qOpen||J.q)+'">'+I.search+'</button></div>'
+    +(p&&!fm&&!gids.length&&!all.length?'<p class="vzw"><span>No job groups are set for your position on the desk’s Organisation Structure.</span></p>':jobsHead(all))
+    +'<div class="vtabs" role="tablist">'+[['next','Up Next'],['floor','By Floor'],['groups','Groups']].map(x=>'<button role="tab" class="'+(J.tab===x[0]?'on':'')+'" data-act="jtab" data-v="'+x[0]+'" aria-selected="'+(J.tab===x[0])+'">'+x[1]+'</button>').join('')+'</div>'+WAVE+'</div>'
+    +(J.qOpen||J.q?'<div class="tools vq"><label class="search">'+I.search+'<input type="search" data-jq placeholder="Search every group" aria-label="Search jobs in every group" value="'+esc(J.q)+'"></label></div>':'');
   const q=J.q.trim().toLowerCase();
   if(q){ const R=all.concat(done).filter(j=>(String(j.title)+' '+jWhere(j)+' '+GROUP(j.group)).toLowerCase().indexOf(q)>=0);
-    h+='<div class="act"><span><span class="n">'+R.length+'</span> of <span class="n">'+(all.length+done.length)+'</span> match</span><button class="lnk" data-act="jclear">Clear</button></div>';
-    h+=R.length?lh('Matches',R.length)+jl(jSortL(R),true):'<p class="para">No job matches.</p>';
+    h+=R.length?vSec('Matches',R.length,jSortL(R).map(j=>jobRowP(j,true)).join(''),'','<button class="vsrt" data-act="jclear">Clear</button>'):'<p class="para">No job matches. <button class="lnk" data-act="jclear">Clear</button></p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   if(J.tab==='groups'){
     h+=G.length?'<div class="gcs">'+G.map(g=>{ const L=all.filter(j=>j.group===g), d=L.filter(j=>j.state==='doing').length, dn=done.filter(j=>j.group===g).length;
@@ -2322,9 +2481,84 @@ function vJobs(){
         +'<span class="cs" aria-hidden="true"><span>'+SMK('todo')+(L.length-d)+'</span><span>'+SMK('doing')+d+'</span><span>'+SMK('done')+dn+'</span></span></button>'; }).join('')+'</div>'
       :'<p class="para">Jobs show here once the desk has job groups for your position.</p>';
     return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
+  if(J.tab==='floor'&&all.length){ h+=byFloor(all); return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
+  if(J.tab==='next'&&all.length){ h+=upNextList(all); return h+'<div style="height:96px"></div></div>'+navBar('jobs'); }
   h+=all.length?lh('Every job')+jl(jSortL(all),true):'<p class="para">Jobs show here once the desk has open jobs in your position’s groups.</p>';
   return h+'<div style="height:96px"></div></div>'+navBar('jobs');
 }
+
+// The list row (Design 21.12, DEC-0509 rule 3): a photo or the place as a plate, the title, one sub-line, the age on the
+// right with the state's mark under it in DEC-0337's colours (rule 4). Inside its own flag's section the flag is not said
+// again; a flagged job's glow is a ring on its photo, and it carries no state mark (DEC-0488, one red on the row).
+function vThumb(j,lvl){ const r=lvl?' r-'+lvl:'';
+  if((j.photos||[]).length){ const p=_ph[j.photos[0]]; if(p&&p!=='loading'&&p!=='missing') return '<span class="vth'+r+'"><img src="'+p+'" alt=""></span>'; }
+  let l=LOC(j.loc); if(!l&&typeof jPlace==='function'){ const q=jPlace(j); if(q) l=q.l; }
+  if(l&&/^\d+$/.test(l.name)) return '<span class="vth'+r+'" aria-hidden="true"><small>Room</small><b class="n">'+esc(l.name)+'</b></span>';
+  const w=l?l.name:(j.place||'');
+  return '<span class="vth'+r+(w?' pw':'')+'" aria-hidden="true">'+(w?'<em>'+esc(w)+'</em>':I.pin)+'</span>'; }
+const vDoing=j=>{ const x=jState(j); return !!(x.doing||x.paused); };
+const vLvl=j=>{ const f=jFlag(j); return f&&/^(urgent|asap|week)$/.test(f.level||'')?f.level:''; };
+const vAge=j=>{ const a=jAgeN(j), d=+a[0]; if(!(d>=30)) return a; const m=Math.floor(d/30.44), y=Math.floor(d/365.25); return y>=1?[String(y),y===1?'year':'years']:[String(m),m===1?'month':'months']; };
+function vlRow(j,sec){ const f=jFlag(j), lvl=vLvl(j), ag=vAge(j), a=jLate(j), doing=vDoing(j);
+  let sub=esc(jWhere(j));
+  if(f&&sec!==lvl) sub='<span class="vfl f-'+(lvl||'x')+'">'+I.flag+esc(flagLabel(f))+'</span> · '+sub;
+  else if(doing&&sec!=='doing') sub='<b class="vdg">In progress</b> · '+sub;
+  if(a) sub+=' · <span class="vlate">'+esc(a.join(' '))+'</span>';
+  const why='';
+  return '<button class="vr" data-act="openJob" data-id="'+esc(j.id)+'">'+vThumb(j,lvl)+'<span class="vt"><span class="vw">'+esc(j.title||'Job')+'</span><span class="vs">'+sub+'</span>'+why+'</span>'
+    +'<span class="va"><b class="n">'+esc(ag[0])+'</b><i>'+esc(ag[1])+'</i>'+(lvl?'':SMK(doing?'doing':'todo'))+'</span></button>'; }
+// A section: its Outfit capital label with the count in Sora, on the wallpaper; its rows in one white band.
+function vSec(t,n,rows,tone,right){ return '<div class="vsh'+(tone?' '+tone:'')+'"><span class="vl">'+esc(t)+'</span><b class="n">'+n+'</b>'+(right||'')+'</div><div class="vsheet">'+rows+'</div>'; }
+const vMore=(k,t)=>'<button class="vmore" data-act="jsecMore" data-v="'+k+'">'+esc(t)+'</button>';
+const vGo=j=>{ const S0=jState(j); return !S0.doing&&!S0.paused&&inGroup(j)&&!!st.walker&&!j.pest; };
+// Up Next (Design 21.14): the flagged jobs grouped by level, oldest first, every Urgent job in the list; the top flagged job
+// carries the screen's one Start Job; In progress after them; then the rest in the person's own order.
+function upNextList(all){ const X=st.J.secOpen||(st.J.secOpen={}), t=j=>Date.parse(j.raised)||0, by={urgent:[],asap:[],week:[],doing:[],rest:[]};
+  all.forEach(j=>{ const l=vLvl(j); by[l||(vDoing(j)?'doing':'rest')].push(j); });
+  ['urgent','asap','week','doing'].forEach(k=>by[k].sort((a,b)=>t(a)-t(b)));
+  const flagged=by.urgent.length+by.asap.length+by.week.length, NM={urgent:'Urgent',asap:'As soon as possible',week:'This week'};
+  let h='', first=true;
+  ['urgent','asap','week'].forEach(k=>{ const L=by[k]; if(!L.length) return;
+    const cut=k==='urgent'||X[k]?L.length:2;
+    let r=L.slice(0,cut).map((j,i)=>{ let x=vlRow(j,k); if(first&&i===0&&vGo(j)) x+='<div class="vact"><button class="b1" data-act="upStart" data-id="'+esc(j.id)+'">'+I.play+'Start Job</button></div>'; return x; }).join('');
+    first=false;
+    if(L.length>cut) r+=vMore(k,(L.length-cut)+' more '+NM[k].toLowerCase());
+    h+=vSec(NM[k],L.length,r,k); });
+  if(by.doing.length){ const cut=flagged&&!X.doing?1:by.doing.length;
+    h+=vSec('In progress',by.doing.length,by.doing.slice(0,cut).map(j=>vlRow(j,'doing')).join('')+(by.doing.length>cut?vMore('doing',(by.doing.length-cut)+' more in progress'):''),''); }
+  if(by.rest.length) h+=vSec(SORTW[st.J.sort]==='By floor'?'By floor':SORTW[st.J.sort],by.rest.length,jSortL(by.rest).map(j=>vlRow(j,'')).join(''),'',
+    '<button class="vsrt" data-act="jsortOpen" aria-label="Sort: '+SORTW[st.J.sort]+'">Sort'+I.down+'</button>');
+  return h; }
+// The head's one number above the waterline, with its comparator (21.14, 7.1).
+function jobsHead(all){ const c=k=>all.filter(j=>vLvl(j)===k), U=c('urgent'), A=c('asap'), W=c('week'), D=all.filter(vDoing);
+  const top=U.length?['urgent',U,'Urgent']:A.length?['asap',A,'As soon as possible']:W.length?['week',W,'This week']:['doing',D,'In progress'];
+  const also=[['asap',A,'as soon as possible'],['week',W,'this week']].filter(x=>x[0]!==top[0]&&x[1].length&&(top[0]==='urgent'||(top[0]==='asap'&&x[0]==='week')));
+  const od=oldestDays(top[1].length?top[1]:all), lw='No count from last week to set it against yet.';
+  if(!all.length) return '<div class="vz"><span class="vzn n">0</span><span class="vzw"><b>Open</b><span>Nothing open in your groups.</span></span></div>';
+  const say=(also.length?'and '+also.map(x=>x[1].length+' '+x[2]).join(' and ')+', ':'')+'of '+all.length+' open. '
+    +(top[1].length?'The oldest '+(top[0]==='doing'?'in progress':top[2].toLowerCase())+' job has waited '+od+(od===1?' day':' days')+'. ':'')+lw;
+  return '<div class="vz"><span class="vzn n t-'+top[0]+'">'+top[1].length+'</span><span class="vzw"><b class="t-'+top[0]+'">'+top[2]+'</b><span>'+esc(say)+'</span></span></div>'; }
+// Up Next (DEC-0507 round): the one job to do now, flagged first then newest, with its Start Job, in the zone.
+function upNext(j,n,nb){ const fl=jFlag(j), hs=holders(j), S0=jState(j), go=!S0.doing&&!S0.paused&&inGroup(j)&&!!st.walker&&!j.pest;
+  const p=(j.photos||[])[0];
+  return '<span class="eb"><span class="n">'+n+'</span> open · <span class="n">'+nb+'</span> with nobody on them</span>'
+   +'<div class="upn'+(fl?' glow-'+fl.level:'')+'">'+(p?'<button class="uph" data-act="openJob" data-id="'+esc(j.id)+'" aria-label="Open '+esc(j.title||'the job')+'">'+phImg(p,'','Photo of '+(j.title||'the job'),j)+'</button>':'')
+   +'<button class="upt" data-act="openJob" data-id="'+esc(j.id)+'"><span class="eb">Up next · '+esc(GROUP(j.group))+'</span>'+(fl?'<span class="jfl">'+I.flag+'<b>'+esc(flagLabel(fl))+'</b></span>':'')
+   +'<span class="upw">'+esc(j.title||'Job')+'</span><span class="jwh">'+I.pin+'<span>'+esc(jWhere(j))+'</span></span>'
+   +'<span class="ups">Raised '+esc(jAge(j))+' · '+(hs.length?esc(holdersSay(j)):'nobody on it')+(S0.doing?' · in progress':'')+'</span></button>'
+   +(go?'<button class="sbtn p" data-act="upStart" data-id="'+esc(j.id)+'">'+I.play+'Start Job</button>':'<button class="sbtn g" data-act="openJob" data-id="'+esc(j.id)+'">Open the Job</button>')+'</div>'; }
+// By Floor: the building as its floors, top down, a mark per open job; a floor opens its jobs below.
+function byFloor(all){ const lv=(SITE().levels||[]), fl=lv.filter(l=>/floor|^ground$/i.test(l.name)).reverse(), by={};
+  all.forEach(j=>{ const l=LOC(j.loc), k=l&&l.level?l.level:'none'; (by[k]=by[k]||[]).push(j); });
+  const has=fl.filter(l=>(by[l.code]||[]).length), pick=st.J.floor&&by[st.J.floor]?st.J.floor:(has.slice().sort((a,b)=>by[b.code].length-by[a.code].length)[0]||{}).code;
+  const mk=j=>{ const f=jFlag(j); return '<i class="'+(f?'f-'+f.level:j.state==='doing'?'d':'')+'"></i>'; };
+  const band=(code,name)=>{ const L=by[code]||[]; return '<button class="flb'+(code===pick?' on':'')+'" role="tab" aria-selected="'+(code===pick)+'" data-act="jfloor" data-v="'+esc(code)+'"'+(L.length?'':' disabled')+'><span class="fn">'+esc(name)+'</span><span class="fm" aria-hidden="true">'+L.map(mk).join('')+'</span><span class="fc n">'+L.length+'</span></button>'; };
+  const other=[['none','No place']].concat(lv.filter(l=>fl.indexOf(l)<0).map(l=>[l.code,l.name])).filter(x=>(by[x[0]]||[]).length);
+  let h='<div class="bld" role="tablist" aria-label="Floors">'+fl.map(l=>band(l.code,/^ground$/i.test(l.name)?'Ground':l.name.replace(/ floor$/i,''))).join('')
+    +(other.length?'<div class="gl" aria-hidden="true"></div>'+other.map(x=>band(x[0],x[1])).join(''):'')+'</div>';
+  const nm=pick==='none'?'No place given':((lv.find(l=>l.code===pick)||{}).name||'');
+  const L=(by[pick]||[]).slice().sort((a,b)=>flagRank(a)-flagRank(b)||String((LOC(a.loc)||{}).name||'').localeCompare(String((LOC(b.loc)||{}).name||''),undefined,{numeric:true}));
+  return h+vSec(nm,L.length,L.map(j=>vlRow(j,'')).join(''),''); }
 // A group opened: its name and its counts in the zone (21.1), the counts are the filter (DEC-0327 rule 2), its jobs below.
 function vGroup(){
   const J=st.J, all=jobsAll().filter(j=>j.group===J.grp), nTodo=all.filter(j=>j.state!=='doing').length, nDoing=all.length-nTodo, nDone=jobsDone().filter(j=>j.group===J.grp).length;
@@ -2464,6 +2698,7 @@ function jThread(j,pend,inStrip){
     if(e.deleted||(c&&c.act==='delete')){ const d=e.deleted||{by:st.walker,at:c.at}, cs=c?' · '+(c.sending?'Sending':c.waiting?'Not delivered, no signal':'Delivered'):'';
       h+='<div class="ev">'+ICO('trash-2')+'<span>'+esc((own?'You':e.by)+' deleted a message')+(isNaN(Date.parse(d.at))?'':' · <span class="n">'+hm(d.at)+'</span>')+esc(cs)+'</span></div>'; return; }
     const ph=(e.photos||[]).filter(n=>!inStrip.has(n)), sp=x?(_sentPics[x.cap]||[]):[];
+    if((e.photos||[]).length&&!ph.length&&!sp.length&&!x&&!e.audio&&!String(e.text||'').trim()){ h+='<div class="ev">'+ICO('image')+'<span>'+esc((own?'You':e.by)+' added the photo shown above')+tm+'</span></div>'; return; }
     if(EVK[kind]&&!ph.length&&!sp.length){ h+='<div class="ev">'+ICO(EVK[kind])+'<span>'+esc(evWords(kind,e.text,own?'you':e.by))+tm+esc(ps)+'</span></div>'; return; }
     const au=x?(x.au?{k:'p:'+x.cap,s:x.au}:null):(e.audio?{k:'a:'+(e.audio.name||''),t:e.audio.type,s:e.audio.secs}:null);
     const pics=ph.map(n=>'<button class="tpb" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open the photo from '+esc(own?'you':e.by)+'">'+phImg(n,'tp','Photo from '+e.by)+'</button>').join('')
@@ -2552,18 +2787,24 @@ function vJob(){
   const pc=j.pest||null, pdue=pc?jPestDue(j):null;
   if(pc){ row=false; btn=null; if(!S0.done&&!pD){ sw=''; ss=''; if(st.walker){ btn=['jpVisit','rat','Record a Visit']; why=inGroup(j)?'':'Closing the case is for the people in '+GROUP(j.group)+'. Your position is not in it on the desk\u2019s Organisation Structure.'; } else why='Recording a visit needs your name on this phone. Add it in Settings.'; }
     else if(S0.done) sw='Closed'; }
-  const zone='<div class="zone"><div class="ztop">'+backBtn(st.place||'due')+'<span class="eb">'+esc(GROUP(j.group))+(j.no?' · Job <span class="mono">'+esc(j.no)+'</span>':'')+'</span>'
-      +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>'
+  const top='<div class="jtop">'+backBtn(st.place||'due')+'<span class="jtg">'+esc(GROUP(j.group))+(j.no?' · Job '+esc(j.no):'')+'</span>'
+      +'<button class="ib" data-act="jmore" aria-haspopup="dialog" aria-label="More for this job">'+I.more+'</button></div>';
+  const flv=fl&&/^(urgent|asap|week)$/.test(fl.level||'')?fl.level:'x', mk=S0.done||pD?'done':(doing||paused)?'doing':'todo';
+  const zone='<div class="jh jh2">'
+    +(fl?'<div class="jfl2 f-'+flv+'">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.by?' · flagged by '+esc(youOr(fl.by))+(fl.at&&!isNaN(Date.parse(fl.at))?', '+esc(jAge({raised:fl.at})):''):'')+'</span></div>'
+      +(fl.why?'<p class="jn2">“'+esc(fl.why)+'”</p>':''):'')
     +'<h1>'+esc(pc?pc.pest:(j.title||'Job'))+'</h1>'
-    +'<div class="jwh">'+I.pin+'<span>'+esc(jWhere(j))+(a?' · <b data-urg style="color:var(--inkRed)">'+esc(a.join(' '))+'</b>':'')+'</span></div>'
-    +(pdue?'<div class="jwh">'+ICO('calendar-clock')+'<span>'+esc(pdue.say)+(pdue.late?' · <b data-urg style="color:var(--inkRed)">'+pdue.late+(pdue.late===1?' day':' days')+' late</b>':'')+'</span></div>':'')
-    +(fl?'<div class="jfl">'+I.flag+'<span><b>'+esc(flagLabel(fl))+'</b>'+(fl.why?'. '+esc(fl.why):'')+'</span></div>':'')
-    +'<div class="zact"><div class="jst"><b>'+esc(sw)+'</b>'+(ss?'<span>'+esc(ss)+'</span>':'')+'</div>'
-    +(btn?'<button class="pbtn" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+'</div>'+(row?jRow(j,S0,pz):'')+(pc&&!S0.done&&!pD?jPestRow(j):'')
-    +(due?'<p class="jwhy">'+esc(due)+'</p>':'')+(pmSay?'<p class="jwhy">'+esc(pmSay)+'</p>':'')+(why?'<p class="jwhy">'+esc(why)+'</p>':'')+'</div>';
+    +'<div class="jpl">'+esc(jWhere(j))+(a?' · <b class="jlate" data-urg>'+esc(a.join(' '))+'</b>':'')+'</div>'
+    +(pdue?'<p class="jn2">'+esc(pdue.say)+(pdue.late?' · <b class="jlate" data-urg>'+pdue.late+(pdue.late===1?' day':' days')+' late</b>':'')+'</p>':'')
+    +(sw?'<div class="jst2">'+SMK(mk)+'<span><b>'+esc(sw)+'</b>'+(ss?' · '+esc(ss):'')+'</span></div>':'<div style="height:12px"></div>')
+    +(btn?'<button class="b1" data-act="'+btn[0]+'"'+(st.busy?' disabled':'')+'>'+I[btn[1]]+esc(btn[2])+'</button>':'')+(row?jRow(j,S0,pz):'')+(pc&&!S0.done&&!pD?jPestRow(j):'')
+    +(due?'<p class="jn2">'+esc(due)+'</p>':'')+(pmSay?'<p class="jn2">'+esc(pmSay)+'</p>':'')+(why?'<p class="jn2">'+esc(why)+'</p>':'')+WAVE+'</div>';
   // The photos not in the conversation, shown once (Design 4.11): those it was raised with, and any no entry carries.
   const inThr=new Set(); (j.thread||[]).forEach(x=>{ if(x.kind!=='Raised') (x.photos||[]).forEach(n=>inThr.add(n)); });
   const sp=(j.photos||[]).filter(n=>!inThr.has(n)), inStrip=new Set(sp);
+  const lead=(j.photos||[])[0]||null, nPh=(j.photos||[]).length; if(lead) inStrip.add(lead);
+  const hero=lead?'<button class="jhero" data-act="pvOpen" data-n="'+esc(lead)+'" aria-label="Open the photo">'+phImg(lead,'','Photo of '+(j.title||'the job'),j)+(nPh>1?'<span class="jhn"><span class="n">1</span> of <span class="n">'+nPh+'</span></span>':'')+'</button>':'';
+  if(lead&&sp.indexOf(lead)>=0) sp.splice(sp.indexOf(lead),1);
   const strip=sp.length?'<div class="strip">'+sp.map((n,i)=>'<button class="ph" data-act="pvOpen" data-n="'+esc(n)+'" aria-label="Open photo '+(i+1)+' of '+sp.length+'">'+phImg(n,'','Photo '+(i+1)+' of '+(j.title||'the job'))+'</button>').join('')+'</div>':'';
   const pnc=j.photosNotCopied?'<div class="pnc">'+esc(plural(j.photosNotCopied,'photo'))+(j.photosNotCopied===1?' is':' are')+' on the desk.</div>':'';
   const hs=holders(j), pA=pend.filter(x=>x.act==='assign');
@@ -2571,7 +2812,7 @@ function vJob(){
   const people=(hs.length||pA.length||S0.canAsg)?'<div class="people">'+(hs.length||pA.length?'<span class="lab">On it</span>':'')+'<span class="who">'+(hs.length?esc(hs.map(x=>x.name+(isMe(x)?' (you)':'')).join(', ')):'')
     +(pA.length?'<span class="sub">'+esc(pendText(pA[pA.length-1]))+' '+esc(sent(pA[pA.length-1]))+'</span>':'')+'</span>'
     +(S0.canAsg?'<button class="tbtn" data-act="jobAssign" aria-label="'+(hs.length?'Change who is on this job':'Give this job to someone')+'">'+(hs.length?'Change':'Assign')+'</button>':'')+'</div>':'';
-  return '<div class="jb">'+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+msgBar({job:true,id:'jnote',key:'note',val:F.note,ph:'Message',label:'Write on this job, as '+F.kind,
+  return '<div class="jb">'+top+hero+zone+strip+pnc+people+'<div class="tw"><div class="thr">'+jThread(j,pend,inStrip)+'</div></div>'+msgBar({job:true,id:'jnote',key:'note',val:F.note,ph:'Message',label:'Write on this job, as '+F.kind,
     kind:'<button class="ktag" data-act="jkinds" aria-haspopup="dialog" aria-controls="jnote" aria-label="Kind of entry: '+esc(F.kind)+'. Change it">'+esc(F.kind)+I.down+'</button>'})+'</div>';
 }
 // Record a Visit on an insect case (DEC-0478 rule 3, DEC-0480 rule 2): what was done, what was found, and the next
@@ -2612,6 +2853,10 @@ function jRow(j,S0,pz){
   const b=st.busy?' disabled':'', go=(k,act,ic,w,lab)=>'<button class="pc '+k+'" data-act="'+act+'" aria-label="'+esc(lab)+'"'+b+'><span class="pr">'+I[ic]+'</span><span class="pw">'+w+'</span></button>';
   const at=(ic,w,t)=>'<div class="pc at"><span class="pr">'+I[ic]+'</span><span class="pw">'+w+'</span>'+(t?'<span class="ps">'+esc(t)+'</span>':'')+'</div>';
   const no=(ic,w)=>'<div class="pc x" aria-hidden="true"><span class="pr">'+I[ic]+'</span><span class="pw">'+w+'</span></div>';
+  const sb=(k,act,ic,w)=>'<button class="'+k+'" data-act="'+act+'"'+b+'>'+I[ic]+w+'</button>';
+  if(S0.paused) return '<div class="stg2">'+sb('b2','jobDone','tick','Finish Job')+sb('b1','jobRestart','play','Carry On')+'</div>';
+  if(S0.doing) return '<div class="stg2">'+sb('b2','jobPause','pause','Pause')+sb('b1','jobDone','tick','Finish Job')+'</div>';
+  return sb('b1','jobStart','play','Start Job');
   let h;
   if(S0.paused) h=go('p','jobRestart','play','Start','Start the job again')+at('pause','Paused',pz&&!isNaN(Date.parse(pz.at))?hm(pz.at):'')+go('g','jobStop','stop','Stop','Stop the job');
   else if(S0.doing){ const sx=S0.pPR&&S0.pPR.act==='restart'?S0.pPR:S0.pS, se=sx?null:(j.thread||[]).filter(x=>(x.kind==='Started'||x.kind==='Restarted')&&!isNaN(Date.parse(x.at))).pop(), t=sx||se;
@@ -2631,6 +2876,7 @@ function jMoreSheet(){
   const j=jobById(st.form.id); if(!j) return ''; const S0=jState(j), fl=S0.fl, n=holders(j).length;
   const v=(act,ic,nm,ln)=>'<button class="verb" data-act="'+act+'"'+(st.busy?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="More for this job"><div class="sh"><b>More for This Job</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+    +((S0.doing||S0.paused)&&!S0.pD&&!j.pest?v('jobStopTell','alert','Stop and Tell the FM','Not finished: why, and a word or a photo'):'')
     +(!S0.pD&&st.walker&&!j.pest?v('jobParts','pkg','Add Parts Used','What this job used, kept on it'):'')
     +(S0.done?'':v('jobFlag','flag',fl?'Change the Flag':'Flag This Job',fl?'Flagged '+flagLabel(fl):'Not flagged'))
     +(fl&&!S0.done?v('jobUnflag','unflag','Remove the Flag',''):'')
@@ -4584,6 +4830,10 @@ app.addEventListener('click',async e=>{
   if(a==='jobs'){ if(st.screen==='jobs'||st.screen!=='job') Object.assign(st.J,{grp:'',q:''}); st.form=null; st.sheet=false; return go('jobs'); }
   if(a==='openCat'){ st.openCat=st.openCat===b.dataset.id?'':b.dataset.id; return render(); }
   if(a==='jstate'){ st.J.state=b.dataset.v; if(st.J.grp) grpMark(st.J.grp,st.J.state); return render(); }
+  if(a==='jsearch'){ st.J.qOpen=!(st.J.qOpen||st.J.q); if(!st.J.qOpen){ st.J.q=''; } render(); const el=app.querySelector('[data-jq]'); if(el) el.focus(); return; }
+  if(a==='jsecMore'){ (st.J.secOpen=st.J.secOpen||{})[b.dataset.v]=true; return render(); }
+  if(a==='jfloor'){ st.J.floor=b.dataset.v; return render(); }
+  if(a==='upStart'){ st.form={id:b.dataset.id}; go('job'); return t5Open('start'); }
   if(a==='jtab'){ st.J.tab=b.dataset.v; ls.set('wl_jtab',b.dataset.v); return render(); }
   if(a==='jsortv'){ st.J.sort=b.dataset.v; ls.set('wl_jsort',b.dataset.v); st.sheet=false; return render(); }
   if(a==='jsortOpen'){ st.sheet='jsort'; return render(); }
@@ -6261,7 +6511,7 @@ app.addEventListener('touchstart',e=>{ _gsw=st.screen==='jobs'&&st.J&&!st.sheet&
 app.addEventListener('touchcancel',()=>{ _gsw=null; },{passive:true});
 app.addEventListener('touchend',e=>{ if(!_gsw) return; const S0=_gsw, t=e.changedTouches[0]; _gsw=null; if(!t||st.screen!=='jobs'||st.sheet) return;
   const dx=t.clientX-S0.x, dy=t.clientY-S0.y; if(Math.abs(dx)<64||Math.abs(dx)<2*Math.abs(dy)||Date.now()-S0.t>800) return;
-  if(!st.J.grp){ const V=['feed','groups'], v=V[V.indexOf(st.J.tab==='groups'?'groups':'feed')+(dx<0?1:-1)]; if(!v||v===st.J.tab) return;
+  if(!st.J.grp){ const V=['next','floor','groups'], v=V[Math.max(0,V.indexOf(st.J.tab))+(dx<0?1:-1)]; if(!v||v===st.J.tab) return;
     st.J.tab=v; ls.set('wl_jtab',v); return render(); }
   const T=['todo','doing','done'], i=T.indexOf(st.J.state)+(dx<0?1:-1); if(i<0||i>=T.length) return;
   st.J.state=T[i]; grpMark(st.J.grp,st.J.state); render(); });
