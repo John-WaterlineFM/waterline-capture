@@ -1739,6 +1739,117 @@ body.t-li .c-av.lg.ph{border:1px solid var(--border)}
 .g-rk input{appearance:none;-webkit-appearance:none;width:24px;height:24px;flex:none;margin:0;border-radius:6px;border:1.5px solid var(--textMid);background:var(--white);display:grid;place-items:center;cursor:pointer}
 .g-rk input:checked{background:var(--btnFill);border-color:var(--btnFill)}
 .g-rk input:checked::after{content:'';width:12px;height:6px;border-left:2px solid var(--btnText);border-bottom:2px solid var(--btnText);transform:translateY(-1px) rotate(-45deg)}
+
+/* ── Pass 3 (DEC-0509; Design 21.10 to 21.17): Capture. The same four sizes, 48 · 28 · 17 · 13; heads end on the app's own
+   waterline; fields are the white sheet on the page, no edge; one primary at the foot; no rule down any edge. ── */
+.cft{flex:none;display:flex;align-items:center;gap:4px;padding:4px 4px 0;background:var(--ink)}
+.cfh h1{margin-top:4px}
+.cfh>h1:last-of-type+.c-wv{margin-top:16px}
+.cfk{font:600 13px/1.4 Outfit;color:var(--hM);margin:4px 0 0}
+.cfl{font:500 17px/1.4 'DM Sans';color:var(--hM);margin:-8px 0 16px}
+.cfl b{font:800 17px Sora;color:var(--hT)}
+.p3{font-size:17px;line-height:1.4}
+.p3 .field{padding:20px 20px 0}
+.p3 .field.cfa{padding-top:4px}
+.p3 .field>label,.p3 .field>.fl{font:600 13px Outfit;color:var(--textMid);margin-bottom:8px}
+.p3 .opt-w{color:var(--textMid);font-weight:500}
+.p3 textarea,.p3 input[type=text],.p3 select{border:0;border-radius:12px;background:var(--white);font-size:17px;line-height:1.4;padding:14px 12px;min-height:52px}
+.p3 textarea{display:block;min-height:104px;resize:none}
+.p3 .help{font-size:13px;line-height:1.4;color:var(--textMid)}
+.p3 .help.err{color:var(--text);font-weight:600}
+.p3 .inrow .gh{border:0;border-radius:12px;background:var(--accentL);font:600 17px Outfit;min-height:52px;padding:0 16px}
+.p3 .inrow .gh svg{width:20px;height:20px}
+.p3 .sugg{border:0;border-radius:12px;background:var(--white)}
+.p3 .opt{min-height:56px;padding:8px 12px;border-bottom:0;position:relative;font:500 17px/1.3 'DM Sans';color:var(--text)}
+.p3 .opt+.opt::before{content:'';position:absolute;top:0;left:12px;right:0;height:1px;background:var(--border)}
+.p3 .opt .rt,.p3 .opt .sub{font:500 13px/1.4 'DM Sans';color:var(--textMid)}
+.p3 .opt.nw{font:600 17px/1.3 Outfit;color:var(--accentD)}
+.p3 .help+.sugg{margin-top:8px}
+.p3 .chosen{border:0;border-radius:12px;min-height:56px;padding:8px 4px 8px 12px;font:600 17px/1.3 'DM Sans';color:var(--text)}
+.p3 .chosen .sub{font:500 13px/1.4 'DM Sans';color:var(--textMid)}
+.p3 .chosen .dt{border:0;border-radius:12px;background-color:var(--accentL)}
+.p3 .chosen .acts{gap:16px;padding-right:8px}
+.p3 .chosen .t3{min-width:44px;justify-content:center}
+.p3 .chosen .acts{gap:8px}
+/* photos: the camera and Sketch are tinted, the camera the wider (21.11); a photo's two controls sit on it */
+.p3 .th{border-radius:12px;font:700 13px Outfit}
+.p3 .th.add,.p3 .th.sk{border:0;background:var(--accentL);color:var(--accentD);font:600 13px Outfit}
+.cfw{display:none}
+.p3 .fphoto .thumbs .th.add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font:600 17px Outfit}
+.p3 .fphoto .cfw{display:block}
+.p3 .fphoto .thumbs .th.add svg{width:32px;height:32px}
+.p3 .fphoto .thumbs .th.sk{width:112px;gap:8px;font:600 17px Outfit}
+/* once there is a photo it leads the row, and the camera and Sketch step down beside it */
+.p3 .fphoto.cfp .tk{display:contents}
+.p3 .fphoto.cfp .thumbs .tk .th.add,.p3 .fphoto.cfp .thumbs .th.sk{flex:none;width:88px;height:88px;gap:4px;font:600 13px Outfit}
+.p3 .fphoto.cfp .cfw{display:none}
+.p3 .fphoto.cfp .thumbs .th.add svg{width:24px;height:24px}
+.p3 .th .x{top:0;right:0}.p3 .th .mk{bottom:0;right:0}
+.p3 .th .x i,.p3 .th .mk i{border:0;background:var(--white)}
+/* a tick: drawn the same in every theme, as a group's roles are */
+.p3 .field>label.keep,.p3 .keep{min-height:56px;gap:12px;align-items:center;font:500 17px/1.3 'DM Sans';color:var(--text);margin:0}
+.p3 .keep .sub{font:500 13px/1.4 'DM Sans';color:var(--textMid)}
+.p3 .field>label.keep:has(.sub){align-items:flex-start;padding:8px 0}
+.p3 .keep input{appearance:none;-webkit-appearance:none;width:24px;height:24px;min-height:0;flex:none;margin:0;padding:0;border-radius:6px;border:1.5px solid var(--textMid);background:var(--white);display:grid;place-items:center;cursor:pointer}
+.p3 .keep input:checked{background:var(--btnFill);border-color:var(--btnFill)}
+.p3 .keep input:checked::after{content:'';width:12px;height:6px;border-left:2px solid var(--btnText);border-bottom:2px solid var(--btnText);transform:translateY(-1px) rotate(-45deg)}
+.p3 .note,.cff .note{margin:16px 20px 0;padding:0;border:0;border-radius:0;background:none;color:var(--text);font:400 13px/1.5 'DM Sans'}
+.p3 .note .eb{color:var(--textMid);margin-bottom:4px}
+/* the sources of proof: one band, a tinted tile for each icon, no chevron */
+.p3 .pick{border-radius:0;border-left:0;border-right:0}
+.p3 .pick .r{min-height:72px;gap:12px}
+.p3 .pick .r+.r::before{left:76px}
+.p3 .pick .pi{border-radius:12px;background:var(--accentL)}
+/* a ring row: the chosen one is the filled ring and the heavier word */
+.p3 .lr{min-height:56px;padding:8px 16px 8px 20px;border-bottom:0;position:relative}
+.p3 .lr+.lr::before{content:'';position:absolute;top:0;left:60px;right:0;height:1px;background:var(--border)}
+.p3 .lr .w{font:500 17px/1.3 'DM Sans'}
+.p3 .lr.lrno .w{font-weight:600}
+.p3 .vsheet .vmore{min-height:56px;padding-left:60px}
+.p3 .vsheet .vmore::before{left:60px}
+/* a reading: the figure is the screen's 48 */
+.p3 .fig{border:0;border-radius:12px;padding:8px 16px;min-height:88px}
+.p3 .fig input{font:800 48px/1 Sora;letter-spacing:-.04em;padding:0;min-height:64px;background:none;border-radius:0}
+.p3 .fig .u{font:600 17px Outfit;color:var(--textMid)}
+.p3 .field>label.fig{font:400 17px/1.4 'DM Sans'}
+/* the foot: what is missing over the one primary */
+.cff{border-top:0;padding-top:12px;gap:12px}
+.cff .unans{margin:0;font:600 13px/1.4 'DM Sans';color:var(--text);text-align:center}
+.cff .note{margin:0;font-weight:600;text-align:center}
+/* the Capture sheet and Go Back */
+.sheet.cfs .sh{padding-left:20px}
+.sheet.cfs .verb{padding:8px 16px 8px 20px;border-bottom:0;position:relative;transition:background-color .2s}
+.sheet.cfs .verb:not([disabled]):active{background:var(--stone);transition:none}
+.sheet.cfs .verb+.verb::before{content:'';position:absolute;top:0;left:60px;right:0;height:1px;background:var(--border)}
+.sheet.cfs .verb .sub{color:var(--textMid)}
+.sheet.cfg .para{font:400 17px/1.4 'DM Sans';color:var(--text);padding:8px 20px 12px}
+.sheet.cfg .sfoot{border-top:0;padding-top:8px;display:grid;grid-template-columns:2fr 3fr;gap:8px}
+.sheet.cfg .sfoot .btn{padding:8px 12px;line-height:1.2;text-align:center}
+/* the scanner: the same tool, its controls in the language (on ink, a tint is the ink's own track) */
+.dsc .dtop .eb{font:500 13px 'DM Sans';letter-spacing:0;text-transform:none}
+.dsc .say{font-size:17px;padding:4px 20px 8px}
+.dsc .wait{font-size:17px}
+.dsc .stage img{box-shadow:none}
+.dsc .btn,.dsc .gh{min-height:56px;border-radius:12px;font:600 17px Outfit}
+.dsc .gh,.dsc .looks button.on{border:0;background:rgba(255,255,255,.08)}
+.dsc .two{display:grid;grid-template-columns:2fr 3fr}
+.dsc .looks button{min-height:48px;border:0;border-radius:12px;font:600 13px Outfit}
+.dsc .looks button.on{color:var(--onInk)}
+.dsc .lnk{font:600 17px Outfit;text-decoration:none}
+.dsc .lnks>span{font-size:17px}
+.dsc .pg{border-radius:12px}
+.dsc .pg .n{font:800 13px/18px Sora;min-width:18px;border-radius:9px}
+
+/* ── Pass 3, John's calls of 25 Nov 2026 ── */
+.p3 .help.err.cfm{margin-top:8px}
+.p3 .field.cfa>.cfm:first-child{margin-top:0}
+.p3 .need::before{display:none}
+.p3 .field.cfn{padding-top:12px}
+.p3 .vsheet:has(+.field.cfn){border-bottom:0}
+.p3 .vsheet+.field.cfn{background:var(--white);padding-bottom:16px;margin-bottom:0}
+.p3 .field.cfn input[type=text]{background:var(--stone)}
+.p3 .field.cfn input::placeholder{color:var(--textMid)}
+.p3 .vsheet.cfr{margin-top:16px}
 </style>
 </head>
 <body>
@@ -2189,7 +2300,9 @@ function bar(title,back){ return '<div class="top"><button class="ibtn" data-act
 // Round 12's parts. Every screen has one navy zone (Design 21.1): on a place it carries the dominant number and its
 // sentence; on a record or a form, back, what it is, and (on a record) its one action.
 const backBtn=act=>'<button class="ib" data-act="'+esc(act)+'" aria-label="Back">'+I.back+'</button>';
-function formZone(back,eb,title,say){ return '<div class="zone"><div class="ztop">'+backBtn(back)+'<span class="eb">'+esc(eb)+'</span></div><h1>'+esc(title)+'</h1>'+(say?'<p>'+say+'</p>':'')+'</div>'; }
+function formZone(back,eb,title,say){ return '<div class="jtop cft">'+backBtn(back)+'<span class="jtg">'+(eb&&eb!=='Capture'?esc(eb):'')+'</span><span class="jsp"></span></div><div class="jh jh2 cfh"><h1>'+esc(title)+'</h1>'+(say?'<p class="jpl">'+say+'</p>':'')+WAVE+'</div>'; }
+// A reading's head is the record (21.1): what kind it is, its name, where it is, and the line the figure is read against.
+function readHead(kind,title,place,line){ return '<div class="jtop cft">'+backBtn('home')+'<span class="jtg"></span><span class="jsp"></span></div><div class="jh jh2 cfh"><p class="cfk">'+esc(kind)+'</p><h1>'+esc(title)+'</h1>'+(place?'<p class="jpl">'+place+'</p>':'')+(line?'<p class="cfl">'+line+'</p>':'')+WAVE+'</div>'; }
 const lvName=c=>((SITE().levels||[]).find(l=>l.code===c)||{}).name||'';
 // A section as the register names it, without the "Compliance —" prefix (audit D4).
 const secOf=i=>{ const l=lineById(i.id); return String((l&&l.section)||i.register||'Other').replace(/^Compliance\s*[—–-]\s*/,''); };
@@ -2521,14 +2634,14 @@ function navBar(on){
 }
 function sheet(){
   const v=(act,ic,nm,ln,off)=>'<button class="verb" data-act="'+act+'"'+(off?' disabled':'')+'>'+I[ic]+'<span class="m"><span class="w">'+esc(nm)+'</span>'+(ln?'<span class="sub">'+esc(ln)+'</span>':'')+'</span></button>';
-  const rs=SITE().rounds||[], hasReading=points().some(p=>p.reading)||meters().length>0;
-  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Capture"><div class="sh"><b>Capture</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
+  const rs=SITE().rounds||[], hasReading=points().some(p=>p.reading)||meters().length>0, nd=(SITE().pest&&(SITE().pest.devices||[]).length)||0;
+  return '<div class="scrim" data-act="sheetClose"></div><div class="sheet cfs" role="dialog" aria-modal="true" aria-label="Capture"><div class="sh"><b>Capture</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div><div class="opts">'
     +v('fault','fault','Report a Fault','')
     +v('hazard','hazard','Report a Hazard','Something that could hurt someone')
     +v('sighting','eye','Report a Sighting','A pest seen, or a catch on a bedroom monitor')
     +v('reading','meter','Take a Reading',hasReading?'':'No outlets or meters from the desk yet',!hasReading)
-    +v('flush','timer','Flush Round',flOutlets().length?flOutlets().length+' outlets, several at once':'No tagged outlets from the desk yet',!flOutlets().length)
-    +v('pest','rat','Pest Round',(SITE().pest&&(SITE().pest.devices||[]).length)?SITE().pest.devices.length+' devices, any order':'No devices from the desk yet',!(SITE().pest&&(SITE().pest.devices||[]).length))
+    +v('flush','timer','Flush Round',flOutlets().length?plural(flOutlets().length,'outlet'):'No tagged outlets from the desk yet',!flOutlets().length)
+    +v('pest','rat','Pest Round',nd?plural(nd,'device'):'No devices from the desk yet',!nd)
     +v('rounds','round','Fire Walk',rs.length?'':'No fire walks set up on the desk yet',!rs.length)
     +'</div><div style="height:24px"></div></div>';
 }
@@ -3436,9 +3549,9 @@ function leaveGo(){ const L=st.leave; st.leave=null; st.sheet=L?L.was:false; ren
   try{ if(L.phone) wlBack(); else{ const el=[...app.querySelectorAll('[data-act="'+L.act+'"]')].find(x=>x.getAttribute('aria-label')===L.label); if(el) el.click(); } }
   finally{ st.leaveOk=false; } }
 function leaveSheet(){
-  return '<div class="scrim" data-act="leaveStay"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Go back"><div class="sh"><b>Go Back?</b><button class="ib" data-act="leaveStay" aria-label="Close">'+I.close+'</button></div>'
+  return '<div class="scrim" data-act="leaveStay"></div><div class="sheet cfg" role="dialog" aria-modal="true" aria-label="Go back" data-p2><div class="sh"><b>Go Back?</b><button class="ib" data-act="leaveStay" aria-label="Close">'+I.close+'</button></div>'
     +'<p class="para" style="padding-top:8px">What you have recorded here has not been sent. Go back and it is lost, and you start again.</p>'
-    +'<div class="sfoot" style="flex-direction:column"><button class="btn p" data-act="leaveStay">Stay and Finish</button><button class="btn g" data-act="leaveGo">Go Back and Lose It</button></div></div>'; }
+    +'<div class="sfoot"><button class="btn g" data-act="leaveGo">Lose It</button><button class="btn p" data-act="leaveStay">Stay and Finish</button></div></div>'; }
 function jDelSheet(){
   return '<div class="scrim" data-act="sheetClose"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Delete your message"><div class="sh"><b>Delete Your Message?</b><button class="ib" data-act="sheetClose" aria-label="Close">'+I.close+'</button></div>'
     +'<p class="para" style="padding-top:8px">It goes from the job for everyone, with a line saying you deleted it. The desk keeps its words and files in the audit log.</p>'
@@ -4035,34 +4148,37 @@ function vMe(){
 // ── Send Proof: photo first, then what it is (DEC-0286 rule 3) ───────────────────────────────
 // ── Send Proof: the photo or PDF first, then what it is and the line it proves (DEC-0286 rule 3) ──
 function vProof(){
-  const F=st.form, where=whereOk(F);
-  let h='<div class="body">'+formZone(F.back||'home','Capture','Send Proof','The desk files it on the line it proves.');
-  h+=proofWhatField();
-  if(F.what==='photo') h+='<div class="note"><span class="eb">What a photo proves</span>'+esc(WFM_CAPTURE_SHAPE.photoSays)+'</div>'+whereField({suggest:true});
-  h+=lineSelect(F.what==='photo');
+  const F=st.form, where=whereOk(F), M=[];
+  if(!F.photos.length) M.push(['what','Scan the document, choose a PDF or take a photo first.']);
+  if(F.what!=='photo'&&!F.duty) M.push(['line','Say which line it proves.']);
+  if(F.what==='photo'&&F.photos.length&&!where) M.push(['where','Pick where it was taken from the site’s places, or scan the tag.']);
+  let h='<div class="body v1 p3">'+formZone(F.back||'home','Capture','Send Proof','');
+  h+=proofWhatField(missAt(M,'what'));
+  if(F.what==='photo') h+='<div class="note"><span class="eb">What a photo proves</span>'+esc(WFM_CAPTURE_SHAPE.photoSays)+'</div>'+whereField({suggest:true,miss:missAt(M,'where')});
+  h+=lineSelect(F.what==='photo',missAt(M,'line'));
   h+=planOffer();
   h+='<div class="field"><label for="note">Note <span class="opt-w">(optional)</span></label><input id="note" type="text" data-in="note" value="'+esc(F.note||'')+'" placeholder="Anything the desk should know"></div><div style="height:24px"></div></div>';
-  const miss=!F.photos.length?'Scan the document, choose a PDF or take a photo first.':(F.what!=='photo'&&!F.duty)?'Say which line it proves.':(F.what==='photo'&&!where)?'Pick where it was taken from the site’s places, or scan the tag.':'';
-  return h+sendBtn('Send Proof',!miss,miss);
+  return h+sendBtn('Send Proof',!M.length,M.length);
 }
-// What the proof is, asked first: a scan, a PDF already on the phone, or a photo of the work (DEC-0338).
-function proofWhatField(){
+// What the proof is, asked first: a scan, a PDF already on the phone, or a photo of the work (DEC-0338). The five sources
+// are one band of rows (21.12); what is chosen shows as one row with Edit and Remove in teal words (21.11).
+function proofWhatField(err){
   const F=st.form;
   if(F.doc&&F.photos.length){ const n=F.doc.pages.length, p0=F.doc.pages[0];
-    return '<div class="field"><span class="fl">The proof</span><div class="chosen"><span class="dt" style="background-image:url('+p0.out+')"></span><span class="m">Scanned document<span class="sub"><span class="n">'+n+'</span> '+(n===1?'page':'pages')+', one PDF</span></span>'
-      +'<span class="acts"><button class="lnk" data-act="docEdit">Edit</button><button class="lnk" data-act="docRemove" style="margin-left:16px">Remove</button></span></div></div>'; }
+    return '<div class="field"><span class="fl">The proof</span><div class="chosen"><span class="dt" style="background-image:url('+p0.out+')"></span><span class="m">Scanned document<span class="sub"><span class="n">'+n+'</span> '+(n===1?'page':'pages')+'</span></span>'
+      +'<span class="acts"><button class="t3" data-act="docEdit">Edit</button><button class="t3" data-act="docRemove">Remove</button></span></div></div>'; }
   if(F.what==='certificate'&&F.photos.length){ const f=F.photos[0].file;
-    return '<div class="field"><span class="fl">The proof</span><div class="chosen"><span class="dt">'+I.clip+'</span><span class="m">'+esc(f.name||'PDF')+'<span class="sub">PDF, <span class="n">'+Math.max(1,Math.round(f.size/1024))+'</span> KB, sent as it is</span></span>'
-      +'<button class="lnk" data-act="docRemove">Remove</button></div></div>'; }
-  if(F.what==='photo') return photosField('The photo of the work',false)+'<div class="field" style="padding-top:4px"><button class="lnk" data-act="docRemove">Scan a document or choose a PDF instead</button></div>';
-  const row=(icon,t,sub,input)=>'<label class="r"><span class="pi">'+icon+'</span><span class="m"><span class="w">'+t+'</span><span class="sub">'+sub+'</span></span>'+I.chev+input+'</label>';
-  return '<div class="field"><span class="fl">The proof</span><div class="pick">'
-    +row(I.scan,'Scan a Document','A certificate, report or sheet. Squared and cleaned like a scanner.','<input type="file" accept="image/*" capture="environment" data-file="scanshot">')
-    +row(I.image,'A Document from the Phone','A photo of a certificate or sheet already on this phone. Squared and cleaned the same way.','<input type="file" accept="image/*" data-file="scanshot">')
-    +row(I.clip,'Choose a PDF','One already on this phone. Sent as it is.','<input type="file" accept="application/pdf" data-file="pdf">')
-    +row(I.photo,'Take a Photo of the Work','The work itself, not a piece of paper.','<input type="file" accept="image/*" capture="environment" multiple data-file="wphoto">')
-    +row(I.image,'A Photo from the Phone','Of the work, already on this phone.','<input type="file" accept="image/*" data-file="wphoto">')
-    +'</div></div>';
+    return '<div class="field"><span class="fl">The proof</span><div class="chosen"><span class="dt">'+I.clip+'</span><span class="m">'+esc(f.name||'PDF')+'<span class="sub">PDF, <span class="n">'+Math.max(1,Math.round(f.size/1024))+'</span> KB</span></span>'
+      +'<span class="acts"><button class="t3" data-act="docRemove">Remove</button></span></div></div>'; }
+  if(F.what==='photo') return photosField('The photo of the work',false,'',err)+'<div class="field cfa"><button class="t3" data-act="docRemove">Scan a document or choose a PDF instead</button></div>';
+  const row=(icon,t,sub,input)=>'<label class="r"><span class="pi">'+icon+'</span><span class="m"><span class="w">'+t+'</span><span class="sub">'+sub+'</span></span>'+input+'</label>';
+  return vGrp('The proof')+'<div class="vsheet pick">'
+    +row(I.scan,'Scan a Document','A certificate, report or sheet','<input type="file" accept="image/*" capture="environment" data-file="scanshot">')
+    +row(I.image,'A Document from the Phone','A photo of a certificate or sheet','<input type="file" accept="image/*" data-file="scanshot">')
+    +row(I.clip,'Choose a PDF','Already on this phone','<input type="file" accept="application/pdf" data-file="pdf">')
+    +row(I.photo,'Take a Photo of the Work','The work itself, not a piece of paper','<input type="file" accept="image/*" capture="environment" multiple data-file="wphoto">')
+    +row(I.image,'A Photo from the Phone','Of the work','<input type="file" accept="image/*" data-file="wphoto">')
+    +'</div>'+(err?'<div class="field cfa">'+err+'</div>':'');
 }
 // What the line is for, on the line itself, read before the work (DEC-0338 rule 1): how often (the register's own
 // setting, said as that), the legal reference as the register cites it, the HIQA standard, and the proof it needs.
@@ -4203,24 +4319,24 @@ function vDocScan(){
   const D=st.ds, pg=D.pages[D.cur], n=D.pages.length;
   const top=(eb,act,label)=>'<div class="dtop"><button class="ib" data-act="'+act+'" aria-label="'+label+'">'+(act==='dsBack'?I.back:I.close)+'</button><span class="eb">'+esc(eb)+'</span></div>';
   const cam=(cls,inner,redo)=>'<label class="'+cls+'"'+(redo!=null?' data-redo="'+redo+'"':'')+'>'+inner+'<input type="file" accept="image/*" capture="environment" data-file="scanshot"></label>';
-  if(D.stage==='wait'||D.stage==='err') return '<div class="ds" role="dialog" aria-modal="true" aria-label="Scan">'+top('Scan','dsClose','Close the scanner')
+  if(D.stage==='wait'||D.stage==='err') return '<div class="ds dsc" role="dialog" aria-modal="true" aria-label="Scan">'+top('Scan','dsClose','Close the scanner')
     +'<div class="stage"><div class="wait" role="status">'+(D.stage==='wait'?I.scan:'')+'<span>'+esc(D.say)+'</span></div></div></div>';
   if(D.stage==='corners'){ const W=pg.img.width, H=pg.img.height, q=pg.q, sw=Math.max(W,H)/300;
     const pts=[q.tl,q.tr,q.br,q.bl].map(p=>p.x.toFixed(0)+','+p.y.toFixed(0)).join(' ');
-    return '<div class="ds" role="dialog" aria-modal="true" aria-label="The page’s corners">'+top('Scan · Page '+(D.cur+1),'dsBack','Back')
+    return '<div class="ds dsc" role="dialog" aria-modal="true" aria-label="The page’s corners">'+top('Scan · Page '+(D.cur+1),'dsBack','Back')
       +'<p class="say'+(pg.found?'':' miss')+'">'+(pg.found?'Drag a corner, or tap where it belongs, if it is not on the page’s edge.':'No page found. Drag each corner, or tap where it belongs, to the page’s corners.')+'</p>'
       +'<div class="stage"><svg id="dsq" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet"><image href="'+pg.view+'" width="'+W+'" height="'+H+'"/>'
       +'<polygon class="pe" points="'+pts+'" fill="none" stroke="var(--ink)" stroke-linejoin="round"/><polygon class="pf" points="'+pts+'" fill="rgba(58,171,198,.16)" stroke="var(--accentOnInk)" stroke-width="'+(sw*1.5)+'" stroke-linejoin="round"/>'
       +['tl','tr','br','bl'].map(c=>'<circle class="ce" data-e="'+c+'" cx="'+q[c].x+'" cy="'+q[c].y+'" r="'+(sw*7)+'" fill="none" stroke="var(--ink)"/><circle data-c="'+c+'" cx="'+q[c].x+'" cy="'+q[c].y+'" r="'+(sw*7)+'" fill="rgba(13,31,45,.35)" stroke="var(--accentOnInk)" stroke-width="'+(sw*2)+'"/>').join('')
       +'</svg><div class="loupe" id="dsl"></div></div>'
       +'<div class="dfoot"><div class="two">'+cam('gh','Retake',D.cur)+'<button class="btn" data-act="dsKeep">Keep Scan</button></div></div></div>'; }
-  return '<div class="ds" role="dialog" aria-modal="true" aria-label="Scanned pages">'+top('Scan · '+plural(n,'page'),'dsClose','Close the scanner')
+  return '<div class="ds dsc" role="dialog" aria-modal="true" aria-label="Scanned pages">'+top('Scan · '+plural(n,'page'),'dsClose','Close the scanner')
     +(D.say?'<p class="say" role="alert">'+esc(D.say)+'</p>':'')
     +'<div class="stage"><img src="'+pg.out+'" alt="Page '+(D.cur+1)+' as it will be filed"></div>'
     +'<div class="dfoot"><div class="looks" role="radiogroup" aria-label="How the page looks">'+DS_LOOKS.map(x=>'<button role="radio" aria-checked="'+(pg.look===x[0])+'" class="'+(pg.look===x[0]?'on':'')+'" data-act="dsLook" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'
     +(D.ask?'<div class="lnks" role="alert"><span>Delete page <span class="n">'+(D.cur+1)+'</span>?</span><button class="lnk" data-act="dsDelYes">Delete It</button><button class="lnk" data-act="dsDelNo">Keep It</button></div>'
       :'<div class="lnks"><button class="lnk" data-act="dsAdjust">Adjust Corners</button>'+cam('lnk','Retake',D.cur)+'<button class="lnk" data-act="dsDel">Delete Page</button></div>')
-    +'<div class="strip">'+D.pages.map((p,i)=>'<button class="pg'+(i===D.cur?' on':'')+'" data-act="dsPage" data-i="'+i+'" aria-label="Page '+(i+1)+'" style="background-image:url('+p.out+')"><span class="n">'+(i+1)+'</span></button>').join('')+cam('pg add',I.plus)+'</div>'
+    +'<div class="strip">'+D.pages.map((p,i)=>'<button class="pg'+(i===D.cur?' on':'')+'" data-act="dsPage" data-i="'+i+'" aria-label="Page '+(i+1)+'" style="background-image:url('+p.out+')"><span class="n">'+(i+1)+'</span></button>').join('')+'</div>'
     +'<div class="two">'+cam('gh','Add a Page')+'<button class="btn" data-act="dsDone">Done</button></div></div></div>';
 }
 // Corners dragged with a finger, a magnifier above the finger while it moves; Retake marks which page it replaces.
@@ -4261,8 +4377,8 @@ async function linkSend(p,s){
 }
 function vRounds(){
   const rs=SITE().rounds||[];
-  return '<div class="body">'+formZone('home','Capture','Fire Walk','Choose the walk. Scan its points in any order.')
-    +'<div class="list" style="border-top:none">'+rs.map(r=>'<button class="r" data-act="roundStart" data-id="'+esc(r.id)+'"><span class="m"><span class="w">'+esc(r.name)+'</span><span class="sub">'+esc(plural((r.points||[]).length,'point'))+(r.walker?' · '+esc(r.walker):'')+((r.times||[]).length?' · '+esc(r.times.join(', ')):'')+'</span></span></button>').join('')+'</div></div>';
+  return '<div class="body v1 p3">'+formZone('home','Capture','Fire Walk','Choose the walk. Scan its points in any order.')
+    +'<div class="vsheet cfr">'+rs.map(r=>'<button class="r" data-act="roundStart" data-id="'+esc(r.id)+'"><span class="m"><span class="w">'+esc(r.name)+'</span><span class="sub">'+esc(plural((r.points||[]).length,'point'))+(r.walker?' · '+esc(r.walker):'')+((r.times||[]).length?' · '+esc(r.times.join(', ')):'')+'</span></span></button>').join('')+'</div></div>';
 }
 // ── A walk: points are scans (DEC-0294 rule 1), in the order set on the desk (DEC-0300 rule 2). The next point leads,
 // large, in the walk's navy zone with its one action; what is left follows; what is done folds into its count (audit F1).
@@ -4328,14 +4444,14 @@ function vUnscan(){
   const W=st.form, r=roundById(W.round), U=W.u;
   const left=r.points.filter(id=>!W.scans.some(x=>x.point===id)&&!(W.unscanned||[]).some(x=>x.point===id));
   const ph=U.photo!=null?W.photos[U.photo]:null;
-  const T=U.tried, noWhy=!String(U.reason||'').trim(), noPh=U.photo==null;
-  return '<div class="body">'+formZone('walkBack',r.name,'The Tag Will Not Scan','Name the point, say why, and take a photo. The walk’s record names it as not scanned.')
-    +(T&&(noWhy||noPh)?needSum([noWhy?'Say why it will not scan':'',noPh?'Take the photo':''].filter(Boolean)):'')
+  const T=U.tried, noWhy=!String(U.reason||'').trim(), noPh=U.photo==null, n=(noWhy?1:0)+(noPh?1:0);
+  const e=x=>'<div class="help err cfm" role="alert">'+x+'</div>';
+  return '<div class="body v1 p3">'+formZone('walkBack',r.name,'The Tag Will Not Scan','The walk’s record names it as not scanned.')
     +'<div class="field"><label for="upt">Which point</label><select id="upt" data-in="upt">'+left.map(id=>{ const p=pointById(id); return '<option value="'+esc(id)+'"'+(U.point===id?' selected':'')+'>'+esc(p?p.name:id)+'</option>'; }).join('')+'</select></div>'
-    +'<div class="field'+(T&&noWhy?' need':'')+'"><label for="ureason">Why it will not scan</label><input id="ureason" type="text" data-in="ureason" value="'+esc(U.reason||'')+'" placeholder="Sticker torn, tag missing, no signal…">'+(T&&noWhy?'<div class="unans">Say why it will not scan</div>':'')+'</div>'
+    +'<div class="field'+(T&&noWhy?' need':'')+'"><label for="ureason">Why it will not scan</label><input id="ureason" type="text" data-in="ureason" value="'+esc(U.reason||'')+'" placeholder="Sticker torn, tag missing, no signal…">'+(T&&noWhy?e('Say why it will not scan.'):'')+'</div>'
     +'<div class="field'+(T&&noPh?' need':'')+'"><span class="fl">Photo of the point</span><div class="thumbs">'+(ph?'<div class="th" style="background-image:url('+ph.url+')"></div>':'')
-    +'<label class="th add" aria-label="Take the photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="uphoto"></label></div>'+(T&&noPh?'<div class="unans">Take the photo</div>':'')+'</div><div style="height:24px"></div></div>'
-    +'<div class="foot"><button class="btn p" data-act="unscanSave">Save</button></div>';
+    +'<label class="th add" aria-label="Take the photo">'+I.photo+'<input type="file" accept="image/*" capture="environment" data-file="uphoto"></label></div>'+(T&&noPh?e('Take the photo.'):'')+'</div><div style="height:24px"></div></div>'
+    +'<div class="foot cff" role="status">'+(T&&n?'<div class="unans">'+leftSay(n)+'</div>':'')+'<button class="b1" data-act="unscanSave">Save</button></div>';
 }
 // ── Fire Walks on the phone (DEC-0366 rule 5; mockup sandbox/mockups/walk-jobs-2026-10-25, A). The site's walks, as each
 // falls due, are the desk's Fire Walks job group: a slot done carries its walk; a slot whose window has closed with no walk
@@ -4685,13 +4801,13 @@ document.addEventListener('change',e=>{ const t=e.target; if(!t||t.type!=='file'
 // The camera is let go when the phone is put away, and opened again on return.
 document.addEventListener('visibilitychange',()=>{ const M=_cam; if(!M) return; if(document.hidden){ if(M.stage==='live'){ camStop(); M.stage='wait'; } } else if(M.stage==='wait') camLive(M); });
 
-function photosField(label,opt,accept){
+function photosField(label,opt,accept,err){
   const F=st.form;
   return '<div class="field"><span class="fl">'+esc(label)+(opt?' <span class="opt-w">(optional)</span>':'')+'</span><div class="thumbs">'
     +F.photos.map((p,i)=>'<div class="th" style="'+(p.url?'background-image:url('+p.url+')':'')+'">'+(p.url?'':esc(extOf(p.file,p.file.name).toUpperCase()))+muBtn(p,'photos',i)+'<button class="x" data-act="photoDel" data-i="'+i+'" aria-label="Remove"><i>'+I.close+'</i></button></div>').join('')
-    +'<span class="tk"><label class="th add" aria-label="Add">'+(accept?I.clip:I.photo)+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
+    +'<span class="tk"><label class="th add" aria-label="'+(accept?'Add a file':'Take a photo')+'">'+(accept?I.clip:I.photo+'<span class="cfw">Take a Photo</span>')+'<input type="file" accept="'+(accept||'image/*')+'" '+(accept?'':'capture="environment" ')+'multiple data-file="photos"></label>'
     +(accept||opt?'':'<button class="th sk" data-act="muSketch" data-l="photos" aria-label="Draw a sketch">'+ICO('pen-line')+'Sketch</button>')+'</span>'
-    +'</div></div>';
+    +'</div>'+(err||'')+'</div>';
 }
 // Where (DEC-0479 rule 1): a tag scanned, or one of the site's places found by typing a few letters. A place not on the
 // list is sent as a new place for the desk to confirm; the person's own words are never sent as a place.
@@ -4700,38 +4816,39 @@ function exactLoc(w){ const k=plk(w), r=k.replace(/^(room|rm) /,''); if(!k) retu
   return L.find(l=>plk(l.name)===k)||L.find(l=>plk(l.name)===r)||null; }
 function whereOk(F){ return !!(F.point||(F.loc&&LOC(F.loc))||exactLoc(F.place)||(F.newPlace&&String(F.place||'').trim())); }
 function whereField(opts){
-  const F=st.form, p=F.point?pointById(F.point):null, L=F.loc?LOC(F.loc):null;
-  if(F.newPlace) return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+esc(F.place)+'<span class="sub">A new place. The desk adds it, or matches it to one of the site’s places, before this is filed.</span></span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
-  if(L&&!F.point) return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+esc(L.name)+'<span class="sub">'+esc(lvName(L.level)||'Level not set')+' · one of the site’s places</span></span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
-  if(F.point) return '<div class="field"><span class="fl">Where</span><div class="chosen"><span class="m">'+esc(p?p.name:F.point)+'<span class="sub">'+esc(p?(p.where||'Tag '+p.id):'This tag is not in the site details from the desk.')+(F.via==='qr'?' · tag scanned':' · picked from the list')+'</span></span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
-  let h='<div class="field"><label for="place">Where</label><div class="inrow"><input id="place" type="text" autocomplete="off" placeholder="Search the site’s places" value="'+esc(F.place||'')+'" data-in="place">'
+  const F=st.form, p=F.point?pointById(F.point):null, L=F.loc?LOC(F.loc):null, o=opts||{};
+  const lab=o.nolab?'':'<span class="fl">Where</span>';
+  const got=(nm,sub)=>'<div class="field'+(o.nolab?' cfn':'')+'">'+lab+'<div class="chosen"><span class="m">'+esc(nm)+(sub?'<span class="sub">'+esc(sub)+'</span>':'')+'</span><button class="ib" data-act="whereClear" aria-label="Clear">'+I.close+'</button></div></div>';
+  if(F.newPlace) return got(F.place,'A new place. The desk confirms it.');
+  if(L&&!F.point) return got(L.name,lvName(L.level)||'');
+  if(F.point) return got(p?p.name:F.point,p?(p.where||''):'This tag is not in the site details from the desk.');
+  let h='<div class="field'+(o.nolab?' cfn':'')+'">'+(o.nolab?'':'<label for="place">Where</label>')+'<div class="inrow"><input id="place" type="text" autocomplete="off" placeholder="Search the site’s places"'+(o.nolab?' aria-label="'+esc(o.nolab)+'"':'')+' value="'+esc(F.place||'')+'" data-in="place">'
     +'<button class="gh" data-act="scan" data-for="where">'+I.scan+'Scan</button></div>';
-  const raw=String(F.place||'').trim(), q=raw.toLowerCase(), q2=plk(raw).replace(/^(room|rm) /,''), n=(SITE().locations||[]).length, s=[];
+  const raw=String(F.place||'').trim(), q=raw.toLowerCase(), q2=plk(raw).replace(/^(room|rm) /,''), s=[];
   if(q.length>=2){
-    (SITE().locations||[]).forEach(l=>{ const nm=l.name.toLowerCase(); if(nm.indexOf(q)>=0||(q2&&plk(nm).indexOf(q2)>=0)) s.push('<button class="opt" data-act="pickLoc" data-id="'+esc(l.id)+'"><span class="m">'+esc(l.name)+'</span><span class="rt">'+esc(lvName(l.level)||'Level not set')+'</span></button>'); });
+    (SITE().locations||[]).forEach(l=>{ const nm=l.name.toLowerCase(); if(nm.indexOf(q)>=0||(q2&&plk(nm).indexOf(q2)>=0)) s.push('<button class="opt" data-act="pickLoc" data-id="'+esc(l.id)+'"><span class="m">'+esc(l.name)+'</span><span class="rt">'+esc(lvName(l.level)||'')+'</span></button>'); });
     points().forEach(pt=>{ if((pt.name+' '+pt.where).toLowerCase().indexOf(q)>=0) s.push('<button class="opt" data-act="pickPoint" data-id="'+esc(pt.id)+'"><span class="m">'+esc(pt.name)+'</span><span class="rt">'+esc(pt.where||'Tagged')+'</span></button>'); });
     const ex=exactLoc(raw);
-    h+='<div class="sugg">'+s.slice(0,6).join('')+(ex?'':'<button class="opt" data-act="newPlace"><span class="m">Send “'+esc(raw)+'” as a New Place<span class="sub">Not one of the site’s places. The desk confirms it.</span></span></button>')+'</div>';
+    h+=(s.length?'':'<div class="help">No place has those words.</div>')
+      +'<div class="sugg">'+s.slice(0,6).join('')+(ex?'':'<button class="opt nw" data-act="newPlace"><span class="m">Send “'+esc(raw)+'” as a New Place</span></button>')+'</div>';
   }
-  const T=F.sendTried&&!whereOk(F);
-  return h+'<div class="help"'+(T?' role="alert" style="font-weight:600;color:var(--text)"':'')+'>'+(q.length>=2?(s.length?'Pick the place, or send it as a new place for the desk to confirm.':'None of the site’s places has those words. Try others, or send it as a new place for the desk to confirm.')
-    :'Type a few letters to find it in the site’s '+plural(n,'place')+', or scan the tag.')+'</div></div>';
+  return h+(o.miss||'')+'</div>';
 }
 // Faults already reported at this place: the desk's judgement, repeated, never the phone's own (DEC-0271 rule 3; Law 7).
 function faultHistory(){
   const F=st.form, gs=(st.site&&st.site.faults)||[];
   const g=F.point?gs.find(x=>x.point===F.point):(F.loc&&gs.find(x=>x.loc===F.loc))||gs.find(x=>!x.point&&x.place&&x.place===F.place);
   if(!g) return '';
-  const pub=st.site&&st.site.published;
-  return '<div class="note"><span class="eb">'+(g.recurs?'Recurring here':'Reported here before')+'</span>'
-    +'<b><span class="n">'+g.count+'</span> '+(g.count===1?'fault':'faults')+' reported here in 12 months</b>'+(pub?', as at <span class="n">'+esc(day(pub))+'</span>':'')+'.'
-    +g.faults.slice(0,3).map(x=>'<span class="sub">'+esc(x.what||'No description')+' · <span class="n">'+esc(x.raised?day(x.raised):'')+'</span>'+(x.status==='Open'?' · still open':'')+'</span>').join('')
-    +'<span class="sub">Send it anyway: the desk links them. This only shows what has been reported, not that it is the same fault.</span></div>';
+  // The desk's own states (To do, In progress) are still open; the old test knew only the word Open, which his jobs never carry.
+  const open=x=>/^(open|to do|in progress)$/i.test(String(x.status||'').trim());
+  return vGrp((g.recurs?'Recurring here':'Reported here before')+' · '+plural(g.count,'fault')+' in 12 months')+'<div class="vsheet">'
+    +g.faults.slice(0,3).map(x=>'<div class="p2r"><span class="vt"><span class="vw">'+esc(x.what||'No description')+'</span><span class="vs"><span class="n">'+esc(x.raised?day(x.raised):'')+'</span>'+(open(x)?' · still open':'')+'</span></span></div>').join('')
+    +'</div><p class="para">Send it anyway: the desk links them.</p>';
 }
 // The line proof is for, found by typing a few words (audit G4), the person's own lines first; or arrived pointed from Due.
-function lineSelect(opt){
+function lineSelect(opt,err){
   const F=st.form, lines=(st.site&&st.site.lines)||[];
-  if(!lines.length) return '<div class="field"><span class="fl">The line it proves</span><div class="help" style="margin-top:0">No lines in the site details yet. Sent without one, it waits in the Inbox until someone on the desk says where it belongs.</div></div>';
+  if(!lines.length) return '<div class="field"><span class="fl">The line it proves</span><div class="help" style="margin-top:0">No lines from the desk yet.</div>'+(err||'')+'</div>';
   const cur=F.duty?lineOrDue(F.duty):null, q=String(F.dq||'').trim().toLowerCase(), p=myPos(), held=new Set(p?p.duties:[]);
   const mine=new Set((SITE().due||[]).filter(i=>(i.duties||[]).some(d=>held.has(d))).map(i=>i.id));
   let h='<div class="field"><label for="dq">The line it proves'+(opt?' <span class="opt-w">(optional)</span>':'')+'</label>';
@@ -4739,37 +4856,50 @@ function lineSelect(opt){
   h+='<input id="dq" type="text" autocomplete="off" data-in="dq" placeholder="Type a few words of the line" value="'+esc(F.dq||'')+'">';
   const hits=q.length>=2?lines.filter(l=>(l.what+' '+l.id+' '+l.section).toLowerCase().indexOf(q)>=0).sort((a,b)=>(mine.has(b.id)?1:0)-(mine.has(a.id)?1:0)).slice(0,6):[];
   if(hits.length) h+='<div class="sugg">'+hits.map(l=>'<button class="opt" data-act="pickDuty" data-id="'+esc(l.id)+'"><span class="m">'+esc(l.what)+'<span class="sub"><span class="mono">'+esc(l.id)+'</span> · '+esc(l.section)+'</span></span></button>').join('')+'</div>';
-  else h+='<div class="help">'+(q.length>=2?'No line matches those words. Try others'+(opt?', or send it without one.':'.'):'Lines your position holds come first.')+'</div>';
-  return h+'</div>';
+  else if(q.length>=2) h+='<div class="help">No line has those words.</div>';
+  return h+(err||'')+'</div>';
 }
-function sendBtn(label,ok,why){
-  const tried=st.form&&st.form.sendTried&&!ok&&why;
-  return '<div class="foot" role="status"><button class="btn p" data-act="send" data-ok="'+(ok?1:0)+'"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':I.send+esc(label))+'</button>'+(tried?'<div class="unans" role="alert" style="margin:0">'+esc(why)+'</div>':'')+(st.form&&st.form.err?'<div class="note" role="alert"><span class="eb">Not made</span>'+esc(st.form.err)+'</div>':'')+'</div>';
+// The one primary (21.11): what is missing is said over it once Send has been pressed without it.
+function sendBtn(label,ok,n){
+  const tried=st.form&&st.form.sendTried&&!ok&&n;
+  return '<div class="foot cff" role="status">'+(tried?'<div class="unans">'+leftSay(n)+'</div>':'')+(st.form&&st.form.err?'<div class="note" role="alert">'+esc(st.form.err)+'</div>':'')
+    +'<button class="b1" data-act="send" data-ok="'+(ok?1:0)+'"'+(st.busy?' disabled':'')+'>'+(st.busy?'Sending…':I.send+esc(label))+'</button></div>';
 }
+// How many answers are still needed, said at the one action; each is said at its own field (DEC-0519).
+function leftSay(n){ return n===1?'1 answer still needed':n+' answers still needed'; }
+// The words a field says when it is still needed, once Send has been pressed (the error replaces the help, 9.6).
+function missAt(M,k){ const F=st.form, x=F&&F.sendTried&&M.find(m=>m[0]===k); return x?'<div class="help err cfm" role="alert">'+esc(x[1])+'</div>':''; }
+// Send pressed with something missing: the first field that says so comes to the middle, its box focused if it is empty.
+function cfGo(){ const m=app.querySelector('.cfm'); if(!m) return; const f=m.closest('.field')||m; f.scrollIntoView({block:'center',behavior:'instant'});
+  const i=f.querySelector('textarea[data-in],input[type=text][data-in],input[inputmode][data-in]'); if(i&&!String(i.value||'').trim()) i.focus({preventScroll:true}); }
 // Report a Fault: the photo first and enough with its place; the sentence optional with a photo, needed without one, so a
 // fault reported at reception still goes (DEC-0303 rule 7, amended 19 Nov 2026). The group stays as P2 asked it (audit G3, open).
 function vFault(){
   // A photo first (John, 19 Nov 2026: "report a fault should lead with taking a photo first. some times thats all thats
   // needed"): a photo and where it is are enough to send; the words are there for when they are wanted.
-  const F=st.form, said=String(F.note||'').trim(), where=whereOk(F), pics=F.photos.length>0;
-  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Fault','Take a photo of it. Add words if the photo does not say it all. It goes to the desk as a job.')
+  const F=st.form, said=String(F.note||'').trim(), where=whereOk(F), pics=F.photos.length>0, M=[];
+  if(!(said||pics)) M.push(['say','Take a photo, or say what is wrong.']);
+  if(!where) M.push(['where','Pick where it is from the site’s places, or scan its tag.']);
+  return '<div class="body v1 p3">'+formZone(F.back||'home','Capture','Report a Fault','')
     +(F.back==='flush'?'<p class="para">The flush round keeps running. Sending this takes you back to it.</p>':'')
     +(F.back==='pest'?'<p class="para">Your pest round is kept. Sending this takes you back to it.</p>':'')
-    +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
-    +'<div class="field"><label for="note">What is wrong'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
-    +whereField({suggest:true})+faultHistory()+groupSelect()+'<div style="height:24px"></div></div>'
-    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what is wrong.':'Pick where it is from the site’s places, or scan its tag.');
+    +'<div class="fphoto'+(pics?' cfp':'')+'">'+photosField('Photo',false)+'</div>'
+    +'<div class="field"><label for="note">What is wrong'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea>'+missAt(M,'say')+'</div>'
+    +whereField({suggest:true,miss:missAt(M,'where')})+faultHistory()+groupSelect()+'<div style="height:24px"></div></div>'
+    +sendBtn('Send',!M.length,M.length);
 }
 // Report a Hazard (DEC-0467 rule 5): a risk of an incident, not an incident, and not a fault to fix. Shaped as Report a
 // Fault: the photo first, and with where it is that is enough; the words for what could happen. The desk puts it on the
 // Risk Register, not yet scored.
 function vHazard(){
-  const F=st.form, said=String(F.note||'').trim(), where=whereOk(F), pics=F.photos.length>0;
-  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Hazard','Take a photo of it. Say what could happen if the photo does not show it. It goes to the desk’s Risk Register.')
-    +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
-    +'<div class="field"><label for="note">What could happen'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="Who could be hurt, and how">'+esc(F.note||'')+'</textarea></div>'
-    +whereField({suggest:true})+'<div style="height:24px"></div></div>'
-    +sendBtn('Send',(said||pics)&&where,!(said||pics)?'Take a photo, or say what could happen.':'Pick where it is from the site’s places, or scan a tag near it.');
+  const F=st.form, said=String(F.note||'').trim(), where=whereOk(F), pics=F.photos.length>0, M=[];
+  if(!(said||pics)) M.push(['say','Take a photo, or say what could happen.']);
+  if(!where) M.push(['where','Pick where it is from the site’s places, or scan a tag near it.']);
+  return '<div class="body v1 p3">'+formZone(F.back||'home','Capture','Report a Hazard','')
+    +'<div class="fphoto'+(pics?' cfp':'')+'">'+photosField('Photo',false)+'</div>'
+    +'<div class="field"><label for="note">What could happen'+(pics?' <span class="opt-w">(optional with a photo)</span>':'')+'</label><textarea id="note" data-in="note" placeholder="Who could be hurt, and how">'+esc(F.note||'')+'</textarea>'+missAt(M,'say')+'</div>'
+    +whereField({suggest:true,miss:missAt(M,'where')})+'<div style="height:24px"></div></div>'
+    +sendBtn('Send',!M.length,M.length);
 }
 // A reading is taken at an outlet's or a meter's tag. The figures it takes and the sentence it is judged by come from
 // the desk; the verdict stays on the desk (Design 7.1). The meter or outlet is the record in the zone; the figure is
@@ -4777,23 +4907,25 @@ function vHazard(){
 function vReading(){
   const F=st.form, p=F.point?pointById(F.point):(F.meter?meterAsPoint(F.meter):null);
   const ms=meters(), n=x=>Number(x).toLocaleString('en-IE');
-  if(!p) return '<div class="body">'+formZone('home','Capture','Take a Reading','Scan the tag on the outlet or the meter. What it takes, and what the figure is read against, come with it.')
-    +(F.scanErr?'<div class="note" role="alert"><span class="eb">Takes no reading</span>'+esc(F.scanErr)+'</div>':'')
-    +(ms.length?grp('Or pick the meter')+'<div class="list">'+ms.map(m=>'<button class="r" data-act="pickMeter" data-id="'+esc(m.id)+'"><span class="m"><span class="w">'+esc(m.name)+'</span><span class="sub">'+esc((m.where?m.where+' · ':'')+(m.reading.last?'last read '+n(m.reading.last.value)+' '+(m.reading.unit||'')+' on '+day(m.reading.last.date):'no reading on record yet'))+'</span></span></button>').join('')+'</div>':'')
-    +'<div style="height:24px"></div></div><div class="foot"><button class="btn p" data-act="scan" data-for="reading">'+I.scan+'Scan the Tag</button></div>';
+  if(!p) return '<div class="body v1 p3">'+formZone('home','Capture','Take a Reading','Scan the tag on the outlet or the meter.')
+    +(F.scanErr?'<div class="note" role="alert">'+esc(F.scanErr)+'</div>':'')
+    +(ms.length?vGrp('Or pick the meter')+'<div class="vsheet">'+ms.map(m=>'<button class="r" data-act="pickMeter" data-id="'+esc(m.id)+'"><span class="m"><span class="w">'+esc(m.name)+'</span><span class="sub">'+esc((m.where?m.where+' · ':'')+(m.reading.last?'last read '+n(m.reading.last.value)+' '+(m.reading.unit||'')+' on '+day(m.reading.last.date):'no reading on record yet'))+'</span></span></button>').join('')+'</div>':'')
+    +'<div style="height:24px"></div></div><div class="foot cff"><button class="b1" data-act="scan" data-for="reading">'+I.scan+'Scan the Tag</button></div>';
   const r=p.reading, figs=[];
   if(r.kind==='meter') return vMeterReading(F,p,r);
   if(r.hot) figs.push(['hot','Hot']); if(r.cold) figs.push(['cold','Cold']);
-  const ok=figs.every(x=>num(F[x[0]])!=null)&&(figs.length||F.flushed);
-  const bad=figs.filter(x=>F.left&&F.left[x[0]]&&F[x[0]]&&num(F[x[0]])==null).length;
-  return '<div class="body">'+formZone('home',r.label,p.name,esc(p.where||'')+(p.rec&&p.rec.ref?' · <span class="mono">'+esc(p.rec.ref)+'</span>':'')+'. '+esc(r.says||'The desk sent no range for this outlet.'))
+  // A tap with one side says which side once, in its kind; its line is the figure's target, its field the temperature.
+  const one=figs.length===1, tg=one&&r.bands&&r.bands[figs[0][0]]&&r.bands[figs[0][0]].target;
+  const M=figs.filter(x=>num(F[x[0]])==null).map(x=>[x[0],String(F[x[0]]||'').trim()?'Enter the figure as the thermometer shows it, like '+(x[0]==='cold'?'14.2':'52.4')+'.':'Enter the figure.']);
+  if(!figs.length&&!F.flushed) M.push(['flushed','Tick it once it has been run.']);
+  // a figure that will not read says so when the box is left, before Send; an empty one once Send has been pressed
+  const err=k=>{ const m=M.find(y=>y[0]===k), typed=F.left&&F.left[k]&&String(F[k]||'').trim(); return m&&(F.sendTried||typed)?'<div class="help err cfm" role="alert">'+esc(m[1])+'</div>':''; };
+  return '<div class="body v1 p3">'+readHead(r.label,p.name,esc(p.where||'')+(p.rec&&p.rec.ref?' · <span class="mono">'+esc(p.rec.ref)+'</span>':''),tg?'Should be '+esc(tg):esc(r.says||'The desk sent no range for this outlet.'))
     +(figs.length
-      ?figs.map(x=>'<div class="field"><label for="f-'+x[0]+'">'+x[1]+'</label><label class="fig"><input id="f-'+x[0]+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(F[x[0]]||'')+'" data-in="'+x[0]+'"><span class="u">'+esc(r.unit||'')+'</span></label></div>').join('')
-      :'<div class="field"><label class="keep"><input type="checkbox" data-in="flushed"'+(F.flushed?' checked':'')+'><span>Run and flushed</span></label></div>')
-    +'<div class="field" style="padding-top:8px">'+(bad?'<div class="help err" role="alert" style="margin:0">Enter the figure as the thermometer shows it, like 52.4.</div>'
-         :'<div class="help" style="margin:0">Judged on the desk when it files. This phone does not say whether it passes.</div>')+'</div>'
+      ?figs.map(x=>'<div class="field"><label for="f-'+x[0]+'">'+(one?'Temperature':x[1])+'</label><label class="fig"><input id="f-'+x[0]+'" type="text" inputmode="decimal" autocomplete="off" placeholder="–" value="'+esc(F[x[0]]||'')+'" data-in="'+x[0]+'"><span class="u">'+esc(r.unit||'')+'</span></label>'+err(x[0])+'</div>').join('')
+      :'<div class="field"><label class="keep"><input type="checkbox" data-in="flushed"'+(F.flushed?' checked':'')+'><span>Run and flushed</span></label>'+err('flushed')+'</div>')
     +photosField('Photo of the thermometer',true)+'<div style="height:24px"></div></div>'
-    +sendBtn('Send Reading',ok,figs.length?'Enter every figure.':'Tick it once it has been run.');
+    +sendBtn('Send Reading',!M.length,M.length);
 }
 // Digits typed as they read across a dial, with the point put in its place (DEC-0284). The desk's
 // wfmDialFix is the same rule; the places come from the desk in the site file.
@@ -4810,14 +4942,16 @@ function vMeterReading(F,p,r){
   const what=r.dial?'On the dial':(r.unit==='litres'?'In the tank':'Used');
   const dp=r.dial&&r.dp>0?r.dp:0;
   const eg=dp?(r.last?Number(r.last.value).toFixed(dp):'285312.1'):'';
-  const how=dp?' Type every digit as it reads across the dial, including those after the point. The point goes in for you: '+eg.replace('.','')+' is '+Number(eg).toLocaleString('en-IE',{minimumFractionDigits:dp,maximumFractionDigits:dp})+'.':'';
-  return '<div class="body">'+formZone('home',r.label,p.name,esc(p.where||'')+'. '+(r.last?'Last read <b class="n">'+esc(n(r.last.value))+'</b> '+esc(r.unit||'')+' on <b class="n">'+esc(day(r.last.date))+'</b>.':'No reading on record yet, so there is nothing to compare it with.'))
+  const how=dp?'Type every digit as it reads across the dial, including those after the point. The point goes in for you: '+eg.replace('.','')+' is '+Number(eg).toLocaleString('en-IE',{minimumFractionDigits:dp,maximumFractionDigits:dp})+'.':'';
+  const say=[dp?how:(r.says||''),p.picked?'Picked from the list, not scanned at the meter, and the record says so.':''].filter(Boolean).join(' ');
+  const M=v==null?[['value','Enter the figure.']]:[];
+  return '<div class="body v1 p3">'+readHead(r.label,p.name,esc(p.where||''),r.last?'Last read <b class="n">'+esc(n(r.last.value))+'</b> '+esc(r.unit||'')+' on <b class="n">'+esc(day(r.last.date))+'</b>':'No reading on record yet')
     +'<div class="field"><label for="f-value">'+esc(what)+'</label><label class="fig"><input id="f-value" type="text" inputmode="'+(dp?'numeric':'decimal')+'" autocomplete="off" placeholder="–" value="'+esc(F.value||'')+'" data-in="value"><span class="u">'+esc(r.unit||'')+'</span></label>'
-    +(typedBad?'<div class="help err" role="alert">Enter the figure as the '+(r.dial?'dial':'meter')+' shows it, with no spaces or commas, like 285312.1.</div>'
-      :back?'<div class="help err" role="alert">That is lower than the last reading. A dial does not run backwards, so check the figure on the dial.</div>'
-      :'<div class="help">'+esc((dp?'':(r.says||''))+how)+' '+(p.picked?'Picked from the list, not scanned at the meter, and the record says so. ':'')+'Added to the meter on the desk when it files.</div>')+'</div>'
+    +(typedBad?'<div class="help err cfm" role="alert">Enter the figure as the '+(r.dial?'dial':'meter')+' shows it, with no spaces or commas, like 285312.1.</div>'
+      :back?'<div class="help err cfm" role="alert">That is lower than the last reading. A dial does not run backwards, so check the figure on the dial.</div>'
+      :missAt(M,'value')||(say?'<div class="help">'+esc(say)+'</div>':''))+'</div>'
     +photosField(r.dial?'Photo of the dial':'Photo of the gauge',true)+'<div style="height:24px"></div></div>'
-    +sendBtn('Send Reading',v!=null&&!back,back?'':'Enter the figure.');
+    +sendBtn('Send Reading',v!=null&&!back,M.length);
 }
 // ── The tag scanner ──────────────────────────────────────────────────────────────────────────
 // A tag holds WATERLINE:PT:<id> (slice C). Read with the camera: the browser's own barcode reader
@@ -5298,7 +5432,7 @@ app.addEventListener('click',async e=>{
   if(a==='jlevel'){ F.level=b.dataset.v; render(); const v=app.querySelector('.sheet .opt.on'); if(v) v.focus(); return; }
   if(a==='jobFlagSend'){ if(!F.level){ F.ftried=true; render(); const t=app.querySelector('.sheet .opt'); if(t) t.focus(); return; } return jobSend('flag'); }
   if(a==='dphotoDel'){ const p=F.dphotos.splice(Number(b.dataset.i),1)[0]; if(p&&p.url) URL.revokeObjectURL(p.url); return render(); }
-  if(a==='send'){ if(b.dataset.ok!=='1'){ F.sendTried=true; render(); const e=[...app.querySelectorAll('textarea[data-in],input[type=text][data-in],input[inputmode][data-in]')].find(x=>!String(x.value||'').trim()); if(e) e.focus(); return; } return doSend(); }
+  if(a==='send'){ if(b.dataset.ok!=='1'){ F.sendTried=true; render(); cfGo(); return; } return doSend(); }
 });
 app.addEventListener('input',e=>{
   const k=e.target.dataset.in; if(!k) return;
@@ -5746,18 +5880,20 @@ app.addEventListener('change',e=>{
 // ── Report a Sighting (DEC-0466 rule 4): shaped as Report a Fault; a photo and a place are enough. A catch on a bedroom
 // insect monitor is reported here, with the room (rule 3). It files in Cases and Sightings on the desk.
 function vSighting(){
-  const F=st.form, where=whereOk(F), pics=F.photos.length>0, X=PX();
-  return '<div class="body">'+formZone(F.back||'home','Capture','Report a Sighting','Take a photo of it, or of the board. Say where. It goes to the desk’s sighting log.')
-    +'<div class="fphoto">'+photosField('Photo',false)+'</div>'
-    +grp('What you saw')+'<div class="list" role="radiogroup" aria-label="What you saw">'+peFold(X.sightWhat,F.what).map(x=>peRing(F.what===x[0],x[1],'sgWhat',x[0])).join('')+'</div>'
-    +(F.what?'<div class="row2"><button class="lnk" data-act="sgWhat" data-v="">Choose Another</button></div>':'')
-    +grp('Where it was')+'<div class="list" role="radiogroup" aria-label="Seen, or on a monitor">'+peRing(F.from!=='monitor','Seen','sgFrom','seen')+peRing(F.from==='monitor','On a bedroom insect monitor','sgFrom','monitor')+'</div>'
+  const F=st.form, where=whereOk(F), pics=F.photos.length>0, X=PX(), M=[];
+  if(!(pics||F.what)) M.push(['what','Take a photo, or say what you saw.']);
+  if(!where) M.push(['where','Pick where it was from the site’s places'+(F.from==='monitor'?': the room the monitor is in.':', or scan a tag.')]);
+  const w=missAt(M,'what');
+  return '<div class="body v1 p3">'+formZone(F.back||'home','Capture','Report a Sighting','')
+    +'<div class="fphoto'+(pics?' cfp':'')+'">'+photosField('Photo',false)+'</div>'
+    +vGrp('What you saw')+'<div class="vsheet" role="radiogroup" aria-label="What you saw">'+peFold(X.sightWhat,F.what).map(x=>peRing(F.what===x[0],x[1],'sgWhat',x[0])).join('')
+    +(F.what?'<button class="vmore" data-act="sgWhat" data-v="">Choose Another</button>':'')+'</div>'+(w?'<div class="field cfa">'+w+'</div>':'')
+    +vGrp('Where it was')+'<div class="vsheet" role="radiogroup" aria-label="Seen, or on a monitor">'+peRing(F.from!=='monitor','Seen','sgFrom','seen')+peRing(F.from==='monitor','On a bedroom insect monitor','sgFrom','monitor')+'</div>'
+    +whereField({suggest:true,nolab:'Where it was',miss:missAt(M,'where')})
     +'<div class="field"><label for="note">Anything to add <span class="opt-w">(optional)</span></label><textarea id="note" data-in="note" placeholder="In a sentence, as you would say it">'+esc(F.note||'')+'</textarea></div>'
-    +whereField({suggest:true})
-    +'<div class="field"><label class="keep"><input type="checkbox" style="width:24px;height:24px;min-height:0;flex:none;padding:0;margin:0" data-in="openCase"'+(F.openCase?' checked':'')+'><span style="min-width:0;white-space:normal">Open a case for this</span></label>'
-    +'<div class="help">The case opens with what you saw and where. Its visits, and any bait or traps, are recorded on it as they happen.</div></div>'
+    +'<div class="field"><label class="keep"><input type="checkbox" data-in="openCase"'+(F.openCase?' checked':'')+'><span class="m">Open a case for this<span class="sub">The case opens with what you saw and where. Its visits, and any bait or traps, are recorded on it as they happen.</span></span></label></div>'
     +'<div style="height:24px"></div></div>'
-    +sendBtn('Send',(pics||F.what)&&where,!(pics||F.what)?'Take a photo, or say what you saw.':'Pick where it was from the site’s places'+(F.from==='monitor'?': the room the monitor is in.':', or scan a tag.'));
+    +sendBtn('Send',!M.length,M.length);
 }
 
 // ── The flush round (job 015, slices FX and FY; DEC-0374, DEC-0413 to DEC-0415) ───────────────────────────────────
